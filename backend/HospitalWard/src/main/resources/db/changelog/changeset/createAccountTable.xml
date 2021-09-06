@@ -25,9 +25,6 @@
         <column name="surname" type="varchar(30)">
             <constraints nullable="false"/>
         </column>
-        <column name="license_nr" type="varchar(8)">
-            <constraints nullable="false" unique="true"/>
-        </column>
         <column name="active" type="boolean">
             <constraints nullable="false"/>
         </column>

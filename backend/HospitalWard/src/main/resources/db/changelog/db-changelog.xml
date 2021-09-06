@@ -9,7 +9,11 @@
     <include file="/changeset/createDiseaseTable.xml" relativeToChangelogFile="true"/>
     <include file="/changeset/createPatientTypeTable.xml" relativeToChangelogFile="true"/>
     <include file="/changeset/createPatientTable.xml" relativeToChangelogFile="true"/>
+    <include file="/changeset/createLevelTable.xml" relativeToChangelogFile="true"/>
+    <include file="/changeset/createAccessLevelTable.xml" relativeToChangelogFile="true"/>
+    <include file="/changeset/createMedicalStaffTable.xml" relativeToChangelogFile="true"/>
 
     <include file="/changeset/loadPatientTypeTable.xml" relativeToChangelogFile="true"/>
     <include file="/changeset/loadCovidStatusTable.xml" relativeToChangelogFile="true"/>
+    <include file="/changeset/loadLevelTable.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
