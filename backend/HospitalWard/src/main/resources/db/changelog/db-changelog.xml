@@ -12,6 +12,8 @@
     <include file="/changeset/createLevelTable.xml" relativeToChangelogFile="true"/>
     <include file="/changeset/createAccessLevelTable.xml" relativeToChangelogFile="true"/>
     <include file="/changeset/createMedicalStaffTable.xml" relativeToChangelogFile="true"/>
+    <include file="/changeset/createSpecializationTable.xml" relativeToChangelogFile="true"/>
+    <include file="/changeset/createMedicalStaffSpecializationTable.xml" relativeToChangelogFile="true"/>
 
     <include file="/changeset/loadPatientTypeTable.xml" relativeToChangelogFile="true"/>
     <include file="/changeset/loadCovidStatusTable.xml" relativeToChangelogFile="true"/>

@@ -25,7 +25,7 @@
             <column name="created_by" type="BIGINT">
                 <constraints foreignKeyName="fk_access_level_created_by" references="account(id)"/>
             </column>
-            <column name="modification_date" type="date"/>
+            <column name="modification_date" type="timestamp"/>
             <column name="modified_by" type="BIGINT">
                 <constraints foreignKeyName="fk_access_level_modified_by" references="account(id)"/>
             </column>

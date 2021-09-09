@@ -19,7 +19,6 @@ xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liqui
         <column name="license_nr" type="varchar(8)">
             <constraints nullable="false" unique="true"/>
         </column>
-        <column name="specialization" type="varchar(255)"/>
         <column name="academic_degree" type="varchar(255)">
             <constraints nullable="false"/>
         </column>
@@ -32,7 +31,7 @@ xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liqui
         <column name="created_by" type="BIGINT">
             <constraints foreignKeyName="fk_medical_staff_created_by" references="account(id)"/>
         </column>
-        <column name="modification_date" type="date"/>
+        <column name="modification_date" type="timestamp"/>
         <column name="modified_by" type="BIGINT">
             <constraints foreignKeyName="fk_medical_staff_modified_by" references="account(id)"/>
         </column>
