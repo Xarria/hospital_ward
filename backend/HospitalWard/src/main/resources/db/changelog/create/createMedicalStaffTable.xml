@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+<changeSet id="1" author="liquibase">
+    <createTable tableName="medical_staff">
+        <column name="id" type="BIGINT" autoIncrement="true">
+            <constraints primaryKey="true" foreignKeyName="fk_medical_staff_access_level" references="access_level(id)"/>
+        </column>
+        <column name="license_nr" type="varchar(8)">
+            <constraints nullable="false" unique="true"/>
+        </column>
+        <column name="academic_degree" type="varchar(255)">
+            <constraints nullable="false"/>
+        </column>
+    </createTable>
+</changeSet>
+</databaseChangeLog>

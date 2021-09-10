@@ -1,62 +1,55 @@
 package com.backend.hospitalward.model;
 
-import javax.persistence.*;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.Objects;
+import lombok.Data;
+import lombok.Setter;
+import org.hibernate.annotations.DiscriminatorFormula;
 
+import javax.persistence.*;
+import java.sql.Timestamp;
+
+@Data
 @Entity
 @Table(name = "access_level")
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "type")
 public class AccessLevel {
-    private long id;
-    private long version;
-    private Timestamp creationDate;
-
-    @Column(name = "modification_date", nullable = true)
-    private Timestamp modificationDate;
 
     @Id
     @Column(name = "id", nullable = false)
-    public long getId() {
-        return id;
-    }
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(lombok.AccessLevel.NONE)
+    private long id;
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    @Basic
+    @Version
     @Column(name = "version", nullable = false)
-    public long getVersion() {
-        return version;
-    }
+    private long version;
 
-    public void setVersion(long version) {
-        this.version = version;
-    }
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "account", nullable = false, updatable = false, referencedColumnName = "id")
+    private Account account;
 
-    @Basic
+    @Column(name = "type", nullable = false)
+    private String type;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "position", nullable = false, updatable = false, referencedColumnName = "id")
+    private Position position;
+
+    @Column(name = "active", nullable = false)
+    private Boolean active;
+
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
+    private Account createdBy;
+
     @Column(name = "creation_date", nullable = false)
-    public Timestamp getCreationDate() {
-        return creationDate;
-    }
+    private Timestamp creationDate;
 
-    public void setCreationDate(Timestamp creationDate) {
-        this.creationDate = creationDate;
-    }
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "modified_by", referencedColumnName = "id")
+    private Account modifiedBy;
 
+    @Column(name = "modification_date")
+    private Timestamp modificationDate;
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AccessLevel that = (AccessLevel) o;
-        return id == that.id && version == that.version && Objects.equals(creationDate, that.creationDate) && Objects.equals(modificationDate, that.modificationDate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, version, creationDate, modificationDate);
-    }
 }

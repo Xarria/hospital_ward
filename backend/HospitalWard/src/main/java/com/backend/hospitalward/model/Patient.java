@@ -4,185 +4,87 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.sql.Date;
-import java.sql.Time;
+import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Objects;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@SecondaryTable(name = "Personal_data")
 public class Patient {
-    private long id;
-    private long version;
-    private String pesel;
-    private int age;
-    private String referralNr;
-    private Timestamp referralDate;
-    private String name;
-    private String surname;
-    private Timestamp admissionDate;
-    private boolean confirmed;
-    private String phoneNumber;
-    private boolean urgent;
-    private Timestamp creationDate;
-    private Timestamp modificationDate;
 
     @Id
     @Column(name = "id", nullable = false)
-    public long getId() {
-        return id;
-    }
+    private long id;
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    @Basic
+    @Version
     @Column(name = "version", nullable = false)
-    public long getVersion() {
-        return version;
-    }
+    private long version;
 
-    public void setVersion(long version) {
-        this.version = version;
-    }
+    @Column(name = "pesel", nullable = false, length = 11, table = "Personal_data")
+    private String pesel;
 
-    @Basic
-    @Column(name = "pesel", nullable = false, length = 11)
-    public String getPesel() {
-        return pesel;
-    }
+    @Column(name = "age", nullable = false, table = "Personal_data")
+    private int age;
 
-    public void setPesel(String pesel) {
-        this.pesel = pesel;
-    }
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "patient_disease",
+            joinColumns = { @JoinColumn(name = "patient") },
+            inverseJoinColumns = { @JoinColumn(name = "disease") }
+    )
+    private List<Disease> diseases;
 
-    @Basic
-    @Column(name = "age", nullable = false)
-    public int getAge() {
-        return age;
-    }
+    @Column(name = "referral_nr", length = 30)
+    private String referralNr;
 
-    public void setAge(int age) {
-        this.age = age;
-    }
+    @Column(name = "referral_date")
+    private Timestamp referralDate;
 
-    @Basic
-    @Column(name = "referral_nr", nullable = true, length = 30)
-    public String getReferralNr() {
-        return referralNr;
-    }
+    @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "type", nullable = false, referencedColumnName = "id")
+    private PatientType patientType;
 
-    public void setReferralNr(String referralNr) {
-        this.referralNr = referralNr;
-    }
+    @ManyToOne(cascade =  CascadeType.REFRESH)
+    @JoinColumn(name = "main_doctor", referencedColumnName = "id")
+    private Account mainDoctor;
 
-    @Basic
-    @Column(name = "referral_date", nullable = true)
-    public Timestamp getReferralDate() {
-        return referralDate;
-    }
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "covid_status", referencedColumnName = "id")
+    private CovidStatus covidStatus;
 
-    public void setReferralDate(Timestamp referralDate) {
-        this.referralDate = referralDate;
-    }
+    @Column(name = "name", nullable = false, length = 20, table = "Personal_data")
+    private String name;
 
-    @Basic
-    @Column(name = "name", nullable = false, length = 20)
-    public String getName() {
-        return name;
-    }
+    @Column(name = "surname", nullable = false, length = 30, table = "Personal_data")
+    private String surname;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    @Column(name = "admission_date")
+    private Timestamp admissionDate;
 
-    @Basic
-    @Column(name = "surname", nullable = false, length = 30)
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    @Basic
-    @Column(name = "admission_date", nullable = true)
-    public Timestamp getAdmissionDate() {
-        return admissionDate;
-    }
-
-    public void setAdmissionDate(Timestamp admissionDate) {
-        this.admissionDate = admissionDate;
-    }
-
-    @Basic
     @Column(name = "confirmed", nullable = false)
-    public boolean isConfirmed() {
-        return confirmed;
-    }
+    private boolean confirmed;
 
-    public void setConfirmed(boolean confirmed) {
-        this.confirmed = confirmed;
-    }
+    @Column(name = "phone_number", nullable = false, length = 11, table = "Personal_data")
+    private String phoneNumber;
 
-    @Basic
-    @Column(name = "phone_number", nullable = false, length = 11)
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    @Basic
     @Column(name = "urgent", nullable = false)
-    public boolean isUrgent() {
-        return urgent;
-    }
+    private boolean urgent;
 
-    public void setUrgent(boolean urgent) {
-        this.urgent = urgent;
-    }
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
+    private Account createdBy;
 
-    @Basic
     @Column(name = "creation_date", nullable = false)
-    public Timestamp getCreationDate() {
-        return creationDate;
-    }
+    private Timestamp creationDate;
 
-    public void setCreationDate(Timestamp creationDate) {
-        this.creationDate = creationDate;
-    }
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "modified_by", referencedColumnName = "id")
+    private Account modifiedBy;
 
-    @Basic
-    @Column(name = "modification_date", nullable = true)
-    public Timestamp getModificationDate() {
-        return modificationDate;
-    }
+    @Column(name = "modification_date")
+    private Timestamp modificationDate;
 
-    public void setModificationDate(Timestamp modificationDate) {
-        this.modificationDate = modificationDate;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Patient patient = (Patient) o;
-        return id == patient.id && version == patient.version && age == patient.age && confirmed == patient.confirmed && urgent == patient.urgent && Objects.equals(pesel, patient.pesel) && Objects.equals(referralNr, patient.referralNr) && Objects.equals(referralDate, patient.referralDate) && Objects.equals(name, patient.name) && Objects.equals(surname, patient.surname) && Objects.equals(admissionDate, patient.admissionDate) && Objects.equals(phoneNumber, patient.phoneNumber) && Objects.equals(creationDate, patient.creationDate) && Objects.equals(modificationDate, patient.modificationDate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, version, pesel, age, referralNr, referralDate, name, surname, admissionDate, confirmed, phoneNumber, urgent, creationDate, modificationDate);
-    }
 }

@@ -1,22 +1,20 @@
 package com.backend.hospitalward.model;
 
-import lombok.Getter;
+import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
-@Getter
 @Entity
-@Table(name = "covid_status")
-public class CovidStatus {
+@Data
+public class Position {
 
     @Id
     @Column(name = "id", nullable = false)
     private long id;
 
-    @Column(name = "status", nullable = false, length = 15)
-    private String status;
+    @Column(name = "name", nullable = false, unique = true, length = 50)
+    private String name;
 
 }

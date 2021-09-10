@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet id="1" author="liquibase">
+        <createTable tableName="personal_data">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" foreignKeyName="fk_patient_personal_data" references="patient(id)"/>
+            </column>
+            <column name="pesel" type="varchar(11)">
+                <constraints nullable="false" unique="false"/>
+            </column>
+            <column name="age" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="surname" type="varchar(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone_number" type="varchar(11)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

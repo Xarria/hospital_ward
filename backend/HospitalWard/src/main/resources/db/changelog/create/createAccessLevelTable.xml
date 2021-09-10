@@ -16,8 +16,14 @@
             <column name="account" type="BIGINT">
                 <constraints nullable="false" foreignKeyName="fk_access_level_account" references="account(id)"/>
             </column>
-            <column name="level" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="fk_access_level_level" references="level(id)"/>
+            <column name="active" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="position" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_access_level_position" references="position(id)"/>
             </column>
             <column name="creation_date" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>

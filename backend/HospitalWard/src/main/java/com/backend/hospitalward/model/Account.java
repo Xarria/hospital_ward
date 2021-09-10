@@ -3,11 +3,10 @@ package com.backend.hospitalward.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Objects;
 
 @Data
 @NoArgsConstructor
@@ -17,6 +16,8 @@ public class Account {
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(lombok.AccessLevel.NONE)
     private long id;
 
     @Version
@@ -38,23 +39,18 @@ public class Account {
     @Column(name = "active", nullable = false)
     private boolean active;
 
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
+    private Account createdBy;
+
     @Column(name = "creation_date", nullable = false)
     private Timestamp creationDate;
+
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "modified_by", referencedColumnName = "id")
+    private Account modifiedBy;
 
     @Column(name = "modification_date")
     private Timestamp modificationDate;
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Account account = (Account) o;
-        return id == account.id && version == account.version && active == account.active && Objects.equals(login, account.login) && Objects.equals(password, account.password) && Objects.equals(name, account.name) && Objects.equals(surname, account.surname) && Objects.equals(creationDate, account.creationDate) && Objects.equals(modificationDate, account.modificationDate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, version, login, password, name, surname, active, creationDate, modificationDate);
-    }
 }
