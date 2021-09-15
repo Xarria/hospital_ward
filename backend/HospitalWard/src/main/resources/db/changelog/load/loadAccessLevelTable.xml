@@ -6,13 +6,10 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
 
     <changeSet id="1" author="liquibase">
-        <createTable tableName="position">
-            <column name="id" type="BIGINT" autoIncrement="true">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="name" type="varchar(50)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-        </createTable>
+        <loadData tableName="access_level"
+                  file="/csv/accessLevel.csv"
+                  relativeToChangelogFile="true">
+            <column header="level" name="name" type="string"/>
+        </loadData>
     </changeSet>
 </databaseChangeLog>

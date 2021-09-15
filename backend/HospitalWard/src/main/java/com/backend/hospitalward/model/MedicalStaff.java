@@ -1,8 +1,9 @@
 package com.backend.hospitalward.model;
 
-import lombok.Data;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.util.List;
@@ -10,19 +11,20 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "medical_staff")
 @DiscriminatorValue("MEDIC")
-public class MedicalStaff extends AccessLevel {
+public class MedicalStaff extends Account {
 
     @Id
     @Column(name = "id", nullable = false)
-    private long id;
+    long id;
 
     @Column(name = "license_nr", nullable = false, length = 8)
-    private String licenseNr;
+    String licenseNr;
 
     @Column(name = "academic_degree", nullable = false)
-    private String academicDegree;
+    String academicDegree;
 
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
@@ -30,5 +32,5 @@ public class MedicalStaff extends AccessLevel {
             joinColumns = { @JoinColumn(name = "medical_staff") },
             inverseJoinColumns = { @JoinColumn(name = "specialization") }
     )
-    private List<Specialization> specializations;
+    List<Specialization> specializations;
 }

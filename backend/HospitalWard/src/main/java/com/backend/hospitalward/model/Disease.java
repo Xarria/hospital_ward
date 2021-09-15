@@ -1,6 +1,8 @@
 package com.backend.hospitalward.model;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,26 +11,27 @@ import javax.persistence.ManyToMany;
 import java.util.List;
 
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 public class Disease {
 
     @Id
     @Column(name = "id", nullable = false)
-    private long id;
+    long id;
 
     @Column(name = "name", nullable = false)
-    private String name;
+    String name;
 
     @Column(name = "urgent", nullable = false)
-    private boolean urgent;
+    boolean urgent;
 
     @Column(name = "catherer_required", nullable = false)
-    private boolean cathererRequired;
+    boolean cathererRequired;
 
     @Column(name = "surgery_required", nullable = false)
-    private boolean surgeryRequired;
+    boolean surgeryRequired;
 
     @ManyToMany(mappedBy = "diseases")
-    private List<Patient> patients;
+    List<Patient> patients;
 
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet author="liquibase" id="1">
+        <createView schemaName="hospital_ward_db"
+                    replaceIfExists="true"
+                    viewName="auth_view">
+            SELECT account.login, account.password, access_level.name as level
+            FROM account, access_level
+            WHERE account.access_level = access_level.id AND account.active = true
+        </createView>
+    </changeSet>
+
+</databaseChangeLog>

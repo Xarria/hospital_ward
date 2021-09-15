@@ -11,7 +11,7 @@
                 <constraints primaryKey="true" foreignKeyName="fk_patient_personal_data" references="patient(id)"/>
             </column>
             <column name="pesel" type="varchar(11)">
-                <constraints nullable="false" unique="false"/>
+                <constraints nullable="false"/>
             </column>
             <column name="age" type="int">
                 <constraints nullable="false"/>

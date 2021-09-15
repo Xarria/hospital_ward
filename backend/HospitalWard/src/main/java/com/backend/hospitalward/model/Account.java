@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -11,46 +12,56 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "type")
 public class Account {
 
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(lombok.AccessLevel.NONE)
-    private long id;
+    long id;
 
     @Version
     @Column(name = "version", nullable = false)
-    private long version;
+    long version;
 
     @Column(name = "login", nullable = false, length = 50)
-    private String login;
+    String login;
 
     @Column(name = "password", nullable = false, length = 50)
-    private String password;
+    String password;
+
+    @Column(name = "type", nullable = false)
+    String type;
+
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "access_level", referencedColumnName = "id")
+    AccessLevel accessLevel;
 
     @Column(name = "name", nullable = false, length = 20)
-    private String name;
+    String name;
 
     @Column(name = "surname", nullable = false, length = 30)
-    private String surname;
+    String surname;
 
     @Column(name = "active", nullable = false)
-    private boolean active;
+    boolean active;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "created_by", referencedColumnName = "id")
-    private Account createdBy;
+    Account createdBy;
 
     @Column(name = "creation_date", nullable = false)
-    private Timestamp creationDate;
+    Timestamp creationDate;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "modified_by", referencedColumnName = "id")
-    private Account modifiedBy;
+    Account modifiedBy;
 
     @Column(name = "modification_date")
-    private Timestamp modificationDate;
+    Timestamp modificationDate;
 
 }

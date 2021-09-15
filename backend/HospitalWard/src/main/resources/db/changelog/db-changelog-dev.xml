@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <include file="/create/createAccessLevelTable.xml" relativeToChangelogFile="true"/>
+    <include file="/create/createAccountTable.xml" relativeToChangelogFile="true"/>
+    <include file="/create/createCovidStatusTable.xml" relativeToChangelogFile="true"/>
+    <include file="/create/createDiseaseTable.xml" relativeToChangelogFile="true"/>
+    <include file="/create/createPatientTypeTable.xml" relativeToChangelogFile="true"/>
+    <include file="/create/createPatientTable.xml" relativeToChangelogFile="true"/>
+    <include file="/create/createMedicalStaffTable.xml" relativeToChangelogFile="true"/>
+    <include file="/create/createSpecializationTable.xml" relativeToChangelogFile="true"/>
+    <include file="/create/createMedicalStaffSpecializationTable.xml" relativeToChangelogFile="true"/>
+    <include file="/create/createPatientDiseaseTable.xml" relativeToChangelogFile="true"/>
+    <include file="/create/createPersonalDataTable.xml" relativeToChangelogFile="true"/>
+    <include file="/create/createAuthView.xml" relativeToChangelogFile="true"/>
+
+    <include file="/load/loadPatientTypeTable.xml" relativeToChangelogFile="true"/>
+    <include file="/load/loadCovidStatusTable.xml" relativeToChangelogFile="true"/>
+    <include file="/load/loadAccessLevelTable.xml" relativeToChangelogFile="true"/>
+    <include file="/load/loadAccountTable.xml" relativeToChangelogFile="true"/>
+    <include file="/load/loadDiseaseTable.xml" relativeToChangelogFile="true"/>
+    <include file="/load/loadMedicalStaffSpecializationTable.xml" relativeToChangelogFile="true"/>
+    <include file="/load/loadMedicalStaffTable.xml" relativeToChangelogFile="true"/>
+    <include file="/load/loadPatientDiseaseTable.xml" relativeToChangelogFile="true"/>
+    <include file="/load/loadPatientTable.xml" relativeToChangelogFile="true"/>
+    <include file="/load/loadPersonalDataTable.xml" relativeToChangelogFile="true"/>
+    <include file="/load/loadSpecializationTable.xml" relativeToChangelogFile="true"/>
+</databaseChangeLog>

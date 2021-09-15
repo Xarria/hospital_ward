@@ -11,7 +11,7 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="name" type="varchar(255)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="urgent" type="boolean">
                 <constraints nullable="false"/>

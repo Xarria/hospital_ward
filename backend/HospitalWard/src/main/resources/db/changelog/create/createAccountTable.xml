@@ -19,6 +19,12 @@
         <column name="password" type="varchar(50)">
             <constraints nullable="false"/>
         </column>
+        <column name="type" type="varchar(30)">
+            <constraints nullable="false"/>
+        </column>
+        <column name="access_level" type="BIGINT">
+            <constraints foreignKeyName="fk_account_access_level" references="access_level(id)"/>
+        </column>
         <column name="name" type="varchar(20)">
             <constraints nullable="false"/>
         </column>
