@@ -20,12 +20,12 @@
     <include file="/load/loadPatientTypeTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadCovidStatusTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadAccessLevelTable.xml" relativeToChangelogFile="true"/>
-    <include file="/load/loadAccountTable.xml" relativeToChangelogFile="true"/>
-    <include file="/load/loadDiseaseTable.xml" relativeToChangelogFile="true"/>
-    <include file="/load/loadMedicalStaffSpecializationTable.xml" relativeToChangelogFile="true"/>
-    <include file="/load/loadMedicalStaffTable.xml" relativeToChangelogFile="true"/>
-    <include file="/load/loadPatientDiseaseTable.xml" relativeToChangelogFile="true"/>
-    <include file="/load/loadPatientTable.xml" relativeToChangelogFile="true"/>
-    <include file="/load/loadPersonalDataTable.xml" relativeToChangelogFile="true"/>
-    <include file="/load/loadSpecializationTable.xml" relativeToChangelogFile="true"/>
+<!--    <include file="/load/loadAccountTable.xml" relativeToChangelogFile="true"/>-->
+<!--    <include file="/load/loadDiseaseTable.xml" relativeToChangelogFile="true"/>-->
+<!--    <include file="/load/loadMedicalStaffSpecializationTable.xml" relativeToChangelogFile="true"/>-->
+<!--    <include file="/load/loadMedicalStaffTable.xml" relativeToChangelogFile="true"/>-->
+<!--    <include file="/load/loadPatientDiseaseTable.xml" relativeToChangelogFile="true"/>-->
+<!--    <include file="/load/loadPatientTable.xml" relativeToChangelogFile="true"/>-->
+<!--    <include file="/load/loadPersonalDataTable.xml" relativeToChangelogFile="true"/>-->
+<!--    <include file="/load/loadSpecializationTable.xml" relativeToChangelogFile="true"/>-->
 </databaseChangeLog>

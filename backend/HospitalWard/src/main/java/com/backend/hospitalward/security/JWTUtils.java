@@ -7,7 +7,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
 import java.util.Date;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -48,4 +52,18 @@ public class JWTUtils {
         String login = extractUsername(token);
         return (login.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
+
+    public String refreshToken(String oldToken) {
+        Claims claims = Jwts.parser().setSigningKey(SecurityConstants.SECRET).parseClaimsJws(oldToken).getBody();
+
+        return Jwts.builder()
+                .setSubject(claims.getSubject())
+                .claim("auth", claims.get("auth"))
+                .setIssuer(SecurityConstants.ISSUER)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(new Date().getTime() + SecurityConstants.JWT_TIMEOUT))
+                .signWith(SignatureAlgorithm.HS256, SecurityConstants.SECRET)
+                .compact();
+    }
+
 }
