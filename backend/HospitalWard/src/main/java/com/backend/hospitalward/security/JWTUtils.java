@@ -18,6 +18,10 @@ import java.util.stream.Collectors;
 @Service
 public class JWTUtils {
 
+    private Boolean isTokenExpired(String token) {
+        return extractExpirationTime(token).before(new Date());
+    }
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -29,10 +33,6 @@ public class JWTUtils {
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         Claims claims = Jwts.parser().setSigningKey(SecurityConstants.SECRET).parseClaimsJws(token).getBody();
         return claimsResolver.apply(claims);
-    }
-
-    private Boolean isTokenExpired(String token) {
-        return extractExpirationTime(token).before(new Date());
     }
 
     public String generateToken(UserDetails userDetails) {
@@ -53,7 +53,7 @@ public class JWTUtils {
         return (login.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    public String refreshToken(String oldToken) {
+    public String refreshToken(String oldToken, String accessLevel) {
         Claims claims = Jwts.parser()
                 .setSigningKey(SecurityConstants.SECRET)
                 .requireIssuer(SecurityConstants.ISSUER)
@@ -61,7 +61,7 @@ public class JWTUtils {
 
         return Jwts.builder()
                 .setSubject(claims.getSubject())
-                .claim("auth", claims.get("auth"))
+                .claim("auth", accessLevel)
                 .setIssuer(SecurityConstants.ISSUER)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + SecurityConstants.JWT_TIMEOUT))

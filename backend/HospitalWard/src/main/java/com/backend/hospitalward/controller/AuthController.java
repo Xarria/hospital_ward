@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.token.Sha512DigestUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,10 +50,12 @@ public class AuthController {
 
     @GetMapping("/refresh")
     public ResponseEntity<?> refreshToken(@CurrentSecurityContext HttpServletRequest servletRequest){
+        String accessLevel = authService.findAccessLevelByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
+
         String authHeader = servletRequest.getHeader(SecurityConstants.AUTHORIZATION);
         String oldJwt = authHeader.substring(SecurityConstants.BEARER.length()).trim();
 
-        return ResponseEntity.ok(jwtUtils.refreshToken(oldJwt));
+        return ResponseEntity.ok(jwtUtils.refreshToken(oldJwt, accessLevel));
     }
 
 }

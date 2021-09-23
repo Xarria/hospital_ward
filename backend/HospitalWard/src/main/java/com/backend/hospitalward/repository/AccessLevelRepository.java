@@ -10,4 +10,6 @@ import java.util.Optional;
 @Repository
 public interface AccessLevelRepository extends JpaRepository<AccessLevel, Long> {
 
+    @Query("SELECT name FROM AccessLevel, Account WHERE Account.id = AccessLevel.id AND Account.login =:login")
+    Optional<AccessLevel> findAccessLevelByLogin(String login);
 }
