@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet id="1" author="liquibase">
+        <loadData tableName="patient"
+                  file="/csv/patient.csv"
+                  relativeToChangelogFile="true">
+            <column header="type" name="type" type="numeric"/>
+            <column header="referral_nr" name="referral_nr" type="string"/>
+            <column header="referral_date" name="referral_date" type="date"/>
+            <column header="main_doctor" name="main_doctor" type="numeric"/>
+            <column header="admission_date" name="admission_date" type="date"/>
+            <column header="urgent" name="urgent" type="boolean"/>
+            <column header="covid_status" name="covid_status" type="numeric"/>
+            <column header="status" name="status" type="numeric"/>
+            <column header="position_queue" name="position_queue" type="numeric"/>
+        </loadData>
+    </changeSet>
+</databaseChangeLog>

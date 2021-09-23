@@ -1,35 +1,40 @@
 package com.backend.hospitalward.model;
 
+import lombok.*;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.PackagePrivate;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.sql.Timestamp;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @SecondaryTable(name = "Personal_data")
-public class Patient {
+public class Patient extends BaseEntity{
 
-    @Id
-    @Column(name = "id", nullable = false)
-    long id;
-
-    @Version
-    @Column(name = "version", nullable = false)
-    long version;
-
+    @NotBlank
+    @Size(min = 11, max = 11)
     @Column(name = "pesel", nullable = false, length = 11, table = "Personal_data")
     String pesel;
 
-    @Column(name = "age", nullable = false, table = "Personal_data")
-    int age;
+    @NotBlank
+    @Size(max = 3, min = 2)
+    @Pattern(regexp = "[1-9][0-9]*[MY]")
+    @Column(name = "age", nullable = false, length = 3, table = "Personal_data")
+    String age;
+
+    @NotBlank
+    @Size(max = 1)
+    @Pattern(regexp = "[MFU]")
+    @Column(name = "sex", nullable = false, table = "Personal_data")
+    String sex;
 
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
@@ -39,12 +44,15 @@ public class Patient {
     )
     List<Disease> diseases;
 
+    //TODO dopytać o walidację
+    @Size(min = 1)
     @Column(name = "referral_nr", length = 30)
     String referralNr;
 
     @Column(name = "referral_date")
     Timestamp referralDate;
 
+    @NotNull
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "type", nullable = false, referencedColumnName = "id")
     PatientType patientType;
@@ -53,25 +61,37 @@ public class Patient {
     @JoinColumn(name = "main_doctor", referencedColumnName = "id")
     Account mainDoctor;
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    @NotNull
+    @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "covid_status", referencedColumnName = "id")
     CovidStatus covidStatus;
 
+    @NotBlank
+    @Size(max = 20)
+    @Pattern(regexp = "[A-Z][a-z]+")
     @Column(name = "name", nullable = false, length = 20, table = "Personal_data")
     String name;
 
+    @NotBlank
+    @Size(max = 30)
+    @Pattern(regexp = "[A-Z][a-z]+")
     @Column(name = "surname", nullable = false, length = 30, table = "Personal_data")
     String surname;
 
     @Column(name = "admission_date")
     Timestamp admissionDate;
 
-    @Column(name = "confirmed", nullable = false)
-    boolean confirmed;
+    @NotNull
+    @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "status", referencedColumnName = "id")
+    PatientStatus status;
 
+    @NotBlank
+    @Pattern(regexp = "[0-9]{9,11}")
     @Column(name = "phone_number", nullable = false, length = 11, table = "Personal_data")
     String phoneNumber;
 
+    @NotNull
     @Column(name = "urgent", nullable = false)
     boolean urgent;
 
@@ -79,6 +99,8 @@ public class Patient {
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     Account createdBy;
 
+    @PastOrPresent
+    @NotNull
     @Column(name = "creation_date", nullable = false)
     Timestamp creationDate;
 

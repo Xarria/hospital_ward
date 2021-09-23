@@ -1,5 +1,6 @@
 package com.backend.hospitalward.model;
 
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -7,17 +8,18 @@ import lombok.experimental.FieldDefaults;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Data
-public class Position {
+@Table(name = "patient_status")
+public class PatientStatus {
 
     @Id
     @Column(name = "id", nullable = false)
     long id;
 
-    @Column(name = "name", nullable = false, unique = true, length = 50)
+    @Column(name = "status", nullable = false, length = 21, unique = true)
     String name;
-
 }

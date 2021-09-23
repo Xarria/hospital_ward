@@ -7,6 +7,9 @@ import org.hibernate.annotations.DiscriminatorFormula;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlAttribute;
 import java.sql.Timestamp;
 
 @Data
@@ -21,6 +24,8 @@ public class AccessLevel implements GrantedAuthority {
     @Setter(lombok.AccessLevel.NONE)
     long id;
 
+    @Size(max = 21)
+    @Pattern(regexp = "[A-Z]+")
     @Column(name = "name", nullable = false)
     String name;
 

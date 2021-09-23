@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet id="1" author="liquibase">
+        <loadData tableName="account"
+                  file="/csv/account.csv"
+                  relativeToChangelogFile="true">
+            <column header="login" name="login" type="string"/>
+            <column header="password" name="password" type="string"/>
+            <column header="type" name="type" type="string"/>
+            <column header="access_level" name="access_level" type="numeric"/>
+            <column header="name" name="name" type="string"/>
+            <column header="surname" name="surname" type="string"/>
+            <column header="active" name="active" type="boolean"/>
+            <column header="created_by" name="created_by" type="numeric"/>
+        </loadData>
+    </changeSet>
+</databaseChangeLog>

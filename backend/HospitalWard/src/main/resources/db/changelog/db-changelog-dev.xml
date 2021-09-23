@@ -9,6 +9,7 @@
     <include file="/create/createCovidStatusTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createDiseaseTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createPatientTypeTable.xml" relativeToChangelogFile="true"/>
+    <include file="/create/createPatientStatusTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createPatientTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createMedicalStaffTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createSpecializationTable.xml" relativeToChangelogFile="true"/>
@@ -18,14 +19,15 @@
     <include file="/create/createAuthView.xml" relativeToChangelogFile="true"/>
 
     <include file="/load/loadPatientTypeTable.xml" relativeToChangelogFile="true"/>
+    <include file="/load/loadPatientStatusTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadCovidStatusTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadAccessLevelTable.xml" relativeToChangelogFile="true"/>
-<!--    <include file="/load/loadAccountTable.xml" relativeToChangelogFile="true"/>-->
+    <include file="/load/loadAccountTable.xml" relativeToChangelogFile="true"/>
 <!--    <include file="/load/loadDiseaseTable.xml" relativeToChangelogFile="true"/>-->
-<!--    <include file="/load/loadMedicalStaffSpecializationTable.xml" relativeToChangelogFile="true"/>-->
-<!--    <include file="/load/loadMedicalStaffTable.xml" relativeToChangelogFile="true"/>-->
+    <include file="/load/loadMedicalStaffTable.xml" relativeToChangelogFile="true"/>
 <!--    <include file="/load/loadPatientDiseaseTable.xml" relativeToChangelogFile="true"/>-->
-<!--    <include file="/load/loadPatientTable.xml" relativeToChangelogFile="true"/>-->
-<!--    <include file="/load/loadPersonalDataTable.xml" relativeToChangelogFile="true"/>-->
-<!--    <include file="/load/loadSpecializationTable.xml" relativeToChangelogFile="true"/>-->
+    <include file="/load/loadPatientTable.xml" relativeToChangelogFile="true"/>
+    <include file="/load/loadPersonalDataTable.xml" relativeToChangelogFile="true"/>
+    <include file="/load/loadSpecializationTable.xml" relativeToChangelogFile="true"/>
+    <include file="/load/loadMedicalStaffSpecializationTable.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

@@ -13,7 +13,10 @@
             <column name="pesel" type="varchar(11)">
                 <constraints nullable="false"/>
             </column>
-            <column name="age" type="int">
+            <column name="age" type="varchar(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sex" type="varchar(1)">
                 <constraints nullable="false"/>
             </column>
             <column name="name" type="varchar(20)">
@@ -25,6 +28,7 @@
             <column name="phone_number" type="varchar(11)">
                 <constraints nullable="false"/>
             </column>
+            <column name="email_address" type="varchar(50)"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

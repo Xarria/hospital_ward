@@ -7,8 +7,8 @@ xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liqui
 
 <changeSet id="1" author="liquibase">
     <createTable tableName="medical_staff">
-        <column name="id" type="BIGINT" autoIncrement="true">
-            <constraints primaryKey="true" foreignKeyName="fk_medical_staff_access_level" references="access_level(id)"/>
+        <column name="id" type="BIGINT">
+            <constraints primaryKey="true" foreignKeyName="fk_medical_staff_account" references="account(id)"/>
         </column>
         <column name="license_nr" type="varchar(8)">
             <constraints nullable="false" unique="true"/>

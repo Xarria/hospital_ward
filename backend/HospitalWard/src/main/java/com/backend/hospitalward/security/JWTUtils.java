@@ -54,7 +54,10 @@ public class JWTUtils {
     }
 
     public String refreshToken(String oldToken) {
-        Claims claims = Jwts.parser().setSigningKey(SecurityConstants.SECRET).parseClaimsJws(oldToken).getBody();
+        Claims claims = Jwts.parser()
+                .setSigningKey(SecurityConstants.SECRET)
+                .requireIssuer(SecurityConstants.ISSUER)
+                .parseClaimsJws(oldToken).getBody();
 
         return Jwts.builder()
                 .setSubject(claims.getSubject())
@@ -62,7 +65,7 @@ public class JWTUtils {
                 .setIssuer(SecurityConstants.ISSUER)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + SecurityConstants.JWT_TIMEOUT))
-                .signWith(SignatureAlgorithm.HS256, SecurityConstants.SECRET)
+                .signWith(SignatureAlgorithm.HS512, SecurityConstants.SECRET)
                 .compact();
     }
 

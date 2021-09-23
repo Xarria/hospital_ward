@@ -13,9 +13,12 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
-public class AccountService {
+public class AuthService implements UserDetailsService {
 
     AccountRepository accountRepository;
 
-
+    @Override
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        return accountRepository.findAccountByLogin(login).get();
+    }
 }

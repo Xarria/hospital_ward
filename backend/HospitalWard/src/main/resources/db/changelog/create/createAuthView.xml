@@ -9,7 +9,7 @@
         <createView schemaName="hospital_ward_db"
                     replaceIfExists="true"
                     viewName="auth_view">
-            SELECT account.login, account.password, access_level.name as level
+            SELECT account.id, account.login, account.password, access_level.name as level
             FROM account, access_level
             WHERE account.access_level = access_level.id AND account.active = true
         </createView>

@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
@@ -19,6 +20,7 @@ public class Specialization {
     @Column(name = "id", nullable = false)
     long id;
 
+    @NotBlank
     @Column(name = "name", nullable = false)
     String name;
 

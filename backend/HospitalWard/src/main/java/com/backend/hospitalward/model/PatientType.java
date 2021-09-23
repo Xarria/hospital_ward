@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -19,6 +21,8 @@ public class PatientType {
     @Column(name = "id", nullable = false)
     long id;
 
+    @NotBlank
+    @Size(max = 21)
     @Column(name = "name", nullable = false, length = 21, unique = true)
     String name;
 

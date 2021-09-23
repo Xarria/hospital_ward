@@ -1,56 +1,60 @@
 package com.backend.hospitalward.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Collections;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "type")
-public class Account implements UserDetails {
+public class Account extends BaseEntity implements UserDetails {
 
-    @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(lombok.AccessLevel.NONE)
-    long id;
-
-    @Version
-    @Column(name = "version", nullable = false)
-    long version;
-
+    @NotBlank
+    @Size(min = 3, max = 50)
+    @Pattern(regexp = "[a-z]+[.][a-z]+[2-9]*")
     @Column(name = "login", nullable = false, length = 50)
     String login;
 
-    @Column(name = "password", nullable = false, length = 50)
+    @NotBlank
+    @Size(min = 255, max = 255)
+    @Column(name = "password", nullable = false, length = 255)
     String password;
 
+    @NotBlank
+    @Size(max = 6, min = 5)
     @Column(name = "type", nullable = false)
     String type;
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
+    @NotNull
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
     @JoinColumn(name = "access_level", referencedColumnName = "id")
     AccessLevel accessLevel;
 
+    @NotBlank
+    @Size(max = 20)
+    @Pattern(regexp = "[A-Z][a-z]+")
     @Column(name = "name", nullable = false, length = 20)
     String name;
 
+    @NotBlank
+    @Size(max = 30)
+    @Pattern(regexp = "[A-Z][a-z]+")
     @Column(name = "surname", nullable = false, length = 30)
     String surname;
 
+    @NotNull
     @Column(name = "active", nullable = false)
     boolean active;
 
@@ -58,6 +62,8 @@ public class Account implements UserDetails {
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     Account createdBy;
 
+    @PastOrPresent
+    @NotNull
     @Column(name = "creation_date", nullable = false)
     Timestamp creationDate;
 
@@ -65,6 +71,7 @@ public class Account implements UserDetails {
     @JoinColumn(name = "modified_by", referencedColumnName = "id")
     Account modifiedBy;
 
+    @PastOrPresent
     @Column(name = "modification_date")
     Timestamp modificationDate;
 

@@ -2,6 +2,7 @@ package com.backend.hospitalward.security;
 
 import com.backend.hospitalward.dto.Credentials;
 import com.backend.hospitalward.service.AccountService;
+import com.backend.hospitalward.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,7 +24,7 @@ public class RequestFilter extends OncePerRequestFilter {
 
     private final JWTUtils jwtUtils;
 
-    private final AccountService authService;
+    private final AuthService authService;
 
 
     @Override

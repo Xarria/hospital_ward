@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet id="1" author="liquibase">
+        <loadData tableName="medical_staff_specialization"
+                  file="/csv/medicalStaffSpecialization.csv"
+                  relativeToChangelogFile="true">
+            <column header="medical_staff" name="medical_staff" type="numeric"/>
+            <column header="specialization" name="specialization" type="numeric"/>
+        </loadData>
+    </changeSet>
+</databaseChangeLog>
