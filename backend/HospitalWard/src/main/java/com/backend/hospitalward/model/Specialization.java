@@ -2,6 +2,7 @@ package com.backend.hospitalward.model;
 
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.Column;
@@ -24,6 +25,7 @@ public class Specialization {
     @Column(name = "name", nullable = false)
     String name;
 
+    @Getter(AccessLevel.NONE)
     @ManyToMany(mappedBy = "specializations")
     List<MedicalStaff> medicalStaffList;
 

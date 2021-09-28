@@ -22,10 +22,10 @@ public class AuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        return accountRepository.findAccountByLogin(login).get();
+        return accountRepository.findAccountByLogin(login).orElseThrow();
     }
 
     public String findAccessLevelByLogin(String login) {
-        return accessLevelRepository.findAccessLevelByLogin(login).get().getName();
+        return accessLevelRepository.findAccessLevelByLogin(login).orElseThrow().getName();
     }
 }

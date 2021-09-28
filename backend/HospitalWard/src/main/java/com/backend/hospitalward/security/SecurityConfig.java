@@ -40,6 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers(HttpMethod.GET, "/refresh")
                 .authenticated()
+                .antMatchers(HttpMethod.GET, "/accounts")
+                .hasAuthority(SecurityConstants.DOCTOR)
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

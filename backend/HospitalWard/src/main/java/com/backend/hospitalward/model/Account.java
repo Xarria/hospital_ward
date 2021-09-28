@@ -19,6 +19,7 @@ import java.util.Collections;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "type")
+@DiscriminatorValue("OFFICE")
 public class Account extends BaseEntity implements UserDetails {
 
     @NotBlank

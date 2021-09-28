@@ -40,7 +40,7 @@ public class JWTUtils {
 
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
-                .claim("auth", claim)
+                .claim(SecurityConstants.AUTH_CLAIM, claim)
                 .setIssuer(SecurityConstants.ISSUER)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + SecurityConstants.JWT_TIMEOUT))

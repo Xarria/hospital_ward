@@ -35,6 +35,7 @@ public class AuthController {
 
     @PostMapping("/auth")
     public ResponseEntity<?> authenticate(@RequestBody Credentials credentials) {
+
         try {
             credentials.setPassword(Sha512DigestUtils.shaHex(credentials.getPassword()));
             authenticationManager.authenticate(
