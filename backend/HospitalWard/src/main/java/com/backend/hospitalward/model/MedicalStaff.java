@@ -34,11 +34,11 @@ public class MedicalStaff extends Account {
     @Column(name = "academic_degree", nullable = false)
     String academicDegree;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "medical_staff_specialization",
-            joinColumns = { @JoinColumn(name = "medical_staff") },
-            inverseJoinColumns = { @JoinColumn(name = "specialization") }
+            joinColumns = {@JoinColumn(name = "medical_staff")},
+            inverseJoinColumns = {@JoinColumn(name = "specialization")}
     )
     List<Specialization> specializations;
 }

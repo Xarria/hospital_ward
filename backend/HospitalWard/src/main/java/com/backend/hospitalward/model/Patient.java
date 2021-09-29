@@ -1,9 +1,8 @@
 package com.backend.hospitalward.model;
 
-import lombok.*;
 import lombok.AccessLevel;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -17,7 +16,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @SecondaryTable(name = "Personal_data")
-public class Patient extends BaseEntity{
+public class Patient extends BaseEntity {
 
     @NotBlank
     @Size(min = 11, max = 11)
@@ -36,11 +35,11 @@ public class Patient extends BaseEntity{
     @Column(name = "sex", nullable = false, table = "Personal_data")
     String sex;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "patient_disease",
-            joinColumns = { @JoinColumn(name = "patient") },
-            inverseJoinColumns = { @JoinColumn(name = "disease") }
+            joinColumns = {@JoinColumn(name = "patient")},
+            inverseJoinColumns = {@JoinColumn(name = "disease")}
     )
     List<Disease> diseases;
 
@@ -57,7 +56,7 @@ public class Patient extends BaseEntity{
     @JoinColumn(name = "type", nullable = false, referencedColumnName = "id")
     PatientType patientType;
 
-    @ManyToOne(cascade =  CascadeType.REFRESH)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "main_doctor", referencedColumnName = "id")
     Account mainDoctor;
 

@@ -1,12 +1,11 @@
 package com.backend.hospitalward.model;
 
-import lombok.*;
 import lombok.AccessLevel;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -19,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-public class Disease extends BaseEntity{
+public class Disease extends BaseEntity {
 
     @NotBlank
     @Size(max = 100)

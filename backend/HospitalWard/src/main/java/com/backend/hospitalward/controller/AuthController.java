@@ -1,11 +1,11 @@
 package com.backend.hospitalward.controller;
 
-import com.backend.hospitalward.dto.Credentials;
+import com.backend.hospitalward.dto.request.Credentials;
 import com.backend.hospitalward.security.JWTUtils;
 import com.backend.hospitalward.security.SecurityConstants;
 import com.backend.hospitalward.service.AuthService;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RestController
 public class AuthController {
@@ -50,7 +50,7 @@ public class AuthController {
     }
 
     @GetMapping("/refresh")
-    public ResponseEntity<?> refreshToken(@CurrentSecurityContext HttpServletRequest servletRequest){
+    public ResponseEntity<?> refreshToken(@CurrentSecurityContext HttpServletRequest servletRequest) {
         String accessLevel = authService.findAccessLevelByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
 
         String authHeader = servletRequest.getHeader(SecurityConstants.AUTHORIZATION);

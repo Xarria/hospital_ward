@@ -27,15 +27,21 @@ import java.util.stream.IntStream;
 public class AspectLogger {
 
     @Pointcut("execution(* com.backend.hospitalward.controller..*(..))")
-    public void methodInController(){}
+    public void methodInController() {
+    }
+
+    @Pointcut("execution(* com.backend.hospitalward.mapper..*(..))")
+    public void methodInMapper(){}
 
     @Pointcut("execution(* com.backend.hospitalward..*(..))")
-    public void everyMethod(){}
+    public void everyMethod() {
+    }
 
     @Pointcut("execution(* com.backend.hospitalward.security.RequestFilter.*(..))")
-    public void methodInRequestFilter(){}
+    public void methodInRequestFilter() {
+    }
 
-    @Around("everyMethod() && !methodInRequestFilter()")
+    @Around("everyMethod() && !methodInRequestFilter() && !methodInMapper() && !methodInController()")
     public Object advice(ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();
@@ -60,7 +66,7 @@ public class AspectLogger {
     }
 
     @AfterThrowing(value = "everyMethod() && !methodInRequestFilter()", throwing = "e")
-    public void logAfterThrowing(Exception e){
+    public void logAfterThrowing(Exception e) {
         log.error(getExceptionMessage(e));
     }
 
@@ -154,7 +160,7 @@ public class AspectLogger {
 
     private String getEntryMessage(String className, String methodName, Parameter[] params, Object[] args) {
 
-        StringJoiner message= new StringJoiner(" ")
+        StringJoiner message = new StringJoiner(" ")
                 .add("Class")
                 .add(className)
                 .add("started method:")

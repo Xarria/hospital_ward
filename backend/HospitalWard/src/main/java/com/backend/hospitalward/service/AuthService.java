@@ -1,6 +1,5 @@
 package com.backend.hospitalward.service;
 
-
 import com.backend.hospitalward.repository.AccessLevelRepository;
 import com.backend.hospitalward.repository.AccountRepository;
 import lombok.AccessLevel;
@@ -22,10 +21,10 @@ public class AuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        return accountRepository.findAccountByLogin(login).orElseThrow();
+        return accountRepository.findAccountByLogin(login).get();
     }
 
     public String findAccessLevelByLogin(String login) {
-        return accessLevelRepository.findAccessLevelByLogin(login).orElseThrow().getName();
+        return accessLevelRepository.findAccessLevelByLogin(login).get().getName();
     }
 }

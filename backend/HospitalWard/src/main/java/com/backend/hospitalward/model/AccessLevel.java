@@ -3,14 +3,11 @@ package com.backend.hospitalward.model;
 import lombok.Data;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.DiscriminatorFormula;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlAttribute;
-import java.sql.Timestamp;
 
 @Data
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
