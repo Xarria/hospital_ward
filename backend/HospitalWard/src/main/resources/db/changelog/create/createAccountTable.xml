@@ -19,9 +19,7 @@
         <column name="password" type="varchar(255)">
             <constraints nullable="false"/>
         </column>
-        <column name="type" type="varchar(30)">
-            <constraints nullable="false"/>
-        </column>
+        <column name="type" type="varchar(30)"/>
         <column name="access_level" type="BIGINT">
             <constraints foreignKeyName="fk_account_access_level" references="access_level(id)"/>
         </column>
@@ -31,7 +29,13 @@
         <column name="surname" type="varchar(30)">
             <constraints nullable="false"/>
         </column>
+        <column name="email" type="varchar(50)">
+            <constraints nullable="false"/>
+        </column>
         <column name="active" type="boolean">
+            <constraints nullable="false"/>
+        </column>
+        <column name="confirmed" type="boolean">
             <constraints nullable="false"/>
         </column>
         <column name="creation_date" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">

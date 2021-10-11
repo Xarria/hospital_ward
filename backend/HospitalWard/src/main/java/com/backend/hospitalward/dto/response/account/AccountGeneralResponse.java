@@ -1,6 +1,5 @@
-package com.backend.hospitalward.dto.response;
+package com.backend.hospitalward.dto.response.account;
 
-import com.backend.hospitalward.model.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
@@ -12,7 +11,7 @@ public class AccountGeneralResponse {
 
     String type;
 
-    AccessLevel accessLevel;
+    String accessLevel;
 
     String name;
 

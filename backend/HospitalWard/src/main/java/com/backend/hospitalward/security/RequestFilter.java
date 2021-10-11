@@ -1,6 +1,6 @@
 package com.backend.hospitalward.security;
 
-import com.backend.hospitalward.dto.request.Credentials;
+import com.backend.hospitalward.dto.request.auth.Credentials;
 import com.backend.hospitalward.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

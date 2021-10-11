@@ -1,4 +1,4 @@
-package com.backend.hospitalward.dto.request;
+package com.backend.hospitalward.dto.request.auth;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

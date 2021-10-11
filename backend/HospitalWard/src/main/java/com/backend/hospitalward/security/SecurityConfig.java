@@ -40,7 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/refresh")
                 .authenticated()
                 .antMatchers(HttpMethod.GET, "/accounts")
-                .hasAuthority(SecurityConstants.DOCTOR)
+                .hasAuthority(SecurityConstants.TREATMENT_DIRECTOR)
+                .antMatchers(HttpMethod.POST, "/accounts")
+                .hasAuthority(SecurityConstants.TREATMENT_DIRECTOR)
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

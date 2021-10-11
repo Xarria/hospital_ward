@@ -1,5 +1,6 @@
-package com.backend.hospitalward.dto.response;
+package com.backend.hospitalward.dto.response.medicalStaff;
 
+import com.backend.hospitalward.dto.response.account.AccountGeneralResponse;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

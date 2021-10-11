@@ -1,6 +1,6 @@
 package com.backend.hospitalward.controller;
 
-import com.backend.hospitalward.dto.request.Credentials;
+import com.backend.hospitalward.dto.request.auth.Credentials;
 import com.backend.hospitalward.security.JWTUtils;
 import com.backend.hospitalward.security.SecurityConstants;
 import com.backend.hospitalward.service.AuthService;

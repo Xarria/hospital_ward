@@ -15,7 +15,9 @@
             <column header="access_level" name="access_level" type="numeric"/>
             <column header="name" name="name" type="string"/>
             <column header="surname" name="surname" type="string"/>
+            <column header="email" name="email" type="string"/>
             <column header="active" name="active" type="boolean"/>
+            <column header="confirmed" name="confirmed" type="boolean"/>
             <column header="created_by" name="created_by" type="numeric"/>
         </loadData>
     </changeSet>

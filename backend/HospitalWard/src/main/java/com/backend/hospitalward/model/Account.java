@@ -1,9 +1,6 @@
 package com.backend.hospitalward.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -33,12 +31,12 @@ public class Account extends BaseEntity implements UserDetails {
 
     @NotBlank
     @Size(min = 255, max = 255)
+    @ToString.Exclude
     @Column(name = "password", nullable = false, length = 255)
     String password;
 
-    @NotBlank
     @Size(max = 6, min = 5)
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", insertable = false)
     String type;
 
     @NotNull
@@ -58,9 +56,19 @@ public class Account extends BaseEntity implements UserDetails {
     @Column(name = "surname", nullable = false, length = 30)
     String surname;
 
+    @NotBlank
+    @Size(max = 50)
+    @Email
+    @Column(name = "email", nullable = false, length = 50)
+    String email;
+
     @NotNull
     @Column(name = "active", nullable = false)
-    boolean active;
+    boolean active = true;
+
+    @NotNull
+    @Column(name = "confirmed", nullable = false)
+    boolean confirmed = false;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "created_by", referencedColumnName = "id")
@@ -69,7 +77,7 @@ public class Account extends BaseEntity implements UserDetails {
     @PastOrPresent
     @NotNull
     @Column(name = "creation_date", nullable = false)
-    Timestamp creationDate;
+    Timestamp creationDate = Timestamp.from(Instant.now());
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "modified_by", referencedColumnName = "id")
@@ -111,6 +119,6 @@ public class Account extends BaseEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return active;
+        return confirmed;
     }
 }

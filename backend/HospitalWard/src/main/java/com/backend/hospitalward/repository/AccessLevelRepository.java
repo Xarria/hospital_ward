@@ -12,4 +12,6 @@ public interface AccessLevelRepository extends JpaRepository<AccessLevel, Long> 
 
     @Query("SELECT aL FROM AccessLevel aL, Account a WHERE a.id = aL.id AND a.login =:login")
     Optional<AccessLevel> findAccessLevelByLogin(String login);
+
+    Optional<AccessLevel> findAccessLevelByName(String name);
 }
