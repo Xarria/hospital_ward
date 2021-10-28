@@ -17,6 +17,7 @@
     <include file="/create/createPatientDiseaseTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createPersonalDataTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createAuthView.xml" relativeToChangelogFile="true"/>
+    <include file="/create/createUrlTable.xml" relativeToChangelogFile="true"/>
 
     <include file="/load/loadPatientTypeTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadPatientStatusTable.xml" relativeToChangelogFile="true"/>

@@ -9,6 +9,8 @@ import com.backend.hospitalward.service.AccountService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +26,7 @@ public class AccountController {
 
     AccountMapper accountMapper;
 
+    @Cacheable("accounts")
     @GetMapping("/accounts")
     public ResponseEntity<List<AccountGeneralResponse>> getAllAccounts() {
         return ResponseEntity.ok(accountService.getAllAccounts().stream()
@@ -31,15 +34,31 @@ public class AccountController {
                 .collect(Collectors.toList()));
     }
 
-    @PostMapping(path = "/accounts")
-    public ResponseEntity<?> createAccount(@RequestBody AccountCreateRequest accountCreateRequest) {
-        if (accountCreateRequest instanceof MedicalStaffCreateRequest) {
-            accountService.createMedicalStaff((MedicalStaff) accountMapper.toAccount(accountCreateRequest),
-                    accountCreateRequest.getAccessLevel(), ((MedicalStaffCreateRequest) accountCreateRequest).getSpecializations());
-
-            return ResponseEntity.ok().build();
-        }
+    @CacheEvict(cacheNames = "accounts", allEntries = true)
+    @PostMapping(path = "/accounts/office")
+    public ResponseEntity<?> createAccountOffice(@RequestBody AccountCreateRequest accountCreateRequest) {
         accountService.createAccount(accountMapper.toAccount(accountCreateRequest), accountCreateRequest.getAccessLevel());
         return ResponseEntity.ok().build();
     }
+
+    @CacheEvict(cacheNames = "accounts", allEntries = true)
+    @PostMapping(path = "/accounts/medic")
+    public ResponseEntity<?> createAccountMedic(@RequestBody MedicalStaffCreateRequest medicalStaffCreateRequest) {
+        accountService.createMedicalStaff((MedicalStaff) accountMapper.toAccount(medicalStaffCreateRequest),
+                medicalStaffCreateRequest.getAccessLevel(), medicalStaffCreateRequest.getSpecializations());
+
+        return ResponseEntity.ok().build();
+    }
+
+    public void changePassword(){}
+
+    public void updateAccountOffice(){}
+
+    public void updateAccountMedic(){}
+
+    public void activateAccount(){}
+
+    public void deactivateAccount(){}
+
+    public void confirmAccount(){}
 }

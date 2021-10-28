@@ -32,7 +32,7 @@ public class Account extends BaseEntity implements UserDetails {
     @NotBlank
     @Size(min = 255, max = 255)
     @ToString.Exclude
-    @Column(name = "password", nullable = false, length = 255)
+    @Column(name = "password", nullable = false)
     String password;
 
     @Size(max = 6, min = 5)
