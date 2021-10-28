@@ -2,7 +2,9 @@ package com.backend.hospitalward.mapper;
 
 import com.backend.hospitalward.dto.request.account.AccountCreateRequest;
 import com.backend.hospitalward.dto.request.medicalStaff.MedicalStaffCreateRequest;
+import com.backend.hospitalward.dto.response.account.AccountDetailsResponse;
 import com.backend.hospitalward.dto.response.account.AccountGeneralResponse;
+import com.backend.hospitalward.dto.response.medicalStaff.MedicalStaffDetailsResponse;
 import com.backend.hospitalward.dto.response.medicalStaff.MedicalStaffGeneralResponse;
 import com.backend.hospitalward.model.Account;
 import com.backend.hospitalward.model.MedicalStaff;
@@ -27,6 +29,20 @@ public interface AccountMapper {
 
     @Mapping(target = "accessLevel", expression = "java(account.getAccessLevel().getName())")
     AccountGeneralResponse mapOfficeStaff(Account account);
+
+    default AccountDetailsResponse toAccountDetailsResponse(Account account) {
+        if (account instanceof MedicalStaff) {
+            return mapDetailsMedicalStaff((MedicalStaff) account);
+        } else {
+            return mapDetailsOfficeStaff(account);
+        }
+    }
+
+    @Mapping(target = "accessLevel", expression = "java(medicalStaff.getAccessLevel().getName())")
+    MedicalStaffDetailsResponse mapDetailsMedicalStaff(MedicalStaff medicalStaff);
+
+    @Mapping(target = "accessLevel", expression = "java(account.getAccessLevel().getName())")
+    AccountDetailsResponse mapDetailsOfficeStaff(Account account);
 
     default Account toAccount(AccountCreateRequest accountCreateRequest) {
         if (accountCreateRequest instanceof MedicalStaffCreateRequest) {
