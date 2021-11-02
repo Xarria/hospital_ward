@@ -23,6 +23,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.security.enterprise.credential.Password;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -94,5 +97,40 @@ public class AccountService {
 
         medicalStaff.setSpecializations(specializationsList);
         accountRepository.save(medicalStaff);
+    }
+
+    public void changePassword(String login, Password oldPassword, Password newPassword) {
+        Account account = accountRepository.findAccountByLogin(login).orElseThrow(() ->
+                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+        String hashedOldPassword = Sha512DigestUtils.shaHex(String.valueOf(oldPassword.getValue()));
+
+        if (!hashedOldPassword.equals(account.getPassword())) {
+            throw AccountException.createBadRequestException(AccountException.PASSWORD_INCORRECT);
+        }
+        if (String.valueOf(newPassword.getValue()).equals(String.valueOf(oldPassword.getValue()))) {
+            throw AccountException.createConflictException(AccountException.PASSWORD_THE_SAME);
+        }
+
+        account.setPassword(Sha512DigestUtils.shaHex(String.valueOf(newPassword.getValue())));
+        account.setModificationDate(Timestamp.from(Instant.now()));
+        accountRepository.save(account);
+    }
+
+    public void changeActivity(String login, boolean newActivity, String modifiedBy) {
+        Account account = accountRepository.findAccountByLogin(login).orElseThrow(() ->
+                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+
+        account.setActive(newActivity);
+        account.setModificationDate(Timestamp.from(Instant.now()));
+        if (modifiedBy == null || login.equals(modifiedBy)) {
+            account.setModifiedBy(null);
+        } else {
+            account.setModifiedBy(accountRepository.findAccountByLogin(modifiedBy).orElseThrow(() ->
+                    AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND)));
+        }
+
+        accountRepository.save(account);
+
+        //TODO mail
     }
 }
