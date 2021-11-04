@@ -1,11 +1,14 @@
 package com.backend.hospitalward.dto.response.account;
 
+import com.backend.hospitalward.dto.BaseDTO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-public class AccountGeneralResponse {
+public class AccountGeneralDTO extends BaseDTO {
 
     String login;
 
@@ -17,4 +20,8 @@ public class AccountGeneralResponse {
 
     String surname;
 
+    @Override
+    public Long getSignablePayload() {
+        return getVersion();
+    }
 }

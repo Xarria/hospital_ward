@@ -1,6 +1,7 @@
 package com.backend.hospitalward.exception.advice;
 
 import com.backend.hospitalward.dto.response.exception.ExceptionResponse;
+import com.backend.hospitalward.exception.CommonException;
 import com.backend.hospitalward.exception.ErrorKey;
 import org.hibernate.exception.JDBCConnectionException;
 import org.springframework.core.Ordered;
@@ -22,8 +23,8 @@ public class PersistenceExceptionAdvice {
 
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(OptimisticLockException.class)
-    public ExceptionResponse optimisticLockException(Exception e) {
-        return ExceptionResponse.singleException(ErrorKey.OPTIMISTIC_LOCK, e.getMessage());
+    public void optimisticLockException(Exception e) {
+        throw CommonException.createOptimisticLockException(e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)

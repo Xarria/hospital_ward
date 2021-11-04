@@ -13,6 +13,7 @@ import com.backend.hospitalward.security.SecurityConstants;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -80,6 +81,8 @@ public class AccountService {
 
         accountRepository.save(account);
 
+        //TODO mail
+
     }
 
     public void createMedicalStaff(MedicalStaff medicalStaff, String accessLevel, List<String> specializations) {
@@ -114,6 +117,8 @@ public class AccountService {
         account.setPassword(Sha512DigestUtils.shaHex(String.valueOf(newPassword.getValue())));
         account.setModificationDate(Timestamp.from(Instant.now()));
         accountRepository.save(account);
+
+        //TODO mail
     }
 
     public void changeActivity(String login, boolean newActivity, String modifiedBy) {
@@ -130,6 +135,66 @@ public class AccountService {
         }
 
         accountRepository.save(account);
+
+        //TODO mail
+    }
+
+    private Account updateBaseAccount(Account account, String modifiedBy) {
+        Account accountFromDB = accountRepository.findAccountByLogin(account.getLogin()).orElseThrow(() ->
+                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+        Account modifiedAccount = SerializationUtils.clone(accountFromDB);
+
+        modifiedAccount.setVersion(account.getVersion());
+
+        if (account.getName() != null && !account.getName().isEmpty()) {
+            modifiedAccount.setName(account.getName());
+        }
+        if (account.getSurname() != null && !account.getSurname().isEmpty()) {
+            modifiedAccount.setSurname(account.getSurname());
+        }
+        if (account.getEmail() != null && !account.getEmail().isEmpty()) {
+            modifiedAccount.setEmail(account.getEmail());
+        }
+        modifiedAccount.setModificationDate(Timestamp.from(Instant.now()));
+
+        if (modifiedBy.equals(account.getLogin())) {
+            modifiedAccount.setModifiedBy(null);
+        } else {
+            Account accModifiedBy = accountRepository.findAccountByLogin(modifiedBy).orElseThrow(() ->
+                    AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+            modifiedAccount.setModifiedBy(accModifiedBy);
+        }
+
+        return modifiedAccount;
+    }
+
+    public void updateAccount(Account account, String modifiedBy) {
+
+        accountRepository.save(updateBaseAccount(account, modifiedBy));
+
+        //TODO mail
+    }
+
+    public void updateMedicalStaff(MedicalStaff account, String modifiedBy, List<String> specializations) {
+
+        MedicalStaff modifiedMedicalStaff = (MedicalStaff) updateBaseAccount(account, modifiedBy);
+
+        if (account.getLicenseNr() != null && !account.getLicenseNr().isEmpty()) {
+            modifiedMedicalStaff.setLicenseNr(account.getLicenseNr());
+        }
+        if (account.getAcademicDegree() != null && !account.getAcademicDegree().isEmpty()) {
+            modifiedMedicalStaff.setAcademicDegree(account.getAcademicDegree());
+        }
+        if (account.getSpecializations() != null && !account.getSpecializations().isEmpty()) {
+            List<Specialization> specializationsList = specializations.stream()
+                    .map(name -> specializationRepository.findSpecializationByName(name).orElseThrow(() ->
+                            AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND)))
+                    .collect(Collectors.toList());
+
+            modifiedMedicalStaff.setSpecializations(specializationsList);
+        }
+
+        accountRepository.save(modifiedMedicalStaff);
 
         //TODO mail
     }

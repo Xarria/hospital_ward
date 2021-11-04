@@ -31,7 +31,8 @@ public class AspectLogger {
     }
 
     @Pointcut("execution(* com.backend.hospitalward.mapper..*(..))")
-    public void methodInMapper(){}
+    public void methodInMapper() {
+    }
 
     @Pointcut("execution(* com.backend.hospitalward..*(..))")
     public void everyMethod() {

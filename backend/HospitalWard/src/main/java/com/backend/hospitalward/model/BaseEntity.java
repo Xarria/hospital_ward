@@ -1,6 +1,6 @@
 package com.backend.hospitalward.model;
 
-import lombok.*;
+import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;

@@ -2,7 +2,7 @@ package com.backend.hospitalward.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class AccountException extends GeneralException{
+public class AccountException extends GeneralException {
 
     public static final String ACCOUNT_NOT_FOUND = "error.account_not_found";
     public static final String PASSWORD_INCORRECT = "error.incorrect_password";

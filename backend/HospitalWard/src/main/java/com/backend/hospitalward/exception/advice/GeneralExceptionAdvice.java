@@ -17,7 +17,7 @@ public class GeneralExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public ExceptionResponse exception(Exception e) throws Exception {
-        if (!(e instanceof GeneralException)){
+        if (!(e instanceof GeneralException)) {
             return ExceptionResponse.singleException(ErrorKey.CRITICAL, e.getMessage());
         }
         throw e;
