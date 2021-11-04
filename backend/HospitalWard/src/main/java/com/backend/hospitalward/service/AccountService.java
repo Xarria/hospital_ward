@@ -42,6 +42,8 @@ public class AccountService {
 
     SpecializationRepository specializationRepository;
 
+    //region GET
+
     @Transactional(readOnly = true)
     public List<Account> getAllAccounts() {
         return accountRepository.findAll();
@@ -52,6 +54,10 @@ public class AccountService {
         return accountRepository.findAccountByLogin(login)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found"));
     }
+
+    //endregion
+
+    //region CREATE
 
     private void createBaseAccount(Account account, String accessLevel) {
         account.setVersion(0L);
@@ -101,6 +107,10 @@ public class AccountService {
         medicalStaff.setSpecializations(specializationsList);
         accountRepository.save(medicalStaff);
     }
+
+    //endregion
+
+    //region UPDATES
 
     public void changePassword(String login, Password oldPassword, Password newPassword) {
         Account account = accountRepository.findAccountByLogin(login).orElseThrow(() ->
@@ -198,4 +208,6 @@ public class AccountService {
 
         //TODO mail
     }
+
+    //endregion
 }

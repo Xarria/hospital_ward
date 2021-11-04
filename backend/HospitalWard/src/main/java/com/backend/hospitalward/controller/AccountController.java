@@ -36,6 +36,8 @@ public class AccountController {
 
     AccountMapper accountMapper;
 
+    //region GET
+
     @GetMapping()
     public ResponseEntity<List<AccountGeneralDTO>> getAllAccounts() {
         return ResponseEntity.ok(accountService.getAllAccounts().stream()
@@ -48,7 +50,7 @@ public class AccountController {
         AccountDetailsDTO account = accountMapper.toAccountDetailsResponse(accountService.getAccountByLogin(login));
 
         return ResponseEntity.ok()
-                .eTag(String.valueOf(account.getVersion()))
+                .eTag(ETagValidator.calculateDTOSignature(account))
                 .body(account);
     }
 
@@ -58,9 +60,13 @@ public class AccountController {
                 accountService.getAccountByLogin(securityContext.getAuthentication().getName()));
 
         return ResponseEntity.ok()
-                .eTag(String.valueOf(account.getVersion()))
+                .eTag(ETagValidator.calculateDTOSignature(account))
                 .body(account);
     }
+
+    //endregion
+
+    //region CREATE
 
     @PostMapping(path = "/office")
     public ResponseEntity<?> createAccountOffice(@RequestBody @Valid AccountCreateRequest accountCreateRequest) {
@@ -75,6 +81,10 @@ public class AccountController {
 
         return ResponseEntity.ok().build();
     }
+
+    //endregion
+
+    //region UPDATES
 
     @PutMapping(path = "/password")
     public ResponseEntity<?> changePassword(@Context SecurityContext securityContext,
@@ -111,7 +121,7 @@ public class AccountController {
                                                  @RequestHeader("If-Match") String eTag) {
 
         if (accountUpdateRequest.getLogin() == null || accountUpdateRequest.getVersion() == null
-                || !ETagValidator.verifyDTOIntegrity(eTag, accountUpdateRequest)) {
+                || ETagValidator.verifyDTOIntegrity(eTag, accountUpdateRequest)) {
             throw CommonException.createPreconditionFailedException();
         }
 
@@ -128,7 +138,7 @@ public class AccountController {
                                                 @RequestHeader("If-Match") String eTag) {
 
         if (medicalStaffUpdateRequest.getLogin() == null || medicalStaffUpdateRequest.getVersion() == null
-                || !ETagValidator.verifyDTOIntegrity(eTag, medicalStaffUpdateRequest)) {
+                || ETagValidator.verifyDTOIntegrity(eTag, medicalStaffUpdateRequest)) {
             throw CommonException.createPreconditionFailedException();
         }
 
@@ -145,7 +155,7 @@ public class AccountController {
                                                     @RequestHeader("If-Match") String eTag) {
 
         if (accountUpdateRequest.getLogin() == null || accountUpdateRequest.getVersion() == null
-                || !ETagValidator.verifyDTOIntegrity(eTag, accountUpdateRequest)) {
+                || ETagValidator.verifyDTOIntegrity(eTag, accountUpdateRequest)) {
             throw CommonException.createPreconditionFailedException();
         }
         if (!accountUpdateRequest.getLogin().equals(securityContext.getAuthentication().getName())) {
@@ -164,7 +174,7 @@ public class AccountController {
                                                    @RequestHeader("If-Match") String eTag) {
 
         if (medicalStaffUpdateRequest.getLogin() == null || medicalStaffUpdateRequest.getVersion() == null
-                || !ETagValidator.verifyDTOIntegrity(eTag, medicalStaffUpdateRequest)) {
+                || ETagValidator.verifyDTOIntegrity(eTag, medicalStaffUpdateRequest)) {
             throw CommonException.createPreconditionFailedException();
         }
         if (!medicalStaffUpdateRequest.getLogin().equals(securityContext.getAuthentication().getName())) {
@@ -189,6 +199,10 @@ public class AccountController {
     public void resetPassword() {
     }
 
+    //endregion
+
+    //region EMAILS
+
     public void sendResetPasswordUrl() {
     }
 
@@ -197,4 +211,6 @@ public class AccountController {
 
     public void sendChangeOwnEmailUrl() {
     }
+
+    //endregion
 }

@@ -31,10 +31,10 @@ public class ETagValidator {
             JWSObject objectJWS = JWSObject.parse(header);
             JWSVerifier verifier = new MACVerifier(SecurityConstants.SECRET);
 
-            return objectJWS.verify(verifier);
+            return !objectJWS.verify(verifier);
 
         } catch (JOSEException | ParseException ex) {
-            return false;
+            return true;
         }
     }
 
@@ -43,9 +43,9 @@ public class ETagValidator {
             final String ifMatchHeaderValue = JWSObject.parse(header).getPayload().toString();
             final String entitySignablePayloadValue = signableDTO.getSignablePayload().toString();
 
-            return validateDTOSignature(header) && ifMatchHeaderValue.equals(entitySignablePayloadValue);
+            return validateDTOSignature(header) || !ifMatchHeaderValue.equals(entitySignablePayloadValue);
         } catch (ParseException ex) {
-            return false;
+            return true;
         }
     }
 }

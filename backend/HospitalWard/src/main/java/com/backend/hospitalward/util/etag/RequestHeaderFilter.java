@@ -19,7 +19,7 @@ public class RequestHeaderFilter implements ContainerRequestFilter {
         String header = requestContext.getHeaderString("If-Match");
         if (header == null || header.isEmpty()) {
             requestContext.abortWith(Response.status(Response.Status.BAD_REQUEST).build());
-        } else if (!ETagValidator.validateDTOSignature(header)) {
+        } else if (ETagValidator.validateDTOSignature(header)) {
             requestContext.abortWith(Response.status(Response.Status.PRECONDITION_FAILED).build());
         }
     }
