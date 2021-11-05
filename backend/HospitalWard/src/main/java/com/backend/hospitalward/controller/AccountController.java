@@ -17,6 +17,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,7 +56,7 @@ public class AccountController {
     }
 
     @GetMapping(path = "/profile")
-    public ResponseEntity<AccountGeneralDTO> getProfile(@Context SecurityContext securityContext) {
+    public ResponseEntity<AccountGeneralDTO> getProfile(@CurrentSecurityContext SecurityContext securityContext) {
         AccountGeneralDTO account = accountMapper.toAccountGeneralResponse(
                 accountService.getAccountByLogin(securityContext.getAuthentication().getName()));
 
@@ -69,7 +70,7 @@ public class AccountController {
     //region CREATE
 
     @PostMapping(path = "/office")
-    public ResponseEntity<?> createAccountOffice(@Context SecurityContext securityContext,
+    public ResponseEntity<?> createAccountOffice(@CurrentSecurityContext SecurityContext securityContext,
                                                  @RequestBody @Valid AccountCreateRequest accountCreateRequest) {
         accountService.createAccount(accountMapper.toAccount(accountCreateRequest), accountCreateRequest.getAccessLevel(),
                 securityContext.getAuthentication().getName());
@@ -77,7 +78,7 @@ public class AccountController {
     }
 
     @PostMapping(path = "/medic")
-    public ResponseEntity<?> createAccountMedic(@Context SecurityContext securityContext,
+    public ResponseEntity<?> createAccountMedic(@CurrentSecurityContext SecurityContext securityContext,
                                                 @RequestBody @Valid MedicalStaffCreateRequest medicalStaffCreateRequest) {
         accountService.createMedicalStaff((MedicalStaff) accountMapper.toAccount(medicalStaffCreateRequest),
                 medicalStaffCreateRequest.getAccessLevel(), medicalStaffCreateRequest.getSpecializations(),
@@ -91,7 +92,7 @@ public class AccountController {
     //region UPDATES
 
     @PutMapping(path = "/password")
-    public ResponseEntity<?> changePassword(@Context SecurityContext securityContext,
+    public ResponseEntity<?> changePassword(@CurrentSecurityContext SecurityContext securityContext,
                                             @RequestBody ChangePasswordRequest changePasswordRequest) {
 
         accountService.changePassword(securityContext.getAuthentication().getName(),
@@ -101,7 +102,7 @@ public class AccountController {
     }
 
     @PutMapping(path = "/activate/{login}")
-    public ResponseEntity<?> activateAccount(@Context SecurityContext securityContext,
+    public ResponseEntity<?> activateAccount(@CurrentSecurityContext SecurityContext securityContext,
                                              @PathVariable("login") String login) {
 
         accountService.changeActivity(login, true, securityContext.getAuthentication().getName());
@@ -110,7 +111,7 @@ public class AccountController {
     }
 
     @PutMapping(path = "/deactivate/{login}")
-    public ResponseEntity<?> deactivateAccount(@Context SecurityContext securityContext,
+    public ResponseEntity<?> deactivateAccount(@CurrentSecurityContext SecurityContext securityContext,
                                                @PathVariable("login") String login) {
 
         accountService.changeActivity(login, false, securityContext.getAuthentication().getName());
@@ -120,7 +121,7 @@ public class AccountController {
 
     @DTOSignatureValidator
     @PutMapping(path = "/office/edit/{login}", headers = "If-Match")
-    public ResponseEntity<?> updateAccountOffice(@Context SecurityContext securityContext,
+    public ResponseEntity<?> updateAccountOffice(@CurrentSecurityContext SecurityContext securityContext,
                                                  @RequestBody @Valid AccountUpdateRequest accountUpdateRequest,
                                                  @RequestHeader("If-Match") String eTag) {
 
@@ -137,7 +138,7 @@ public class AccountController {
 
     @DTOSignatureValidator
     @PutMapping(path = "/medic/edit/{login}", headers = "If-Match")
-    public ResponseEntity<?> updateAccountMedic(@Context SecurityContext securityContext,
+    public ResponseEntity<?> updateAccountMedic(@CurrentSecurityContext SecurityContext securityContext,
                                                 @RequestBody @Valid MedicalStaffUpdateRequest medicalStaffUpdateRequest,
                                                 @RequestHeader("If-Match") String eTag) {
 
@@ -154,7 +155,7 @@ public class AccountController {
 
     @DTOSignatureValidator
     @PutMapping(path = "/profile/office/edit", headers = "If-Match")
-    public ResponseEntity<?> updateOwnAccountOffice(@Context SecurityContext securityContext,
+    public ResponseEntity<?> updateOwnAccountOffice(@CurrentSecurityContext SecurityContext securityContext,
                                                     @RequestBody @Valid AccountUpdateRequest accountUpdateRequest,
                                                     @RequestHeader("If-Match") String eTag) {
 
@@ -173,7 +174,7 @@ public class AccountController {
 
     @DTOSignatureValidator
     @PutMapping(path = "/profile/medic/edit", headers = "If-Match")
-    public ResponseEntity<?> updateOwnAccountMedic(@Context SecurityContext securityContext,
+    public ResponseEntity<?> updateOwnAccountMedic(@CurrentSecurityContext SecurityContext securityContext,
                                                    @RequestBody @Valid MedicalStaffUpdateRequest medicalStaffUpdateRequest,
                                                    @RequestHeader("If-Match") String eTag) {
 
@@ -202,8 +203,9 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
-    public void changeEmailAddress() {
-    }
+    //TODO change mail
+//    public void changeEmailAddress() {
+//    }
 
     public void resetPassword() {
     }
@@ -215,11 +217,6 @@ public class AccountController {
     public void sendResetPasswordUrl() {
     }
 
-    public void sendChangeEmailUrl() {
-    }
-
-    public void sendChangeOwnEmailUrl() {
-    }
 
     //endregion
 }

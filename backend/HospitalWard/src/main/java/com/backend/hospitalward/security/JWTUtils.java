@@ -1,5 +1,6 @@
 package com.backend.hospitalward.security;
 
+import com.backend.hospitalward.exception.CommonException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -27,8 +28,14 @@ public class JWTUtils {
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        Claims claims = Jwts.parser().setSigningKey(SecurityConstants.SECRET).parseClaimsJws(token).getBody();
-        return claimsResolver.apply(claims);
+        try {
+            Claims claims = Jwts.parser().setSigningKey(SecurityConstants.SECRET).parseClaimsJws(token).getBody();
+            return claimsResolver.apply(claims);
+        }
+        catch (Exception e) {
+            throw CommonException.createUnauthorizedException();
+        }
+
     }
 
     public String generateToken(UserDetails userDetails) {

@@ -103,6 +103,7 @@ public class AccountService {
                 .accountDirector(director)
                 .accountEmployee(account)
                 //.expirationDate(Timestamp.from(Instant.now().plus(secondsExpirationTime, SECONDS)))
+                .creationDate(Timestamp.from(Instant.now()))
                 .expirationDate(Timestamp.from(Instant.now().plus(86400, SECONDS)))
                 .createdBy(director)
                 .build();

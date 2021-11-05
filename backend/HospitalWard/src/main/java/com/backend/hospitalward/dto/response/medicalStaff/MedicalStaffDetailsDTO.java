@@ -18,5 +18,5 @@ public class MedicalStaffDetailsDTO extends AccountDetailsDTO {
 
     String academicDegree;
 
-    List<Specialization> specializations;
+    List<String> specializations;
 }

@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 @SuperBuilder
 @NoArgsConstructor
@@ -47,7 +48,7 @@ public class Url {
     Timestamp expirationDate;
 
     @Column(name = "creation_date", nullable = false)
-    Timestamp creationDate;
+    Timestamp creationDate = Timestamp.from(Instant.now());
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "created_by", referencedColumnName = "id")
