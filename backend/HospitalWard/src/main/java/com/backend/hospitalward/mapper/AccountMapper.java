@@ -57,6 +57,7 @@ public interface AccountMapper {
     @Mapping(target = "accessLevel", ignore = true)
     Account mapOfficeStaff(AccountCreateRequest accountCreateRequest);
 
+    @Mapping(target = "accessLevel", ignore = true)
     @Mapping(target = "specializations", ignore = true)
     MedicalStaff mapMedicalStaff(MedicalStaffCreateRequest medicalStaffCreateRequest);
 

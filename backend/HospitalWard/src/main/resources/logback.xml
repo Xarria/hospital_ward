@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <property scope="context" name="COLORIZER_COLORS" value="red@,yellow@,green@,blue@,cyan@"/>
+    <conversionRule conversionWord="lvl_colors" converterClass="org.tuxdude.logback.extensions.LogColorizer"/>
+    <property resource="application.properties"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                ${logback.console.pattern}
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logback.file.path}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${logback.file.path}-%d{dd-MM-yyyy}.%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <totalSizeCap>5GB</totalSizeCap>
+            <maxHistory>1825</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>
+                ${logback.file.pattern}
+            </pattern>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+</configuration>

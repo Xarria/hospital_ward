@@ -3,20 +3,24 @@ package com.backend.hospitalward.service;
 
 import com.backend.hospitalward.exception.AccountException;
 import com.backend.hospitalward.exception.MedicalStaffException;
+import com.backend.hospitalward.exception.UrlException;
 import com.backend.hospitalward.model.Account;
 import com.backend.hospitalward.model.MedicalStaff;
 import com.backend.hospitalward.model.Specialization;
+import com.backend.hospitalward.model.Url;
 import com.backend.hospitalward.repository.AccessLevelRepository;
 import com.backend.hospitalward.repository.AccountRepository;
 import com.backend.hospitalward.repository.SpecializationRepository;
+import com.backend.hospitalward.repository.UrlRepository;
 import com.backend.hospitalward.security.SecurityConstants;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.SerializationUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.token.Sha512DigestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -30,17 +34,24 @@ import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.time.temporal.ChronoUnit.SECONDS;
+
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, timeout = 3)
 public class AccountService {
+
+//    @Value("${url.expiration.time:86400}")
+//    int secondsExpirationTime;
 
     AccountRepository accountRepository;
 
     AccessLevelRepository accessLevelRepository;
 
     SpecializationRepository specializationRepository;
+
+    UrlRepository urlRepository;
 
     //region GET
 
@@ -59,14 +70,16 @@ public class AccountService {
 
     //region CREATE
 
-    private void createBaseAccount(Account account, String accessLevel) {
+
+    private void createBaseAccount(Account account, String accessLevel, Account createdBy) {
+//        if (urlRepository.findListByEmail(account.getEmail()).size() != 0) {
+//            throw UrlException.createExceptionConflict(OneTimeUrlExceptions.NEW_EMAIL_UNIQUE);
+//        }
+
         account.setVersion(0L);
         account.setPassword(Sha512DigestUtils.shaHex(account.getPassword()));
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUser = authentication.getName();
 
-        account.setCreatedBy(accountRepository.findAccountByLogin(currentUser).orElseThrow(() ->
-                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND)));
+        account.setCreatedBy(createdBy);
 
         String fullName = (account.getName() + "." + account.getSurname()).toLowerCase();
         int sameNameCount = accountRepository.findAccountsByLoginContains(fullName).size();
@@ -80,24 +93,48 @@ public class AccountService {
 
         account.setAccessLevel(accessLevelRepository.findAccessLevelByName(accessLevel).orElseThrow(() ->
                 AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND)));
+
     }
 
-    public void createAccount(Account account, String accessLevel) {
-        createBaseAccount(account, accessLevel);
+    private void createUrl(Account account, Account director) {
+        Url url = Url.builder()
+                .codeDirector(RandomStringUtils.randomAlphanumeric(5))
+                .codeEmployee(RandomStringUtils.randomAlphanumeric(5))
+                .accountDirector(director)
+                .accountEmployee(account)
+                //.expirationDate(Timestamp.from(Instant.now().plus(secondsExpirationTime, SECONDS)))
+                .expirationDate(Timestamp.from(Instant.now().plus(86400, SECONDS)))
+                .createdBy(director)
+                .build();
+
+        urlRepository.save(url);
+    }
+
+    public void createAccount(Account account, String accessLevel, String createdBy) {
+        Account director = accountRepository.findAccountByLogin(createdBy).orElseThrow(() ->
+                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+
+        createBaseAccount(account, accessLevel, director);
 
         accountRepository.save(account);
+
+        createUrl(account, director);
 
         //TODO mail
 
     }
 
-    public void createMedicalStaff(MedicalStaff medicalStaff, String accessLevel, List<String> specializations) {
+    public void createMedicalStaff(MedicalStaff medicalStaff, String accessLevel, List<String> specializations,
+                                   String createdBy) {
         if ((medicalStaff.getLicenseNr().endsWith("P") && !accessLevel.equals(SecurityConstants.HEAD_NURSE)) ||
                 (!medicalStaff.getLicenseNr().endsWith("P") && accessLevel.equals(SecurityConstants.HEAD_NURSE))) {
             throw MedicalStaffException.createBadRequestException(MedicalStaffException.LICENSE_NUMBER);
         }
 
-        createBaseAccount(medicalStaff, accessLevel);
+        Account director = accountRepository.findAccountByLogin(createdBy).orElseThrow(() ->
+                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+
+        createBaseAccount(medicalStaff, accessLevel, director);
 
         List<Specialization> specializationsList = specializations.stream()
                 .map(name -> specializationRepository.findSpecializationByName(name).orElseThrow(() ->
@@ -106,6 +143,8 @@ public class AccountService {
 
         medicalStaff.setSpecializations(specializationsList);
         accountRepository.save(medicalStaff);
+
+        createUrl(medicalStaff, director);
     }
 
     //endregion
@@ -207,6 +246,34 @@ public class AccountService {
         accountRepository.save(modifiedMedicalStaff);
 
         //TODO mail
+    }
+
+    public void confirmAccount(String urlCode) {
+        if (urlCode == null || urlCode.length() != 10) {
+            throw UrlException.createNotFoundException(UrlException.URL_NOT_FOUND);
+        }
+
+        Url url = urlRepository.findUrlByCodeDirectorAndCodeEmployee(urlCode.substring(0, 5), urlCode.substring(5, 10))
+                .orElseThrow(() -> UrlException.createNotFoundException(UrlException.URL_NOT_FOUND));
+
+        if (Instant.now().isAfter(url.getExpirationDate().toInstant())) {
+            throw UrlException.createGoneException(UrlException.URL_EXPIRED);
+        }
+//        else if (!url.getActionType().equals("verify")) {
+//            throw AccountExceptions.createBadRequestException(AccountExceptions.ERROR_URL_TYPE);
+//        }
+
+        if (urlCode.equals(url.getCodeDirector() + url.getCodeEmployee())) {
+            Account account = accountRepository.findAccountByLogin(url.getAccountEmployee().getLogin()).orElseThrow(() ->
+                    AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+            account.setConfirmed(true);
+            account.setModificationDate(Timestamp.from(Instant.now()));
+            accountRepository.save(account);
+            urlRepository.delete(url);
+            return;
+        }
+
+        throw UrlException.createNotFoundException(UrlException.URL_NOT_FOUND);
     }
 
     //endregion

@@ -12,8 +12,9 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.Collections;
 
-@Getter
-@Setter
+@Builder
+@EqualsAndHashCode(callSuper = true)
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)

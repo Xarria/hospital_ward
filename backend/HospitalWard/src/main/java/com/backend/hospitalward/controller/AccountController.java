@@ -69,15 +69,19 @@ public class AccountController {
     //region CREATE
 
     @PostMapping(path = "/office")
-    public ResponseEntity<?> createAccountOffice(@RequestBody @Valid AccountCreateRequest accountCreateRequest) {
-        accountService.createAccount(accountMapper.toAccount(accountCreateRequest), accountCreateRequest.getAccessLevel());
+    public ResponseEntity<?> createAccountOffice(@Context SecurityContext securityContext,
+                                                 @RequestBody @Valid AccountCreateRequest accountCreateRequest) {
+        accountService.createAccount(accountMapper.toAccount(accountCreateRequest), accountCreateRequest.getAccessLevel(),
+                securityContext.getAuthentication().getName());
         return ResponseEntity.ok().build();
     }
 
     @PostMapping(path = "/medic")
-    public ResponseEntity<?> createAccountMedic(@RequestBody @Valid MedicalStaffCreateRequest medicalStaffCreateRequest) {
+    public ResponseEntity<?> createAccountMedic(@Context SecurityContext securityContext,
+                                                @RequestBody @Valid MedicalStaffCreateRequest medicalStaffCreateRequest) {
         accountService.createMedicalStaff((MedicalStaff) accountMapper.toAccount(medicalStaffCreateRequest),
-                medicalStaffCreateRequest.getAccessLevel(), medicalStaffCreateRequest.getSpecializations());
+                medicalStaffCreateRequest.getAccessLevel(), medicalStaffCreateRequest.getSpecializations(),
+                securityContext.getAuthentication().getName());
 
         return ResponseEntity.ok().build();
     }
@@ -190,7 +194,12 @@ public class AccountController {
     public void changeAccessLevel() {
     }
 
-    public void confirmAccount() {
+    @PutMapping(path = "/confirm/{url}")
+    public ResponseEntity<?> confirmAccount(@PathVariable("url") String url) {
+
+        accountService.confirmAccount(url);
+
+        return ResponseEntity.ok().build();
     }
 
     public void changeEmailAddress() {

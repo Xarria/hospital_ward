@@ -52,6 +52,17 @@
             <version>3.11</version>
         </dependency>
         <dependency>
+            <groupId>org.simplejavamail</groupId>
+            <artifactId>simple-java-mail</artifactId>
+            <version>6.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.tuxdude.logback.extensions</groupId>
+            <artifactId>logback-colorizer</artifactId>
+            <version>1.0.1</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
             <groupId>com.nimbusds</groupId>
             <artifactId>nimbus-jose-jwt</artifactId>
             <version>9.2</version>

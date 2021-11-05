@@ -20,7 +20,7 @@ public class AccountDetailsDTO extends BaseDTO implements SignableDTO {
 
     String type;
 
-    AccessLevel accessLevel;
+    String accessLevel;
 
     String name;
 
