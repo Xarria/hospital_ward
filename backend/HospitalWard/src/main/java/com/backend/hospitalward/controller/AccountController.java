@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.security.enterprise.credential.Password;
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +36,10 @@ public class AccountController {
     AccountService accountService;
 
     AccountMapper accountMapper;
+
+    private List<String> getSpecializations(List<String> specializations) {
+        return specializations != null ? specializations : Collections.emptyList();
+    }
 
     //region GET
 
@@ -80,7 +85,7 @@ public class AccountController {
     public ResponseEntity<?> createAccountMedic(@CurrentSecurityContext SecurityContext securityContext,
                                                 @RequestBody @Valid MedicalStaffCreateRequest medicalStaffCreateRequest) {
         accountService.createMedicalStaff((MedicalStaff) accountMapper.toAccount(medicalStaffCreateRequest),
-                medicalStaffCreateRequest.getAccessLevel(), medicalStaffCreateRequest.getSpecializations(),
+                medicalStaffCreateRequest.getAccessLevel(), getSpecializations(medicalStaffCreateRequest.getSpecializations()),
                 securityContext.getAuthentication().getName());
 
         return ResponseEntity.ok().build();
@@ -147,7 +152,7 @@ public class AccountController {
         }
 
         accountService.updateMedicalStaff((MedicalStaff) accountMapper.toAccount(medicalStaffUpdateRequest),
-                securityContext.getAuthentication().getName(), medicalStaffUpdateRequest.getSpecializations());
+                securityContext.getAuthentication().getName(), getSpecializations(medicalStaffUpdateRequest.getSpecializations()));
 
         return ResponseEntity.ok().build();
     }
@@ -186,12 +191,17 @@ public class AccountController {
         }
 
         accountService.updateMedicalStaff((MedicalStaff) accountMapper.toAccount(medicalStaffUpdateRequest),
-                medicalStaffUpdateRequest.getLogin(), medicalStaffUpdateRequest.getSpecializations());
+                medicalStaffUpdateRequest.getLogin(), getSpecializations(medicalStaffUpdateRequest.getSpecializations()));
 
         return ResponseEntity.ok().build();
     }
 
-    public void changeAccessLevel() {
+    @PutMapping(path = "/accessLevel/{login}")
+    public ResponseEntity<?> changeAccessLevel(@CurrentSecurityContext SecurityContext securityContext,
+                                               @RequestBody String newAccessLevel, @PathVariable("login") String login) {
+        accountService.changeAccessLevel(newAccessLevel, login, securityContext.getAuthentication().getName());
+
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping(path = "/confirm/{url}")

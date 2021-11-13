@@ -43,6 +43,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasAuthority(SecurityConstants.TREATMENT_DIRECTOR)
                 .antMatchers(HttpMethod.POST, "/accounts")
                 .hasAuthority(SecurityConstants.TREATMENT_DIRECTOR)
+                .antMatchers(HttpMethod.PUT, "/accounts")
+                .hasAuthority(SecurityConstants.TREATMENT_DIRECTOR)
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

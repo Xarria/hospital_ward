@@ -1,6 +1,7 @@
 package com.backend.hospitalward.service;
 
 
+import com.backend.hospitalward.exception.AccessLevelException;
 import com.backend.hospitalward.exception.AccountException;
 import com.backend.hospitalward.exception.MedicalStaffException;
 import com.backend.hospitalward.exception.UrlException;
@@ -13,7 +14,7 @@ import com.backend.hospitalward.repository.AccountRepository;
 import com.backend.hospitalward.repository.SpecializationRepository;
 import com.backend.hospitalward.repository.UrlRepository;
 import com.backend.hospitalward.security.SecurityConstants;
-import lombok.AccessLevel;
+import com.backend.hospitalward.model.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -31,6 +32,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.security.enterprise.credential.Password;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +40,7 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
 @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, timeout = 3)
 public class AccountService {
 
@@ -192,30 +194,29 @@ public class AccountService {
     private Account updateBaseAccount(Account account, String modifiedBy) {
         Account accountFromDB = accountRepository.findAccountByLogin(account.getLogin()).orElseThrow(() ->
                 AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
-        Account modifiedAccount = SerializationUtils.clone(accountFromDB);
 
-        modifiedAccount.setVersion(account.getVersion());
+        accountFromDB.setVersion(account.getVersion());
 
         if (account.getName() != null && !account.getName().isEmpty()) {
-            modifiedAccount.setName(account.getName());
+            accountFromDB.setName(account.getName());
         }
         if (account.getSurname() != null && !account.getSurname().isEmpty()) {
-            modifiedAccount.setSurname(account.getSurname());
+            accountFromDB.setSurname(account.getSurname());
         }
         if (account.getEmail() != null && !account.getEmail().isEmpty()) {
-            modifiedAccount.setEmail(account.getEmail());
+            accountFromDB.setEmail(account.getEmail());
         }
-        modifiedAccount.setModificationDate(Timestamp.from(Instant.now()));
+        accountFromDB.setModificationDate(Timestamp.from(Instant.now()));
 
         if (modifiedBy.equals(account.getLogin())) {
-            modifiedAccount.setModifiedBy(null);
+            accountFromDB.setModifiedBy(null);
         } else {
             Account accModifiedBy = accountRepository.findAccountByLogin(modifiedBy).orElseThrow(() ->
                     AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
-            modifiedAccount.setModifiedBy(accModifiedBy);
+            accountFromDB.setModifiedBy(accModifiedBy);
         }
 
-        return modifiedAccount;
+        return accountFromDB;
     }
 
     public void updateAccount(Account account, String modifiedBy) {
@@ -242,6 +243,8 @@ public class AccountService {
                     .collect(Collectors.toList());
 
             modifiedMedicalStaff.setSpecializations(specializationsList);
+        } else {
+            modifiedMedicalStaff.setSpecializations(Collections.emptyList());
         }
 
         accountRepository.save(modifiedMedicalStaff);
@@ -275,6 +278,42 @@ public class AccountService {
         }
 
         throw UrlException.createNotFoundException(UrlException.URL_NOT_FOUND);
+    }
+
+    public void changeAccessLevel(String newAccessLevel, String login, String modifiedBy) {
+
+        Account account = accountRepository.findAccountByLogin(login).orElseThrow(() ->
+                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+
+        if (account.getType().equals("OFFICE")) {
+            throw AccessLevelException.createConflictException(AccessLevelException.OFFICE_STAFF_ACCESS_LEVEL_CHANGE);
+        }
+        if (newAccessLevel.equals("SECRETARY")) {
+            throw AccessLevelException.createConflictException(AccessLevelException.MEDICAL_STAFF_TO_OFFICE_CHANGE);
+        }
+        if (cannotChangeAccessLevel(newAccessLevel, account, "TREATMENT DIRECTOR")) {
+            throw AccessLevelException.createConflictException(AccessLevelException.TREATMENT_DIRECTOR_REQUIRED);
+        }
+        if (cannotChangeAccessLevel(newAccessLevel, account, "HEAD NURSE")) {
+            throw  AccessLevelException.createConflictException(AccessLevelException.HEAD_NURSE_REQUIRED);
+        }
+
+        AccessLevel accessLevel = accessLevelRepository.findAccessLevelByName(newAccessLevel).orElseThrow(() ->
+                AccessLevelException.createNotFoundException(AccessLevelException.ACCESS_LEVEL_NOT_FOUND));
+
+        account.setAccessLevel(accessLevel);
+        account.setModificationDate(Timestamp.from(Instant.now()));
+        account.setModifiedBy(accountRepository.findAccountByLogin(modifiedBy).orElseThrow(() ->
+                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND)));
+
+        accountRepository.save(account);
+
+    }
+
+    private boolean cannotChangeAccessLevel(String newAccessLevel, Account account, String s) {
+        return accountRepository.findAccountsByAccessLevel_Name(s).size() == 1 &&
+                account.getAccessLevel().getName().equals(s) &&
+                !newAccessLevel.equals(s);
     }
 
     //endregion

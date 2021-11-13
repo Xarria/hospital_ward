@@ -26,6 +26,7 @@ public class MedicalStaff extends Account {
     @NotNull
     @Column(name = "id", nullable = false)
     long id;
+
     @NotBlank
     @Size(max = 8, min = 7)
     @Pattern(regexp = "[0-9]{7}[P]?")
