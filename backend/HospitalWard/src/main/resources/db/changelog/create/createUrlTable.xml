@@ -13,6 +13,9 @@
             <column name="version" type="BIGINT" defaultValue="1">
                 <constraints nullable="false"/>
             </column>
+            <column name="action_type" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
             <column name="code_director" type="varchar(5)">
                 <constraints nullable="false" unique="true"/>
             </column>

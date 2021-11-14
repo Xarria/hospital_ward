@@ -26,6 +26,9 @@ public class Url {
     @Column(name = "version", nullable = false)
     long version;
 
+    @Column(name = "action_type", nullable = false, length = 10)
+    String actionType;
+
     @NotBlank
     @Size(min = 5, max = 5)
     @Column(name = "code_director", nullable = false, length = 5)

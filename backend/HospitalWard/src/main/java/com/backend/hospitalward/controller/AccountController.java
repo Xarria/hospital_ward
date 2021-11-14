@@ -13,9 +13,11 @@ import com.backend.hospitalward.model.MedicalStaff;
 import com.backend.hospitalward.service.AccountService;
 import com.backend.hospitalward.util.etag.DTOSignatureValidator;
 import com.backend.hospitalward.util.etag.ETagValidator;
+import com.backend.hospitalward.util.notification.EmailSender;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.hazlewood.connor.bottema.emailaddress.EmailAddressValidator;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContext;
@@ -34,6 +36,8 @@ import java.util.stream.Collectors;
 public class AccountController {
 
     AccountService accountService;
+
+    EmailSender emailSender;
 
     AccountMapper accountMapper;
 
@@ -199,6 +203,10 @@ public class AccountController {
     @PutMapping(path = "/accessLevel/{login}")
     public ResponseEntity<?> changeAccessLevel(@CurrentSecurityContext SecurityContext securityContext,
                                                @RequestBody String newAccessLevel, @PathVariable("login") String login) {
+
+        if (newAccessLevel == null || newAccessLevel.length() == 0 || login == null || login.length() == 0) {
+            throw CommonException.createConstraintViolationException();
+        }
         accountService.changeAccessLevel(newAccessLevel, login, securityContext.getAuthentication().getName());
 
         return ResponseEntity.ok().build();
@@ -207,23 +215,43 @@ public class AccountController {
     @PutMapping(path = "/confirm/{url}")
     public ResponseEntity<?> confirmAccount(@PathVariable("url") String url) {
 
+        if (url.length() != 10) {
+            throw CommonException.createConstraintViolationException();
+        }
+
         accountService.confirmAccount(url);
 
         return ResponseEntity.ok().build();
     }
 
-    //TODO change mail
-//    public void changeEmailAddress() {
-//    }
+    @PutMapping(path = "/edit/email")
+    public ResponseEntity<?> changeEmailAddress(@CurrentSecurityContext SecurityContext securityContext,
+                                                @RequestBody String newEmail) {
+        if (!EmailAddressValidator.isValid(newEmail)) {
+            throw CommonException.createConstraintViolationException();
+        }
 
-    public void resetPassword() {
+        accountService.changeEmailAddress(newEmail, securityContext.getAuthentication().getName());
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(path = "/password/reset/{url}")
+    public ResponseEntity<?> resetPassword(@PathVariable("url") String url) {
+
+        return ResponseEntity.ok().build();
     }
 
     //endregion
 
     //region EMAILS
 
-    public void sendResetPasswordUrl() {
+    @PostMapping(path = "/password/reset")
+    public ResponseEntity<?> sendResetPasswordUrl(@RequestBody String email) {
+
+        emailSender.sendResetPasswordUrl(email);
+
+        return ResponseEntity.ok().build();
     }
 
 

@@ -5,22 +5,15 @@ import com.backend.hospitalward.exception.AccessLevelException;
 import com.backend.hospitalward.exception.AccountException;
 import com.backend.hospitalward.exception.MedicalStaffException;
 import com.backend.hospitalward.exception.UrlException;
-import com.backend.hospitalward.model.Account;
-import com.backend.hospitalward.model.MedicalStaff;
-import com.backend.hospitalward.model.Specialization;
-import com.backend.hospitalward.model.Url;
+import com.backend.hospitalward.model.*;
 import com.backend.hospitalward.repository.AccessLevelRepository;
 import com.backend.hospitalward.repository.AccountRepository;
 import com.backend.hospitalward.repository.SpecializationRepository;
 import com.backend.hospitalward.repository.UrlRepository;
 import com.backend.hospitalward.security.SecurityConstants;
-import com.backend.hospitalward.model.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.SerializationUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.token.Sha512DigestUtils;
 import org.springframework.stereotype.Service;
@@ -263,9 +256,9 @@ public class AccountService {
         if (Instant.now().isAfter(url.getExpirationDate().toInstant())) {
             throw UrlException.createGoneException(UrlException.URL_EXPIRED);
         }
-//        else if (!url.getActionType().equals("verify")) {
-//            throw AccountExceptions.createBadRequestException(AccountExceptions.ERROR_URL_TYPE);
-//        }
+        else if (!url.getActionType().equals("confirm")) {
+            throw UrlException.createBadRequestException(UrlException.URL_WRONG_ACTION);
+        }
 
         if (urlCode.equals(url.getCodeDirector() + url.getCodeEmployee())) {
             Account account = accountRepository.findAccountByLogin(url.getAccountEmployee().getLogin()).orElseThrow(() ->
@@ -314,6 +307,22 @@ public class AccountService {
         return accountRepository.findAccountsByAccessLevel_Name(s).size() == 1 &&
                 account.getAccessLevel().getName().equals(s) &&
                 !newAccessLevel.equals(s);
+    }
+
+    public void changeEmailAddress(String newEmail, String login) {
+
+        if(!accountRepository.findAccountsByEmail(newEmail).isEmpty()) {
+            throw AccountException.createConflictException(AccountException.EMAIL_UNIQUE);
+        }
+
+        Account account = accountRepository.findAccountByLogin(login).orElseThrow(() ->
+                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+
+        account.setEmail(newEmail);
+        account.setModifiedBy(account);
+        account.setModificationDate(Timestamp.from(Instant.now()));
+
+        accountRepository.save(account);
     }
 
     //endregion

@@ -19,4 +19,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     List<Account> findAccountsByLoginContains(String fullName);
 
     List<Account> findAccountsByAccessLevel_Name(String accessLevelName);
+
+    List<Account> findAccountsByEmail(String email);
 }

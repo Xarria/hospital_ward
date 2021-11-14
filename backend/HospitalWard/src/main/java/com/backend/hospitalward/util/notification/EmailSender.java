@@ -52,4 +52,7 @@ public class EmailSender {
             mailer.sendMail(email);
 
     }
+
+    public void sendResetPasswordUrl(String email) {
+    }
 }
