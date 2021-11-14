@@ -14,7 +14,7 @@ import java.time.Instant;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-public class AccountDetailsDTO extends BaseDTO implements SignableDTO {
+public class AccountDetailsResponse extends BaseDTO implements SignableDTO {
 
     String login;
 

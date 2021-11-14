@@ -1,16 +1,14 @@
 package com.backend.hospitalward.service;
 
 
-import com.backend.hospitalward.exception.AccessLevelException;
-import com.backend.hospitalward.exception.AccountException;
-import com.backend.hospitalward.exception.MedicalStaffException;
-import com.backend.hospitalward.exception.UrlException;
+import com.backend.hospitalward.exception.*;
 import com.backend.hospitalward.model.*;
 import com.backend.hospitalward.repository.AccessLevelRepository;
 import com.backend.hospitalward.repository.AccountRepository;
 import com.backend.hospitalward.repository.SpecializationRepository;
 import com.backend.hospitalward.repository.UrlRepository;
 import com.backend.hospitalward.security.SecurityConstants;
+import com.backend.hospitalward.util.notification.EmailSender;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -23,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.security.enterprise.credential.Password;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Collections;
@@ -48,6 +48,8 @@ public class AccountService {
 
     UrlRepository urlRepository;
 
+    EmailSender emailSender;
+
     //region GET
 
     @Transactional(readOnly = true)
@@ -67,13 +69,8 @@ public class AccountService {
 
 
     private void createBaseAccount(Account account, String accessLevel, Account createdBy) {
-//        if (urlRepository.findListByEmail(account.getEmail()).size() != 0) {
-//            throw UrlException.createExceptionConflict(OneTimeUrlExceptions.NEW_EMAIL_UNIQUE);
-//        }
 
         account.setVersion(0L);
-        account.setPassword(Sha512DigestUtils.shaHex(account.getPassword()));
-
         account.setCreatedBy(createdBy);
 
         String fullName = (account.getName() + "." + account.getSurname()).toLowerCase();
@@ -245,7 +242,7 @@ public class AccountService {
         //TODO mail
     }
 
-    public void confirmAccount(String urlCode) {
+    public void confirmAccount(String urlCode, Password password) {
         if (urlCode == null || urlCode.length() != 10) {
             throw UrlException.createNotFoundException(UrlException.URL_NOT_FOUND);
         }
@@ -255,14 +252,14 @@ public class AccountService {
 
         if (Instant.now().isAfter(url.getExpirationDate().toInstant())) {
             throw UrlException.createGoneException(UrlException.URL_EXPIRED);
-        }
-        else if (!url.getActionType().equals("confirm")) {
+        } else if (!url.getActionType().equals("confirm")) {
             throw UrlException.createBadRequestException(UrlException.URL_WRONG_ACTION);
         }
 
         if (urlCode.equals(url.getCodeDirector() + url.getCodeEmployee())) {
             Account account = accountRepository.findAccountByLogin(url.getAccountEmployee().getLogin()).orElseThrow(() ->
                     AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+            account.setPassword(Sha512DigestUtils.shaHex(String.valueOf(password.getValue())));
             account.setConfirmed(true);
             account.setModificationDate(Timestamp.from(Instant.now()));
             accountRepository.save(account);
@@ -288,7 +285,7 @@ public class AccountService {
             throw AccessLevelException.createConflictException(AccessLevelException.TREATMENT_DIRECTOR_REQUIRED);
         }
         if (cannotChangeAccessLevel(newAccessLevel, account, "HEAD NURSE")) {
-            throw  AccessLevelException.createConflictException(AccessLevelException.HEAD_NURSE_REQUIRED);
+            throw AccessLevelException.createConflictException(AccessLevelException.HEAD_NURSE_REQUIRED);
         }
 
         AccessLevel accessLevel = accessLevelRepository.findAccessLevelByName(newAccessLevel).orElseThrow(() ->
@@ -311,7 +308,7 @@ public class AccountService {
 
     public void changeEmailAddress(String newEmail, String login) {
 
-        if(!accountRepository.findAccountsByEmail(newEmail).isEmpty()) {
+        if (!accountRepository.findAccountsByEmail(newEmail).isEmpty()) {
             throw AccountException.createConflictException(AccountException.EMAIL_UNIQUE);
         }
 
@@ -325,5 +322,65 @@ public class AccountService {
         accountRepository.save(account);
     }
 
+    public void resetPassword(String urlCode, Password newPassword){
+        Url url = urlRepository.findUrlByCodeDirectorAndCodeEmployee(urlCode.substring(0, 5), urlCode.substring(5, 10))
+                .orElseThrow(() -> UrlException.createNotFoundException(UrlException.URL_NOT_FOUND));
+
+        if (Instant.now().isAfter(url.getExpirationDate().toInstant())) {
+            throw UrlException.createGoneException(UrlException.URL_EXPIRED);
+        } else if (!url.getActionType().equals("password")) {
+            throw UrlException.createBadRequestException(UrlException.URL_WRONG_ACTION);
+        }
+
+        if(Sha512DigestUtils.shaHex(String.valueOf(newPassword.getValue())).equals(url.getAccountEmployee().getPassword())) {
+            throw AccountException.createConflictException(AccountException.ERROR_SAME_PASSWORD);
+        }
+
+        Account account = url.getAccountEmployee();
+
+        account.setPassword(Sha512DigestUtils.shaHex(String.valueOf(newPassword.getValue())));
+        account.setModificationDate(Timestamp.from(Instant.now()));
+
+        accountRepository.save(account);
+        urlRepository.delete(url);
+    }
+
     //endregion
+
+    public void sendResetPasswordUrl(String email, String directorName, String directorSurname, String requestedBy) {
+        Account accountEmployee = accountRepository.findAccountByEmail(email).orElseThrow(() ->
+                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+
+        Account accountDirector = accountRepository.findAccountByNameAndSurname(directorName, directorSurname)
+                .orElseThrow(() -> AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+
+        Account requestedByAccount;
+
+        List<Url> urlList = urlRepository.findUrlByAccountEmployee(accountEmployee).stream()
+                .filter(url -> url.getActionType().equals("password"))
+                .collect(Collectors.toList());
+
+        if (!urlList.isEmpty()) {
+            urlList.forEach(urlRepository::delete);
+        }
+
+        Url url = Url.builder()
+                .creationDate(Timestamp.from(Instant.now()))
+                .accountEmployee(accountEmployee)
+                .accountDirector(accountDirector)
+                .codeEmployee(RandomStringUtils.randomAlphanumeric(5))
+                .codeDirector(RandomStringUtils.randomAlphanumeric(5))
+                .actionType("password")
+                .creationDate(Timestamp.from(Instant.now()))
+                .build();
+
+        if (requestedBy != null) {
+            url.setCreatedBy(accountRepository.findAccountByLogin(requestedBy).orElseThrow(
+                    () -> AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND)));
+        }
+        urlRepository.save(url);
+
+        emailSender.sendPasswordResetEmails(accountEmployee.getName(), email, url.getCodeEmployee(),
+                accountDirector.getEmail(), url.getCodeDirector());
+    }
 }

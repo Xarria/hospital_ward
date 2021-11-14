@@ -1,7 +1,7 @@
 package com.backend.hospitalward.dto.response.account;
 
 import com.backend.hospitalward.dto.BaseDTO;
-import com.backend.hospitalward.dto.response.medicalStaff.MedicalStaffGeneralDTO;
+import com.backend.hospitalward.dto.response.medicalStaff.MedicalStaffGeneralResponse;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,10 +10,7 @@ import lombok.experimental.FieldDefaults;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = MedicalStaffGeneralDTO.class, name = "medic"),
-})
-public class AccountGeneralDTO extends BaseDTO {
+public class AccountGeneralResponse extends BaseDTO {
 
     String login;
 

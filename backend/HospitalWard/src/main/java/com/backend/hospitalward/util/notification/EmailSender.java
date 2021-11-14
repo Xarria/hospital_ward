@@ -53,6 +53,7 @@ public class EmailSender {
 
     }
 
-    public void sendResetPasswordUrl(String email) {
+    public void sendPasswordResetEmails(String name, String emailEmployee, String codeEmployee,
+                                        String emailDirector, String codeDirector) {
     }
 }

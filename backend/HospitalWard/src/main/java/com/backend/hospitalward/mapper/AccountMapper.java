@@ -4,10 +4,10 @@ import com.backend.hospitalward.dto.request.account.AccountCreateRequest;
 import com.backend.hospitalward.dto.request.account.AccountUpdateRequest;
 import com.backend.hospitalward.dto.request.medicalStaff.MedicalStaffCreateRequest;
 import com.backend.hospitalward.dto.request.medicalStaff.MedicalStaffUpdateRequest;
-import com.backend.hospitalward.dto.response.account.AccountDetailsDTO;
-import com.backend.hospitalward.dto.response.account.AccountGeneralDTO;
-import com.backend.hospitalward.dto.response.medicalStaff.MedicalStaffDetailsDTO;
-import com.backend.hospitalward.dto.response.medicalStaff.MedicalStaffGeneralDTO;
+import com.backend.hospitalward.dto.response.account.AccountDetailsResponse;
+import com.backend.hospitalward.dto.response.account.AccountGeneralResponse;
+import com.backend.hospitalward.dto.response.medicalStaff.MedicalStaffDetailsResponse;
+import com.backend.hospitalward.dto.response.medicalStaff.MedicalStaffGeneralResponse;
 import com.backend.hospitalward.model.Account;
 import com.backend.hospitalward.model.MedicalStaff;
 import com.backend.hospitalward.model.Specialization;
@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface AccountMapper {
 
+    //region NAMED DEFAULTS
 
     @Named("mapModifiedBy")
     default String mapModifiedBy(Account account) {
@@ -53,7 +54,11 @@ public interface AccountMapper {
         return null;
     }
 
-    default AccountGeneralDTO toAccountGeneralResponse(Account account) {
+    // endregion
+
+    //region FROM ACCOUNT TO ACCOUNTRESPONSE
+
+    default AccountGeneralResponse toAccountGeneralResponse(Account account) {
         if (account instanceof MedicalStaff) {
             return mapMedicalStaff((MedicalStaff) account);
         } else {
@@ -62,12 +67,16 @@ public interface AccountMapper {
     }
 
     @Mapping(target = "accessLevel", source = "medicalStaff", qualifiedByName = "mapAccessLevel")
-    MedicalStaffGeneralDTO mapMedicalStaff(MedicalStaff medicalStaff);
+    MedicalStaffGeneralResponse mapMedicalStaff(MedicalStaff medicalStaff);
 
     @Mapping(target = "accessLevel", source = "account", qualifiedByName = "mapAccessLevel")
-    AccountGeneralDTO mapOfficeStaff(Account account);
+    AccountGeneralResponse mapOfficeStaff(Account account);
 
-    default AccountDetailsDTO toAccountDetailsResponse(Account account) {
+    //endregion
+
+    //region FROM ACCOUNT TO ACCOUNTRESPONSEDETAILS
+
+    default AccountDetailsResponse toAccountDetailsResponse(Account account) {
         if (account instanceof MedicalStaff) {
             return mapDetailsMedicalStaff((MedicalStaff) account);
         } else {
@@ -79,12 +88,16 @@ public interface AccountMapper {
     @Mapping(target = "createdBy", source = "medicalStaff", qualifiedByName = "mapCreatedBy")
     @Mapping(target = "modifiedBy", source = "medicalStaff", qualifiedByName = "mapModifiedBy")
     @Mapping(target = "specializations", source = "medicalStaff", qualifiedByName = "mapSpecializations")
-    MedicalStaffDetailsDTO mapDetailsMedicalStaff(MedicalStaff medicalStaff);
+    MedicalStaffDetailsResponse mapDetailsMedicalStaff(MedicalStaff medicalStaff);
 
     @Mapping(target = "accessLevel", source = "account", qualifiedByName = "mapAccessLevel")
     @Mapping(target = "createdBy", source = "account", qualifiedByName = "mapCreatedBy")
     @Mapping(target = "modifiedBy", source = "account", qualifiedByName = "mapModifiedBy")
-    AccountDetailsDTO mapDetailsOfficeStaff(Account account);
+    AccountDetailsResponse mapDetailsOfficeStaff(Account account);
+
+    //endregion
+
+    //region FROM CREATE TO ACCOUNT
 
     default Account toAccount(AccountCreateRequest accountCreateRequest) {
         if (accountCreateRequest instanceof MedicalStaffCreateRequest) {
@@ -95,11 +108,17 @@ public interface AccountMapper {
     }
 
     @Mapping(target = "accessLevel", ignore = true)
+    @Mapping(target = "password", ignore = true)
     Account mapOfficeStaff(AccountCreateRequest accountCreateRequest);
 
     @Mapping(target = "accessLevel", ignore = true)
     @Mapping(target = "specializations", ignore = true)
+    @Mapping(target = "password", ignore = true)
     MedicalStaff mapMedicalStaff(MedicalStaffCreateRequest medicalStaffCreateRequest);
+
+    //endregion
+
+    //region FROM UPDATE TO ACCOUNT
 
     default Account toAccount(AccountUpdateRequest accountUpdateRequest) {
         if (accountUpdateRequest instanceof MedicalStaffUpdateRequest) {
@@ -113,4 +132,6 @@ public interface AccountMapper {
 
     @Mapping(target = "specializations", ignore = true)
     MedicalStaff mapMedicalStaff(MedicalStaffUpdateRequest medicalStaffUpdateRequest);
+
+    //endregion
 }

@@ -17,10 +17,6 @@ import javax.validation.constraints.Size;
 public class AccountCreateRequest {
 
     @NotBlank
-    @Size(min = 8)
-    String password;
-
-    @NotBlank
     String accessLevel;
 
     @NotBlank

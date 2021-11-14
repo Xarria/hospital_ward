@@ -3,17 +3,17 @@ package com.backend.hospitalward.controller;
 import com.backend.hospitalward.dto.request.account.AccountCreateRequest;
 import com.backend.hospitalward.dto.request.account.AccountUpdateRequest;
 import com.backend.hospitalward.dto.request.account.ChangePasswordRequest;
+import com.backend.hospitalward.dto.request.account.ResetPasswordRequest;
 import com.backend.hospitalward.dto.request.medicalStaff.MedicalStaffCreateRequest;
 import com.backend.hospitalward.dto.request.medicalStaff.MedicalStaffUpdateRequest;
-import com.backend.hospitalward.dto.response.account.AccountDetailsDTO;
-import com.backend.hospitalward.dto.response.account.AccountGeneralDTO;
+import com.backend.hospitalward.dto.response.account.AccountDetailsResponse;
+import com.backend.hospitalward.dto.response.account.AccountGeneralResponse;
 import com.backend.hospitalward.exception.CommonException;
 import com.backend.hospitalward.mapper.AccountMapper;
 import com.backend.hospitalward.model.MedicalStaff;
 import com.backend.hospitalward.service.AccountService;
 import com.backend.hospitalward.util.etag.DTOSignatureValidator;
 import com.backend.hospitalward.util.etag.ETagValidator;
-import com.backend.hospitalward.util.notification.EmailSender;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -37,8 +37,6 @@ public class AccountController {
 
     AccountService accountService;
 
-    EmailSender emailSender;
-
     AccountMapper accountMapper;
 
     private List<String> getSpecializations(List<String> specializations) {
@@ -48,15 +46,15 @@ public class AccountController {
     //region GET
 
     @GetMapping()
-    public ResponseEntity<List<AccountGeneralDTO>> getAllAccounts() {
+    public ResponseEntity<List<AccountGeneralResponse>> getAllAccounts() {
         return ResponseEntity.ok(accountService.getAllAccounts().stream()
                 .map(accountMapper::toAccountGeneralResponse)
                 .collect(Collectors.toList()));
     }
 
     @GetMapping("/{login}")
-    public ResponseEntity<AccountDetailsDTO> getAccountByLogin(@PathVariable("login") String login) {
-        AccountDetailsDTO account = accountMapper.toAccountDetailsResponse(accountService.getAccountByLogin(login));
+    public ResponseEntity<AccountDetailsResponse> getAccountByLogin(@PathVariable("login") String login) {
+        AccountDetailsResponse account = accountMapper.toAccountDetailsResponse(accountService.getAccountByLogin(login));
 
         return ResponseEntity.ok()
                 .eTag(ETagValidator.calculateDTOSignature(account))
@@ -64,8 +62,8 @@ public class AccountController {
     }
 
     @GetMapping(path = "/profile")
-    public ResponseEntity<AccountGeneralDTO> getProfile(@CurrentSecurityContext SecurityContext securityContext) {
-        AccountGeneralDTO account = accountMapper.toAccountGeneralResponse(
+    public ResponseEntity<AccountGeneralResponse> getProfile(@CurrentSecurityContext SecurityContext securityContext) {
+        AccountGeneralResponse account = accountMapper.toAccountGeneralResponse(
                 accountService.getAccountByLogin(securityContext.getAuthentication().getName()));
 
         return ResponseEntity.ok()
@@ -213,13 +211,13 @@ public class AccountController {
     }
 
     @PutMapping(path = "/confirm/{url}")
-    public ResponseEntity<?> confirmAccount(@PathVariable("url") String url) {
+    public ResponseEntity<?> confirmAccount(@PathVariable("url") String url, @RequestBody String password) {
 
         if (url.length() != 10) {
             throw CommonException.createConstraintViolationException();
         }
 
-        accountService.confirmAccount(url);
+        accountService.confirmAccount(url, new Password(password));
 
         return ResponseEntity.ok().build();
     }
@@ -237,7 +235,13 @@ public class AccountController {
     }
 
     @GetMapping(path = "/password/reset/{url}")
-    public ResponseEntity<?> resetPassword(@PathVariable("url") String url) {
+    public ResponseEntity<?> resetPassword(@PathVariable("url") String url, @RequestBody String newPassword) {
+
+        if(newPassword == null || newPassword.length() < 8 || url == null || url.length() != 10) {
+            throw CommonException.createConstraintViolationException();
+        }
+
+        accountService.resetPassword(url, new Password(newPassword));
 
         return ResponseEntity.ok().build();
     }
@@ -247,9 +251,11 @@ public class AccountController {
     //region EMAILS
 
     @PostMapping(path = "/password/reset")
-    public ResponseEntity<?> sendResetPasswordUrl(@RequestBody String email) {
+    public ResponseEntity<?> sendResetPasswordUrl(@CurrentSecurityContext SecurityContext securityContext,
+                                                  @RequestBody ResetPasswordRequest resetPasswordRequest) {
 
-        emailSender.sendResetPasswordUrl(email);
+        accountService.sendResetPasswordUrl(resetPasswordRequest.getEmail(), resetPasswordRequest.getNameDirector(),
+                resetPasswordRequest.getSurnameDirector(), securityContext.getAuthentication().getName());
 
         return ResponseEntity.ok().build();
     }

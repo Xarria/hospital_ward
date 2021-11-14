@@ -6,8 +6,8 @@ import com.backend.hospitalward.dto.request.account.ChangePasswordRequest;
 import com.backend.hospitalward.dto.request.auth.Credentials;
 import com.backend.hospitalward.dto.request.medicalStaff.MedicalStaffCreateRequest;
 import com.backend.hospitalward.dto.request.medicalStaff.MedicalStaffUpdateRequest;
-import com.backend.hospitalward.dto.response.account.AccountGeneralDTO;
-import com.backend.hospitalward.dto.response.medicalStaff.MedicalStaffGeneralDTO;
+import com.backend.hospitalward.dto.response.account.AccountGeneralResponse;
+import com.backend.hospitalward.dto.response.medicalStaff.MedicalStaffGeneralResponse;
 import com.backend.hospitalward.model.MedicalStaff;
 import com.backend.hospitalward.model.Url;
 import com.backend.hospitalward.repository.UrlRepository;
@@ -68,12 +68,12 @@ class AccountIntegrationTest extends AbstractTestContainer {
 
     private void setUpGson() {
         GsonFireBuilder builder = new GsonFireBuilder()
-                .registerTypeSelector(AccountGeneralDTO.class, readElement -> {
+                .registerTypeSelector(AccountGeneralResponse.class, readElement -> {
                     String type = readElement.getAsJsonObject().get(TestConstants.GSON_TYPE_IDENTIFIER).getAsString();
                     if (type.equals(TestConstants.TYPE_MEDIC)) {
-                        return MedicalStaffGeneralDTO.class;
+                        return MedicalStaffGeneralResponse.class;
                     } else if (type.equals(TestConstants.TYPE_OFFICE)) {
-                        return AccountGeneralDTO.class;
+                        return AccountGeneralResponse.class;
                     } else {
                         return null;
                     }
@@ -107,7 +107,7 @@ class AccountIntegrationTest extends AbstractTestContainer {
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(TestConstants.GET_ALL_ACCOUNTS),
                 HttpMethod.GET, jwtToken, String.class);
 
-        List<AccountGeneralDTO> accounts = Arrays.asList(gson.fromJson(response.getBody(), AccountGeneralDTO[].class));
+        List<AccountGeneralResponse> accounts = Arrays.asList(gson.fromJson(response.getBody(), AccountGeneralResponse[].class));
 
         assertAll(
                 () -> assertNotNull(response),
@@ -126,7 +126,7 @@ class AccountIntegrationTest extends AbstractTestContainer {
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(TestConstants.GET_ALL_ACCOUNTS +
                         "/" + TestConstants.SG_LOGIN), HttpMethod.GET, getJwtHttpEntity(), String.class);
 
-        AccountGeneralDTO account = gson.fromJson(response.getBody(), AccountGeneralDTO.class);
+        AccountGeneralResponse account = gson.fromJson(response.getBody(), AccountGeneralResponse.class);
 
         assertAll(
                 () -> assertNotNull(response),
@@ -134,7 +134,7 @@ class AccountIntegrationTest extends AbstractTestContainer {
                 () -> assertNotNull(response.getHeaders().get(HttpHeaders.ETAG)),
                 () -> assertNotNull(account),
                 () -> assertEquals(TestConstants.SG_LOGIN, account.getLogin()),
-                () -> assertEquals(TestConstants.SG_LICENSE_NR, ((MedicalStaffGeneralDTO) account).getLicenseNr())
+                () -> assertEquals(TestConstants.SG_LICENSE_NR, ((MedicalStaffGeneralResponse) account).getLicenseNr())
         );
     }
 
@@ -145,7 +145,7 @@ class AccountIntegrationTest extends AbstractTestContainer {
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(TestConstants.GET_PROFILE),
                 HttpMethod.GET, getJwtHttpEntity(), String.class);
 
-        AccountGeneralDTO account = gson.fromJson(response.getBody(), AccountGeneralDTO.class);
+        AccountGeneralResponse account = gson.fromJson(response.getBody(), AccountGeneralResponse.class);
 
         assertAll(
                 () -> assertNotNull(response),
@@ -153,7 +153,7 @@ class AccountIntegrationTest extends AbstractTestContainer {
                 () -> assertNotNull(response.getHeaders().get(HttpHeaders.ETAG)),
                 () -> assertNotNull(account),
                 () -> assertEquals(TestConstants.SG_LOGIN, account.getLogin()),
-                () -> assertEquals(TestConstants.SG_LICENSE_NR, ((MedicalStaffGeneralDTO) account).getLicenseNr())
+                () -> assertEquals(TestConstants.SG_LICENSE_NR, ((MedicalStaffGeneralResponse) account).getLicenseNr())
         );
     }
 
