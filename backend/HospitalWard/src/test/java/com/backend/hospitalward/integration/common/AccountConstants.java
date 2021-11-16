@@ -1,6 +1,6 @@
-package com.backend.hospitalward.integration;
+package com.backend.hospitalward.integration.common;
 
-public final class TestConstants {
+public final class AccountConstants {
 
     //region URL
     public static final String AUTH = "/auth";
@@ -17,6 +17,8 @@ public final class TestConstants {
     public static final String UPDATE_OWN_MEDIC = "/accounts/profile/medic/edit/";
     public static final String CONFIRM = "/accounts/confirm/";
     public static final String CHANGE_ACCESS_LEVEL = "/accounts/accessLevel/";
+    public static final String SEND_RESET_PASSWORD = "/accounts/password/reset";
+    public static final String REST_PASSWORD = "/accounts/password/reset/";
 
     //endregion
 
@@ -24,8 +26,11 @@ public final class TestConstants {
     public static final String SG_LICENSE_NR = "1758938";
     public static final String SG_PASSWORD = "password";
     public static final String NEW_SG_PASSWORD = "newPassword";
+    public static final String SG_NAME = "Sylwester";
+    public static final String SG_SURNAME = "Garda";
 
     public static final String JK_LOGIN = "jan.kowalski";
+    public static final String JK_EMAIL = "mail2@wp.pl";
 
     public static final String UPDATE_LEVEL = "TREATMENT DIRECTOR";
     public static final String UPDATE_NAME = "Stanisław";
@@ -41,6 +46,7 @@ public final class TestConstants {
     public static final String NEW_EMAIL2 = "mw2@wp.pl";
     public static final String NEW_EMAIL3 = "mw3@wp.pl";
     public static final String NEW_PASSWORD = "password";
+    public static final String NEW_PASSWORD2 = "password2";
     public static final String NEW_LOGIN2 = "michał.woźniak";
     public static final String NEW_LOGIN1 = "marek.woźniak";
     public static final String NEW_LICENSE_NR = "7676767";
@@ -51,5 +57,7 @@ public final class TestConstants {
     public static final String GSON_TYPE_IDENTIFIER = "type";
     public static final String TYPE_MEDIC = "MEDIC";
     public static final String TYPE_OFFICE = "OFFICE";
+
+    public static final String URL_RESET_TYPE = "password";
 
 }

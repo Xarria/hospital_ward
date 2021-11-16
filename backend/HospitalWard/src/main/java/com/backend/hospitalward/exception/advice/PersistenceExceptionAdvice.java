@@ -6,6 +6,7 @@ import com.backend.hospitalward.exception.ErrorKey;
 import org.hibernate.exception.JDBCConnectionException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.TransactionTimedOutException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,7 +35,7 @@ public class PersistenceExceptionAdvice {
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
-    @ExceptionHandler(ConstraintViolationException.class)
+    @ExceptionHandler(DataIntegrityViolationException.class)
     public ExceptionResponse constraintViolationException(Exception e) {
         //TODO kilka naruszeń
         return ExceptionResponse.singleException(ErrorKey.CONSTRAINT_VIOLATION, e.getMessage());

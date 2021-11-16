@@ -29,10 +29,9 @@ public class Account extends BaseEntity implements UserDetails {
     @Column(name = "login", nullable = false, length = 50)
     String login;
 
-    @NotBlank
     @Size(min = 255, max = 255)
     @ToString.Exclude
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     String password;
 
     @Size(max = 6, min = 5)
@@ -59,7 +58,7 @@ public class Account extends BaseEntity implements UserDetails {
     @NotBlank
     @Size(max = 50)
     @Email
-    @Column(name = "email", nullable = false, length = 50)
+    @Column(name = "email", nullable = false, length = 50, unique = true)
     String email;
 
     @NotNull

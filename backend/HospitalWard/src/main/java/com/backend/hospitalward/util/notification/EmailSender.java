@@ -8,9 +8,11 @@ import org.simplejavamail.api.mailer.config.TransportStrategy;
 import org.simplejavamail.email.EmailBuilder;
 import org.simplejavamail.mailer.MailerBuilder;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Component
 public class EmailSender {
 
     @Value( "${mail.send}" )

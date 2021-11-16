@@ -1,8 +1,13 @@
 package com.backend.hospitalward.service;
 
 
-import com.backend.hospitalward.exception.*;
+import com.backend.hospitalward.exception.AccessLevelException;
+import com.backend.hospitalward.exception.AccountException;
+import com.backend.hospitalward.exception.MedicalStaffException;
+import com.backend.hospitalward.exception.UrlException;
 import com.backend.hospitalward.model.*;
+import com.backend.hospitalward.model.common.AccountType;
+import com.backend.hospitalward.model.common.UrlActionType;
 import com.backend.hospitalward.repository.AccessLevelRepository;
 import com.backend.hospitalward.repository.AccountRepository;
 import com.backend.hospitalward.repository.SpecializationRepository;
@@ -12,17 +17,13 @@ import com.backend.hospitalward.util.notification.EmailSender;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.token.Sha512DigestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.security.enterprise.credential.Password;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Collections;
@@ -59,8 +60,8 @@ public class AccountService {
 
     @Transactional(readOnly = true)
     public Account getAccountByLogin(String login) {
-        return accountRepository.findAccountByLogin(login)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found"));
+        return accountRepository.findAccountByLogin(login).orElseThrow(() ->
+                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
     }
 
     //endregion
@@ -88,12 +89,13 @@ public class AccountService {
 
     }
 
-    private void createUrl(Account account, Account director) {
+    private void createConfirmUrl(Account account, Account director) {
         Url url = Url.builder()
                 .codeDirector(RandomStringUtils.randomAlphanumeric(5))
                 .codeEmployee(RandomStringUtils.randomAlphanumeric(5))
                 .accountDirector(director)
                 .accountEmployee(account)
+                .actionType(UrlActionType.CONFIRM.name())
                 //.expirationDate(Timestamp.from(Instant.now().plus(secondsExpirationTime, SECONDS)))
                 .creationDate(Timestamp.from(Instant.now()))
                 .expirationDate(Timestamp.from(Instant.now().plus(86400, SECONDS)))
@@ -111,7 +113,7 @@ public class AccountService {
 
         accountRepository.save(account);
 
-        createUrl(account, director);
+        createConfirmUrl(account, director);
 
         //TODO mail
 
@@ -137,7 +139,7 @@ public class AccountService {
         medicalStaff.setSpecializations(specializationsList);
         accountRepository.save(medicalStaff);
 
-        createUrl(medicalStaff, director);
+        createConfirmUrl(medicalStaff, director);
     }
 
     //endregion
@@ -252,7 +254,7 @@ public class AccountService {
 
         if (Instant.now().isAfter(url.getExpirationDate().toInstant())) {
             throw UrlException.createGoneException(UrlException.URL_EXPIRED);
-        } else if (!url.getActionType().equals("confirm")) {
+        } else if (!url.getActionType().equals(UrlActionType.CONFIRM.name())) {
             throw UrlException.createBadRequestException(UrlException.URL_WRONG_ACTION);
         }
 
@@ -275,7 +277,7 @@ public class AccountService {
         Account account = accountRepository.findAccountByLogin(login).orElseThrow(() ->
                 AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
 
-        if (account.getType().equals("OFFICE")) {
+        if (account.getType().equals(AccountType.OFFICE.name())) {
             throw AccessLevelException.createConflictException(AccessLevelException.OFFICE_STAFF_ACCESS_LEVEL_CHANGE);
         }
         if (newAccessLevel.equals("SECRETARY")) {
@@ -316,7 +318,7 @@ public class AccountService {
                 AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
 
         account.setEmail(newEmail);
-        account.setModifiedBy(account);
+        account.setModifiedBy(null);
         account.setModificationDate(Timestamp.from(Instant.now()));
 
         accountRepository.save(account);
@@ -328,7 +330,7 @@ public class AccountService {
 
         if (Instant.now().isAfter(url.getExpirationDate().toInstant())) {
             throw UrlException.createGoneException(UrlException.URL_EXPIRED);
-        } else if (!url.getActionType().equals("password")) {
+        } else if (!url.getActionType().equals(UrlActionType.PASSWORD.name())) {
             throw UrlException.createBadRequestException(UrlException.URL_WRONG_ACTION);
         }
 
@@ -354,25 +356,15 @@ public class AccountService {
         Account accountDirector = accountRepository.findAccountByNameAndSurname(directorName, directorSurname)
                 .orElseThrow(() -> AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
 
-        Account requestedByAccount;
-
         List<Url> urlList = urlRepository.findUrlByAccountEmployee(accountEmployee).stream()
-                .filter(url -> url.getActionType().equals("password"))
+                .filter(url -> url.getActionType().equals(UrlActionType.PASSWORD.name()))
                 .collect(Collectors.toList());
 
         if (!urlList.isEmpty()) {
             urlList.forEach(urlRepository::delete);
         }
 
-        Url url = Url.builder()
-                .creationDate(Timestamp.from(Instant.now()))
-                .accountEmployee(accountEmployee)
-                .accountDirector(accountDirector)
-                .codeEmployee(RandomStringUtils.randomAlphanumeric(5))
-                .codeDirector(RandomStringUtils.randomAlphanumeric(5))
-                .actionType("password")
-                .creationDate(Timestamp.from(Instant.now()))
-                .build();
+        Url url = getUrlPasswordReset(accountEmployee, accountDirector);
 
         if (requestedBy != null) {
             url.setCreatedBy(accountRepository.findAccountByLogin(requestedBy).orElseThrow(
@@ -382,5 +374,18 @@ public class AccountService {
 
         emailSender.sendPasswordResetEmails(accountEmployee.getName(), email, url.getCodeEmployee(),
                 accountDirector.getEmail(), url.getCodeDirector());
+    }
+
+    private Url getUrlPasswordReset(Account accountEmployee, Account accountDirector) {
+        return Url.builder()
+                .creationDate(Timestamp.from(Instant.now()))
+                .accountEmployee(accountEmployee)
+                .accountDirector(accountDirector)
+                .codeEmployee(RandomStringUtils.randomAlphanumeric(5))
+                .codeDirector(RandomStringUtils.randomAlphanumeric(5))
+                .actionType(UrlActionType.PASSWORD.name())
+                .creationDate(Timestamp.from(Instant.now()))
+                .expirationDate(Timestamp.from(Instant.now().plus(86400, SECONDS)))
+                .build();
     }
 }
