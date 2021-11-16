@@ -1,6 +1,7 @@
 package com.backend.hospitalward.security;
 
-import com.backend.hospitalward.exception.CommonException;
+import com.backend.hospitalward.exception.ErrorKey;
+import com.backend.hospitalward.exception.UnauthorizedException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -33,7 +34,7 @@ public class JWTUtils {
             return claimsResolver.apply(claims);
         }
         catch (Exception e) {
-            throw CommonException.createUnauthorizedException();
+            throw new UnauthorizedException(ErrorKey.JWT_INVALID);
         }
 
     }

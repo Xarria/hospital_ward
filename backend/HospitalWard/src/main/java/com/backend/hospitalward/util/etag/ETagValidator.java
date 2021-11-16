@@ -1,6 +1,7 @@
 package com.backend.hospitalward.util.etag;
 
-import com.backend.hospitalward.exception.CommonException;
+import com.backend.hospitalward.exception.ErrorKey;
+import com.backend.hospitalward.exception.UnknownException;
 import com.backend.hospitalward.security.SecurityConstants;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
@@ -21,7 +22,7 @@ public class ETagValidator {
             return objectJWS.serialize();
 
         } catch (JOSEException ex) {
-            throw CommonException.createUnknownException();
+            throw new UnknownException(ErrorKey.UNKNOWN);
         }
     }
 

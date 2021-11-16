@@ -1,10 +1,7 @@
 package com.backend.hospitalward.service;
 
 
-import com.backend.hospitalward.exception.AccessLevelException;
-import com.backend.hospitalward.exception.AccountException;
-import com.backend.hospitalward.exception.MedicalStaffException;
-import com.backend.hospitalward.exception.UrlException;
+import com.backend.hospitalward.exception.*;
 import com.backend.hospitalward.model.*;
 import com.backend.hospitalward.model.common.AccountType;
 import com.backend.hospitalward.model.common.UrlActionType;
@@ -61,13 +58,12 @@ public class AccountService {
     @Transactional(readOnly = true)
     public Account getAccountByLogin(String login) {
         return accountRepository.findAccountByLogin(login).orElseThrow(() ->
-                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+                new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
     }
 
     //endregion
 
     //region CREATE
-
 
     private void createBaseAccount(Account account, String accessLevel, Account createdBy) {
 
@@ -85,7 +81,7 @@ public class AccountService {
         }
 
         account.setAccessLevel(accessLevelRepository.findAccessLevelByName(accessLevel).orElseThrow(() ->
-                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND)));
+                new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND)));
 
     }
 
@@ -107,7 +103,7 @@ public class AccountService {
 
     public void createAccount(Account account, String accessLevel, String createdBy) {
         Account director = accountRepository.findAccountByLogin(createdBy).orElseThrow(() ->
-                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+                new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
 
         createBaseAccount(account, accessLevel, director);
 
@@ -123,17 +119,17 @@ public class AccountService {
                                    String createdBy) {
         if ((medicalStaff.getLicenseNr().endsWith("P") && !accessLevel.equals(SecurityConstants.HEAD_NURSE)) ||
                 (!medicalStaff.getLicenseNr().endsWith("P") && accessLevel.equals(SecurityConstants.HEAD_NURSE))) {
-            throw MedicalStaffException.createBadRequestException(MedicalStaffException.LICENSE_NUMBER);
+            throw new BadRequestException(ErrorKey.LICENSE_NUMBER);
         }
 
         Account director = accountRepository.findAccountByLogin(createdBy).orElseThrow(() ->
-                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+                new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
 
         createBaseAccount(medicalStaff, accessLevel, director);
 
         List<Specialization> specializationsList = specializations.stream()
                 .map(name -> specializationRepository.findSpecializationByName(name).orElseThrow(() ->
-                        AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND)))
+                        new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND)))
                 .collect(Collectors.toList());
 
         medicalStaff.setSpecializations(specializationsList);
@@ -148,14 +144,14 @@ public class AccountService {
 
     public void changePassword(String login, Password oldPassword, Password newPassword) {
         Account account = accountRepository.findAccountByLogin(login).orElseThrow(() ->
-                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+                new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
         String hashedOldPassword = Sha512DigestUtils.shaHex(String.valueOf(oldPassword.getValue()));
 
         if (!hashedOldPassword.equals(account.getPassword())) {
-            throw AccountException.createBadRequestException(AccountException.PASSWORD_INCORRECT);
+            throw new BadRequestException(ErrorKey.PASSWORD_INCORRECT);
         }
         if (String.valueOf(newPassword.getValue()).equals(String.valueOf(oldPassword.getValue()))) {
-            throw AccountException.createConflictException(AccountException.PASSWORD_THE_SAME);
+            throw new ConflictException(ErrorKey.PASSWORD_THE_SAME);
         }
 
         account.setPassword(Sha512DigestUtils.shaHex(String.valueOf(newPassword.getValue())));
@@ -167,7 +163,7 @@ public class AccountService {
 
     public void changeActivity(String login, boolean newActivity, String modifiedBy) {
         Account account = accountRepository.findAccountByLogin(login).orElseThrow(() ->
-                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+                new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
 
         account.setActive(newActivity);
         account.setModificationDate(Timestamp.from(Instant.now()));
@@ -175,7 +171,7 @@ public class AccountService {
             account.setModifiedBy(null);
         } else {
             account.setModifiedBy(accountRepository.findAccountByLogin(modifiedBy).orElseThrow(() ->
-                    AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND)));
+                    new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND)));
         }
 
         accountRepository.save(account);
@@ -185,7 +181,7 @@ public class AccountService {
 
     private Account updateBaseAccount(Account account, String modifiedBy) {
         Account accountFromDB = accountRepository.findAccountByLogin(account.getLogin()).orElseThrow(() ->
-                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+                new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
 
         accountFromDB.setVersion(account.getVersion());
 
@@ -204,7 +200,7 @@ public class AccountService {
             accountFromDB.setModifiedBy(null);
         } else {
             Account accModifiedBy = accountRepository.findAccountByLogin(modifiedBy).orElseThrow(() ->
-                    AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+                    new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
             accountFromDB.setModifiedBy(accModifiedBy);
         }
 
@@ -231,7 +227,7 @@ public class AccountService {
         if (account.getSpecializations() != null && !account.getSpecializations().isEmpty()) {
             List<Specialization> specializationsList = specializations.stream()
                     .map(name -> specializationRepository.findSpecializationByName(name).orElseThrow(() ->
-                            AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND)))
+                            new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND)))
                     .collect(Collectors.toList());
 
             modifiedMedicalStaff.setSpecializations(specializationsList);
@@ -246,21 +242,21 @@ public class AccountService {
 
     public void confirmAccount(String urlCode, Password password) {
         if (urlCode == null || urlCode.length() != 10) {
-            throw UrlException.createNotFoundException(UrlException.URL_NOT_FOUND);
+            throw new NotFoundException(ErrorKey.URL_NOT_FOUND);
         }
 
         Url url = urlRepository.findUrlByCodeDirectorAndCodeEmployee(urlCode.substring(0, 5), urlCode.substring(5, 10))
-                .orElseThrow(() -> UrlException.createNotFoundException(UrlException.URL_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ErrorKey.URL_NOT_FOUND));
 
         if (Instant.now().isAfter(url.getExpirationDate().toInstant())) {
-            throw UrlException.createGoneException(UrlException.URL_EXPIRED);
+            throw new GoneException(ErrorKey.URL_EXPIRED);
         } else if (!url.getActionType().equals(UrlActionType.CONFIRM.name())) {
-            throw UrlException.createBadRequestException(UrlException.URL_WRONG_ACTION);
+            throw new BadRequestException(ErrorKey.URL_WRONG_ACTION);
         }
 
         if (urlCode.equals(url.getCodeDirector() + url.getCodeEmployee())) {
             Account account = accountRepository.findAccountByLogin(url.getAccountEmployee().getLogin()).orElseThrow(() ->
-                    AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+                    new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
             account.setPassword(Sha512DigestUtils.shaHex(String.valueOf(password.getValue())));
             account.setConfirmed(true);
             account.setModificationDate(Timestamp.from(Instant.now()));
@@ -269,34 +265,34 @@ public class AccountService {
             return;
         }
 
-        throw UrlException.createNotFoundException(UrlException.URL_NOT_FOUND);
+        throw new NotFoundException(ErrorKey.URL_NOT_FOUND);
     }
 
     public void changeAccessLevel(String newAccessLevel, String login, String modifiedBy) {
 
         Account account = accountRepository.findAccountByLogin(login).orElseThrow(() ->
-                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+                new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
 
         if (account.getType().equals(AccountType.OFFICE.name())) {
-            throw AccessLevelException.createConflictException(AccessLevelException.OFFICE_STAFF_ACCESS_LEVEL_CHANGE);
+            throw new ConflictException(ErrorKey.OFFICE_STAFF_ACCESS_LEVEL_CHANGE);
         }
         if (newAccessLevel.equals("SECRETARY")) {
-            throw AccessLevelException.createConflictException(AccessLevelException.MEDICAL_STAFF_TO_OFFICE_CHANGE);
+            throw new ConflictException(ErrorKey.MEDICAL_STAFF_TO_OFFICE_CHANGE);
         }
         if (cannotChangeAccessLevel(newAccessLevel, account, "TREATMENT DIRECTOR")) {
-            throw AccessLevelException.createConflictException(AccessLevelException.TREATMENT_DIRECTOR_REQUIRED);
+            throw new ConflictException(ErrorKey.TREATMENT_DIRECTOR_REQUIRED);
         }
         if (cannotChangeAccessLevel(newAccessLevel, account, "HEAD NURSE")) {
-            throw AccessLevelException.createConflictException(AccessLevelException.HEAD_NURSE_REQUIRED);
+            throw new ConflictException(ErrorKey.HEAD_NURSE_REQUIRED);
         }
 
         AccessLevel accessLevel = accessLevelRepository.findAccessLevelByName(newAccessLevel).orElseThrow(() ->
-                AccessLevelException.createNotFoundException(AccessLevelException.ACCESS_LEVEL_NOT_FOUND));
+                new NotFoundException(ErrorKey.ACCESS_LEVEL_NOT_FOUND));
 
         account.setAccessLevel(accessLevel);
         account.setModificationDate(Timestamp.from(Instant.now()));
         account.setModifiedBy(accountRepository.findAccountByLogin(modifiedBy).orElseThrow(() ->
-                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND)));
+                new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND)));
 
         accountRepository.save(account);
 
@@ -311,11 +307,11 @@ public class AccountService {
     public void changeEmailAddress(String newEmail, String login) {
 
         if (!accountRepository.findAccountsByEmail(newEmail).isEmpty()) {
-            throw AccountException.createConflictException(AccountException.EMAIL_UNIQUE);
+            throw new ConflictException(ErrorKey.EMAIL_UNIQUE);
         }
 
         Account account = accountRepository.findAccountByLogin(login).orElseThrow(() ->
-                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+                new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
 
         account.setEmail(newEmail);
         account.setModifiedBy(null);
@@ -326,16 +322,16 @@ public class AccountService {
 
     public void resetPassword(String urlCode, Password newPassword){
         Url url = urlRepository.findUrlByCodeDirectorAndCodeEmployee(urlCode.substring(0, 5), urlCode.substring(5, 10))
-                .orElseThrow(() -> UrlException.createNotFoundException(UrlException.URL_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ErrorKey.URL_NOT_FOUND));
 
         if (Instant.now().isAfter(url.getExpirationDate().toInstant())) {
-            throw UrlException.createGoneException(UrlException.URL_EXPIRED);
+            throw new GoneException(ErrorKey.URL_EXPIRED);
         } else if (!url.getActionType().equals(UrlActionType.PASSWORD.name())) {
-            throw UrlException.createBadRequestException(UrlException.URL_WRONG_ACTION);
+            throw new BadRequestException(ErrorKey.URL_WRONG_ACTION);
         }
 
         if(Sha512DigestUtils.shaHex(String.valueOf(newPassword.getValue())).equals(url.getAccountEmployee().getPassword())) {
-            throw AccountException.createConflictException(AccountException.ERROR_SAME_PASSWORD);
+            throw new ConflictException(ErrorKey.ERROR_SAME_PASSWORD);
         }
 
         Account account = url.getAccountEmployee();
@@ -351,10 +347,10 @@ public class AccountService {
 
     public void sendResetPasswordUrl(String email, String directorName, String directorSurname, String requestedBy) {
         Account accountEmployee = accountRepository.findAccountByEmail(email).orElseThrow(() ->
-                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+                new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
 
         Account accountDirector = accountRepository.findAccountByNameAndSurname(directorName, directorSurname)
-                .orElseThrow(() -> AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+                .orElseThrow(() -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
 
         List<Url> urlList = urlRepository.findUrlByAccountEmployee(accountEmployee).stream()
                 .filter(url -> url.getActionType().equals(UrlActionType.PASSWORD.name()))
@@ -368,7 +364,7 @@ public class AccountService {
 
         if (requestedBy != null) {
             url.setCreatedBy(accountRepository.findAccountByLogin(requestedBy).orElseThrow(
-                    () -> AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND)));
+                    () -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND)));
         }
         urlRepository.save(url);
 

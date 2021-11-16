@@ -8,7 +8,10 @@ import com.backend.hospitalward.dto.request.medicalStaff.MedicalStaffCreateReque
 import com.backend.hospitalward.dto.request.medicalStaff.MedicalStaffUpdateRequest;
 import com.backend.hospitalward.dto.response.account.AccountDetailsResponse;
 import com.backend.hospitalward.dto.response.account.AccountGeneralResponse;
-import com.backend.hospitalward.exception.CommonException;
+import com.backend.hospitalward.exception.BadRequestException;
+import com.backend.hospitalward.exception.ConstraintViolationException;
+import com.backend.hospitalward.exception.ErrorKey;
+import com.backend.hospitalward.exception.PreconditionFailedException;
 import com.backend.hospitalward.mapper.AccountMapper;
 import com.backend.hospitalward.model.MedicalStaff;
 import com.backend.hospitalward.service.AccountService;
@@ -41,6 +44,16 @@ public class AccountController {
 
     private List<String> getSpecializations(List<String> specializations) {
         return specializations != null ? specializations : Collections.emptyList();
+    }
+
+    private void checkETagHeader(@CurrentSecurityContext SecurityContext securityContext, @RequestBody @Valid AccountUpdateRequest accountUpdateRequest, @RequestHeader("If-Match") String eTag) {
+        if (accountUpdateRequest.getLogin() == null || accountUpdateRequest.getVersion() == null
+                || ETagValidator.verifyDTOIntegrity(eTag, accountUpdateRequest)) {
+            throw new PreconditionFailedException(ErrorKey.ETAG_INVALID);
+        }
+        if (!accountUpdateRequest.getLogin().equals(securityContext.getAuthentication().getName())) {
+            throw new PreconditionFailedException(ErrorKey.NOT_OWN_ACCOUNT);
+        }
     }
 
     //region GET
@@ -133,7 +146,7 @@ public class AccountController {
 
         if (accountUpdateRequest.getLogin() == null || accountUpdateRequest.getVersion() == null
                 || ETagValidator.verifyDTOIntegrity(eTag, accountUpdateRequest)) {
-            throw CommonException.createPreconditionFailedException();
+            throw new PreconditionFailedException(ErrorKey.ETAG_INVALID);
         }
 
         accountService.updateAccount(accountMapper.toAccount(accountUpdateRequest),
@@ -150,7 +163,7 @@ public class AccountController {
 
         if (medicalStaffUpdateRequest.getLogin() == null || medicalStaffUpdateRequest.getVersion() == null
                 || ETagValidator.verifyDTOIntegrity(eTag, medicalStaffUpdateRequest)) {
-            throw CommonException.createPreconditionFailedException();
+            throw new PreconditionFailedException(ErrorKey.ETAG_INVALID);
         }
 
         accountService.updateMedicalStaff((MedicalStaff) accountMapper.toAccount(medicalStaffUpdateRequest),
@@ -165,13 +178,7 @@ public class AccountController {
                                                     @RequestBody @Valid AccountUpdateRequest accountUpdateRequest,
                                                     @RequestHeader("If-Match") String eTag) {
 
-        if (accountUpdateRequest.getLogin() == null || accountUpdateRequest.getVersion() == null
-                || ETagValidator.verifyDTOIntegrity(eTag, accountUpdateRequest)) {
-            throw CommonException.createPreconditionFailedException();
-        }
-        if (!accountUpdateRequest.getLogin().equals(securityContext.getAuthentication().getName())) {
-            throw CommonException.createPreconditionFailedException();
-        }
+        checkETagHeader(securityContext, accountUpdateRequest, eTag);
 
         accountService.updateAccount(accountMapper.toAccount(accountUpdateRequest), accountUpdateRequest.getLogin());
 
@@ -184,13 +191,7 @@ public class AccountController {
                                                    @RequestBody @Valid MedicalStaffUpdateRequest medicalStaffUpdateRequest,
                                                    @RequestHeader("If-Match") String eTag) {
 
-        if (medicalStaffUpdateRequest.getLogin() == null || medicalStaffUpdateRequest.getVersion() == null
-                || ETagValidator.verifyDTOIntegrity(eTag, medicalStaffUpdateRequest)) {
-            throw CommonException.createPreconditionFailedException();
-        }
-        if (!medicalStaffUpdateRequest.getLogin().equals(securityContext.getAuthentication().getName())) {
-            throw CommonException.createPreconditionFailedException();
-        }
+        checkETagHeader(securityContext, medicalStaffUpdateRequest, eTag);
 
         accountService.updateMedicalStaff((MedicalStaff) accountMapper.toAccount(medicalStaffUpdateRequest),
                 medicalStaffUpdateRequest.getLogin(), getSpecializations(medicalStaffUpdateRequest.getSpecializations()));
@@ -203,7 +204,7 @@ public class AccountController {
                                                @RequestBody String newAccessLevel, @PathVariable("login") String login) {
 
         if (newAccessLevel == null || newAccessLevel.length() == 0 || login == null || login.length() == 0) {
-            throw CommonException.createConstraintViolationException();
+            throw new BadRequestException(ErrorKey.INVALID_LEVEL_OR_LOGIN);
         }
         accountService.changeAccessLevel(newAccessLevel, login, securityContext.getAuthentication().getName());
 
@@ -214,7 +215,7 @@ public class AccountController {
     public ResponseEntity<?> confirmAccount(@PathVariable("url") String url, @RequestBody String password) {
 
         if (url.length() != 10) {
-            throw CommonException.createConstraintViolationException();
+            throw new ConstraintViolationException(ErrorKey.URL_INVALID);
         }
 
         accountService.confirmAccount(url, new Password(password));
@@ -226,7 +227,8 @@ public class AccountController {
     public ResponseEntity<?> changeEmailAddress(@CurrentSecurityContext SecurityContext securityContext,
                                                 @RequestBody String newEmail) {
         if (!EmailAddressValidator.isValid(newEmail)) {
-            throw CommonException.createConstraintViolationException();
+            throw new ConstraintViolationException(ErrorKey.EMAIL_INVALID);
+
         }
 
         accountService.changeEmailAddress(newEmail, securityContext.getAuthentication().getName());
@@ -237,8 +239,11 @@ public class AccountController {
     @PostMapping(path = "/password/reset/{url}")
     public ResponseEntity<?> resetPassword(@PathVariable("url") String url, @RequestBody String newPassword) {
 
-        if(newPassword == null || newPassword.length() < 8 || url == null || url.length() != 10) {
-            throw CommonException.createConstraintViolationException();
+        if(newPassword == null || newPassword.length() < 8) {
+            throw new ConstraintViolationException(ErrorKey.PASSWORD_INCORRECT);
+        }
+        if (url == null || url.length() != 10) {
+            throw new ConstraintViolationException(ErrorKey.URL_INVALID);
         }
 
         accountService.resetPassword(url, new Password(newPassword));

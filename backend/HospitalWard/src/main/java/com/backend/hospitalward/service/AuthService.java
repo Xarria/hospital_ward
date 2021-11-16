@@ -1,6 +1,7 @@
 package com.backend.hospitalward.service;
 
-import com.backend.hospitalward.exception.AccountException;
+import com.backend.hospitalward.exception.ErrorKey;
+import com.backend.hospitalward.exception.NotFoundException;
 import com.backend.hospitalward.repository.AccessLevelRepository;
 import com.backend.hospitalward.repository.AccountRepository;
 import lombok.AccessLevel;
@@ -28,12 +29,12 @@ public class AuthService implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         return accountRepository.findAccountByLogin(login).orElseThrow(() ->
-                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND));
+                new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
     }
 
     @Transactional(readOnly = true)
     public String findAccessLevelByLogin(String login) {
         return accessLevelRepository.findAccessLevelByLogin(login).orElseThrow(() ->
-                AccountException.createNotFoundException(AccountException.ACCOUNT_NOT_FOUND)).getName();
+                new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND)).getName();
     }
 }
