@@ -357,7 +357,7 @@ public class AccountService {
         Account accountDirector = accountRepository.findAccountByNameAndSurname(directorName, directorSurname)
                 .orElseThrow(() -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
 
-        List<Url> urlList = urlRepository.findUrlByAccountEmployee(accountEmployee).stream()
+        List<Url> urlList = urlRepository.findUrlsByAccountEmployee(accountEmployee).stream()
                 .filter(url -> url.getActionType().equals(UrlActionType.PASSWORD.name()))
                 .collect(Collectors.toList());
 

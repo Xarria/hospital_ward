@@ -58,4 +58,7 @@ public class EmailSender {
     public void sendPasswordResetEmails(String name, String emailEmployee, String codeEmployee,
                                         String emailDirector, String codeDirector) {
     }
+
+    public void sendRemovalEmail(String name, String email) {
+    }
 }

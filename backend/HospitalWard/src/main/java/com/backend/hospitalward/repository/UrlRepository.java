@@ -8,6 +8,9 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -16,5 +19,7 @@ public interface UrlRepository extends JpaRepository<Url, Long> {
 
     Optional<Url> findUrlByCodeDirectorAndCodeEmployee(String codeDirector, String codeEmployee);
 
-    Optional<Url> findUrlByAccountEmployee(Account account);
+    List<Url> findUrlsByAccountEmployee(Account account);
+
+    List<Url> findUrlsByExpirationDateBefore(Timestamp localDateTime);
 }
