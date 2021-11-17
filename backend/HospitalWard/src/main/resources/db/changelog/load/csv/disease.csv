@@ -1,0 +1,11 @@
+﻿id,name,urgent,catherer_required,surgery_required
+1,Grypa,TRUE,TRUE,FALSE
+2,Katar,FALSE,TRUE,TRUE
+3,Kaszel,FALSE,FALSE,FALSE
+4,Nudności,FALSE,FALSE,FALSE
+5,Arytmia serca,TRUE,TRUE,FALSE
+6,Nadciśnienie,FALSE,TRUE,FALSE
+7,Zapalenie płuc,TRUE,FALSE,FALSE
+8,Niewydolność nerek,TRUE,TRUE,TRUE
+9,Hemofilia,TRUE,FALSE,FALSE
+10,Migotanie przedsionków,FALSE,TRUE,TRUE

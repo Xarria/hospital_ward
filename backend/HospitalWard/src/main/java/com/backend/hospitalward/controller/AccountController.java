@@ -236,7 +236,7 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(path = "/password/reset/{url}")
+    @PutMapping(path = "/password/reset/{url}")
     public ResponseEntity<?> resetPassword(@PathVariable("url") String url, @RequestBody String newPassword) {
 
         if(newPassword == null || newPassword.length() < 8) {

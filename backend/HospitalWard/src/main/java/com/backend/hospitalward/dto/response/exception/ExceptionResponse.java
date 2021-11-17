@@ -10,19 +10,19 @@ import java.util.Set;
 public class ExceptionResponse {
 
     LocalDateTime dateTime;
-    Set<BaseError> errors;
+    Set<String> messages;
 
 
-    private ExceptionResponse(Set<BaseError> errors) {
-        this.errors = errors;
+    private ExceptionResponse(Set<String> messages) {
+        this.messages = messages;
         dateTime = LocalDateTime.now();
     }
 
-    public static ExceptionResponse singleException(String key, String message) {
-        return new ExceptionResponse(Collections.singleton(new BaseError(key, message)));
+    public static ExceptionResponse singleException(String message) {
+        return new ExceptionResponse(Collections.singleton(message));
     }
 
-    public static ExceptionResponse manyExceptions(Set<BaseError> errors) {
-        return new ExceptionResponse(errors);
+    public static ExceptionResponse manyExceptions(Set<String> messages) {
+        return new ExceptionResponse(messages);
     }
 }

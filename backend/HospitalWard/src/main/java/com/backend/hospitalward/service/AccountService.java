@@ -3,6 +3,7 @@ package com.backend.hospitalward.service;
 
 import com.backend.hospitalward.exception.*;
 import com.backend.hospitalward.model.*;
+import com.backend.hospitalward.model.common.AccessLevelName;
 import com.backend.hospitalward.model.common.AccountType;
 import com.backend.hospitalward.model.common.UrlActionType;
 import com.backend.hospitalward.repository.AccessLevelRepository;
@@ -273,18 +274,7 @@ public class AccountService {
         Account account = accountRepository.findAccountByLogin(login).orElseThrow(() ->
                 new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
 
-        if (account.getType().equals(AccountType.OFFICE.name())) {
-            throw new ConflictException(ErrorKey.OFFICE_STAFF_ACCESS_LEVEL_CHANGE);
-        }
-        if (newAccessLevel.equals("SECRETARY")) {
-            throw new ConflictException(ErrorKey.MEDICAL_STAFF_TO_OFFICE_CHANGE);
-        }
-        if (cannotChangeAccessLevel(newAccessLevel, account, "TREATMENT DIRECTOR")) {
-            throw new ConflictException(ErrorKey.TREATMENT_DIRECTOR_REQUIRED);
-        }
-        if (cannotChangeAccessLevel(newAccessLevel, account, "HEAD NURSE")) {
-            throw new ConflictException(ErrorKey.HEAD_NURSE_REQUIRED);
-        }
+        isAccessLevelConflict(newAccessLevel, account);
 
         AccessLevel accessLevel = accessLevelRepository.findAccessLevelByName(newAccessLevel).orElseThrow(() ->
                 new NotFoundException(ErrorKey.ACCESS_LEVEL_NOT_FOUND));
@@ -296,6 +286,21 @@ public class AccountService {
 
         accountRepository.save(account);
 
+    }
+
+    private void isAccessLevelConflict(String newAccessLevel, Account account) {
+        if (account.getType().equals(AccountType.OFFICE.name())) {
+            throw new ConflictException(ErrorKey.OFFICE_STAFF_ACCESS_LEVEL_CHANGE);
+        }
+        if (newAccessLevel.equals(AccessLevelName.SECRETARY)) {
+            throw new ConflictException(ErrorKey.MEDICAL_STAFF_TO_OFFICE_CHANGE);
+        }
+        if (cannotChangeAccessLevel(newAccessLevel, account, AccessLevelName.TREATMENT_DIRECTOR)) {
+            throw new ConflictException(ErrorKey.TREATMENT_DIRECTOR_REQUIRED);
+        }
+        if (cannotChangeAccessLevel(newAccessLevel, account, AccessLevelName.HEAD_NURSE)) {
+            throw new ConflictException(ErrorKey.HEAD_NURSE_REQUIRED);
+        }
     }
 
     private boolean cannotChangeAccessLevel(String newAccessLevel, Account account, String s) {

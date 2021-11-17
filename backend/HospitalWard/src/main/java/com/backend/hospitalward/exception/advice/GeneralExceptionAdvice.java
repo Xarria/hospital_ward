@@ -17,6 +17,6 @@ public class GeneralExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public ExceptionResponse exception(Exception e) {
-        return ExceptionResponse.singleException(ErrorKey.CRITICAL, e.getMessage());
+        return ExceptionResponse.singleException(e.getMessage());
     }
 }
