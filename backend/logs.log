@@ -703,3 +703,1118 @@ org.springframework.transaction.IllegalTransactionStateException: No existing tr
 20-11-2021 13:35:05 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [Thread-20] Closing JPA EntityManagerFactory for persistence unit 'default'
 20-11-2021 13:35:05 INFO com.zaxxer.hikari.HikariDataSource [Thread-20] HikariPool-5 - Shutdown initiated...
 20-11-2021 13:35:05 INFO com.zaxxer.hikari.HikariDataSource [Thread-20] HikariPool-5 - Shutdown completed.
+20-11-2021 13:35:05 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 8800 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+20-11-2021 13:35:05 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+20-11-2021 13:35:05 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+20-11-2021 13:35:05 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 17 ms. Found 4 JPA repository interfaces.
+20-11-2021 13:35:05 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+20-11-2021 13:35:05 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+20-11-2021 13:35:05 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+20-11-2021 13:35:05 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+20-11-2021 13:35:05 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+20-11-2021 13:35:05 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 253 ms
+20-11-2021 13:35:05 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-6 - Starting...
+20-11-2021 13:35:05 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-6 - Start completed.
+20-11-2021 13:35:05 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 13:35:06 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+20-11-2021 13:35:06 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 13:35:06 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 13:35:06 WARN liquibase.hub [restartedMain] Skipping auto-registration
+20-11-2021 13:35:06 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 13:35:06 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+20-11-2021 13:35:06 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+20-11-2021 13:35:06 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+20-11-2021 13:35:06 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+20-11-2021 13:35:06 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 13:35:06 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+20-11-2021 13:35:06 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 1 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@35125e72
+20-11-2021 13:35:06 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: corsConfigurer with args: {}
+20-11-2021 13:35:06 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: corsConfigurer in 0 ms and returned: com.backend.hospitalward.config.ApplicationConfig$1@51aa801c
+20-11-2021 13:35:06 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+20-11-2021 13:35:06 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig started method: authenticationManagerBean with args: {}
+20-11-2021 13:35:06 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig finished method: authenticationManagerBean in 2 ms and returned: org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter$AuthenticationManagerDelegator@35a61a53
+20-11-2021 13:35:06 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: getCacheManager with args: {}
+20-11-2021 13:35:06 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: getCacheManager in 0 ms and returned: org.springframework.cache.concurrent.ConcurrentMapCacheManager@56593d0e
+20-11-2021 13:35:06 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: restTemplate with args: {}
+20-11-2021 13:35:06 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: restTemplate in 1 ms and returned: org.springframework.web.client.RestTemplate@2ec2cbec
+20-11-2021 13:35:06 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: objectMapper with args: {}
+20-11-2021 13:35:06 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: objectMapper in 0 ms and returned: com.fasterxml.jackson.databind.ObjectMapper@77df8923
+20-11-2021 13:35:06 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig started method: daoAuthenticationProvider with args: {}
+20-11-2021 13:35:06 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig finished method: daoAuthenticationProvider in 0 ms and returned: org.springframework.security.authentication.dao.DaoAuthenticationProvider@3e1fa1f5
+20-11-2021 13:35:06 INFO org.springframework.security.web.DefaultSecurityFilterChain [restartedMain] Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@55a89fee, org.springframework.security.web.context.SecurityContextPersistenceFilter@5992c1a4, org.springframework.security.web.header.HeaderWriterFilter@2e89db8, org.springframework.web.filter.CorsFilter@78785ec0, org.springframework.security.web.authentication.logout.LogoutFilter@232f9a21, com.backend.hospitalward.security.RequestFilter@29423c32, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5d0a7361, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@61adc8e8, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1bee424e, org.springframework.security.web.session.SessionManagementFilter@1b08218b, org.springframework.security.web.access.ExceptionTranslationFilter@67e3249a, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3248f947]
+20-11-2021 13:35:06 INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+20-11-2021 13:35:06 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+20-11-2021 13:35:06 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+20-11-2021 13:35:06 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Started HospitalWardApplication in 1.206 seconds (JVM running for 1597.98)
+20-11-2021 13:35:06 INFO org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener [restartedMain] Condition evaluation unchanged
+20-11-2021 14:00:00 INFO com.backend.hospitalward.util.logging.AspectLogger [scheduling-1] Class AccountScheduler started method: removeExpiredUrl with args: {}
+20-11-2021 14:00:00 INFO com.backend.hospitalward.util.logging.AspectLogger [scheduling-1] Class UrlRepository started method: findUrlsByExpirationDateBefore with args: {localDateTime=2021-11-20 14:00:00.0190137}
+20-11-2021 14:00:00 ERROR com.backend.hospitalward.util.logging.AspectLogger [scheduling-1] IllegalTransactionStateException thrown in line: org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:382) with message: No existing transaction found for transaction marked with propagation 'mandatory'
+20-11-2021 14:00:00 ERROR com.backend.hospitalward.util.logging.AspectLogger [scheduling-1] IllegalTransactionStateException thrown in line: org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:382) with message: No existing transaction found for transaction marked with propagation 'mandatory'
+20-11-2021 14:00:00 ERROR org.springframework.scheduling.support.TaskUtils$LoggingErrorHandler [scheduling-1] Unexpected error occurred in scheduled task
+org.springframework.transaction.IllegalTransactionStateException: No existing transaction found for transaction marked with propagation 'mandatory'
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.getTransaction(AbstractPlatformTransactionManager.java:362)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.createTransactionIfNecessary(TransactionAspectSupport.java:595)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:382)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:137)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:145)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:215)
+	at com.sun.proxy.$Proxy204.findUrlsByExpirationDateBefore(Unknown Source)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:344)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:198)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:137)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.aspectj.AspectJAfterThrowingAdvice.invoke(AspectJAfterThrowingAdvice.java:64)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89)
+	at com.backend.hospitalward.util.logging.AspectLogger.logExit(AspectLogger.java:119)
+	at com.backend.hospitalward.util.logging.AspectLogger.advice(AspectLogger.java:54)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:634)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:624)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:72)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:215)
+	at com.sun.proxy.$Proxy204.findUrlsByExpirationDateBefore(Unknown Source)
+	at com.backend.hospitalward.schedule.AccountScheduler.removeExpiredUrl(AccountScheduler.java:49)
+	at com.backend.hospitalward.schedule.AccountScheduler$$FastClassBySpringCGLIB$$5b06414.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:779)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)
+	at org.springframework.aop.aspectj.AspectJAfterThrowingAdvice.invoke(AspectJAfterThrowingAdvice.java:64)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89)
+	at com.backend.hospitalward.util.logging.AspectLogger.logExit(AspectLogger.java:119)
+	at com.backend.hospitalward.util.logging.AspectLogger.advice(AspectLogger.java:54)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:634)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:624)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:72)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:692)
+	at com.backend.hospitalward.schedule.AccountScheduler$$EnhancerBySpringCGLIB$$48784325.removeExpiredUrl(<generated>)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:84)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at org.springframework.scheduling.concurrent.ReschedulingRunnable.run(ReschedulingRunnable.java:95)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+20-11-2021 15:57:37 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 6444 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+20-11-2021 15:57:37 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+20-11-2021 15:57:37 INFO org.springframework.boot.devtools.restart.ChangeableUrls [restartedMain] The Class-Path manifest attribute in C:\Users\Xarria\.m2\repository\org\liquibase\liquibase-core\4.3.5\liquibase-core-4.3.5.jar referenced one or more files that do not exist: file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/commons-cli-1.4.jar,file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/snakeyaml-1.27.jar
+20-11-2021 15:57:37 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+20-11-2021 15:57:37 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+20-11-2021 15:57:39 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+20-11-2021 15:57:39 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 66 ms. Found 4 JPA repository interfaces.
+20-11-2021 15:57:40 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+20-11-2021 15:57:40 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+20-11-2021 15:57:40 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+20-11-2021 15:57:40 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+20-11-2021 15:57:40 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+20-11-2021 15:57:40 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 2864 ms
+20-11-2021 15:57:40 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+20-11-2021 15:57:41 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+20-11-2021 15:57:41 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 15:57:43 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+20-11-2021 15:57:44 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 15:57:44 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 15:57:44 WARN liquibase.hub [restartedMain] Skipping auto-registration
+20-11-2021 15:57:44 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 15:57:44 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+20-11-2021 15:57:44 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.5.7.Final
+20-11-2021 15:57:44 INFO org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+20-11-2021 15:57:44 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+20-11-2021 15:57:44 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+20-11-2021 15:57:45 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+20-11-2021 15:57:45 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 15:57:45 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+20-11-2021 15:57:45 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 8 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@5fd41578
+20-11-2021 15:57:45 WARN org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext [restartedMain] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountController' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\controller\AccountController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountService' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\service\AccountService.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'int' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+20-11-2021 15:57:45 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Closing JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 15:57:45 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown initiated...
+20-11-2021 15:57:45 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown completed.
+20-11-2021 15:57:45 INFO org.apache.catalina.core.StandardService [restartedMain] Stopping service [Tomcat]
+20-11-2021 15:57:45 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [restartedMain] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+20-11-2021 15:57:45 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [restartedMain] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.backend.hospitalward.service.AccountService required a bean of type 'int' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'int' in your configuration.
+
+20-11-2021 16:02:32 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 6876 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+20-11-2021 16:02:32 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+20-11-2021 16:02:32 INFO org.springframework.boot.devtools.restart.ChangeableUrls [restartedMain] The Class-Path manifest attribute in C:\Users\Xarria\.m2\repository\org\liquibase\liquibase-core\4.3.5\liquibase-core-4.3.5.jar referenced one or more files that do not exist: file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/commons-cli-1.4.jar,file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/snakeyaml-1.27.jar
+20-11-2021 16:02:32 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+20-11-2021 16:02:32 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+20-11-2021 16:02:33 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+20-11-2021 16:02:33 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 223 ms. Found 4 JPA repository interfaces.
+20-11-2021 16:02:35 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+20-11-2021 16:02:35 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+20-11-2021 16:02:35 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+20-11-2021 16:02:35 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+20-11-2021 16:02:36 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+20-11-2021 16:02:36 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 3899 ms
+20-11-2021 16:02:36 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+20-11-2021 16:02:36 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+20-11-2021 16:02:37 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:02:38 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+20-11-2021 16:02:38 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:02:38 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:02:38 WARN liquibase.hub [restartedMain] Skipping auto-registration
+20-11-2021 16:02:38 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:02:38 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+20-11-2021 16:02:38 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.5.7.Final
+20-11-2021 16:02:38 INFO org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+20-11-2021 16:02:38 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+20-11-2021 16:02:39 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+20-11-2021 16:02:39 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+20-11-2021 16:02:39 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:02:40 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+20-11-2021 16:02:40 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 10 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@5d6fd178
+20-11-2021 16:02:40 WARN org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext [restartedMain] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountController' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\controller\AccountController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountService' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\service\AccountService.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'int' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+20-11-2021 16:02:40 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Closing JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:02:40 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown initiated...
+20-11-2021 16:02:40 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown completed.
+20-11-2021 16:02:40 INFO org.apache.catalina.core.StandardService [restartedMain] Stopping service [Tomcat]
+20-11-2021 16:02:40 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [restartedMain] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+20-11-2021 16:02:40 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [restartedMain] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.backend.hospitalward.service.AccountService required a bean of type 'int' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'int' in your configuration.
+
+20-11-2021 16:04:30 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 11388 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+20-11-2021 16:04:30 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+20-11-2021 16:04:30 INFO org.springframework.boot.devtools.restart.ChangeableUrls [restartedMain] The Class-Path manifest attribute in C:\Users\Xarria\.m2\repository\org\liquibase\liquibase-core\4.3.5\liquibase-core-4.3.5.jar referenced one or more files that do not exist: file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/commons-cli-1.4.jar,file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/snakeyaml-1.27.jar
+20-11-2021 16:04:30 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+20-11-2021 16:04:30 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+20-11-2021 16:04:31 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+20-11-2021 16:04:31 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 77 ms. Found 4 JPA repository interfaces.
+20-11-2021 16:04:31 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+20-11-2021 16:04:31 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+20-11-2021 16:04:31 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+20-11-2021 16:04:31 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+20-11-2021 16:04:32 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+20-11-2021 16:04:32 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1755 ms
+20-11-2021 16:04:32 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+20-11-2021 16:04:32 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+20-11-2021 16:04:32 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:04:33 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+20-11-2021 16:04:33 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:04:33 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:04:33 WARN liquibase.hub [restartedMain] Skipping auto-registration
+20-11-2021 16:04:33 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:04:33 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+20-11-2021 16:04:33 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.5.7.Final
+20-11-2021 16:04:33 INFO org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+20-11-2021 16:04:34 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+20-11-2021 16:04:34 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+20-11-2021 16:04:34 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+20-11-2021 16:04:34 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:04:35 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+20-11-2021 16:04:35 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 11 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@425bfb99
+20-11-2021 16:04:35 WARN org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext [restartedMain] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountController' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\controller\AccountController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountService' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\service\AccountService.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'int' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+20-11-2021 16:04:35 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Closing JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:04:35 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown initiated...
+20-11-2021 16:04:35 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown completed.
+20-11-2021 16:04:35 INFO org.apache.catalina.core.StandardService [restartedMain] Stopping service [Tomcat]
+20-11-2021 16:04:35 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [restartedMain] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+20-11-2021 16:04:35 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [restartedMain] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.backend.hospitalward.service.AccountService required a bean of type 'int' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'int' in your configuration.
+
+20-11-2021 16:05:02 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 14144 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+20-11-2021 16:05:02 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+20-11-2021 16:05:02 INFO org.springframework.boot.devtools.restart.ChangeableUrls [restartedMain] The Class-Path manifest attribute in C:\Users\Xarria\.m2\repository\org\liquibase\liquibase-core\4.3.5\liquibase-core-4.3.5.jar referenced one or more files that do not exist: file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/commons-cli-1.4.jar,file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/snakeyaml-1.27.jar
+20-11-2021 16:05:02 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+20-11-2021 16:05:02 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+20-11-2021 16:05:03 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+20-11-2021 16:05:03 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 60 ms. Found 4 JPA repository interfaces.
+20-11-2021 16:05:04 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+20-11-2021 16:05:04 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+20-11-2021 16:05:04 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+20-11-2021 16:05:04 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+20-11-2021 16:05:04 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+20-11-2021 16:05:04 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1572 ms
+20-11-2021 16:05:04 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+20-11-2021 16:05:04 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+20-11-2021 16:05:05 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:05:05 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+20-11-2021 16:05:06 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:05:06 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:05:06 WARN liquibase.hub [restartedMain] Skipping auto-registration
+20-11-2021 16:05:06 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:05:06 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+20-11-2021 16:05:06 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.5.7.Final
+20-11-2021 16:05:06 INFO org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+20-11-2021 16:05:06 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+20-11-2021 16:05:06 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+20-11-2021 16:05:07 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+20-11-2021 16:05:07 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:05:07 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+20-11-2021 16:05:07 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 9 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@2e749df9
+20-11-2021 16:05:07 WARN org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext [restartedMain] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountController' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\controller\AccountController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountService' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\service\AccountService.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'int' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+20-11-2021 16:05:07 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Closing JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:05:07 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown initiated...
+20-11-2021 16:05:07 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown completed.
+20-11-2021 16:05:07 INFO org.apache.catalina.core.StandardService [restartedMain] Stopping service [Tomcat]
+20-11-2021 16:05:07 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [restartedMain] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+20-11-2021 16:05:07 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [restartedMain] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.backend.hospitalward.service.AccountService required a bean of type 'int' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'int' in your configuration.
+
+20-11-2021 16:07:49 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 3008 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+20-11-2021 16:07:49 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+20-11-2021 16:07:49 INFO org.springframework.boot.devtools.restart.ChangeableUrls [restartedMain] The Class-Path manifest attribute in C:\Users\Xarria\.m2\repository\org\liquibase\liquibase-core\4.3.5\liquibase-core-4.3.5.jar referenced one or more files that do not exist: file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/commons-cli-1.4.jar,file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/snakeyaml-1.27.jar
+20-11-2021 16:07:49 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+20-11-2021 16:07:49 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+20-11-2021 16:07:50 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+20-11-2021 16:07:50 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 77 ms. Found 4 JPA repository interfaces.
+20-11-2021 16:07:51 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+20-11-2021 16:07:51 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+20-11-2021 16:07:51 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+20-11-2021 16:07:51 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+20-11-2021 16:07:51 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+20-11-2021 16:07:51 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1907 ms
+20-11-2021 16:07:51 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+20-11-2021 16:07:52 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+20-11-2021 16:07:52 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:07:53 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+20-11-2021 16:07:53 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:07:53 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:07:53 WARN liquibase.hub [restartedMain] Skipping auto-registration
+20-11-2021 16:07:53 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:07:53 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+20-11-2021 16:07:53 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.5.7.Final
+20-11-2021 16:07:53 INFO org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+20-11-2021 16:07:53 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+20-11-2021 16:07:53 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+20-11-2021 16:07:54 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+20-11-2021 16:07:54 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:07:55 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+20-11-2021 16:07:55 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 24 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@3cf723cc
+20-11-2021 16:07:55 WARN org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext [restartedMain] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountController' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\controller\AccountController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountService' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\service\AccountService.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'int' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+20-11-2021 16:07:55 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Closing JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:07:55 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown initiated...
+20-11-2021 16:07:55 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown completed.
+20-11-2021 16:07:55 INFO org.apache.catalina.core.StandardService [restartedMain] Stopping service [Tomcat]
+20-11-2021 16:07:55 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [restartedMain] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+20-11-2021 16:07:55 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [restartedMain] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.backend.hospitalward.service.AccountService required a bean of type 'int' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'int' in your configuration.
+
+20-11-2021 16:08:40 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 8708 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+20-11-2021 16:08:40 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+20-11-2021 16:08:40 INFO org.springframework.boot.devtools.restart.ChangeableUrls [restartedMain] The Class-Path manifest attribute in C:\Users\Xarria\.m2\repository\org\liquibase\liquibase-core\4.3.5\liquibase-core-4.3.5.jar referenced one or more files that do not exist: file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/commons-cli-1.4.jar,file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/snakeyaml-1.27.jar
+20-11-2021 16:08:40 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+20-11-2021 16:08:40 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+20-11-2021 16:08:40 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+20-11-2021 16:08:40 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 69 ms. Found 4 JPA repository interfaces.
+20-11-2021 16:08:41 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+20-11-2021 16:08:41 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+20-11-2021 16:08:41 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+20-11-2021 16:08:41 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+20-11-2021 16:08:41 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+20-11-2021 16:08:41 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1657 ms
+20-11-2021 16:08:42 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+20-11-2021 16:08:42 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+20-11-2021 16:08:42 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:08:43 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+20-11-2021 16:08:43 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:08:43 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:08:43 WARN liquibase.hub [restartedMain] Skipping auto-registration
+20-11-2021 16:08:43 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:08:43 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+20-11-2021 16:08:43 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.5.7.Final
+20-11-2021 16:08:43 INFO org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+20-11-2021 16:08:43 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+20-11-2021 16:08:43 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+20-11-2021 16:08:44 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+20-11-2021 16:08:44 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:08:45 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+20-11-2021 16:08:45 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 7 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@3eb47e12
+20-11-2021 16:08:45 WARN org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext [restartedMain] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountController' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\controller\AccountController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountService' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\service\AccountService.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'int' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+20-11-2021 16:08:45 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Closing JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:08:45 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown initiated...
+20-11-2021 16:08:45 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown completed.
+20-11-2021 16:08:45 INFO org.apache.catalina.core.StandardService [restartedMain] Stopping service [Tomcat]
+20-11-2021 16:08:45 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [restartedMain] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+20-11-2021 16:08:45 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [restartedMain] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.backend.hospitalward.service.AccountService required a bean of type 'int' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'int' in your configuration.
+
+20-11-2021 16:09:39 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 7688 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+20-11-2021 16:09:39 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+20-11-2021 16:09:39 INFO org.springframework.boot.devtools.restart.ChangeableUrls [restartedMain] The Class-Path manifest attribute in C:\Users\Xarria\.m2\repository\org\liquibase\liquibase-core\4.3.5\liquibase-core-4.3.5.jar referenced one or more files that do not exist: file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/commons-cli-1.4.jar,file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/snakeyaml-1.27.jar
+20-11-2021 16:09:39 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+20-11-2021 16:09:39 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+20-11-2021 16:09:40 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+20-11-2021 16:09:40 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 65 ms. Found 4 JPA repository interfaces.
+20-11-2021 16:09:41 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+20-11-2021 16:09:41 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+20-11-2021 16:09:41 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+20-11-2021 16:09:41 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+20-11-2021 16:09:41 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+20-11-2021 16:09:41 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1849 ms
+20-11-2021 16:09:41 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+20-11-2021 16:09:41 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+20-11-2021 16:09:42 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:09:43 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+20-11-2021 16:09:43 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:09:43 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:09:43 WARN liquibase.hub [restartedMain] Skipping auto-registration
+20-11-2021 16:09:43 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:09:43 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+20-11-2021 16:09:43 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.5.7.Final
+20-11-2021 16:09:43 INFO org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+20-11-2021 16:09:43 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+20-11-2021 16:09:43 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+20-11-2021 16:09:44 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+20-11-2021 16:09:44 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:09:44 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+20-11-2021 16:09:44 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 11 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@1d11e503
+20-11-2021 16:09:45 WARN org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext [restartedMain] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountController' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\controller\AccountController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountService' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\service\AccountService.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'int' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+20-11-2021 16:09:45 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Closing JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:09:45 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown initiated...
+20-11-2021 16:09:45 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown completed.
+20-11-2021 16:09:45 INFO org.apache.catalina.core.StandardService [restartedMain] Stopping service [Tomcat]
+20-11-2021 16:09:45 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [restartedMain] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+20-11-2021 16:09:45 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [restartedMain] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.backend.hospitalward.service.AccountService required a bean of type 'int' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'int' in your configuration.
+
+20-11-2021 16:15:48 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 17816 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+20-11-2021 16:15:48 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+20-11-2021 16:15:48 INFO org.springframework.boot.devtools.restart.ChangeableUrls [restartedMain] The Class-Path manifest attribute in C:\Users\Xarria\.m2\repository\org\liquibase\liquibase-core\4.3.5\liquibase-core-4.3.5.jar referenced one or more files that do not exist: file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/commons-cli-1.4.jar,file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/snakeyaml-1.27.jar
+20-11-2021 16:15:48 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+20-11-2021 16:15:48 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+20-11-2021 16:15:48 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+20-11-2021 16:15:48 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 70 ms. Found 4 JPA repository interfaces.
+20-11-2021 16:15:49 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+20-11-2021 16:15:49 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+20-11-2021 16:15:49 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+20-11-2021 16:15:49 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+20-11-2021 16:15:49 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+20-11-2021 16:15:49 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1595 ms
+20-11-2021 16:15:49 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+20-11-2021 16:15:50 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+20-11-2021 16:15:50 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:15:51 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+20-11-2021 16:15:51 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:15:51 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:15:51 WARN liquibase.hub [restartedMain] Skipping auto-registration
+20-11-2021 16:15:51 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:15:51 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+20-11-2021 16:15:51 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.5.7.Final
+20-11-2021 16:15:51 INFO org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+20-11-2021 16:15:51 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+20-11-2021 16:15:52 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+20-11-2021 16:15:52 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+20-11-2021 16:15:52 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:15:53 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+20-11-2021 16:15:53 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 7 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@14e8148f
+20-11-2021 16:15:53 WARN org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext [restartedMain] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountController' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\controller\AccountController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountService' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\service\AccountService.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'int' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+20-11-2021 16:15:53 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Closing JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:15:53 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown initiated...
+20-11-2021 16:15:53 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown completed.
+20-11-2021 16:15:53 INFO org.apache.catalina.core.StandardService [restartedMain] Stopping service [Tomcat]
+20-11-2021 16:15:53 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [restartedMain] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+20-11-2021 16:15:53 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [restartedMain] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.backend.hospitalward.service.AccountService required a bean of type 'int' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'int' in your configuration.
+
+20-11-2021 16:17:40 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 12820 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+20-11-2021 16:17:40 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+20-11-2021 16:17:41 INFO org.springframework.boot.devtools.restart.ChangeableUrls [restartedMain] The Class-Path manifest attribute in C:\Users\Xarria\.m2\repository\org\liquibase\liquibase-core\4.3.5\liquibase-core-4.3.5.jar referenced one or more files that do not exist: file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/commons-cli-1.4.jar,file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/snakeyaml-1.27.jar
+20-11-2021 16:17:41 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+20-11-2021 16:17:41 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+20-11-2021 16:17:42 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+20-11-2021 16:17:42 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 63 ms. Found 4 JPA repository interfaces.
+20-11-2021 16:17:42 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+20-11-2021 16:17:42 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+20-11-2021 16:17:42 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+20-11-2021 16:17:42 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+20-11-2021 16:17:42 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+20-11-2021 16:17:42 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1853 ms
+20-11-2021 16:17:43 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+20-11-2021 16:17:43 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+20-11-2021 16:17:43 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:17:44 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+20-11-2021 16:17:44 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:17:44 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:17:44 WARN liquibase.hub [restartedMain] Skipping auto-registration
+20-11-2021 16:17:44 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:17:44 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+20-11-2021 16:17:44 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.5.7.Final
+20-11-2021 16:17:44 INFO org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+20-11-2021 16:17:44 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+20-11-2021 16:17:45 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+20-11-2021 16:17:45 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+20-11-2021 16:17:45 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:17:46 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+20-11-2021 16:17:46 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 7 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@cd9ace4
+20-11-2021 16:17:46 WARN org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext [restartedMain] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountController' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\controller\AccountController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountService' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\service\AccountService.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'int' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+20-11-2021 16:17:46 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Closing JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:17:46 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown initiated...
+20-11-2021 16:17:46 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown completed.
+20-11-2021 16:17:46 INFO org.apache.catalina.core.StandardService [restartedMain] Stopping service [Tomcat]
+20-11-2021 16:17:46 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [restartedMain] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+20-11-2021 16:17:46 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [restartedMain] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.backend.hospitalward.service.AccountService required a bean of type 'int' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'int' in your configuration.
+
+20-11-2021 16:20:12 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 2940 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+20-11-2021 16:20:12 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+20-11-2021 16:20:12 INFO org.springframework.boot.devtools.restart.ChangeableUrls [restartedMain] The Class-Path manifest attribute in C:\Users\Xarria\.m2\repository\org\liquibase\liquibase-core\4.3.5\liquibase-core-4.3.5.jar referenced one or more files that do not exist: file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/commons-cli-1.4.jar,file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/snakeyaml-1.27.jar
+20-11-2021 16:20:12 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+20-11-2021 16:20:12 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+20-11-2021 16:20:13 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+20-11-2021 16:20:13 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 69 ms. Found 4 JPA repository interfaces.
+20-11-2021 16:20:13 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+20-11-2021 16:20:13 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+20-11-2021 16:20:13 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+20-11-2021 16:20:13 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+20-11-2021 16:20:13 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+20-11-2021 16:20:13 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1692 ms
+20-11-2021 16:20:14 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+20-11-2021 16:20:14 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+20-11-2021 16:20:14 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:20:15 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+20-11-2021 16:20:15 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:20:15 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:20:15 WARN liquibase.hub [restartedMain] Skipping auto-registration
+20-11-2021 16:20:15 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:20:15 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+20-11-2021 16:20:15 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.5.7.Final
+20-11-2021 16:20:15 INFO org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+20-11-2021 16:20:15 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+20-11-2021 16:20:16 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+20-11-2021 16:20:16 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+20-11-2021 16:20:16 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:20:17 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+20-11-2021 16:20:17 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 8 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@63515f78
+20-11-2021 16:20:17 WARN org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext [restartedMain] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountController' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\controller\AccountController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountService' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\service\AccountService.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'int' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+20-11-2021 16:20:17 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Closing JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:20:17 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown initiated...
+20-11-2021 16:20:17 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown completed.
+20-11-2021 16:20:17 INFO org.apache.catalina.core.StandardService [restartedMain] Stopping service [Tomcat]
+20-11-2021 16:20:17 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [restartedMain] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+20-11-2021 16:20:17 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [restartedMain] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.backend.hospitalward.service.AccountService required a bean of type 'int' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'int' in your configuration.
+
+20-11-2021 16:21:04 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 7972 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+20-11-2021 16:21:04 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+20-11-2021 16:21:04 INFO org.springframework.boot.devtools.restart.ChangeableUrls [restartedMain] The Class-Path manifest attribute in C:\Users\Xarria\.m2\repository\org\liquibase\liquibase-core\4.3.5\liquibase-core-4.3.5.jar referenced one or more files that do not exist: file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/commons-cli-1.4.jar,file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/snakeyaml-1.27.jar
+20-11-2021 16:21:04 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+20-11-2021 16:21:04 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+20-11-2021 16:21:05 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+20-11-2021 16:21:05 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 65 ms. Found 4 JPA repository interfaces.
+20-11-2021 16:21:06 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+20-11-2021 16:21:06 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+20-11-2021 16:21:06 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+20-11-2021 16:21:06 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+20-11-2021 16:21:06 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+20-11-2021 16:21:06 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1735 ms
+20-11-2021 16:21:06 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+20-11-2021 16:21:06 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+20-11-2021 16:21:07 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:21:07 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+20-11-2021 16:21:07 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:21:07 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:21:07 WARN liquibase.hub [restartedMain] Skipping auto-registration
+20-11-2021 16:21:07 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:21:08 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+20-11-2021 16:21:08 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.5.7.Final
+20-11-2021 16:21:08 INFO org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+20-11-2021 16:21:08 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+20-11-2021 16:21:08 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+20-11-2021 16:21:09 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+20-11-2021 16:21:09 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:21:09 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+20-11-2021 16:21:09 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 7 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@244e5117
+20-11-2021 16:21:09 WARN org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext [restartedMain] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountController' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\controller\AccountController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountService' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\service\AccountService.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'int' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+20-11-2021 16:21:09 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Closing JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:21:09 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown initiated...
+20-11-2021 16:21:09 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown completed.
+20-11-2021 16:21:09 INFO org.apache.catalina.core.StandardService [restartedMain] Stopping service [Tomcat]
+20-11-2021 16:21:09 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [restartedMain] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+20-11-2021 16:21:09 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [restartedMain] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.backend.hospitalward.service.AccountService required a bean of type 'int' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'int' in your configuration.
+
+20-11-2021 16:22:44 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 17524 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+20-11-2021 16:22:44 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+20-11-2021 16:22:44 INFO org.springframework.boot.devtools.restart.ChangeableUrls [restartedMain] The Class-Path manifest attribute in C:\Users\Xarria\.m2\repository\org\liquibase\liquibase-core\4.3.5\liquibase-core-4.3.5.jar referenced one or more files that do not exist: file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/commons-cli-1.4.jar,file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/snakeyaml-1.27.jar
+20-11-2021 16:22:44 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+20-11-2021 16:22:44 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+20-11-2021 16:22:45 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+20-11-2021 16:22:45 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 59 ms. Found 4 JPA repository interfaces.
+20-11-2021 16:22:45 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+20-11-2021 16:22:46 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+20-11-2021 16:22:46 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+20-11-2021 16:22:46 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+20-11-2021 16:22:46 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+20-11-2021 16:22:46 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1600 ms
+20-11-2021 16:22:46 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+20-11-2021 16:22:46 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+20-11-2021 16:22:46 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:22:47 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+20-11-2021 16:22:47 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:22:47 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:22:47 WARN liquibase.hub [restartedMain] Skipping auto-registration
+20-11-2021 16:22:47 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:22:47 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+20-11-2021 16:22:47 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.5.7.Final
+20-11-2021 16:22:47 INFO org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+20-11-2021 16:22:48 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+20-11-2021 16:22:48 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+20-11-2021 16:22:48 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+20-11-2021 16:22:48 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:22:49 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+20-11-2021 16:22:49 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 8 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@5c51a23d
+20-11-2021 16:22:49 WARN org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext [restartedMain] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountController' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\controller\AccountController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountService' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\service\AccountService.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'java.lang.String' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+20-11-2021 16:22:49 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Closing JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:22:49 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown initiated...
+20-11-2021 16:22:49 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown completed.
+20-11-2021 16:22:49 INFO org.apache.catalina.core.StandardService [restartedMain] Stopping service [Tomcat]
+20-11-2021 16:22:49 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [restartedMain] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+20-11-2021 16:22:49 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [restartedMain] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.backend.hospitalward.service.AccountService required a bean of type 'java.lang.String' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'java.lang.String' in your configuration.
+
+20-11-2021 16:25:25 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 17740 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+20-11-2021 16:25:25 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+20-11-2021 16:25:26 INFO org.springframework.boot.devtools.restart.ChangeableUrls [restartedMain] The Class-Path manifest attribute in C:\Users\Xarria\.m2\repository\org\liquibase\liquibase-core\4.3.5\liquibase-core-4.3.5.jar referenced one or more files that do not exist: file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/commons-cli-1.4.jar,file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/snakeyaml-1.27.jar
+20-11-2021 16:25:26 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+20-11-2021 16:25:26 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+20-11-2021 16:25:26 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+20-11-2021 16:25:26 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 56 ms. Found 4 JPA repository interfaces.
+20-11-2021 16:25:27 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+20-11-2021 16:25:27 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+20-11-2021 16:25:27 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+20-11-2021 16:25:27 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+20-11-2021 16:25:27 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+20-11-2021 16:25:27 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1570 ms
+20-11-2021 16:25:27 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+20-11-2021 16:25:28 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+20-11-2021 16:25:28 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:25:29 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+20-11-2021 16:25:29 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:25:29 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:25:29 WARN liquibase.hub [restartedMain] Skipping auto-registration
+20-11-2021 16:25:29 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:25:29 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+20-11-2021 16:25:29 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.5.7.Final
+20-11-2021 16:25:29 INFO org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+20-11-2021 16:25:29 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+20-11-2021 16:25:29 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+20-11-2021 16:25:30 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+20-11-2021 16:25:30 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:25:30 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+20-11-2021 16:25:30 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 11 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@7df2c9fc
+20-11-2021 16:25:30 WARN org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext [restartedMain] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountController' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\controller\AccountController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountService' defined in file [D:\inzynier\projekt\backend\HospitalWard\target\classes\com\backend\hospitalward\service\AccountService.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'int' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+20-11-2021 16:25:30 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Closing JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:25:30 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown initiated...
+20-11-2021 16:25:30 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Shutdown completed.
+20-11-2021 16:25:30 INFO org.apache.catalina.core.StandardService [restartedMain] Stopping service [Tomcat]
+20-11-2021 16:25:30 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [restartedMain] 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+20-11-2021 16:25:30 ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter [restartedMain] 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in com.backend.hospitalward.service.AccountService required a bean of type 'int' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'int' in your configuration.
+
+20-11-2021 16:26:51 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 9940 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+20-11-2021 16:26:51 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+20-11-2021 16:26:51 INFO org.springframework.boot.devtools.restart.ChangeableUrls [restartedMain] The Class-Path manifest attribute in C:\Users\Xarria\.m2\repository\org\liquibase\liquibase-core\4.3.5\liquibase-core-4.3.5.jar referenced one or more files that do not exist: file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/commons-cli-1.4.jar,file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/snakeyaml-1.27.jar
+20-11-2021 16:26:51 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+20-11-2021 16:26:51 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+20-11-2021 16:26:52 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+20-11-2021 16:26:52 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 86 ms. Found 4 JPA repository interfaces.
+20-11-2021 16:26:53 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+20-11-2021 16:26:53 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+20-11-2021 16:26:53 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+20-11-2021 16:26:53 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+20-11-2021 16:26:53 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+20-11-2021 16:26:53 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 2391 ms
+20-11-2021 16:26:54 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+20-11-2021 16:26:54 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+20-11-2021 16:26:54 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:26:55 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+20-11-2021 16:26:55 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:26:55 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:26:55 WARN liquibase.hub [restartedMain] Skipping auto-registration
+20-11-2021 16:26:55 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:26:55 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+20-11-2021 16:26:55 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.5.7.Final
+20-11-2021 16:26:55 INFO org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+20-11-2021 16:26:56 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+20-11-2021 16:26:56 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+20-11-2021 16:26:57 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+20-11-2021 16:26:57 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:26:57 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+20-11-2021 16:26:57 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 11 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@56839632
+20-11-2021 16:26:57 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: corsConfigurer with args: {}
+20-11-2021 16:26:57 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: corsConfigurer in 0 ms and returned: com.backend.hospitalward.config.ApplicationConfig$1@ef735dc
+20-11-2021 16:26:57 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+20-11-2021 16:26:57 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig started method: authenticationManagerBean with args: {}
+20-11-2021 16:26:57 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig finished method: authenticationManagerBean in 7 ms and returned: org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter$AuthenticationManagerDelegator@58928ece
+20-11-2021 16:26:58 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: getCacheManager with args: {}
+20-11-2021 16:26:58 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: getCacheManager in 0 ms and returned: org.springframework.cache.concurrent.ConcurrentMapCacheManager@321b8c1
+20-11-2021 16:26:58 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: restTemplate with args: {}
+20-11-2021 16:26:58 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: restTemplate in 4 ms and returned: org.springframework.web.client.RestTemplate@611d0f00
+20-11-2021 16:26:58 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: objectMapper with args: {}
+20-11-2021 16:26:58 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: objectMapper in 0 ms and returned: com.fasterxml.jackson.databind.ObjectMapper@3bfcc23e
+20-11-2021 16:26:58 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig started method: daoAuthenticationProvider with args: {}
+20-11-2021 16:26:58 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig finished method: daoAuthenticationProvider in 12 ms and returned: org.springframework.security.authentication.dao.DaoAuthenticationProvider@1489a70b
+20-11-2021 16:26:58 INFO org.springframework.security.web.DefaultSecurityFilterChain [restartedMain] Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@5ab7193e, org.springframework.security.web.context.SecurityContextPersistenceFilter@16431b75, org.springframework.security.web.header.HeaderWriterFilter@2f27da22, org.springframework.web.filter.CorsFilter@61dd1790, org.springframework.security.web.authentication.logout.LogoutFilter@5cdbd10, com.backend.hospitalward.security.RequestFilter@182c0a57, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@10d91b97, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@da093c, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@45a1cd1c, org.springframework.security.web.session.SessionManagementFilter@3da728e, org.springframework.security.web.access.ExceptionTranslationFilter@1838e92b, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@30a6b14]
+20-11-2021 16:26:58 INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+20-11-2021 16:26:58 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+20-11-2021 16:26:58 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+20-11-2021 16:26:58 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Started HospitalWardApplication in 8.092 seconds (JVM running for 9.87)
+20-11-2021 16:27:41 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 1684 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+20-11-2021 16:27:41 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+20-11-2021 16:27:41 INFO org.springframework.boot.devtools.restart.ChangeableUrls [restartedMain] The Class-Path manifest attribute in C:\Users\Xarria\.m2\repository\org\liquibase\liquibase-core\4.3.5\liquibase-core-4.3.5.jar referenced one or more files that do not exist: file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/commons-cli-1.4.jar,file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/snakeyaml-1.27.jar
+20-11-2021 16:27:41 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+20-11-2021 16:27:41 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+20-11-2021 16:27:42 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+20-11-2021 16:27:42 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 110 ms. Found 4 JPA repository interfaces.
+20-11-2021 16:27:43 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+20-11-2021 16:27:43 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+20-11-2021 16:27:43 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+20-11-2021 16:27:43 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+20-11-2021 16:27:43 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+20-11-2021 16:27:43 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 2164 ms
+20-11-2021 16:27:44 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+20-11-2021 16:27:44 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+20-11-2021 16:27:44 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:27:45 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+20-11-2021 16:27:45 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:27:45 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:27:45 WARN liquibase.hub [restartedMain] Skipping auto-registration
+20-11-2021 16:27:45 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:27:45 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+20-11-2021 16:27:46 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.5.7.Final
+20-11-2021 16:27:46 INFO org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+20-11-2021 16:27:46 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+20-11-2021 16:27:46 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+20-11-2021 16:27:47 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+20-11-2021 16:27:47 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:27:47 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+20-11-2021 16:27:47 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 16 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@241793b9
+20-11-2021 16:27:48 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: corsConfigurer with args: {}
+20-11-2021 16:27:48 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: corsConfigurer in 0 ms and returned: com.backend.hospitalward.config.ApplicationConfig$1@263e0cd5
+20-11-2021 16:27:48 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+20-11-2021 16:27:48 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig started method: authenticationManagerBean with args: {}
+20-11-2021 16:27:48 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig finished method: authenticationManagerBean in 3 ms and returned: org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter$AuthenticationManagerDelegator@3b98ff27
+20-11-2021 16:27:48 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: getCacheManager with args: {}
+20-11-2021 16:27:48 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: getCacheManager in 3 ms and returned: org.springframework.cache.concurrent.ConcurrentMapCacheManager@296ce157
+20-11-2021 16:27:48 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: restTemplate with args: {}
+20-11-2021 16:27:48 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: restTemplate in 8 ms and returned: org.springframework.web.client.RestTemplate@2beaa124
+20-11-2021 16:27:48 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: objectMapper with args: {}
+20-11-2021 16:27:48 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: objectMapper in 0 ms and returned: com.fasterxml.jackson.databind.ObjectMapper@3445cee3
+20-11-2021 16:27:48 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig started method: daoAuthenticationProvider with args: {}
+20-11-2021 16:27:48 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig finished method: daoAuthenticationProvider in 16 ms and returned: org.springframework.security.authentication.dao.DaoAuthenticationProvider@1a68225d
+20-11-2021 16:27:48 INFO org.springframework.security.web.DefaultSecurityFilterChain [restartedMain] Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@157af9fb, org.springframework.security.web.context.SecurityContextPersistenceFilter@7ccf6441, org.springframework.security.web.header.HeaderWriterFilter@316b81c0, org.springframework.web.filter.CorsFilter@76981bed, org.springframework.security.web.authentication.logout.LogoutFilter@1fa63350, com.backend.hospitalward.security.RequestFilter@5eced9b7, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@722835df, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5000775e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@74c21d61, org.springframework.security.web.session.SessionManagementFilter@2b8a901b, org.springframework.security.web.access.ExceptionTranslationFilter@2ac21110, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@20b31afe]
+20-11-2021 16:27:49 INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+20-11-2021 16:27:49 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+20-11-2021 16:27:49 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+20-11-2021 16:27:49 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Started HospitalWardApplication in 8.039 seconds (JVM running for 10.451)
+20-11-2021 16:32:57 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [http-nio-8080-exec-2] Initializing Spring DispatcherServlet 'dispatcherServlet'
+20-11-2021 16:32:57 INFO org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-2] Initializing Servlet 'dispatcherServlet'
+20-11-2021 16:32:57 INFO org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-2] Completed initialization in 3 ms
+20-11-2021 16:32:57 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-2] Class AuthController started method: authenticate with args: {credentials=Credentials(login=sylwester.garda, password=password)}
+20-11-2021 16:32:57 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-2] Class AuthService started method: loadUserByUsername with args: {login=sylwester.garda}
+20-11-2021 16:32:57 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-2] Class AccountRepository started method: findAccountByLogin with args: {login=sylwester.garda}
+20-11-2021 16:32:57 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-2] Class AccountRepository finished method: findAccountByLogin in 177 ms and returned: Optional[Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)]
+20-11-2021 16:32:57 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-2] Class AuthService finished method: loadUserByUsername in 257 ms and returned: Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)
+20-11-2021 16:32:57 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-2] Class AuthService started method: loadUserByUsername with args: {login=sylwester.garda}
+20-11-2021 16:32:57 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-2] Class AccountRepository started method: findAccountByLogin with args: {login=sylwester.garda}
+20-11-2021 16:32:57 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-2] Class AccountRepository finished method: findAccountByLogin in 7 ms and returned: Optional[Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)]
+20-11-2021 16:32:57 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-2] Class AuthService finished method: loadUserByUsername in 8 ms and returned: Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)
+20-11-2021 16:32:57 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-2] Class JWTUtils started method: generateToken with args: {userDetails=Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)}
+20-11-2021 16:32:57 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-2] Class JWTUtils finished method: generateToken in 117 ms and returned: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzeWx3ZXN0ZXIuZ2FyZGEiLCJhdXRoIjoiVFJFQVRNRU5UIERJUkVDVE9SIiwiaXNzIjoiSG9zcGl0YWxXYXJkIiwiaWF0IjoxNjM3NDIyMzc3LCJleHAiOjE2Mzc0MjMyNzd9.40rbzjrFwbshmmoirjq4RrdKE4mXVe6vW8x9N3s2yco
+20-11-2021 16:32:57 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-2] Class AuthController finished method: authenticate in 425 ms with HTTP status code: OK and body containing <200 OK OK,eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzeWx3ZXN0ZXIuZ2FyZGEiLCJhdXRoIjoiVFJFQVRNRU5UIERJUkVDVE9SIiwiaXNzIjoiSG9zcGl0YWxXYXJkIiwiaWF0IjoxNjM3NDIyMzc3LCJleHAiOjE2Mzc0MjMyNzd9.40rbzjrFwbshmmoirjq4RrdKE4mXVe6vW8x9N3s2yco,[]>
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class JWTUtils started method: extractUsername with args: {token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzeWx3ZXN0ZXIuZ2FyZGEiLCJhdXRoIjoiVFJFQVRNRU5UIERJUkVDVE9SIiwiaXNzIjoiSG9zcGl0YWxXYXJkIiwiaWF0IjoxNjM3NDIyMzc3LCJleHAiOjE2Mzc0MjMyNzd9.40rbzjrFwbshmmoirjq4RrdKE4mXVe6vW8x9N3s2yco}
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class JWTUtils finished method: extractUsername in 51 ms and returned: sylwester.garda
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class AuthService started method: loadUserByUsername with args: {login=sylwester.garda}
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class AccountRepository started method: findAccountByLogin with args: {login=sylwester.garda}
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class AccountRepository finished method: findAccountByLogin in 11 ms and returned: Optional[Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)]
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class AuthService finished method: loadUserByUsername in 11 ms and returned: Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class JWTUtils started method: validateToken with args: {userDetails=Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null), token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzeWx3ZXN0ZXIuZ2FyZGEiLCJhdXRoIjoiVFJFQVRNRU5UIERJUkVDVE9SIiwiaXNzIjoiSG9zcGl0YWxXYXJkIiwiaWF0IjoxNjM3NDIyMzc3LCJleHAiOjE2Mzc0MjMyNzd9.40rbzjrFwbshmmoirjq4RrdKE4mXVe6vW8x9N3s2yco}
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class JWTUtils finished method: validateToken in 8 ms and returned: true
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class AccountController started method: createAccountOffice with args: {accountCreateRequest=AccountCreateRequest(accessLevel=SECRETARY, name=Kinga, surname=Maj, email=karolina_kowalczyk99@wp.pl), securityContext=SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null), Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[AccessLevel(id=5, name=TREATMENT DIRECTOR)]]]}
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class AccountService started method: createAccount with args: {accessLevel=SECRETARY, createdBy=sylwester.garda, account=Account(login=null, type=null, accessLevel=null, name=Kinga, surname=Maj, email=karolina_kowalczyk99@wp.pl, active=true, confirmed=false, createdBy=null, creationDate=2021-11-20 16:33:23.3627267, modifiedBy=null, modificationDate=null)}
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class AccountRepository started method: findAccountByLogin with args: {login=sylwester.garda}
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class AccountRepository finished method: findAccountByLogin in 24 ms and returned: Optional[Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)]
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class AccountRepository started method: findAccountsByLoginContains with args: {fullName=kinga.maj}
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class AccountRepository finished method: findAccountsByLoginContains in 68 ms and returned: ArrayList , size: 2
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class AccessLevelRepository started method: findAccessLevelByName with args: {name=SECRETARY}
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class AccessLevelRepository finished method: findAccessLevelByName in 11 ms and returned: Optional[AccessLevel(id=4, name=SECRETARY)]
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class CrudRepository started method: save with args: {arg0=Account(login=kinga.maj3, type=null, accessLevel=AccessLevel(id=4, name=SECRETARY), name=Kinga, surname=Maj, email=karolina_kowalczyk99@wp.pl, active=true, confirmed=false, createdBy=Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null), creationDate=2021-11-20 16:33:23.3627267, modifiedBy=null, modificationDate=null)}
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class CrudRepository finished method: save in 74 ms and returned: Account(login=kinga.maj3, type=null, accessLevel=AccessLevel(id=4, name=SECRETARY), name=Kinga, surname=Maj, email=karolina_kowalczyk99@wp.pl, active=true, confirmed=false, createdBy=Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null), creationDate=2021-11-20 16:33:23.3627267, modifiedBy=null, modificationDate=null)
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class CrudRepository started method: save with args: {arg0=com.backend.hospitalward.model.Url@3ea97cb3}
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class CrudRepository finished method: save in 7 ms and returned: com.backend.hospitalward.model.Url@3ea97cb3
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class EmailSender started method: sendAccountConfirmationEmails with args: {nameDirector=Sylwester, emailEmployee=karolina_kowalczyk99@wp.pl, codeEmployee=ifBWu, nameEmployee=Kinga, emailDirector=flowerka99@gmail.com, codeDirector=F5B4V}
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class EmailSender finished method: sendAccountConfirmationEmails in 8 ms
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class AccountService finished method: createAccount in 238 ms
+20-11-2021 16:33:23 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class AccountController finished method: createAccountOffice in 306 ms with HTTP status code: OK and body containing null
+20-11-2021 16:34:18 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:34:18 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+20-11-2021 16:34:18 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+20-11-2021 16:34:25 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 16888 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+20-11-2021 16:34:25 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+20-11-2021 16:34:25 INFO org.springframework.boot.devtools.restart.ChangeableUrls [restartedMain] The Class-Path manifest attribute in C:\Users\Xarria\.m2\repository\org\liquibase\liquibase-core\4.3.5\liquibase-core-4.3.5.jar referenced one or more files that do not exist: file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/commons-cli-1.4.jar,file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/snakeyaml-1.27.jar
+20-11-2021 16:34:25 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+20-11-2021 16:34:25 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+20-11-2021 16:34:26 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+20-11-2021 16:34:26 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 108 ms. Found 4 JPA repository interfaces.
+20-11-2021 16:34:27 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+20-11-2021 16:34:27 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+20-11-2021 16:34:27 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+20-11-2021 16:34:27 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+20-11-2021 16:34:27 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+20-11-2021 16:34:27 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 2165 ms
+20-11-2021 16:34:27 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+20-11-2021 16:34:28 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+20-11-2021 16:34:28 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:34:30 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+20-11-2021 16:34:30 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:34:30 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:34:30 WARN liquibase.hub [restartedMain] Skipping auto-registration
+20-11-2021 16:34:30 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:34:30 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+20-11-2021 16:34:30 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.5.7.Final
+20-11-2021 16:34:30 INFO org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+20-11-2021 16:34:30 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+20-11-2021 16:34:30 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+20-11-2021 16:34:31 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+20-11-2021 16:34:31 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:34:32 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+20-11-2021 16:34:32 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 16 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@3bce728c
+20-11-2021 16:34:32 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: corsConfigurer with args: {}
+20-11-2021 16:34:32 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: corsConfigurer in 0 ms and returned: com.backend.hospitalward.config.ApplicationConfig$1@7d1ad8ec
+20-11-2021 16:34:32 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+20-11-2021 16:34:32 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig started method: authenticationManagerBean with args: {}
+20-11-2021 16:34:32 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig finished method: authenticationManagerBean in 8 ms and returned: org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter$AuthenticationManagerDelegator@9911804
+20-11-2021 16:34:32 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: getCacheManager with args: {}
+20-11-2021 16:34:32 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: getCacheManager in 4 ms and returned: org.springframework.cache.concurrent.ConcurrentMapCacheManager@4136c14c
+20-11-2021 16:34:32 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: restTemplate with args: {}
+20-11-2021 16:34:32 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: restTemplate in 12 ms and returned: org.springframework.web.client.RestTemplate@23f0437f
+20-11-2021 16:34:33 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: objectMapper with args: {}
+20-11-2021 16:34:33 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: objectMapper in 0 ms and returned: com.fasterxml.jackson.databind.ObjectMapper@41c91e8d
+20-11-2021 16:34:33 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig started method: daoAuthenticationProvider with args: {}
+20-11-2021 16:34:33 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig finished method: daoAuthenticationProvider in 19 ms and returned: org.springframework.security.authentication.dao.DaoAuthenticationProvider@5f11d742
+20-11-2021 16:34:33 INFO org.springframework.security.web.DefaultSecurityFilterChain [restartedMain] Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@346220ab, org.springframework.security.web.context.SecurityContextPersistenceFilter@7d97b70b, org.springframework.security.web.header.HeaderWriterFilter@26bdad23, org.springframework.web.filter.CorsFilter@3329600d, org.springframework.security.web.authentication.logout.LogoutFilter@4a4341bd, com.backend.hospitalward.security.RequestFilter@4c32c2c3, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1cee4f5d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1a2d147e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2bcddf9b, org.springframework.security.web.session.SessionManagementFilter@3106fc2e, org.springframework.security.web.access.ExceptionTranslationFilter@62d5c4fe, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@34414374]
+20-11-2021 16:34:33 INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+20-11-2021 16:34:33 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+20-11-2021 16:34:33 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+20-11-2021 16:34:33 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Started HospitalWardApplication in 8.872 seconds (JVM running for 10.927)
+20-11-2021 16:34:48 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+20-11-2021 16:34:48 INFO org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+20-11-2021 16:34:48 INFO org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Completed initialization in 4 ms
+20-11-2021 16:34:48 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class JWTUtils started method: extractUsername with args: {token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzeWx3ZXN0ZXIuZ2FyZGEiLCJhdXRoIjoiVFJFQVRNRU5UIERJUkVDVE9SIiwiaXNzIjoiSG9zcGl0YWxXYXJkIiwiaWF0IjoxNjM3NDIyMzc3LCJleHAiOjE2Mzc0MjMyNzd9.40rbzjrFwbshmmoirjq4RrdKE4mXVe6vW8x9N3s2yco}
+20-11-2021 16:34:48 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class JWTUtils finished method: extractUsername in 176 ms and returned: sylwester.garda
+20-11-2021 16:34:48 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AuthService started method: loadUserByUsername with args: {login=sylwester.garda}
+20-11-2021 16:34:48 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountRepository started method: findAccountByLogin with args: {login=sylwester.garda}
+20-11-2021 16:34:48 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountRepository finished method: findAccountByLogin in 186 ms and returned: Optional[Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)]
+20-11-2021 16:34:48 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AuthService finished method: loadUserByUsername in 286 ms and returned: Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)
+20-11-2021 16:34:48 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class JWTUtils started method: validateToken with args: {userDetails=Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null), token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzeWx3ZXN0ZXIuZ2FyZGEiLCJhdXRoIjoiVFJFQVRNRU5UIERJUkVDVE9SIiwiaXNzIjoiSG9zcGl0YWxXYXJkIiwiaWF0IjoxNjM3NDIyMzc3LCJleHAiOjE2Mzc0MjMyNzd9.40rbzjrFwbshmmoirjq4RrdKE4mXVe6vW8x9N3s2yco}
+20-11-2021 16:34:48 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class JWTUtils finished method: validateToken in 8 ms and returned: true
+20-11-2021 16:34:48 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountController started method: createAccountOffice with args: {accountCreateRequest=AccountCreateRequest(accessLevel=SECRETARY, name=Kinga, surname=Maj, email=karolina_kowalczyk99@wp.pl), securityContext=SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null), Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[AccessLevel(id=5, name=TREATMENT DIRECTOR)]]]}
+20-11-2021 16:34:48 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountService started method: createAccount with args: {accessLevel=SECRETARY, createdBy=sylwester.garda, account=Account(login=null, type=null, accessLevel=null, name=Kinga, surname=Maj, email=karolina_kowalczyk99@wp.pl, active=true, confirmed=false, createdBy=null, creationDate=2021-11-20 16:34:48.8362562, modifiedBy=null, modificationDate=null)}
+20-11-2021 16:34:48 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountRepository started method: findAccountByLogin with args: {login=sylwester.garda}
+20-11-2021 16:34:48 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountRepository finished method: findAccountByLogin in 19 ms and returned: Optional[Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)]
+20-11-2021 16:34:48 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountRepository started method: findAccountsByLoginContains with args: {fullName=kinga.maj}
+20-11-2021 16:34:48 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountRepository finished method: findAccountsByLoginContains in 68 ms and returned: ArrayList , size: 2
+20-11-2021 16:34:48 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccessLevelRepository started method: findAccessLevelByName with args: {name=SECRETARY}
+20-11-2021 16:34:48 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccessLevelRepository finished method: findAccessLevelByName in 12 ms and returned: Optional[AccessLevel(id=4, name=SECRETARY)]
+20-11-2021 16:34:48 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class CrudRepository started method: save with args: {arg0=Account(login=kinga.maj3, type=null, accessLevel=AccessLevel(id=4, name=SECRETARY), name=Kinga, surname=Maj, email=karolina_kowalczyk99@wp.pl, active=true, confirmed=false, createdBy=Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null), creationDate=2021-11-20 16:34:48.8362562, modifiedBy=null, modificationDate=null)}
+20-11-2021 16:34:49 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class CrudRepository finished method: save in 79 ms and returned: Account(login=kinga.maj3, type=null, accessLevel=AccessLevel(id=4, name=SECRETARY), name=Kinga, surname=Maj, email=karolina_kowalczyk99@wp.pl, active=true, confirmed=false, createdBy=Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null), creationDate=2021-11-20 16:34:48.8362562, modifiedBy=null, modificationDate=null)
+20-11-2021 16:34:49 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class CrudRepository started method: save with args: {arg0=com.backend.hospitalward.model.Url@1e601af2}
+20-11-2021 16:34:49 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class CrudRepository finished method: save in 16 ms and returned: com.backend.hospitalward.model.Url@1e601af2
+20-11-2021 16:34:49 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class EmailSender started method: sendAccountConfirmationEmails with args: {nameDirector=Sylwester, emailEmployee=karolina_kowalczyk99@wp.pl, codeEmployee=N003g, nameEmployee=Kinga, emailDirector=flowerka99@gmail.com, codeDirector=zYXVq}
+20-11-2021 16:35:34 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class EmailSender finished method: sendAccountConfirmationEmails in 45866 ms
+20-11-2021 16:35:34 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountService finished method: createAccount in 46124 ms
+20-11-2021 16:35:35 ERROR com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] JpaSystemException thrown in line: org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:566) with message: transaction timeout expired; nested exception is org.hibernate.TransactionException: transaction timeout expired
+20-11-2021 16:35:35 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class PersistenceExceptionAdvice started method: persistenceException with args: {e=org.springframework.orm.jpa.JpaSystemException: transaction timeout expired; nested exception is org.hibernate.TransactionException: transaction timeout expired}
+20-11-2021 16:35:35 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class PersistenceExceptionAdvice finished method: persistenceException in 12 ms and returned: ExceptionResponse(dateTime=20-11-2021 16:35:35, message=transaction timeout expired; nested exception is org.hibernate.TransactionException: transaction timeout expired)
+20-11-2021 16:39:47 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:39:47 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+20-11-2021 16:39:47 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+20-11-2021 16:39:54 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 6096 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+20-11-2021 16:39:54 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+20-11-2021 16:39:54 INFO org.springframework.boot.devtools.restart.ChangeableUrls [restartedMain] The Class-Path manifest attribute in C:\Users\Xarria\.m2\repository\org\liquibase\liquibase-core\4.3.5\liquibase-core-4.3.5.jar referenced one or more files that do not exist: file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/commons-cli-1.4.jar,file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/snakeyaml-1.27.jar
+20-11-2021 16:39:54 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+20-11-2021 16:39:54 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+20-11-2021 16:39:55 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+20-11-2021 16:39:55 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 81 ms. Found 4 JPA repository interfaces.
+20-11-2021 16:39:56 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+20-11-2021 16:39:56 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+20-11-2021 16:39:56 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+20-11-2021 16:39:56 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+20-11-2021 16:39:56 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+20-11-2021 16:39:56 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 2129 ms
+20-11-2021 16:39:56 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+20-11-2021 16:39:57 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+20-11-2021 16:39:57 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:39:58 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+20-11-2021 16:39:58 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:39:58 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+20-11-2021 16:39:58 WARN liquibase.hub [restartedMain] Skipping auto-registration
+20-11-2021 16:39:58 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+20-11-2021 16:39:58 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+20-11-2021 16:39:58 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.5.7.Final
+20-11-2021 16:39:58 INFO org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+20-11-2021 16:39:59 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+20-11-2021 16:39:59 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+20-11-2021 16:39:59 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+20-11-2021 16:39:59 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:40:00 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+20-11-2021 16:40:00 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 11 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@34143ec
+20-11-2021 16:40:00 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: corsConfigurer with args: {}
+20-11-2021 16:40:00 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: corsConfigurer in 3 ms and returned: com.backend.hospitalward.config.ApplicationConfig$1@50c1b006
+20-11-2021 16:40:00 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+20-11-2021 16:40:00 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig started method: authenticationManagerBean with args: {}
+20-11-2021 16:40:00 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig finished method: authenticationManagerBean in 7 ms and returned: org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter$AuthenticationManagerDelegator@74780d5e
+20-11-2021 16:40:01 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: getCacheManager with args: {}
+20-11-2021 16:40:01 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: getCacheManager in 3 ms and returned: org.springframework.cache.concurrent.ConcurrentMapCacheManager@25feb94f
+20-11-2021 16:40:01 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: restTemplate with args: {}
+20-11-2021 16:40:01 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: restTemplate in 20 ms and returned: org.springframework.web.client.RestTemplate@285ab7c7
+20-11-2021 16:40:01 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: objectMapper with args: {}
+20-11-2021 16:40:01 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: objectMapper in 0 ms and returned: com.fasterxml.jackson.databind.ObjectMapper@3f247d5b
+20-11-2021 16:40:01 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig started method: daoAuthenticationProvider with args: {}
+20-11-2021 16:40:01 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig finished method: daoAuthenticationProvider in 15 ms and returned: org.springframework.security.authentication.dao.DaoAuthenticationProvider@7d43829d
+20-11-2021 16:40:01 INFO org.springframework.security.web.DefaultSecurityFilterChain [restartedMain] Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1c11f52b, org.springframework.security.web.context.SecurityContextPersistenceFilter@4c901d2a, org.springframework.security.web.header.HeaderWriterFilter@5a49174c, org.springframework.web.filter.CorsFilter@2296c82f, org.springframework.security.web.authentication.logout.LogoutFilter@817b6a5, com.backend.hospitalward.security.RequestFilter@570dd4c4, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@49878ffd, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@56d47cec, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@36236677, org.springframework.security.web.session.SessionManagementFilter@57da0daa, org.springframework.security.web.access.ExceptionTranslationFilter@415e688, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@36eb4c20]
+20-11-2021 16:40:02 INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+20-11-2021 16:40:02 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+20-11-2021 16:40:02 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+20-11-2021 16:40:02 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Started HospitalWardApplication in 8.241 seconds (JVM running for 10.099)
+20-11-2021 16:40:07 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+20-11-2021 16:40:07 INFO org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+20-11-2021 16:40:07 INFO org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Completed initialization in 1 ms
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class JWTUtils started method: extractUsername with args: {token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzeWx3ZXN0ZXIuZ2FyZGEiLCJhdXRoIjoiVFJFQVRNRU5UIERJUkVDVE9SIiwiaXNzIjoiSG9zcGl0YWxXYXJkIiwiaWF0IjoxNjM3NDIyMzc3LCJleHAiOjE2Mzc0MjMyNzd9.40rbzjrFwbshmmoirjq4RrdKE4mXVe6vW8x9N3s2yco}
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class JWTUtils finished method: extractUsername in 76 ms and returned: sylwester.garda
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AuthService started method: loadUserByUsername with args: {login=sylwester.garda}
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountRepository started method: findAccountByLogin with args: {login=sylwester.garda}
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountRepository finished method: findAccountByLogin in 64 ms and returned: Optional[Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)]
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AuthService finished method: loadUserByUsername in 116 ms and returned: Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class JWTUtils started method: validateToken with args: {userDetails=Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null), token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzeWx3ZXN0ZXIuZ2FyZGEiLCJhdXRoIjoiVFJFQVRNRU5UIERJUkVDVE9SIiwiaXNzIjoiSG9zcGl0YWxXYXJkIiwiaWF0IjoxNjM3NDIyMzc3LCJleHAiOjE2Mzc0MjMyNzd9.40rbzjrFwbshmmoirjq4RrdKE4mXVe6vW8x9N3s2yco}
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class JWTUtils finished method: validateToken in 4 ms and returned: true
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountController started method: createAccountOffice with args: {accountCreateRequest=AccountCreateRequest(accessLevel=SECRETARY, name=Kinga, surname=Maj, email=karolina_kowalczyk99@wp.pl), securityContext=SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null), Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[AccessLevel(id=5, name=TREATMENT DIRECTOR)]]]}
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountService started method: createAccount with args: {accessLevel=SECRETARY, createdBy=sylwester.garda, account=Account(login=null, type=null, accessLevel=null, name=Kinga, surname=Maj, email=karolina_kowalczyk99@wp.pl, active=true, confirmed=false, createdBy=null, creationDate=2021-11-20 16:40:07.7806899, modifiedBy=null, modificationDate=null)}
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountRepository started method: findAccountByLogin with args: {login=sylwester.garda}
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountRepository finished method: findAccountByLogin in 7 ms and returned: Optional[Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)]
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountRepository started method: findAccountsByLoginContains with args: {fullName=kinga.maj}
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountRepository finished method: findAccountsByLoginContains in 27 ms and returned: ArrayList , size: 2
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccessLevelRepository started method: findAccessLevelByName with args: {name=SECRETARY}
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccessLevelRepository finished method: findAccessLevelByName in 3 ms and returned: Optional[AccessLevel(id=4, name=SECRETARY)]
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class CrudRepository started method: save with args: {arg0=Account(login=kinga.maj3, type=null, accessLevel=AccessLevel(id=4, name=SECRETARY), name=Kinga, surname=Maj, email=karolina_kowalczyk99@wp.pl, active=true, confirmed=false, createdBy=Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null), creationDate=2021-11-20 16:40:07.7806899, modifiedBy=null, modificationDate=null)}
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class CrudRepository finished method: save in 28 ms and returned: Account(login=kinga.maj3, type=null, accessLevel=AccessLevel(id=4, name=SECRETARY), name=Kinga, surname=Maj, email=karolina_kowalczyk99@wp.pl, active=true, confirmed=false, createdBy=Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null), creationDate=2021-11-20 16:40:07.7806899, modifiedBy=null, modificationDate=null)
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class CrudRepository started method: save with args: {arg0=com.backend.hospitalward.model.Url@1f84462b}
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class CrudRepository finished method: save in 7 ms and returned: com.backend.hospitalward.model.Url@1f84462b
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountService finished method: createAccount in 108 ms
+20-11-2021 16:40:07 INFO com.backend.hospitalward.util.logging.AspectLogger [task-1] Class EmailSender started method: sendAccountConfirmationEmails with args: {nameDirector=Sylwester, emailEmployee=karolina_kowalczyk99@wp.pl, codeEmployee=WL9Sf, nameEmployee=Kinga, emailDirector=flowerka99@gmail.com, codeDirector=iGfWP}
+20-11-2021 16:40:11 ERROR com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] JpaSystemException thrown in line: org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:566) with message: transaction timeout expired; nested exception is org.hibernate.TransactionException: transaction timeout expired
+20-11-2021 16:40:11 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class PersistenceExceptionAdvice started method: transactionTimedOutException with args: {e=org.springframework.orm.jpa.JpaSystemException: transaction timeout expired; nested exception is org.hibernate.TransactionException: transaction timeout expired}
+20-11-2021 16:40:11 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class PersistenceExceptionAdvice finished method: transactionTimedOutException in 16 ms and returned: ExceptionResponse(dateTime=20-11-2021 16:40:11, message=transaction timeout expired; nested exception is org.hibernate.TransactionException: transaction timeout expired)
+20-11-2021 16:40:30 INFO com.backend.hospitalward.util.logging.AspectLogger [task-1] Class EmailSender finished method: sendAccountConfirmationEmails in 22121 ms
+20-11-2021 16:40:59 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+20-11-2021 16:40:59 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+20-11-2021 16:40:59 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.

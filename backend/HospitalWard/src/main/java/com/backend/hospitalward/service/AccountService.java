@@ -15,6 +15,7 @@ import com.backend.hospitalward.util.notification.EmailSender;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.token.Sha512DigestUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -36,7 +37,7 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, timeout = 3)
 public class AccountService {
 
-//    @Value("${url.expiration.time:86400}")
+//    @Value("${url.expiration.time}")
 //    int secondsExpirationTime;
 
     AccountRepository accountRepository;
@@ -100,13 +101,15 @@ public class AccountService {
                 .accountDirector(director)
                 .accountEmployee(account)
                 .actionType(UrlActionType.CONFIRM.name())
-                //.expirationDate(Timestamp.from(Instant.now().plus(secondsExpirationTime, SECONDS)))
                 .creationDate(Timestamp.from(Instant.now()))
                 .expirationDate(Timestamp.from(Instant.now().plus(86400, SECONDS)))
                 .createdBy(director)
                 .build();
 
         urlRepository.save(url);
+
+        emailSender.sendAccountConfirmationEmails(account.getName(), account.getEmail(), url.getCodeEmployee(),
+                director.getName(), director.getEmail(), url.getCodeDirector());
     }
 
     public void createAccount(Account account, String accessLevel, String createdBy) {
@@ -118,8 +121,6 @@ public class AccountService {
         accountRepository.save(account);
 
         createConfirmUrl(account, director);
-
-        //TODO mail
 
     }
 

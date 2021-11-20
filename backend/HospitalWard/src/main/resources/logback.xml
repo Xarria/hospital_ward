@@ -7,13 +7,13 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>
-                ${logback.console.pattern}
+                %gray(%d{dd-MM-yyyy HH:mm:ss}) [%thread] %lvl_colors(%-5level) %logger{36} - %lvl_colors(%msg%n)
             </pattern>
         </encoder>
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${logback.file.path}.log</file>
+        <file>./../logs.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${logback.file.path}-%d{dd-MM-yyyy}.%i.log</fileNamePattern>
             <maxFileSize>10MB</maxFileSize>
@@ -23,7 +23,7 @@
 
         <encoder>
             <pattern>
-                ${logback.file.pattern}
+                %d{dd-MM-yyyy HH:mm:ss} %p %c{1.} [%thread] %m%n
             </pattern>
         </encoder>
     </appender>

@@ -8,6 +8,7 @@ import org.simplejavamail.api.mailer.config.TransportStrategy;
 import org.simplejavamail.email.EmailBuilder;
 import org.simplejavamail.mailer.MailerBuilder;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 
@@ -15,44 +16,56 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmailSender {
 
-    @Value( "${mail.send}" )
+    @Value("${mail.send}")
     String mailSend;
-    @Value( "${mail.username}" )
+    @Value("${mail.username}")
     String username;
-    @Value( "${mail.password}" )
+    @Value("${mail.password}")
     String password;
-    @Value( "${mail.address}" )
+    @Value("${mail.address}")
     String address;
-    @Value( "${mail.from}" )
+    @Value("${mail.from}")
     String from;
+
+    void sendEmail(String recipientName, String recipientEmailAddress, String subject, String text) {
+//        if (mailSend.equals("false")) {
+//            return;
+//        }
+
+        Email email = EmailBuilder.startingBlank()
+                .from(from, address)
+                .to(recipientName, recipientEmailAddress)
+                .withSubject(subject)
+                .withHTMLText(text)
+                .buildEmail();
+
+        Mailer mailer = MailerBuilder
+                .withSMTPServer("in-v3.mailjet.com", 587, username, password)
+                .withTransportStrategy(TransportStrategy.SMTP)
+                .buildMailer();
+
+        mailer.sendMail(email);
+
+    }
 
     public void sendModificationEmail(String recipientName, String recipientEmailAddress) {
 
-            String htmlText = "test";
-            String subject = "test";
-            sendEmail(recipientName, recipientEmailAddress, subject, htmlText);
+        String htmlText = "test";
+        String subject = "test";
+        sendEmail(recipientName, recipientEmailAddress, subject, htmlText);
 
-        }
+    }
 
-    private void sendEmail(String recipientName, String recipientEmailAddress, String subject, String text) {
-            if (mailSend.equals("false")) {
-                return;
-            }
+    @Async
+    public void sendAccountConfirmationEmails(String nameEmployee, String emailEmployee, String codeEmployee,
+                                              String nameDirector, String emailDirector, String codeDirector) {
 
-            Email email = EmailBuilder.startingBlank()
-                    .from(from, address)
-                    .to(recipientName, recipientEmailAddress)
-                    .withSubject(subject)
-                    .withHTMLText(text)
-                    .buildEmail();
+        String htmlTextEmployee = "test: " + codeEmployee;
+        String htmlTextDirector = "testD: " + codeDirector;
+        String subject = "Confirmation";
 
-            Mailer mailer = MailerBuilder
-                    .withSMTPServer("in-v3.mailjet.com", 587, username, password)
-                    .withTransportStrategy(TransportStrategy.SMTP)
-                    .buildMailer();
-
-            mailer.sendMail(email);
-
+        sendEmail(nameEmployee, emailEmployee, subject, htmlTextEmployee);
+        sendEmail(nameDirector, emailDirector, subject, htmlTextDirector);
     }
 
     public void sendPasswordResetEmails(String name, String emailEmployee, String codeEmployee,

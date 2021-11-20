@@ -1,6 +1,7 @@
 package com.backend.hospitalward.exception.advice;
 
 import com.backend.hospitalward.dto.response.exception.ExceptionResponse;
+import org.hibernate.TransactionException;
 import org.hibernate.exception.JDBCConnectionException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -20,6 +21,7 @@ import javax.validation.ConstraintViolationException;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class PersistenceExceptionAdvice {
 
+    //TODO statusy
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(OptimisticLockException.class)
     public ExceptionResponse optimisticLockException(Exception e) {
@@ -27,7 +29,7 @@ public class PersistenceExceptionAdvice {
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
-    @ExceptionHandler(TransactionTimedOutException.class)
+    @ExceptionHandler(TransactionException.class)
     public ExceptionResponse transactionTimedOutException(Exception e) {
         return ExceptionResponse.singleException(e.getMessage());
     }
