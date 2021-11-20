@@ -1,5 +1,6 @@
 package com.backend.hospitalward.security;
 
+import com.backend.hospitalward.exception.ErrorKey;
 import com.backend.hospitalward.service.AuthService;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.servlet.http.HttpServletResponse;
+
 @EnableWebSecurity
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @AllArgsConstructor
@@ -23,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     AuthService authService;
 
-    RequestFilter requestFilter;
+    RequestJWTFilter requestJWTFilter;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
@@ -32,47 +35,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and()
+        http.cors()
+                .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/auth")
-                .permitAll()
-                .antMatchers(HttpMethod.GET, "/refresh")
-                .authenticated()
-                .antMatchers(HttpMethod.GET, "/accounts")
-                .hasAuthority(SecurityConstants.TREATMENT_DIRECTOR)
-                .antMatchers(HttpMethod.GET, "/accounts/profile")
-                .authenticated()
-                .antMatchers(HttpMethod.PUT, "/accounts/password")
-                .authenticated()
-                .antMatchers(HttpMethod.PUT, "/accounts/activate")
-                .hasAuthority(SecurityConstants.TREATMENT_DIRECTOR)
-                .antMatchers(HttpMethod.PUT, "/accounts/deactivate")
-                .hasAuthority(SecurityConstants.TREATMENT_DIRECTOR)
-                .antMatchers(HttpMethod.PUT, "/accounts/office/edit")
-                .hasAuthority(SecurityConstants.TREATMENT_DIRECTOR)
-                .antMatchers(HttpMethod.PUT, "/accounts/medic/edit")
-                .hasAuthority(SecurityConstants.TREATMENT_DIRECTOR)
-                .antMatchers(HttpMethod.PUT, "/profile/office/edit")
-                .hasAuthority(SecurityConstants.SECRETARY)
-                .antMatchers(HttpMethod.PUT, "/profile/medic/edit")
-                .hasAnyAuthority(SecurityConstants.TREATMENT_DIRECTOR, SecurityConstants.DOCTOR, SecurityConstants.HEAD_NURSE)
-                .antMatchers(HttpMethod.PUT, "/accounts/accessLevel")
-                .hasAuthority(SecurityConstants.TREATMENT_DIRECTOR)
-                .antMatchers(HttpMethod.PUT, "/accounts/confirm")
-                .permitAll()
-                .antMatchers(HttpMethod.PUT, "/accounts/edit/email")
-                .authenticated()
-                .antMatchers(HttpMethod.PUT, "/accounts/password/reset")
-                .permitAll()
-                .antMatchers(HttpMethod.POST, "/accounts")
-                .hasAuthority(SecurityConstants.TREATMENT_DIRECTOR)
-                .antMatchers(HttpMethod.POST, "/accounts/password/reset")
-                .permitAll()
+                .anyRequest().permitAll()
                 .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilterBefore(requestJWTFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

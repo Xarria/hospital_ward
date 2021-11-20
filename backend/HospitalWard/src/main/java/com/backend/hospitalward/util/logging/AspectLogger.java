@@ -38,7 +38,7 @@ public class AspectLogger {
     public void everyMethod() {
     }
 
-    @Pointcut("execution(* com.backend.hospitalward.security.RequestFilter.*(..))")
+    @Pointcut("execution(* com.backend.hospitalward.security.RequestJWTFilter.*(..))")
     public void methodInRequestFilter() {
     }
 

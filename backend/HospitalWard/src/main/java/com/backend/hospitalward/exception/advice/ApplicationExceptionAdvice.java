@@ -5,6 +5,7 @@ import com.backend.hospitalward.exception.*;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -59,6 +60,12 @@ public class ApplicationExceptionAdvice {
     @ExceptionHandler(UnknownException.class)
     public ExceptionResponse unknownException(UnknownException e) {
         return ExceptionResponse.singleException(e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(AccessDeniedException.class)
+    public ExceptionResponse forbiddenException(AccessDeniedException e) {
+        return ExceptionResponse.singleException(ErrorKey.ACCESS_DENIED);
     }
 
 }

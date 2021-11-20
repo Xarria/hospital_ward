@@ -14,6 +14,7 @@ import com.backend.hospitalward.exception.ErrorKey;
 import com.backend.hospitalward.exception.PreconditionFailedException;
 import com.backend.hospitalward.mapper.AccountMapper;
 import com.backend.hospitalward.model.MedicalStaff;
+import com.backend.hospitalward.security.annotation.*;
 import com.backend.hospitalward.service.AccountService;
 import com.backend.hospitalward.util.etag.DTOSignatureValidator;
 import com.backend.hospitalward.util.etag.ETagValidator;
@@ -58,6 +59,7 @@ public class AccountController {
 
     //region GET
 
+    @TreatmentDirectorAuthority
     @GetMapping()
     public ResponseEntity<List<AccountGeneralResponse>> getAllAccounts() {
         return ResponseEntity.ok(accountService.getAllAccounts().stream()
@@ -65,6 +67,7 @@ public class AccountController {
                 .collect(Collectors.toList()));
     }
 
+    @TreatmentDirectorAuthority
     @GetMapping("/{login}")
     public ResponseEntity<AccountDetailsResponse> getAccountByLogin(@PathVariable("login") String login) {
         AccountDetailsResponse account = accountMapper.toAccountDetailsResponse(accountService.getAccountByLogin(login));
@@ -74,6 +77,7 @@ public class AccountController {
                 .body(account);
     }
 
+    @Authenticated
     @GetMapping(path = "/profile")
     public ResponseEntity<AccountGeneralResponse> getProfile(@CurrentSecurityContext SecurityContext securityContext) {
         AccountGeneralResponse account = accountMapper.toAccountGeneralResponse(
@@ -88,6 +92,7 @@ public class AccountController {
 
     //region CREATE
 
+    @TreatmentDirectorAuthority
     @PostMapping(path = "/office")
     public ResponseEntity<?> createAccountOffice(@CurrentSecurityContext SecurityContext securityContext,
                                                  @RequestBody @Valid AccountCreateRequest accountCreateRequest) {
@@ -96,6 +101,7 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
+    @TreatmentDirectorAuthority
     @PostMapping(path = "/medic")
     public ResponseEntity<?> createAccountMedic(@CurrentSecurityContext SecurityContext securityContext,
                                                 @RequestBody @Valid MedicalStaffCreateRequest medicalStaffCreateRequest) {
@@ -110,6 +116,7 @@ public class AccountController {
 
     //region UPDATES
 
+    @Authenticated
     @PutMapping(path = "/password")
     public ResponseEntity<?> changePassword(@CurrentSecurityContext SecurityContext securityContext,
                                             @RequestBody ChangePasswordRequest changePasswordRequest) {
@@ -120,6 +127,7 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
+    @TreatmentDirectorAuthority
     @PutMapping(path = "/activate/{login}")
     public ResponseEntity<?> activateAccount(@CurrentSecurityContext SecurityContext securityContext,
                                              @PathVariable("login") String login) {
@@ -129,6 +137,7 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
+    @TreatmentDirectorAuthority
     @PutMapping(path = "/deactivate/{login}")
     public ResponseEntity<?> deactivateAccount(@CurrentSecurityContext SecurityContext securityContext,
                                                @PathVariable("login") String login) {
@@ -138,6 +147,7 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
+    @TreatmentDirectorAuthority
     @DTOSignatureValidator
     @PutMapping(path = "/office/edit/{login}", headers = "If-Match")
     public ResponseEntity<?> updateAccountOffice(@CurrentSecurityContext SecurityContext securityContext,
@@ -155,6 +165,7 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
+    @TreatmentDirectorAuthority
     @DTOSignatureValidator
     @PutMapping(path = "/medic/edit/{login}", headers = "If-Match")
     public ResponseEntity<?> updateAccountMedic(@CurrentSecurityContext SecurityContext securityContext,
@@ -172,6 +183,7 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
+    @OfficeAuthorities
     @DTOSignatureValidator
     @PutMapping(path = "/profile/office/edit", headers = "If-Match")
     public ResponseEntity<?> updateOwnAccountOffice(@CurrentSecurityContext SecurityContext securityContext,
@@ -185,6 +197,7 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
+    @MedicAuthorities
     @DTOSignatureValidator
     @PutMapping(path = "/profile/medic/edit", headers = "If-Match")
     public ResponseEntity<?> updateOwnAccountMedic(@CurrentSecurityContext SecurityContext securityContext,
@@ -199,6 +212,7 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
+    @TreatmentDirectorAuthority
     @PutMapping(path = "/accessLevel/{login}")
     public ResponseEntity<?> changeAccessLevel(@CurrentSecurityContext SecurityContext securityContext,
                                                @RequestBody String newAccessLevel, @PathVariable("login") String login) {
@@ -211,6 +225,7 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
+    @PermitAll
     @PutMapping(path = "/confirm/{url}")
     public ResponseEntity<?> confirmAccount(@PathVariable("url") String url, @RequestBody String password) {
 
@@ -223,6 +238,7 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
+    @Authenticated
     @PutMapping(path = "/edit/email")
     public ResponseEntity<?> changeEmailAddress(@CurrentSecurityContext SecurityContext securityContext,
                                                 @RequestBody String newEmail) {
@@ -236,6 +252,7 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
+    @PermitAll
     @PutMapping(path = "/password/reset/{url}")
     public ResponseEntity<?> resetPassword(@PathVariable("url") String url, @RequestBody String newPassword) {
 
@@ -255,6 +272,7 @@ public class AccountController {
 
     //region EMAILS
 
+    @PermitAll
     @PostMapping(path = "/password/reset")
     public ResponseEntity<?> sendResetPasswordUrl(@CurrentSecurityContext SecurityContext securityContext,
                                                   @RequestBody ResetPasswordRequest resetPasswordRequest) {

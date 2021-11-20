@@ -3,12 +3,15 @@ package com.backend.hospitalward.controller;
 import com.backend.hospitalward.dto.request.auth.Credentials;
 import com.backend.hospitalward.security.JWTUtils;
 import com.backend.hospitalward.security.SecurityConstants;
+import com.backend.hospitalward.security.annotation.Authenticated;
+import com.backend.hospitalward.security.annotation.PermitAll;
 import com.backend.hospitalward.service.AuthService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,7 +35,7 @@ public class AuthController {
 
     JWTUtils jwtUtils;
 
-
+    @PermitAll
     @PostMapping("/auth")
     public ResponseEntity<?> authenticate(@RequestBody Credentials credentials) {
 
@@ -49,6 +52,7 @@ public class AuthController {
         return ResponseEntity.ok(jwtUtils.generateToken(userDetails));
     }
 
+    @Authenticated
     @GetMapping("/refresh")
     public ResponseEntity<?> refreshToken(@CurrentSecurityContext HttpServletRequest servletRequest) {
         String accessLevel = authService.findAccessLevelByLogin(SecurityContextHolder.getContext().getAuthentication().getName());
