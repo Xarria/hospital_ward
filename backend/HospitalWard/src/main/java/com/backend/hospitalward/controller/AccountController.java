@@ -47,7 +47,8 @@ public class AccountController {
         return specializations != null ? specializations : Collections.emptyList();
     }
 
-    private void checkETagHeader(@CurrentSecurityContext SecurityContext securityContext, @RequestBody @Valid AccountUpdateRequest accountUpdateRequest, @RequestHeader("If-Match") String eTag) {
+    private void checkETagHeader(@CurrentSecurityContext SecurityContext securityContext
+            , @RequestBody @Valid AccountUpdateRequest accountUpdateRequest, @RequestHeader("If-Match") String eTag) {
         if (accountUpdateRequest.getLogin() == null || accountUpdateRequest.getVersion() == null
                 || ETagValidator.verifyDTOIntegrity(eTag, accountUpdateRequest)) {
             throw new PreconditionFailedException(ErrorKey.ETAG_INVALID);
@@ -119,7 +120,7 @@ public class AccountController {
     @Authenticated
     @PutMapping(path = "/password")
     public ResponseEntity<?> changePassword(@CurrentSecurityContext SecurityContext securityContext,
-                                            @RequestBody ChangePasswordRequest changePasswordRequest) {
+                                            @RequestBody @Valid ChangePasswordRequest changePasswordRequest) {
 
         accountService.changePassword(securityContext.getAuthentication().getName(),
                 new Password(changePasswordRequest.getOldPassword()), new Password(changePasswordRequest.getNewPassword()));
@@ -225,6 +226,7 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
+    //TODO walidacja
     @PermitAll
     @PutMapping(path = "/confirm/{url}")
     public ResponseEntity<?> confirmAccount(@PathVariable("url") String url, @RequestBody String password) {
@@ -275,7 +277,7 @@ public class AccountController {
     @PermitAll
     @PostMapping(path = "/password/reset")
     public ResponseEntity<?> sendResetPasswordUrl(@CurrentSecurityContext SecurityContext securityContext,
-                                                  @RequestBody ResetPasswordRequest resetPasswordRequest) {
+                                                  @RequestBody @Valid ResetPasswordRequest resetPasswordRequest) {
 
         accountService.sendResetPasswordUrl(resetPasswordRequest.getEmail(), resetPasswordRequest.getNameDirector(),
                 resetPasswordRequest.getSurnameDirector(), securityContext.getAuthentication().getName());
