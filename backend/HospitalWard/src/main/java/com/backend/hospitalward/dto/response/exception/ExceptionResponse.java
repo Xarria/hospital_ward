@@ -3,26 +3,25 @@ package com.backend.hospitalward.dto.response.exception;
 import lombok.Value;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Set;
+import java.time.format.DateTimeFormatter;
 
 @Value
 public class ExceptionResponse {
 
-    LocalDateTime dateTime;
-    Set<String> messages;
+    String dateTime;
+    String message;
 
 
-    private ExceptionResponse(Set<String> messages) {
-        this.messages = messages;
-        dateTime = LocalDateTime.now();
+    private ExceptionResponse(String messages) {
+        this.message = messages;
+        dateTime = (LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")));
     }
 
     public static ExceptionResponse singleException(String message) {
-        return new ExceptionResponse(Collections.singleton(message));
+        return new ExceptionResponse(message);
     }
 
-    public static ExceptionResponse manyExceptions(Set<String> messages) {
+    public static ExceptionResponse manyExceptions(String messages) {
         return new ExceptionResponse(messages);
     }
 }

@@ -18,7 +18,7 @@ public final class AccountConstants {
     public static final String CONFIRM = "/accounts/confirm/";
     public static final String CHANGE_ACCESS_LEVEL = "/accounts/accessLevel/";
     public static final String SEND_RESET_PASSWORD = "/accounts/password/reset";
-    public static final String REST_PASSWORD = "/accounts/password/reset/";
+    public static final String RESET_PASSWORD = "/accounts/password/reset/";
 
     //endregion
 
@@ -58,6 +58,10 @@ public final class AccountConstants {
     public static final String TYPE_MEDIC = "MEDIC";
     public static final String TYPE_OFFICE = "OFFICE";
 
-    public static final String URL_RESET_TYPE = "password";
+    public static final String URL_RESET_TYPE = "PASSWORD";
 
+    public static final String NURSE = "HEAD NURSE";
+    public static final String SECRETARY = "SECRETARY";
+    public static final String NEW_EMAIL4 = "email4@wp.pl";
+    public static final String NEW_EMAIL5 = "m@wp.pl";
 }

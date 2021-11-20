@@ -34,10 +34,13 @@ public final class ErrorKey {
     public static final String MEDICAL_STAFF_TO_OFFICE_CHANGE = "error.medical_staff_access_level_change_to_office_not_possible";
     public static final String TREATMENT_DIRECTOR_REQUIRED = "error.at_least_one_treatment_director_required";
     public static final String HEAD_NURSE_REQUIRED = "error.at_least_one_head_nurse_required";
+    public static final String ACCESS_LEVEL_INVALID_MEDIC = "error.accessLevel_office_for_type_medic";
+    public static final String ACCESS_LEVEL_INVALID_OFFICE = "error.accessLevel_medic_for_type_office";
     //endregion
 
     //region medicalStaff
     public static final String LICENSE_NUMBER = "error.license_nr_invalid";
+    public static final String SPECIALIZATION_NOT_FOUND = "error.specialization_not_found";
     //endregion
 
     //region url

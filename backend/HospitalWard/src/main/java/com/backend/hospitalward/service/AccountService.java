@@ -81,8 +81,15 @@ public class AccountService {
             account.setLogin(fullName + addedNumber);
         }
 
+        if (account instanceof MedicalStaff && accessLevel.equals(AccessLevelName.SECRETARY)) {
+            throw new BadRequestException(ErrorKey.ACCESS_LEVEL_INVALID_MEDIC);
+        }
+        if (!(account instanceof MedicalStaff) && !accessLevel.equals(AccessLevelName.SECRETARY)) {
+            throw new BadRequestException(ErrorKey.ACCESS_LEVEL_INVALID_OFFICE);
+        }
+
         account.setAccessLevel(accessLevelRepository.findAccessLevelByName(accessLevel).orElseThrow(() ->
-                new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND)));
+                new NotFoundException(ErrorKey.ACCESS_LEVEL_NOT_FOUND)));
 
     }
 
@@ -130,7 +137,7 @@ public class AccountService {
 
         List<Specialization> specializationsList = specializations.stream()
                 .map(name -> specializationRepository.findSpecializationByName(name).orElseThrow(() ->
-                        new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND)))
+                        new NotFoundException(ErrorKey.SPECIALIZATION_NOT_FOUND)))
                 .collect(Collectors.toList());
 
         medicalStaff.setSpecializations(specializationsList);
@@ -225,10 +232,10 @@ public class AccountService {
         if (account.getAcademicDegree() != null && !account.getAcademicDegree().isEmpty()) {
             modifiedMedicalStaff.setAcademicDegree(account.getAcademicDegree());
         }
-        if (account.getSpecializations() != null && !account.getSpecializations().isEmpty()) {
+        if (specializations != null && !specializations.isEmpty()) {
             List<Specialization> specializationsList = specializations.stream()
                     .map(name -> specializationRepository.findSpecializationByName(name).orElseThrow(() ->
-                            new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND)))
+                            new NotFoundException(ErrorKey.SPECIALIZATION_NOT_FOUND)))
                     .collect(Collectors.toList());
 
             modifiedMedicalStaff.setSpecializations(specializationsList);
@@ -255,18 +262,18 @@ public class AccountService {
             throw new BadRequestException(ErrorKey.URL_WRONG_ACTION);
         }
 
-        if (urlCode.equals(url.getCodeDirector() + url.getCodeEmployee())) {
-            Account account = accountRepository.findAccountByLogin(url.getAccountEmployee().getLogin()).orElseThrow(() ->
-                    new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
-            account.setPassword(Sha512DigestUtils.shaHex(String.valueOf(password.getValue())));
-            account.setConfirmed(true);
-            account.setModificationDate(Timestamp.from(Instant.now()));
-            accountRepository.save(account);
-            urlRepository.delete(url);
-            return;
+        if (!urlCode.equals(url.getCodeDirector() + url.getCodeEmployee())) {
+            throw new NotFoundException(ErrorKey.URL_NOT_FOUND);
         }
 
-        throw new NotFoundException(ErrorKey.URL_NOT_FOUND);
+        Account account = accountRepository.findAccountByLogin(url.getAccountEmployee().getLogin()).orElseThrow(() ->
+                new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
+        account.setPassword(Sha512DigestUtils.shaHex(String.valueOf(password.getValue())));
+        account.setConfirmed(true);
+        account.setModificationDate(Timestamp.from(Instant.now()));
+        accountRepository.save(account);
+        urlRepository.delete(url);
+
     }
 
     public void changeAccessLevel(String newAccessLevel, String login, String modifiedBy) {
@@ -325,7 +332,7 @@ public class AccountService {
         accountRepository.save(account);
     }
 
-    public void resetPassword(String urlCode, Password newPassword){
+    public void resetPassword(String urlCode, Password newPassword) {
         Url url = urlRepository.findUrlByCodeDirectorAndCodeEmployee(urlCode.substring(0, 5), urlCode.substring(5, 10))
                 .orElseThrow(() -> new NotFoundException(ErrorKey.URL_NOT_FOUND));
 
@@ -335,7 +342,7 @@ public class AccountService {
             throw new BadRequestException(ErrorKey.URL_WRONG_ACTION);
         }
 
-        if(Sha512DigestUtils.shaHex(String.valueOf(newPassword.getValue())).equals(url.getAccountEmployee().getPassword())) {
+        if (Sha512DigestUtils.shaHex(String.valueOf(newPassword.getValue())).equals(url.getAccountEmployee().getPassword())) {
             throw new ConflictException(ErrorKey.ERROR_SAME_PASSWORD);
         }
 

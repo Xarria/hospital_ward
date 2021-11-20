@@ -495,8 +495,8 @@ class AccountIntegrationTests extends AbstractTestContainer {
 
         HttpEntity<String> resetRequestHttpEntity = new HttpEntity<>(AccountConstants.NEW_PASSWORD2, getHttpHeaders());
 
-        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(AccountConstants.REST_PASSWORD + combinedCode),
-                HttpMethod.POST, resetRequestHttpEntity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(AccountConstants.RESET_PASSWORD + combinedCode),
+                HttpMethod.PUT, resetRequestHttpEntity, String.class);
 
         assertAll(
                 () -> assertNotNull(response),

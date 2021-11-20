@@ -27,22 +27,22 @@ public class AccountScheduler {
 
     final EmailSender emailSender;
 
-    @Scheduled(cron = "0 30 0 * * *")
-    public void removeUnconfirmedAccounts() {
-        long removalTime = 86400L;
-
-        List<Account> accountsToDelete = accountRepository.findAccountsByUnconfirmedAndExpired(removalTime);
-        List<List<Url>> urlsToDelete = new ArrayList<>();
-        accountsToDelete.forEach(
-                account -> urlsToDelete.add(urlRepository.findUrlsByAccountEmployee(account)));
-
-        urlsToDelete.stream()
-                .flatMap(List::stream)
-                .forEach(urlRepository::delete);
-        accountRepository.deleteAll(accountsToDelete);
-
-        accountsToDelete.forEach(account -> emailSender.sendRemovalEmail(account.getName(), account.getEmail()));
-    }
+//    @Scheduled(cron = "0 30 0 * * *")
+//    public void removeUnconfirmedAccounts() {
+//        long removalTime = 86400L;
+//
+//        List<Account> accountsToDelete = accountRepository.findAccountsByUnconfirmedAndExpired(removalTime);
+//        List<List<Url>> urlsToDelete = new ArrayList<>();
+//        accountsToDelete.forEach(
+//                account -> urlsToDelete.add(urlRepository.findUrlsByAccountEmployee(account)));
+//
+//        urlsToDelete.stream()
+//                .flatMap(List::stream)
+//                .forEach(urlRepository::delete);
+//        accountRepository.deleteAll(accountsToDelete);
+//
+//        accountsToDelete.forEach(account -> emailSender.sendRemovalEmail(account.getName(), account.getEmail()));
+//    }
 
     @Scheduled(cron = "0 0 * * * *")
     public void removeExpiredUrl() {
