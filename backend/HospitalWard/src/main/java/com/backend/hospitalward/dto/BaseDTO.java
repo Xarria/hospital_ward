@@ -9,6 +9,8 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import javax.json.bind.annotation.JsonbTransient;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 
 @Data
 @SuperBuilder
@@ -16,5 +18,7 @@ import javax.json.bind.annotation.JsonbTransient;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class BaseDTO implements SignableDTO {
 
+    @NotNull
+    @PositiveOrZero
     Long version;
 }

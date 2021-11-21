@@ -1,5 +1,6 @@
 package com.backend.hospitalward.model;
 
+import com.backend.hospitalward.util.validation.AccessLevelValid;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;

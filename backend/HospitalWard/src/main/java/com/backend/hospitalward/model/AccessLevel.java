@@ -1,12 +1,12 @@
 package com.backend.hospitalward.model;
 
+import com.backend.hospitalward.util.validation.AccessLevelValid;
 import lombok.Data;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Data
@@ -22,7 +22,7 @@ public class AccessLevel implements GrantedAuthority {
     long id;
 
     @Size(max = 21)
-    @Pattern(regexp = "[A-Z]+")
+    @AccessLevelValid
     @Column(name = "name", nullable = false)
     String name;
 
