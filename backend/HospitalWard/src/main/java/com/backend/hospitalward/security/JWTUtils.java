@@ -32,8 +32,7 @@ public class JWTUtils {
         try {
             Claims claims = Jwts.parser().setSigningKey(SecurityConstants.SECRET).parseClaimsJws(token).getBody();
             return claimsResolver.apply(claims);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new UnauthorizedException(ErrorKey.JWT_INVALID);
         }
 

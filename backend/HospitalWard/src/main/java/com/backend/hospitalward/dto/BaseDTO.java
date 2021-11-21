@@ -1,14 +1,12 @@
 package com.backend.hospitalward.dto;
 
 import com.backend.hospitalward.util.etag.SignableDTO;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
-import javax.json.bind.annotation.JsonbTransient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 

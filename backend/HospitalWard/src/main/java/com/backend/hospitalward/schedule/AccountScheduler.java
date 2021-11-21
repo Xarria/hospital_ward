@@ -1,6 +1,5 @@
 package com.backend.hospitalward.schedule;
 
-import com.backend.hospitalward.model.Account;
 import com.backend.hospitalward.model.Url;
 import com.backend.hospitalward.repository.AccountRepository;
 import com.backend.hospitalward.repository.UrlRepository;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component

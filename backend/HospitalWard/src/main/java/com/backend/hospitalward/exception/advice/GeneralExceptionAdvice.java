@@ -1,8 +1,6 @@
 package com.backend.hospitalward.exception.advice;
 
 import com.backend.hospitalward.dto.response.exception.ExceptionResponse;
-import com.backend.hospitalward.exception.ErrorKey;
-import com.backend.hospitalward.exception.ApplicationException;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -22,14 +21,14 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class AbstractTestContainer {
 
-    @LocalServerPort
-    int port;
-
     static MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.0.26");
 
     static {
         mySQLContainer.start();
     }
+
+    @LocalServerPort
+    int port;
 
     public String getUrlWithPort(String uri) {
         return "http://localhost:" + port + uri;

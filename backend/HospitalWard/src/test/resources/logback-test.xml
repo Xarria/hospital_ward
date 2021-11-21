@@ -7,7 +7,7 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>
-                ${logback.console.pattern}
+                %gray(%d{dd-MM-yyyy HH:mm:ss}) [%thread] %lvl_colors(%-5level) %logger{36} - %lvl_colors(%msg%n)
             </pattern>
         </encoder>
     </appender>

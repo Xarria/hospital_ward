@@ -11,6 +11,7 @@ import com.backend.hospitalward.dto.response.account.AccountGeneralResponse;
 import com.backend.hospitalward.dto.response.medicalStaff.MedicalStaffGeneralResponse;
 import com.backend.hospitalward.integration.AbstractTestContainer;
 import com.backend.hospitalward.integration.common.AccountConstants;
+import com.backend.hospitalward.model.Account;
 import com.backend.hospitalward.model.MedicalStaff;
 import com.backend.hospitalward.model.Url;
 import com.backend.hospitalward.repository.UrlRepository;
@@ -120,7 +121,7 @@ class AccountIntegrationTests extends AbstractTestContainer {
     void getAccountByLogin() {
 
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(AccountConstants.GET_ALL_ACCOUNTS +
-                        "/" + AccountConstants.SG_LOGIN), HttpMethod.GET, getJwtHttpEntity(), String.class);
+                "/" + AccountConstants.SG_LOGIN), HttpMethod.GET, getJwtHttpEntity(), String.class);
 
         AccountGeneralResponse account = gson.fromJson(response.getBody(), AccountGeneralResponse.class);
 
@@ -160,11 +161,11 @@ class AccountIntegrationTests extends AbstractTestContainer {
 
         HttpEntity<AccountCreateRequest> createRequestHttpEntity = new HttpEntity<>(
                 AccountCreateRequest.builder()
-                .name(AccountConstants.NEW_NAME)
-                .accessLevel(AccountConstants.NEW_ACCESS_LEVEL)
-                .email(AccountConstants.NEW_EMAIL)
-                .surname(AccountConstants.NEW_SURNAME)
-                .build(), headers);
+                        .name(AccountConstants.NEW_NAME)
+                        .accessLevel(AccountConstants.NEW_ACCESS_LEVEL)
+                        .email(AccountConstants.NEW_EMAIL)
+                        .surname(AccountConstants.NEW_SURNAME)
+                        .build(), headers);
 
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(AccountConstants.CREATE_OFFICE),
                 HttpMethod.POST, createRequestHttpEntity, String.class);
@@ -242,14 +243,13 @@ class AccountIntegrationTests extends AbstractTestContainer {
     }
 
 
-
     @Order(7)
     @Test
     void deactivateAccount() {
         HttpEntity<T> jwtToken = getJwtHttpEntity();
 
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(AccountConstants.DEACTIVATE
-                        + AccountConstants.JK_LOGIN), HttpMethod.PUT, jwtToken, String.class);
+                + AccountConstants.JK_LOGIN), HttpMethod.PUT, jwtToken, String.class);
 
         assertAll(
                 () -> assertNotNull(response),
@@ -300,7 +300,7 @@ class AccountIntegrationTests extends AbstractTestContainer {
                         .build(), headers);
 
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(AccountConstants.UPDATE_OFFICE
-                        + AccountConstants.OFFICE_LOGIN), HttpMethod.PUT, createRequestHttpEntity, String.class);
+                + AccountConstants.OFFICE_LOGIN), HttpMethod.PUT, createRequestHttpEntity, String.class);
 
         assertAll(
                 () -> assertNotNull(response),
@@ -360,8 +360,8 @@ class AccountIntegrationTests extends AbstractTestContainer {
         Long version = accountService.getAccountByLogin(
                 AccountConstants.OFFICE_LOGIN).getVersion();
 
-        ResponseEntity<String> responseGet = restTemplate.exchange(getUrlWithPort(AccountConstants.GET_ALL_ACCOUNTS +
-                "/" + AccountConstants.OFFICE_LOGIN), HttpMethod.GET, getJwtHttpEntity(), String.class);
+        ResponseEntity<String> responseGet = restTemplate.exchange(getUrlWithPort(AccountConstants.GET_PROFILE),
+                HttpMethod.GET, getJwtHttpEntity(), String.class);
 
         String etag = Objects.requireNonNull(responseGet.getHeaders().get(HttpHeaders.ETAG)).get(0);
 
@@ -431,7 +431,7 @@ class AccountIntegrationTests extends AbstractTestContainer {
                 AccountConstants.UPDATE_LEVEL, getHttpHeaders());
 
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(AccountConstants.CHANGE_ACCESS_LEVEL +
-                        AccountConstants.JK_LOGIN), HttpMethod.PUT, changeAccessLevelHttpEntity, String.class);
+                AccountConstants.JK_LOGIN), HttpMethod.PUT, changeAccessLevelHttpEntity, String.class);
 
         assertAll(
                 () -> assertNotNull(response),
@@ -529,6 +529,41 @@ class AccountIntegrationTests extends AbstractTestContainer {
                         .get((int) (urlRepository.count() - 1)).getAccountDirector().getLogin()),
                 () -> assertEquals(AccountConstants.URL_RESET_TYPE, urlRepository.findAll()
                         .get((int) (urlRepository.count() - 1)).getActionType())
+        );
+    }
+
+    @Order(17)
+    @Test
+    void deleteUncofirmedAccount() {
+        HttpHeaders headers = getHttpHeaders();
+
+        HttpEntity<AccountCreateRequest> createRequestHttpEntity = new HttpEntity<>(
+                AccountCreateRequest.builder()
+                        .name(AccountConstants.NEW_NAME)
+                        .accessLevel(AccountConstants.NEW_ACCESS_LEVEL)
+                        .email(AccountConstants.NEW_EMAIL5)
+                        .surname(AccountConstants.NEW_SURNAME)
+                        .build(), headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(AccountConstants.CREATE_OFFICE),
+                HttpMethod.POST, createRequestHttpEntity, String.class);
+
+        assertAll(
+                () -> assertNotNull(response),
+                () -> assertEquals(HttpStatus.OK, response.getStatusCode())
+        );
+
+        int accountsCount = accountService.getAllAccounts().size();
+        Account newAccount = accountService.getAllAccounts().get(accountsCount - 1);
+
+        ResponseEntity<String> responseDelete = restTemplate.exchange(getUrlWithPort(AccountConstants.GET_ALL_ACCOUNTS +
+                        "/" + newAccount.getLogin()),
+                HttpMethod.DELETE, getJwtHttpEntity(), String.class);
+
+        assertAll(
+                () -> assertNotNull(responseDelete),
+                () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
+                () -> assertEquals(accountsCount - 1, accountService.getAllAccounts().size())
         );
     }
 }

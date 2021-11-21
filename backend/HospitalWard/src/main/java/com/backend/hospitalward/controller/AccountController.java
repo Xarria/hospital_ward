@@ -14,6 +14,7 @@ import com.backend.hospitalward.exception.ErrorKey;
 import com.backend.hospitalward.exception.PreconditionFailedException;
 import com.backend.hospitalward.mapper.AccountMapper;
 import com.backend.hospitalward.model.MedicalStaff;
+import com.backend.hospitalward.model.common.AccessLevelName;
 import com.backend.hospitalward.security.annotation.*;
 import com.backend.hospitalward.service.AccountService;
 import com.backend.hospitalward.util.etag.DTOSignatureValidator;
@@ -49,6 +50,7 @@ public class AccountController {
 
     private void checkETagHeader(@CurrentSecurityContext SecurityContext securityContext
             , @RequestBody @Valid AccountUpdateRequest accountUpdateRequest, @RequestHeader("If-Match") String eTag) {
+
         if (accountUpdateRequest.getLogin() == null || accountUpdateRequest.getVersion() == null
                 || ETagValidator.verifyDTOIntegrity(eTag, accountUpdateRequest)) {
             throw new PreconditionFailedException(ErrorKey.ETAG_INVALID);
@@ -56,6 +58,12 @@ public class AccountController {
         if (!accountUpdateRequest.getLogin().equals(securityContext.getAuthentication().getName())) {
             throw new PreconditionFailedException(ErrorKey.NOT_OWN_ACCOUNT);
         }
+    }
+
+    private boolean isValidAccessLevel(String accessLevel) {
+        List<String> validAccessLevels = List.of(AccessLevelName.TREATMENT_DIRECTOR, AccessLevelName.HEAD_NURSE,
+                AccessLevelName.DOCTOR, AccessLevelName.SECRETARY);
+        return accessLevel != null && validAccessLevels.contains(accessLevel);
     }
 
     //region GET
@@ -218,7 +226,7 @@ public class AccountController {
     public ResponseEntity<?> changeAccessLevel(@CurrentSecurityContext SecurityContext securityContext,
                                                @RequestBody String newAccessLevel, @PathVariable("login") String login) {
 
-        if (newAccessLevel == null || newAccessLevel.length() == 0 || login == null || login.length() == 0) {
+        if (!isValidAccessLevel(newAccessLevel) || login == null || login.length() == 0) {
             throw new BadRequestException(ErrorKey.INVALID_LEVEL_OR_LOGIN);
         }
         accountService.changeAccessLevel(newAccessLevel, login, securityContext.getAuthentication().getName());
@@ -226,13 +234,16 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
-    //TODO walidacja
     @PermitAll
     @PutMapping(path = "/confirm/{url}")
     public ResponseEntity<?> confirmAccount(@PathVariable("url") String url, @RequestBody String password) {
 
         if (url.length() != 10) {
             throw new ConstraintViolationException(ErrorKey.URL_INVALID);
+        }
+
+        if (password == null || password.length() < 8) {
+            throw new ConstraintViolationException(ErrorKey.PASSWORD_INCORRECT);
         }
 
         accountService.confirmAccount(url, new Password(password));
@@ -242,14 +253,29 @@ public class AccountController {
 
     @Authenticated
     @PutMapping(path = "/edit/email")
-    public ResponseEntity<?> changeEmailAddress(@CurrentSecurityContext SecurityContext securityContext,
-                                                @RequestBody String newEmail) {
+    public ResponseEntity<?> changeOwnEmailAddress(@CurrentSecurityContext SecurityContext securityContext,
+                                                   @RequestBody String newEmail) {
+
         if (!EmailAddressValidator.isValid(newEmail)) {
             throw new ConstraintViolationException(ErrorKey.EMAIL_INVALID);
-
         }
 
-        accountService.changeEmailAddress(newEmail, securityContext.getAuthentication().getName());
+        accountService.changeEmailAddress(newEmail, securityContext.getAuthentication().getName(),
+                securityContext.getAuthentication().getName());
+
+        return ResponseEntity.ok().build();
+    }
+
+    @TreatmentDirectorAuthority
+    @PutMapping(path = "/edit/email/{login}")
+    public ResponseEntity<?> changeEmailAddress(@CurrentSecurityContext SecurityContext securityContext,
+                                                @PathVariable("login") String login, @RequestBody String newEmail) {
+
+        if (!EmailAddressValidator.isValid(newEmail)) {
+            throw new ConstraintViolationException(ErrorKey.EMAIL_INVALID);
+        }
+
+        accountService.changeEmailAddress(newEmail, login, securityContext.getAuthentication().getName());
 
         return ResponseEntity.ok().build();
     }
@@ -258,7 +284,7 @@ public class AccountController {
     @PutMapping(path = "/password/reset/{url}")
     public ResponseEntity<?> resetPassword(@PathVariable("url") String url, @RequestBody String newPassword) {
 
-        if(newPassword == null || newPassword.length() < 8) {
+        if (newPassword == null || newPassword.length() < 8) {
             throw new ConstraintViolationException(ErrorKey.PASSWORD_INCORRECT);
         }
         if (url == null || url.length() != 10) {
@@ -270,6 +296,18 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
+    //endregion
+
+    //region DELETE
+
+    @TreatmentDirectorAuthority
+    @DeleteMapping(path = "/{login}")
+    public ResponseEntity<?> deleteUnconfirmedAccount(@PathVariable("login") String login) {
+
+        accountService.deleteUnconfirmedAccount(login);
+
+        return ResponseEntity.ok().build();
+    }
     //endregion
 
     //region EMAILS
@@ -284,7 +322,6 @@ public class AccountController {
 
         return ResponseEntity.ok().build();
     }
-
 
     //endregion
 }

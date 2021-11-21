@@ -17,7 +17,6 @@ import com.backend.hospitalward.security.SecurityConstants;
 import com.backend.hospitalward.service.AccountService;
 import com.google.gson.Gson;
 import io.gsonfire.GsonFireBuilder;
-import liquibase.pro.packaged.E;
 import liquibase.pro.packaged.T;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.*;
@@ -449,21 +448,7 @@ public class AccountIntegrationExceptionTests extends AbstractTestContainer {
     @Test
     void shouldReturn400WhenConfirmWithUrlBadActionType() {
 
-        HttpEntity<AccountCreateRequest> createRequestHttpEntity = new HttpEntity<>(
-                AccountCreateRequest.builder()
-                        .name(AccountConstants.NEW_NAME3)
-                        .accessLevel(AccountConstants.NEW_ACCESS_LEVEL)
-                        .email(AccountConstants.NEW_EMAIL3)
-                        .surname(AccountConstants.NEW_SURNAME)
-                        .build(), getHttpHeaders());
-
-        ResponseEntity<String> responseCreate = restTemplate.exchange(getUrlWithPort(AccountConstants.CREATE_OFFICE),
-                HttpMethod.POST, createRequestHttpEntity, String.class);
-
-        assertAll(
-                () -> assertNotNull(responseCreate),
-                () -> assertEquals(HttpStatus.OK, responseCreate.getStatusCode())
-        );
+        createAccount(AccountConstants.NEW_EMAIL3);
 
         Url url = urlRepository.findAll().get((int) urlRepository.count() - 1);
         url.setActionType("Wrong");
@@ -489,21 +474,7 @@ public class AccountIntegrationExceptionTests extends AbstractTestContainer {
     @Test
     void shouldReturn405WhenConfirmWithUrlExpired() {
 
-        HttpEntity<AccountCreateRequest> createRequestHttpEntity = new HttpEntity<>(
-                AccountCreateRequest.builder()
-                        .name(AccountConstants.NEW_NAME3)
-                        .accessLevel(AccountConstants.NEW_ACCESS_LEVEL)
-                        .email(AccountConstants.NEW_EMAIL2)
-                        .surname(AccountConstants.NEW_SURNAME)
-                        .build(), getHttpHeaders());
-
-        ResponseEntity<String> responseCreate = restTemplate.exchange(getUrlWithPort(AccountConstants.CREATE_OFFICE),
-                HttpMethod.POST, createRequestHttpEntity, String.class);
-
-        assertAll(
-                () -> assertNotNull(responseCreate),
-                () -> assertEquals(HttpStatus.OK, responseCreate.getStatusCode())
-        );
+        createAccount(AccountConstants.NEW_EMAIL2);
 
         Url url = urlRepository.findAll().get((int) urlRepository.count() - 1);
         url.setExpirationDate(Timestamp.from(Instant.now().minusSeconds(10)));
@@ -529,21 +500,7 @@ public class AccountIntegrationExceptionTests extends AbstractTestContainer {
     @Test
     void shouldReturn404WhenConfirmWithUrlInvalidCode() {
 
-        HttpEntity<AccountCreateRequest> createRequestHttpEntity = new HttpEntity<>(
-                AccountCreateRequest.builder()
-                        .name(AccountConstants.NEW_NAME3)
-                        .accessLevel(AccountConstants.NEW_ACCESS_LEVEL)
-                        .email(AccountConstants.NEW_EMAIL4)
-                        .surname(AccountConstants.NEW_SURNAME)
-                        .build(), getHttpHeaders());
-
-        ResponseEntity<String> responseCreate = restTemplate.exchange(getUrlWithPort(AccountConstants.CREATE_OFFICE),
-                HttpMethod.POST, createRequestHttpEntity, String.class);
-
-        assertAll(
-                () -> assertNotNull(responseCreate),
-                () -> assertEquals(HttpStatus.OK, responseCreate.getStatusCode())
-        );
+        createAccount(AccountConstants.NEW_EMAIL4);
 
         String combinedCode = "WRONG_CODE";
 
@@ -566,21 +523,7 @@ public class AccountIntegrationExceptionTests extends AbstractTestContainer {
     @Test
     void shouldReturn409WhenConfirmWithUrlInvalidCodeLength() {
 
-        HttpEntity<AccountCreateRequest> createRequestHttpEntity = new HttpEntity<>(
-                AccountCreateRequest.builder()
-                        .name(AccountConstants.NEW_NAME3)
-                        .accessLevel(AccountConstants.NEW_ACCESS_LEVEL)
-                        .email(AccountConstants.NEW_EMAIL5)
-                        .surname(AccountConstants.NEW_SURNAME)
-                        .build(), getHttpHeaders());
-
-        ResponseEntity<String> responseCreate = restTemplate.exchange(getUrlWithPort(AccountConstants.CREATE_OFFICE),
-                HttpMethod.POST, createRequestHttpEntity, String.class);
-
-        assertAll(
-                () -> assertNotNull(responseCreate),
-                () -> assertEquals(HttpStatus.OK, responseCreate.getStatusCode())
-        );
+        createAccount(AccountConstants.NEW_EMAIL5);
 
         String combinedCode = "WRONG_LENGTH_CODE";
 
@@ -642,7 +585,7 @@ public class AccountIntegrationExceptionTests extends AbstractTestContainer {
         assertAll(
                 () -> assertNotNull(response),
                 () -> assertEquals(HttpStatus.GONE, response.getStatusCode()),
-                () -> assertEquals(ErrorKey.URL_EXPIRED, exceptionResponse.getMessage()                )
+                () -> assertEquals(ErrorKey.URL_EXPIRED, exceptionResponse.getMessage())
         );
     }
 
@@ -665,6 +608,61 @@ public class AccountIntegrationExceptionTests extends AbstractTestContainer {
                 () -> assertNotNull(response),
                 () -> assertEquals(HttpStatus.CONFLICT, response.getStatusCode()),
                 () -> assertEquals(ErrorKey.ERROR_SAME_PASSWORD, exceptionResponse.getMessage())
+        );
+    }
+
+    @Order(23)
+    @Test
+    void shouldReturn409WhenAccountActivateUnconfirmed() {
+        HttpEntity<T> jwtToken = getJwtHttpEntity();
+
+        createAccount(AccountConstants.NEW_EMAIL6);
+
+        String newAccountLogin = accountService.getAllAccounts().get(accountService.getAllAccounts().size() - 1).getLogin();
+
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(AccountConstants.DEACTIVATE
+                + newAccountLogin), HttpMethod.PUT, jwtToken, String.class);
+
+        ExceptionResponse exceptionResponse = gson.fromJson(response.getBody(), ExceptionResponse.class);
+
+        assertAll(
+                () -> assertNotNull(response),
+                () -> assertEquals(HttpStatus.CONFLICT, response.getStatusCode()),
+                () -> assertEquals(ErrorKey.ACCOUNT_NOT_CONFIRMED, exceptionResponse.getMessage())
+        );
+    }
+
+    @Order(24)
+    @Test
+    void shouldReturn409WhenDeleteConfirmedAccount() {
+        ResponseEntity<String> responseDelete = restTemplate.exchange(getUrlWithPort(AccountConstants.GET_ALL_ACCOUNTS +
+                        "/" + AccountConstants.JK_LOGIN),
+                HttpMethod.DELETE, getJwtHttpEntity(), String.class);
+
+        ExceptionResponse exceptionResponse = gson.fromJson(responseDelete.getBody(), ExceptionResponse.class);
+
+        assertAll(
+                () -> assertNotNull(responseDelete),
+                () -> assertEquals(HttpStatus.CONFLICT, responseDelete.getStatusCode()),
+                () -> assertEquals(ErrorKey.ACCOUNT_CONFIRMED, exceptionResponse.getMessage())
+        );
+    }
+
+    private void createAccount(String newEmail6) {
+        HttpEntity<AccountCreateRequest> createRequestHttpEntity = new HttpEntity<>(
+                AccountCreateRequest.builder()
+                        .name(AccountConstants.NEW_NAME3)
+                        .accessLevel(AccountConstants.NEW_ACCESS_LEVEL)
+                        .email(newEmail6)
+                        .surname(AccountConstants.NEW_SURNAME)
+                        .build(), getHttpHeaders());
+
+        ResponseEntity<String> responseCreate = restTemplate.exchange(getUrlWithPort(AccountConstants.CREATE_OFFICE),
+                HttpMethod.POST, createRequestHttpEntity, String.class);
+
+        assertAll(
+                () -> assertNotNull(responseCreate),
+                () -> assertEquals(HttpStatus.OK, responseCreate.getStatusCode())
         );
     }
 

@@ -63,5 +63,6 @@ public final class AccountConstants {
     public static final String NURSE = "HEAD NURSE";
     public static final String SECRETARY = "SECRETARY";
     public static final String NEW_EMAIL4 = "email4@wp.pl";
-    public static final String NEW_EMAIL5 = "m@wp.pl";
+    public static final String NEW_EMAIL5 = "m5@wp.pl";
+    public static final String NEW_EMAIL6 = "m6@wp.pl";
 }

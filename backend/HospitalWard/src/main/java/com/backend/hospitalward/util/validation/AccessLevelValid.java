@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.FIELD;
 
-@Target( { FIELD })
+@Target({FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = AccessLevelValidation.class)
 public @interface AccessLevelValid {

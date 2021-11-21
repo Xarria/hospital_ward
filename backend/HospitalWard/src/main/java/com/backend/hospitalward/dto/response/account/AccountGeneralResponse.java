@@ -1,8 +1,6 @@
 package com.backend.hospitalward.dto.response.account;
 
 import com.backend.hospitalward.dto.BaseDTO;
-import com.backend.hospitalward.dto.response.medicalStaff.MedicalStaffGeneralResponse;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;

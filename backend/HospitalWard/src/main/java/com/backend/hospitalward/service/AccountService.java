@@ -15,8 +15,8 @@ import com.backend.hospitalward.util.notification.EmailSender;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.token.Sha512DigestUtils;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 import static java.time.temporal.ChronoUnit.SECONDS;
 
 @Service
+@Component
 @RequiredArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
 @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, timeout = 3)
@@ -112,6 +113,14 @@ public class AccountService {
                 director.getName(), director.getEmail(), url.getCodeDirector());
     }
 
+    private void deleteOldConfirmUrls(Account account) {
+        List<Url> urls = urlRepository.findUrlsByAccountEmployee(account).stream()
+                .filter(url -> url.getActionType().equals(UrlActionType.CONFIRM.name()))
+                .collect(Collectors.toList());
+
+        urlRepository.deleteAll(urls);
+    }
+
     public void createAccount(Account account, String accessLevel, String createdBy) {
         Account director = accountRepository.findAccountByLogin(createdBy).orElseThrow(() ->
                 new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
@@ -173,6 +182,10 @@ public class AccountService {
     public void changeActivity(String login, boolean newActivity, String modifiedBy) {
         Account account = accountRepository.findAccountByLogin(login).orElseThrow(() ->
                 new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
+
+        if (!account.isConfirmed()) {
+            throw new ConflictException(ErrorKey.ACCOUNT_NOT_CONFIRMED);
+        }
 
         account.setActive(newActivity);
         account.setModificationDate(Timestamp.from(Instant.now()));
@@ -317,7 +330,7 @@ public class AccountService {
                 !newAccessLevel.equals(s);
     }
 
-    public void changeEmailAddress(String newEmail, String login) {
+    public void changeEmailAddress(String newEmail, String login, String requestedBy) {
 
         if (!accountRepository.findAccountsByEmail(newEmail).isEmpty()) {
             throw new ConflictException(ErrorKey.EMAIL_UNIQUE);
@@ -326,11 +339,23 @@ public class AccountService {
         Account account = accountRepository.findAccountByLogin(login).orElseThrow(() ->
                 new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
 
+        Account requestedByAccount = null;
+
+        if (login.equals(requestedBy)) {
+            requestedByAccount = accountRepository.findAccountByLogin(requestedBy).orElseThrow(() ->
+                    new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
+        }
+
         account.setEmail(newEmail);
-        account.setModifiedBy(null);
+        account.setModifiedBy(requestedByAccount);
         account.setModificationDate(Timestamp.from(Instant.now()));
 
         accountRepository.save(account);
+
+        if (!account.isConfirmed() && requestedByAccount != null) {
+            createConfirmUrl(account, requestedByAccount);
+            deleteOldConfirmUrls(account);
+        }
     }
 
     public void resetPassword(String urlCode, Password newPassword) {
@@ -359,7 +384,7 @@ public class AccountService {
     //endregion
 
     public void sendResetPasswordUrl(String email, String directorName, String directorSurname, String requestedBy) {
-        Account accountEmployee = accountRepository.findAccountByEmail(email).orElseThrow(() ->
+        Account accountEmployee = accountRepository.findAccountByEmailAndConfirmedIsTrue(email).orElseThrow(() ->
                 new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
 
         Account accountDirector = accountRepository.findAccountByNameAndSurname(directorName, directorSurname)
@@ -396,5 +421,19 @@ public class AccountService {
                 .creationDate(Timestamp.from(Instant.now()))
                 .expirationDate(Timestamp.from(Instant.now().plus(86400, SECONDS)))
                 .build();
+    }
+
+    public void deleteUnconfirmedAccount(String login) {
+        Account account = accountRepository.findAccountByLogin(login).orElseThrow(
+                () -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
+
+        if (account.isConfirmed()) {
+            throw new ConflictException(ErrorKey.ACCOUNT_CONFIRMED);
+        }
+
+        List<Url> urlsForAccount = urlRepository.findUrlsByAccountEmployee(account);
+
+        urlRepository.deleteAll(urlsForAccount);
+        accountRepository.delete(account);
     }
 }

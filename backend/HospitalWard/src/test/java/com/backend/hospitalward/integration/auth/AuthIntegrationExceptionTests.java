@@ -34,8 +34,7 @@ public class AuthIntegrationExceptionTests extends AbstractTestContainer {
                 new Credentials(AccountConstants.SG_LOGIN, AccountConstants.NEW_PASSWORD2), null);
         try {
             restTemplate.exchange(getUrlWithPort(AccountConstants.AUTH), HttpMethod.POST, credentials, String.class);
-        }
-        catch (HttpClientErrorException e) {
+        } catch (HttpClientErrorException e) {
             assertAll(
                     () -> assertEquals(HttpStatus.UNAUTHORIZED, e.getStatusCode())
             );

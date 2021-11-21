@@ -48,6 +48,8 @@ public final class ErrorKey {
     public static final String URL_EXPIRED = "error.url_expired";
     public static final String URL_WRONG_ACTION = "error.invalid_action_type";
     public static final String URL_INVALID = "error.url_code_invalid";
+    public static final String ACCOUNT_NOT_CONFIRMED = "error.account_unconfirmed";
+    public static final String ACCOUNT_CONFIRMED = "error.account_confirmed";
     //endregion
 
 }

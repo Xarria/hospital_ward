@@ -24,7 +24,7 @@ public interface AccountMapper {
 
     @Named("mapModifiedBy")
     default String mapModifiedBy(Account account) {
-        if(account.getModifiedBy() != null) {
+        if (account.getModifiedBy() != null) {
             return account.getModifiedBy().getName();
         }
         return null;
@@ -32,7 +32,7 @@ public interface AccountMapper {
 
     @Named("mapAccessLevel")
     default String mapAccessLevel(Account account) {
-        if(account.getAccessLevel() != null) {
+        if (account.getAccessLevel() != null) {
             return account.getAccessLevel().getName();
         }
         return null;
@@ -40,7 +40,7 @@ public interface AccountMapper {
 
     @Named("mapCreatedBy")
     default String mapCreatedBy(Account account) {
-        if(account.getCreatedBy() != null) {
+        if (account.getCreatedBy() != null) {
             return account.getCreatedBy().getName();
         }
         return null;
@@ -48,7 +48,7 @@ public interface AccountMapper {
 
     @Named("mapSpecializations")
     default List<String> mapSpecializations(MedicalStaff medicalStaff) {
-        if(!medicalStaff.getSpecializations().isEmpty()) {
+        if (!medicalStaff.getSpecializations().isEmpty()) {
             return medicalStaff.getSpecializations().stream().map(Specialization::getName).collect(Collectors.toList());
         }
         return null;
