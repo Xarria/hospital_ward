@@ -9,6 +9,7 @@ import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -19,13 +20,14 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@EntityScan("com.backend.hospitalward.*")
-@ComponentScan("com.backend.hospitalward.*")
-@EnableAutoConfiguration
 @EnableWebMvc
 @EnableCaching
 @EnableScheduling
 @EnableAsync
+@EnableRetry
+@EnableAutoConfiguration
+@EntityScan("com.backend.hospitalward.*")
+@ComponentScan("com.backend.hospitalward.*")
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationConfig {
 

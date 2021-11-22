@@ -38,6 +38,10 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
         </dependency>
@@ -61,6 +65,11 @@
             <artifactId>logback-colorizer</artifactId>
             <version>1.0.1</version>
             <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.retry</groupId>
+            <artifactId>spring-retry</artifactId>
+            <version>1.2.5.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>com.nimbusds</groupId>

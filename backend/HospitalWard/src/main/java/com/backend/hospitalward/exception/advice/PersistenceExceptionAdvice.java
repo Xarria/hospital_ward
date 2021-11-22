@@ -5,7 +5,6 @@ import org.hibernate.TransactionException;
 import org.hibernate.exception.JDBCConnectionException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -34,9 +33,8 @@ public class PersistenceExceptionAdvice {
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
-    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ExceptionHandler(ConstraintViolationException.class)
     public ExceptionResponse constraintViolationException(Exception e) {
-        //TODO kilka naruszeń
         return ExceptionResponse.singleException(e.getMessage());
     }
 
@@ -55,9 +53,6 @@ public class PersistenceExceptionAdvice {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(PersistenceException.class)
     public ExceptionResponse persistenceException(Exception e) {
-        if (e.getCause() instanceof ConstraintViolationException) {
-            constraintViolationException(e);
-        }
         return ExceptionResponse.singleException(e.getMessage());
     }
 

@@ -15,6 +15,11 @@ import com.backend.hospitalward.util.notification.EmailSender;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.hibernate.HibernateException;
+import org.hibernate.JDBCException;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.security.core.token.Sha512DigestUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -22,6 +27,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.PersistenceException;
 import javax.security.enterprise.credential.Password;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -35,11 +41,10 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
+@Retryable(value = {PersistenceException.class, HibernateException.class, JDBCException.class},
+        exclude = ConstraintViolationException.class, backoff = @Backoff(delay = 1000))
 @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, timeout = 3)
 public class AccountService {
-
-//    @Value("${url.expiration.time}")
-//    int secondsExpirationTime;
 
     AccountRepository accountRepository;
 

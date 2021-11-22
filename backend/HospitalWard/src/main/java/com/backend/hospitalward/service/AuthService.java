@@ -7,6 +7,11 @@ import com.backend.hospitalward.repository.AccountRepository;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.HibernateException;
+import org.hibernate.JDBCException;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,9 +20,13 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.PersistenceException;
+
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Service
+@Retryable(value = {PersistenceException.class, HibernateException.class, JDBCException.class},
+        exclude = ConstraintViolationException.class, backoff = @Backoff(delay = 1000))
 @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, timeout = 3)
 public class AuthService implements UserDetailsService {
 
