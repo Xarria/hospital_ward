@@ -74,4 +74,10 @@ public class EmailSender {
 
     public void sendRemovalEmail(String name, String email) {
     }
+
+    public void sendPasswordChangeEmail(String name, String email) {
+    }
+
+    public void sendActivityChangedEmail(String name, String email, boolean active) {
+    }
 }

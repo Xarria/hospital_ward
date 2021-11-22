@@ -3,18 +3,9 @@ package com.backend.hospitalward.exception;
 public final class ErrorKey {
 
     //region common
-    public static final String CRITICAL = "error.critical";
-    public static final String PERSISTENCE = "error.unknown";
-    public static final String CONSTRAINT_VIOLATION = "error.constraint_violation";
-    public static final String CONNECTION = "error.database_connection";
-    public static final String OPTIMISTIC_LOCK = "error.optimistic_lock";
-    public static final String NO_RESULT = "error.no_result";
-    public static final String TIMED_OUT = "error.transaction_timed_out";
     public static final String ETAG_INVALID = "error.invalid_etag";
-    public static final String JWT_INVALID = "error.jwt_token_invalid";
     public static final String ACCESS_DENIED = "error.access_denied";
     public static final String UNKNOWN = "error.unknown";
-    public static final String CREDENTIALS_INVALID = "error.invalid_credentials";
     //endregion
 
     //region account
@@ -50,6 +41,10 @@ public final class ErrorKey {
     public static final String URL_INVALID = "error.url_code_invalid";
     public static final String ACCOUNT_NOT_CONFIRMED = "error.account_unconfirmed";
     public static final String ACCOUNT_CONFIRMED = "error.account_confirmed";
+    //endregion
+
+    //region disease
+    public static final String DISEASE_NOT_FOUND = "error.disease_not_found";
     //endregion
 
 }

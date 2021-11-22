@@ -1,6 +1,10 @@
 package com.backend.hospitalward.service;
 
+import com.backend.hospitalward.exception.ErrorKey;
+import com.backend.hospitalward.exception.NotFoundException;
+import com.backend.hospitalward.model.Account;
 import com.backend.hospitalward.model.Disease;
+import com.backend.hospitalward.repository.AccountRepository;
 import com.backend.hospitalward.repository.DiseaseRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,6 +20,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.PersistenceException;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -29,7 +36,24 @@ public class DiseaseService {
 
     DiseaseRepository diseaseRepository;
 
+    AccountRepository accountRepository;
+
     public List<Disease> getAllDiseases(){
         return diseaseRepository.findAll();
+    }
+
+    public Disease getDiseaseByName(String name) {
+        return diseaseRepository.findDiseaseByName(name).orElseThrow(()
+                -> new NotFoundException(ErrorKey.DISEASE_NOT_FOUND));
+    }
+
+    public void createDisease(Disease disease, String login) {
+        Account account = accountRepository.findAccountByLogin(login).orElseThrow(()
+                -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
+        disease.setVersion(0L);
+        disease.setPatients(Collections.emptyList());
+        disease.setCreatedBy(account);
+        disease.setCreationDate(Timestamp.from(Instant.now()));
+        diseaseRepository.save(disease);
     }
 }

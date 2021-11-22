@@ -25,6 +25,16 @@
             <column name="surgery_required" type="boolean">
                 <constraints nullable="false"/>
             </column>
+            <column name="creation_date" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="BIGINT">
+                <constraints foreignKeyName="fk_disease_created_by" references="account(id)"/>
+            </column>
+            <column name="modification_date" type="timestamp"/>
+            <column name="modified_by" type="BIGINT">
+                <constraints foreignKeyName="fk_disease_modified_by" references="account(id)"/>
+            </column>
         </createTable>
     </changeSet>
 </databaseChangeLog>

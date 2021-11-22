@@ -7,8 +7,11 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Repository
 @Transactional(propagation = Propagation.MANDATORY, isolation = Isolation.READ_COMMITTED, timeout = 3)
 public interface DiseaseRepository extends JpaRepository<Disease, Long> {
 
+    Optional<Disease> findDiseaseByName(String name);
 }

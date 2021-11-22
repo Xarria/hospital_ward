@@ -168,7 +168,7 @@ public class AccountController {
             throw new PreconditionFailedException(ErrorKey.ETAG_INVALID);
         }
 
-        accountService.updateAccount(accountMapper.toAccount(accountUpdateRequest),
+        accountService.updateAccountOffice(accountMapper.toAccount(accountUpdateRequest),
                 securityContext.getAuthentication().getName());
 
         return ResponseEntity.ok().build();
@@ -201,7 +201,7 @@ public class AccountController {
 
         checkETagHeader(securityContext, accountUpdateRequest, eTag);
 
-        accountService.updateAccount(accountMapper.toAccount(accountUpdateRequest), accountUpdateRequest.getLogin());
+        accountService.updateAccountOffice(accountMapper.toAccount(accountUpdateRequest), accountUpdateRequest.getLogin());
 
         return ResponseEntity.ok().build();
     }

@@ -2,16 +2,12 @@ package com.backend.hospitalward.mapper;
 
 import com.backend.hospitalward.dto.request.disease.DiseaseCreateRequest;
 import com.backend.hospitalward.dto.request.disease.DiseaseUpdateRequest;
-import com.backend.hospitalward.dto.response.disease.DiseaseResponse;
+import com.backend.hospitalward.dto.response.disease.DiseaseDetailsResponse;
+import com.backend.hospitalward.dto.response.disease.DiseaseGeneralResponse;
 import com.backend.hospitalward.model.Disease;
-import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.NullValuePropertyMappingStrategy;
 
-@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
-public interface DiseaseMapper {
+public interface DiseaseMapper extends BaseMapper{
 
     @Mapping(target = "patients", ignore = true)
     Disease toDisease(DiseaseCreateRequest diseaseCreateRequest);
@@ -19,5 +15,9 @@ public interface DiseaseMapper {
     @Mapping(target = "patients", ignore = true)
     Disease toDisease(DiseaseUpdateRequest diseaseUpdateRequest);
 
-    DiseaseResponse toDiseaseResponse(Disease disease);
+    DiseaseGeneralResponse toDiseaseGeneralResponse(Disease disease);
+
+    @Mapping(target = "createdBy", source = "medicalStaff", qualifiedByName = "mapCreatedBy")
+    @Mapping(target = "modifiedBy", source = "medicalStaff", qualifiedByName = "mapModifiedBy")
+    DiseaseDetailsResponse toDiseaseDetailsResponse(Disease disease);
 }

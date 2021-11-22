@@ -37,7 +37,6 @@
             <column name="covid_status" type="bigint">
                 <constraints nullable="false" foreignKeyName="fk_patient_covid_status" references="covid_status(id)"/>
             </column>
-            <column name="position_queue" type="int"/>
             <column name="creation_date" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>

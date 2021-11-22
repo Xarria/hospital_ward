@@ -32,7 +32,7 @@ public class AccountDetailsResponse extends BaseDTO implements SignableDTO {
 
     String createdBy;
 
-    Timestamp creationDate = Timestamp.from(Instant.now());
+    Timestamp creationDate;
 
     String modifiedBy;
 

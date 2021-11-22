@@ -6,10 +6,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 
+import java.sql.Timestamp;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-public class DiseaseResponse extends BaseDTO implements SignableDTO {
+public class DiseaseDetailsResponse extends BaseDTO implements SignableDTO {
 
     String name;
 
@@ -18,6 +20,14 @@ public class DiseaseResponse extends BaseDTO implements SignableDTO {
     boolean cathererRequired;
 
     boolean surgeryRequired;
+
+    String createdBy;
+
+    Timestamp creationDate;
+
+    String modifiedBy;
+
+    Timestamp modificationDate;
 
     @Override
     public Long getSignablePayload() {

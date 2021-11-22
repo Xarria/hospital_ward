@@ -181,7 +181,7 @@ public class AccountService {
         account.setModificationDate(Timestamp.from(Instant.now()));
         accountRepository.save(account);
 
-        //TODO mail
+        emailSender.sendPasswordChangeEmail(account.getName(), account.getEmail());
     }
 
     public void changeActivity(String login, boolean newActivity, String modifiedBy) {
@@ -203,7 +203,7 @@ public class AccountService {
 
         accountRepository.save(account);
 
-        //TODO mail
+        emailSender.sendActivityChangedEmail(account.getName(), account.getEmail(), account.isActive());
     }
 
     private Account updateBaseAccount(Account account, String modifiedBy) {
@@ -234,11 +234,11 @@ public class AccountService {
         return accountFromDB;
     }
 
-    public void updateAccount(Account account, String modifiedBy) {
+    public void updateAccountOffice(Account account, String modifiedBy) {
 
         accountRepository.save(updateBaseAccount(account, modifiedBy));
 
-        //TODO mail
+        emailSender.sendModificationEmail(account.getName(), account.getEmail());
     }
 
     public void updateMedicalStaff(MedicalStaff account, String modifiedBy, List<String> specializations) {
@@ -264,7 +264,7 @@ public class AccountService {
 
         accountRepository.save(modifiedMedicalStaff);
 
-        //TODO mail
+        emailSender.sendModificationEmail(account.getName(), account.getEmail());
     }
 
     public void confirmAccount(String urlCode, Password password) {
