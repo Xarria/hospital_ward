@@ -1,10 +1,9 @@
 package com.backend.hospitalward.security;
 
-import com.backend.hospitalward.exception.ErrorKey;
-import com.backend.hospitalward.exception.UnauthorizedException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -29,13 +28,8 @@ public class JWTUtils {
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        try {
-            Claims claims = Jwts.parser().setSigningKey(SecurityConstants.SECRET).parseClaimsJws(token).getBody();
-            return claimsResolver.apply(claims);
-        } catch (Exception e) {
-            throw new UnauthorizedException(ErrorKey.JWT_INVALID);
-        }
-
+        Claims claims = Jwts.parser().setSigningKey(SecurityConstants.SECRET).parseClaimsJws(token).getBody();
+        return claimsResolver.apply(claims);
     }
 
     public String generateToken(UserDetails userDetails) {

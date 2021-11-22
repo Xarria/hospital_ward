@@ -2,7 +2,10 @@ package com.backend.hospitalward.security;
 
 import com.backend.hospitalward.dto.request.auth.Credentials;
 import com.backend.hospitalward.service.AuthService;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class RequestJWTFilter extends OncePerRequestFilter {
@@ -26,7 +30,8 @@ public class RequestJWTFilter extends OncePerRequestFilter {
 
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         final String authHeader = request.getHeader(SecurityConstants.AUTHORIZATION);
 
         String jwt = null;
@@ -34,11 +39,20 @@ public class RequestJWTFilter extends OncePerRequestFilter {
 
         if (authHeader != null && authHeader.startsWith(SecurityConstants.BEARER)) {
             jwt = authHeader.substring(SecurityConstants.BEARER.length()).trim();
-            username = jwtUtils.extractUsername(jwt);
+            try {
+                username = jwtUtils.extractUsername(jwt);
+            } catch (ExpiredJwtException e) {
+                log.error("JWT token expired");
+            } catch (Exception e) {
+                log.error("Invalid JWT Token");
+            }
+        } else {
+            log.error("Invalid authorization header");
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = authService.loadUserByUsername(username);
+
             if (jwtUtils.validateToken(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails,

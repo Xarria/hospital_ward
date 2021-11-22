@@ -403,3 +403,532 @@ org.springframework.transaction.IllegalTransactionStateException: No existing tr
 22-11-2021 14:02:29 ERROR com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-8] DataIntegrityViolationException thrown in line: org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:551) with message: could not execute statement; SQL [n/a]; constraint [account.email]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement
 22-11-2021 14:02:29 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-8] Class PersistenceExceptionAdvice started method: persistenceException with args: {e=org.springframework.dao.DataIntegrityViolationException: could not execute statement; SQL [n/a]; constraint [account.email]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement}
 22-11-2021 14:02:29 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-8] Class PersistenceExceptionAdvice finished method: persistenceException in 2 ms and returned: ExceptionResponse(dateTime=22-11-2021 14:02:29, message=could not execute statement; SQL [n/a]; constraint [account.email]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement)
+22-11-2021 14:04:46 INFO org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 6.2.0.Final
+22-11-2021 14:04:46 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 14292 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+22-11-2021 14:04:46 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+22-11-2021 14:04:46 INFO org.springframework.boot.devtools.restart.ChangeableUrls [restartedMain] The Class-Path manifest attribute in C:\Users\Xarria\.m2\repository\org\liquibase\liquibase-core\4.3.5\liquibase-core-4.3.5.jar referenced one or more files that do not exist: file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/commons-cli-1.4.jar,file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/snakeyaml-1.27.jar
+22-11-2021 14:04:46 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+22-11-2021 14:04:46 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+22-11-2021 14:04:47 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+22-11-2021 14:04:47 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 42 ms. Found 4 JPA repository interfaces.
+22-11-2021 14:04:47 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [restartedMain] Bean 'org.springframework.retry.annotation.RetryConfiguration' of type [org.springframework.retry.annotation.RetryConfiguration$$EnhancerBySpringCGLIB$$5b69059d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+22-11-2021 14:04:47 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [restartedMain] Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@44dbdb01' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+22-11-2021 14:04:47 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [restartedMain] Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+22-11-2021 14:04:47 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+22-11-2021 14:04:47 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+22-11-2021 14:04:47 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+22-11-2021 14:04:47 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+22-11-2021 14:04:47 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+22-11-2021 14:04:47 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1147 ms
+22-11-2021 14:04:48 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+22-11-2021 14:04:48 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+22-11-2021 14:04:48 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+22-11-2021 14:04:48 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+22-11-2021 14:04:48 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+22-11-2021 14:04:48 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+22-11-2021 14:04:48 WARN liquibase.hub [restartedMain] Skipping auto-registration
+22-11-2021 14:04:48 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+22-11-2021 14:04:48 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+22-11-2021 14:04:49 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.5.7.Final
+22-11-2021 14:04:49 INFO org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+22-11-2021 14:04:49 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+22-11-2021 14:04:49 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+22-11-2021 14:04:49 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+22-11-2021 14:04:49 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+22-11-2021 14:04:50 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+22-11-2021 14:04:50 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 0 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@1a048f08
+22-11-2021 14:04:50 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: corsConfigurer with args: {}
+22-11-2021 14:04:50 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: corsConfigurer in 0 ms and returned: com.backend.hospitalward.config.ApplicationConfig$1@295072ac
+22-11-2021 14:04:50 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+22-11-2021 14:04:50 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig started method: authenticationManagerBean with args: {}
+22-11-2021 14:04:50 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig finished method: authenticationManagerBean in 15 ms and returned: org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter$AuthenticationManagerDelegator@5d89bcc9
+22-11-2021 14:04:50 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: getCacheManager with args: {}
+22-11-2021 14:04:50 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: getCacheManager in 2 ms and returned: org.springframework.cache.concurrent.ConcurrentMapCacheManager@30b8759a
+22-11-2021 14:04:50 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: restTemplate with args: {}
+22-11-2021 14:04:50 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: restTemplate in 0 ms and returned: org.springframework.web.client.RestTemplate@79a31fdc
+22-11-2021 14:04:50 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: objectMapper with args: {}
+22-11-2021 14:04:50 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: objectMapper in 0 ms and returned: com.fasterxml.jackson.databind.ObjectMapper@4bcb3f03
+22-11-2021 14:04:50 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig started method: daoAuthenticationProvider with args: {}
+22-11-2021 14:04:50 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig finished method: daoAuthenticationProvider in 0 ms and returned: org.springframework.security.authentication.dao.DaoAuthenticationProvider@78cc056e
+22-11-2021 14:04:50 INFO org.springframework.security.web.DefaultSecurityFilterChain [restartedMain] Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@158f44d7, org.springframework.security.web.context.SecurityContextPersistenceFilter@44f7f6e5, org.springframework.security.web.header.HeaderWriterFilter@6a6936fb, org.springframework.web.filter.CorsFilter@61b3e08d, org.springframework.security.web.authentication.logout.LogoutFilter@4e159d59, com.backend.hospitalward.security.RequestJWTFilter@3cc3f3a9, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7f42a8d8, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@29b22dd3, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@677b55e6, org.springframework.security.web.session.SessionManagementFilter@75b7442, org.springframework.security.web.access.ExceptionTranslationFilter@53e31634, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@758867bc]
+22-11-2021 14:04:50 INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+22-11-2021 14:04:50 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+22-11-2021 14:04:50 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+22-11-2021 14:04:50 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Started HospitalWardApplication in 4.535 seconds (JVM running for 5.529)
+22-11-2021 14:05:01 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+22-11-2021 14:05:01 INFO org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+22-11-2021 14:05:01 INFO org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Completed initialization in 1 ms
+22-11-2021 14:05:01 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class JWTUtils started method: extractUsername with args: {token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW4ua293YWxza2kiLCJhdXRoIjoiRE9DVE9SIiwiaXNzIjoiSG9zcGl0YWxXYXJkIiwiaWF0IjoxNjM3NDI1OTQyLCJleHAiOjE2Mzc0MjY4NDJ9.DhuHwScEZtNrdMPkbJfRQO0ThBBGORxnxLNQS6sb7EM}
+22-11-2021 14:05:01 ERROR com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] UnauthorizedException thrown in line: com.backend.hospitalward.security.JWTUtils$$FastClassBySpringCGLIB$$90ce86a7.invoke(<generated>) with message: error.jwt_token_invalid
+22-11-2021 14:05:01 ERROR org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].[dispatcherServlet] [http-nio-8080-exec-1] Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+com.backend.hospitalward.exception.UnauthorizedException: error.jwt_token_invalid
+	at com.backend.hospitalward.security.JWTUtils.extractClaim(JWTUtils.java:36)
+	at com.backend.hospitalward.security.JWTUtils.extractUsername(JWTUtils.java:24)
+	at com.backend.hospitalward.security.JWTUtils$$FastClassBySpringCGLIB$$90ce86a7.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:779)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)
+	at org.springframework.aop.aspectj.AspectJAfterThrowingAdvice.invoke(AspectJAfterThrowingAdvice.java:64)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89)
+	at com.backend.hospitalward.util.logging.AspectLogger.logExit(AspectLogger.java:119)
+	at com.backend.hospitalward.util.logging.AspectLogger.advice(AspectLogger.java:54)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:634)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:624)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:72)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:692)
+	at com.backend.hospitalward.security.JWTUtils$$EnhancerBySpringCGLIB$$37481354.extractUsername(<generated>)
+	at com.backend.hospitalward.security.RequestJWTFilter.doFilterInternal(RequestJWTFilter.java:37)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:110)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:80)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:211)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:183)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:358)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:271)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:197)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:542)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:357)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:382)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:893)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1726)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+22-11-2021 14:05:10 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-4] Class AuthController started method: authenticate with args: {credentials=Credentials(login=sylwester.garda, password=password)}
+22-11-2021 14:05:10 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-4] Class AuthService started method: loadUserByUsername with args: {login=sylwester.garda}
+22-11-2021 14:05:10 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-4] Class AccountRepository started method: findAccountByLogin with args: {login=sylwester.garda}
+22-11-2021 14:05:10 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-4] Class AccountRepository finished method: findAccountByLogin in 37 ms and returned: Optional[Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)]
+22-11-2021 14:05:10 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-4] Class AuthService finished method: loadUserByUsername in 57 ms and returned: Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)
+22-11-2021 14:05:10 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-4] Class AuthService started method: loadUserByUsername with args: {login=sylwester.garda}
+22-11-2021 14:05:10 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-4] Class AccountRepository started method: findAccountByLogin with args: {login=sylwester.garda}
+22-11-2021 14:05:10 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-4] Class AccountRepository finished method: findAccountByLogin in 1 ms and returned: Optional[Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)]
+22-11-2021 14:05:10 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-4] Class AuthService finished method: loadUserByUsername in 1 ms and returned: Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)
+22-11-2021 14:05:10 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-4] Class JWTUtils started method: generateToken with args: {userDetails=Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)}
+22-11-2021 14:05:10 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-4] Class JWTUtils finished method: generateToken in 3 ms and returned: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzeWx3ZXN0ZXIuZ2FyZGEiLCJhdXRoIjoiVFJFQVRNRU5UIERJUkVDVE9SIiwiaXNzIjoiSG9zcGl0YWxXYXJkIiwiaWF0IjoxNjM3NTg2MzEwLCJleHAiOjE2Mzc1ODcyMTB9.zKNGYVkWWzXTrklHzPlM69a-5sEjvWiudGwhzReauh0
+22-11-2021 14:05:10 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-4] Class AuthController finished method: authenticate in 76 ms with HTTP status code: OK and body containing <200 OK OK,eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzeWx3ZXN0ZXIuZ2FyZGEiLCJhdXRoIjoiVFJFQVRNRU5UIERJUkVDVE9SIiwiaXNzIjoiSG9zcGl0YWxXYXJkIiwiaWF0IjoxNjM3NTg2MzEwLCJleHAiOjE2Mzc1ODcyMTB9.zKNGYVkWWzXTrklHzPlM69a-5sEjvWiudGwhzReauh0,[]>
+22-11-2021 14:05:17 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-5] Class JWTUtils started method: extractUsername with args: {token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzeWx3ZXN0ZXIuZ2FyZGEiLCJhdXRoIjoiVFJFQVRNRU5UIERJUkVDVE9SIiwiaXNzIjoiSG9zcGl0YWxXYXJkIiwiaWF0IjoxNjM3NTg2MzEwLCJleHAiOjE2Mzc1ODcyMTB9.zKNGYVkWWzXTrklHzPlM69a-5sEjvWiudGwhzReauh0}
+22-11-2021 14:05:17 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-5] Class JWTUtils finished method: extractUsername in 1 ms and returned: sylwester.garda
+22-11-2021 14:05:17 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-5] Class AuthService started method: loadUserByUsername with args: {login=sylwester.garda}
+22-11-2021 14:05:17 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-5] Class AccountRepository started method: findAccountByLogin with args: {login=sylwester.garda}
+22-11-2021 14:05:17 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-5] Class AccountRepository finished method: findAccountByLogin in 4 ms and returned: Optional[Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)]
+22-11-2021 14:05:17 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-5] Class AuthService finished method: loadUserByUsername in 4 ms and returned: Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)
+22-11-2021 14:05:17 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-5] Class JWTUtils started method: validateToken with args: {userDetails=Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null), token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzeWx3ZXN0ZXIuZ2FyZGEiLCJhdXRoIjoiVFJFQVRNRU5UIERJUkVDVE9SIiwiaXNzIjoiSG9zcGl0YWxXYXJkIiwiaWF0IjoxNjM3NTg2MzEwLCJleHAiOjE2Mzc1ODcyMTB9.zKNGYVkWWzXTrklHzPlM69a-5sEjvWiudGwhzReauh0}
+22-11-2021 14:05:17 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-5] Class JWTUtils finished method: validateToken in 1 ms and returned: true
+22-11-2021 14:05:17 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-5] Class AccountController started method: getAccountByLogin with args: {login=jan.kowalskiiii}
+22-11-2021 14:05:17 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-5] Class AccountService started method: getAccountByLogin with args: {login=jan.kowalskiiii}
+22-11-2021 14:05:17 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-5] Class AccountRepository started method: findAccountByLogin with args: {login=jan.kowalskiiii}
+22-11-2021 14:05:17 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-5] Class AccountRepository finished method: findAccountByLogin in 1 ms and returned: Optional.empty
+22-11-2021 14:05:17 ERROR com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-5] NotFoundException thrown in line: com.backend.hospitalward.service.AccountService.getAccountByLogin(AccountService.java:68) with message: error.account_not_found
+22-11-2021 14:05:17 ERROR com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-5] NotFoundException thrown in line: com.backend.hospitalward.service.AccountService.getAccountByLogin(AccountService.java:68) with message: error.account_not_found
+22-11-2021 14:05:17 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-5] Class ApplicationExceptionAdvice started method: notFoundException with args: {e=com.backend.hospitalward.exception.NotFoundException: error.account_not_found}
+22-11-2021 14:05:17 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-5] Class ApplicationExceptionAdvice finished method: notFoundException in 2 ms and returned: ExceptionResponse(dateTime=22-11-2021 14:05:17, message=error.account_not_found)
+22-11-2021 14:05:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] Class JWTUtils started method: extractUsername with args: {token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzeWx3ZXN0ZXIuZ2FyZGEiLCJhdXRoIjoiVFJFQVRNRU5UIERJUkVDVE9SIiwiaXNzIjoiSG9zcGl0YWxXYXJkIiwiaWF0IjoxNjM3NTg1ODk0LCJleHAiOjE2Mzc1ODY3OTR9.aa_VdezUvEHng60AYVR1pORfRfE2runMJTb4v_XvXrk}
+22-11-2021 14:05:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] Class JWTUtils finished method: extractUsername in 0 ms and returned: sylwester.garda
+22-11-2021 14:05:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] Class AuthService started method: loadUserByUsername with args: {login=sylwester.garda}
+22-11-2021 14:05:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] Class AccountRepository started method: findAccountByLogin with args: {login=sylwester.garda}
+22-11-2021 14:05:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] Class AccountRepository finished method: findAccountByLogin in 1 ms and returned: Optional[Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)]
+22-11-2021 14:05:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] Class AuthService finished method: loadUserByUsername in 3 ms and returned: Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)
+22-11-2021 14:05:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] Class JWTUtils started method: validateToken with args: {userDetails=Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null), token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzeWx3ZXN0ZXIuZ2FyZGEiLCJhdXRoIjoiVFJFQVRNRU5UIERJUkVDVE9SIiwiaXNzIjoiSG9zcGl0YWxXYXJkIiwiaWF0IjoxNjM3NTg1ODk0LCJleHAiOjE2Mzc1ODY3OTR9.aa_VdezUvEHng60AYVR1pORfRfE2runMJTb4v_XvXrk}
+22-11-2021 14:05:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] Class JWTUtils finished method: validateToken in 1 ms and returned: true
+22-11-2021 14:05:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] Class AccessLevelValidation started method: isValid with args: {constraintValidatorContext=org.hibernate.validator.internal.engine.constraintvalidation.ConstraintValidatorContextImpl@1213e00a, accessLevel=SECRETARY}
+22-11-2021 14:05:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] Class AccessLevelValidation finished method: isValid in 0 ms and returned: true
+22-11-2021 14:05:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] Class AccountController started method: createAccountOffice with args: {accountCreateRequest=AccountCreateRequest(accessLevel=SECRETARY, name=Kinga, surname=Affe, email=karolina_kowalczyk09@wp.pl), securityContext=SecurityContextImpl [Authentication=UsernamePasswordAuthenticationToken [Principal=Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null), Credentials=[PROTECTED], Authenticated=true, Details=WebAuthenticationDetails [RemoteIpAddress=0:0:0:0:0:0:0:1, SessionId=null], Granted Authorities=[AccessLevel(id=5, name=TREATMENT DIRECTOR)]]]}
+22-11-2021 14:05:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] Class AccountService started method: createAccount with args: {accessLevel=SECRETARY, createdBy=sylwester.garda, account=Account(login=null, type=null, accessLevel=null, name=Kinga, surname=Affe, email=karolina_kowalczyk09@wp.pl, active=true, confirmed=false, createdBy=null, creationDate=2021-11-22 14:05:26.8830119, modifiedBy=null, modificationDate=null)}
+22-11-2021 14:05:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] Class AccountRepository started method: findAccountByLogin with args: {login=sylwester.garda}
+22-11-2021 14:05:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] Class AccountRepository finished method: findAccountByLogin in 3 ms and returned: Optional[Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)]
+22-11-2021 14:05:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] Class AccountRepository started method: findAccountsByLoginContains with args: {fullName=kinga.affe}
+22-11-2021 14:05:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] Class AccountRepository finished method: findAccountsByLoginContains in 11 ms and returned: ArrayList , size: 0
+22-11-2021 14:05:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] Class AccessLevelRepository started method: findAccessLevelByName with args: {name=SECRETARY}
+22-11-2021 14:05:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] Class AccessLevelRepository finished method: findAccessLevelByName in 1 ms and returned: Optional[AccessLevel(id=4, name=SECRETARY)]
+22-11-2021 14:05:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] Class CrudRepository started method: save with args: {arg0=Account(login=kinga.affe, type=null, accessLevel=AccessLevel(id=4, name=SECRETARY), name=Kinga, surname=Affe, email=karolina_kowalczyk09@wp.pl, active=true, confirmed=false, createdBy=Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null), creationDate=2021-11-22 14:05:26.8830119, modifiedBy=null, modificationDate=null)}
+22-11-2021 14:05:26 WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper [http-nio-8080-exec-6] SQL Error: 1062, SQLState: 23000
+22-11-2021 14:05:26 ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper [http-nio-8080-exec-6] Duplicate entry 'karolina_kowalczyk09@wp.pl' for key 'account.email'
+22-11-2021 14:05:26 ERROR com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] DataIntegrityViolationException thrown in line: org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:551) with message: could not execute statement; SQL [n/a]; constraint [account.email]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement
+22-11-2021 14:05:26 ERROR com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] DataIntegrityViolationException thrown in line: org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:551) with message: could not execute statement; SQL [n/a]; constraint [account.email]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement
+22-11-2021 14:05:26 ERROR com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] DataIntegrityViolationException thrown in line: org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:551) with message: could not execute statement; SQL [n/a]; constraint [account.email]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement
+22-11-2021 14:05:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] Class PersistenceExceptionAdvice started method: persistenceException with args: {e=org.springframework.dao.DataIntegrityViolationException: could not execute statement; SQL [n/a]; constraint [account.email]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement}
+22-11-2021 14:05:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-6] Class PersistenceExceptionAdvice finished method: persistenceException in 1 ms and returned: ExceptionResponse(dateTime=22-11-2021 14:05:26, message=could not execute statement; SQL [n/a]; constraint [account.email]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement)
+22-11-2021 14:13:14 INFO org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 6.2.0.Final
+22-11-2021 14:13:14 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 4308 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+22-11-2021 14:13:14 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+22-11-2021 14:13:14 INFO org.springframework.boot.devtools.restart.ChangeableUrls [restartedMain] The Class-Path manifest attribute in C:\Users\Xarria\.m2\repository\org\liquibase\liquibase-core\4.3.5\liquibase-core-4.3.5.jar referenced one or more files that do not exist: file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/commons-cli-1.4.jar,file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/snakeyaml-1.27.jar
+22-11-2021 14:13:14 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+22-11-2021 14:13:14 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+22-11-2021 14:13:14 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+22-11-2021 14:13:14 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 47 ms. Found 4 JPA repository interfaces.
+22-11-2021 14:13:15 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [restartedMain] Bean 'org.springframework.retry.annotation.RetryConfiguration' of type [org.springframework.retry.annotation.RetryConfiguration$$EnhancerBySpringCGLIB$$4319bbb] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+22-11-2021 14:13:15 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [restartedMain] Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@5bad3b65' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+22-11-2021 14:13:15 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [restartedMain] Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+22-11-2021 14:13:15 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+22-11-2021 14:13:15 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+22-11-2021 14:13:15 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+22-11-2021 14:13:15 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+22-11-2021 14:13:15 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+22-11-2021 14:13:15 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1219 ms
+22-11-2021 14:13:15 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+22-11-2021 14:13:15 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+22-11-2021 14:13:15 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+22-11-2021 14:13:16 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+22-11-2021 14:13:16 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+22-11-2021 14:13:16 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+22-11-2021 14:13:16 WARN liquibase.hub [restartedMain] Skipping auto-registration
+22-11-2021 14:13:16 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+22-11-2021 14:13:16 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+22-11-2021 14:13:16 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.5.7.Final
+22-11-2021 14:13:16 INFO org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+22-11-2021 14:13:16 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+22-11-2021 14:13:16 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+22-11-2021 14:13:17 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+22-11-2021 14:13:17 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+22-11-2021 14:13:17 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+22-11-2021 14:13:17 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 0 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@6f5ea79
+22-11-2021 14:13:17 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: corsConfigurer with args: {}
+22-11-2021 14:13:17 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: corsConfigurer in 0 ms and returned: com.backend.hospitalward.config.ApplicationConfig$1@50daf82e
+22-11-2021 14:13:17 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+22-11-2021 14:13:17 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig started method: authenticationManagerBean with args: {}
+22-11-2021 14:13:17 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig finished method: authenticationManagerBean in 0 ms and returned: org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter$AuthenticationManagerDelegator@6fc51614
+22-11-2021 14:13:18 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: getCacheManager with args: {}
+22-11-2021 14:13:18 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: getCacheManager in 0 ms and returned: org.springframework.cache.concurrent.ConcurrentMapCacheManager@6dcb1c59
+22-11-2021 14:13:18 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: restTemplate with args: {}
+22-11-2021 14:13:18 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: restTemplate in 17 ms and returned: org.springframework.web.client.RestTemplate@2065ed24
+22-11-2021 14:13:18 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: objectMapper with args: {}
+22-11-2021 14:13:18 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: objectMapper in 0 ms and returned: com.fasterxml.jackson.databind.ObjectMapper@468c9cee
+22-11-2021 14:13:18 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig started method: daoAuthenticationProvider with args: {}
+22-11-2021 14:13:18 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig finished method: daoAuthenticationProvider in 0 ms and returned: org.springframework.security.authentication.dao.DaoAuthenticationProvider@23ab2d05
+22-11-2021 14:13:18 INFO org.springframework.security.web.DefaultSecurityFilterChain [restartedMain] Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@41d0b939, org.springframework.security.web.context.SecurityContextPersistenceFilter@2417bb1, org.springframework.security.web.header.HeaderWriterFilter@3c1ebeae, org.springframework.web.filter.CorsFilter@1f2d02ae, org.springframework.security.web.authentication.logout.LogoutFilter@516c64ab, com.backend.hospitalward.security.RequestJWTFilter@32eaf884, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1209e879, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@53e58919, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@5d6bd7e9, org.springframework.security.web.session.SessionManagementFilter@17f54a51, org.springframework.security.web.access.ExceptionTranslationFilter@7f311a46, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3610047]
+22-11-2021 14:13:18 INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+22-11-2021 14:13:18 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+22-11-2021 14:13:18 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+22-11-2021 14:13:18 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Started HospitalWardApplication in 4.799 seconds (JVM running for 5.747)
+22-11-2021 14:13:26 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+22-11-2021 14:13:26 INFO org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+22-11-2021 14:13:26 INFO org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Completed initialization in 1 ms
+22-11-2021 14:13:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class JWTUtils started method: extractUsername with args: {token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzeWx3ZXN0ZXIuZ2FyZGEiLCJhdXRoIjoiVFJFQVRNRU5UIERJUkVDVE9SIiwiaXNzIjoiSG9zcGl0YWxXYXJkIiwiaWF0IjoxNjM3NTg2MzEwLCJleHAiOjE2Mzc1ODcyMTB9.zKNGYVkWWzXTrklHzPlM69a-5sEjvWiudGwhzReauh0}
+22-11-2021 14:13:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class JWTUtils finished method: extractUsername in 43 ms and returned: sylwester.garda
+22-11-2021 14:13:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AuthService started method: loadUserByUsername with args: {login=sylwester.garda}
+22-11-2021 14:13:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountRepository started method: findAccountByLogin with args: {login=sylwester.garda}
+22-11-2021 14:13:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountRepository finished method: findAccountByLogin in 41 ms and returned: Optional[Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)]
+22-11-2021 14:13:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AuthService finished method: loadUserByUsername in 60 ms and returned: Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null)
+22-11-2021 14:13:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class JWTUtils started method: validateToken with args: {userDetails=Account(login=sylwester.garda, type=MEDIC, accessLevel=AccessLevel(id=5, name=TREATMENT DIRECTOR), name=Sylwester, surname=Garda, email=flowerka99@gmail.com, active=true, confirmed=true, createdBy=null, creationDate=2021-11-17 19:17:41.0, modifiedBy=null, modificationDate=null), token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzeWx3ZXN0ZXIuZ2FyZGEiLCJhdXRoIjoiVFJFQVRNRU5UIERJUkVDVE9SIiwiaXNzIjoiSG9zcGl0YWxXYXJkIiwiaWF0IjoxNjM3NTg2MzEwLCJleHAiOjE2Mzc1ODcyMTB9.zKNGYVkWWzXTrklHzPlM69a-5sEjvWiudGwhzReauh0}
+22-11-2021 14:13:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class JWTUtils finished method: validateToken in 1 ms and returned: true
+22-11-2021 14:13:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountController started method: getAccountByLogin with args: {login=jan.kowalskiiii}
+22-11-2021 14:13:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountService started method: getAccountByLogin with args: {login=jan.kowalskiiii}
+22-11-2021 14:13:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountRepository started method: findAccountByLogin with args: {login=jan.kowalskiiii}
+22-11-2021 14:13:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class AccountRepository finished method: findAccountByLogin in 2 ms and returned: Optional.empty
+22-11-2021 14:13:26 ERROR com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] NotFoundException thrown in line: com.backend.hospitalward.service.AccountService.getAccountByLogin(AccountService.java:68) with message: error.account_not_found
+22-11-2021 14:13:26 ERROR com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] NotFoundException thrown in line: com.backend.hospitalward.service.AccountService.getAccountByLogin(AccountService.java:68) with message: error.account_not_found
+22-11-2021 14:13:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class ApplicationExceptionAdvice started method: notFoundException with args: {e=com.backend.hospitalward.exception.NotFoundException: error.account_not_found}
+22-11-2021 14:13:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class ApplicationExceptionAdvice finished method: notFoundException in 2 ms and returned: ExceptionResponse(dateTime=22-11-2021 14:13:26, message=error.account_not_found)
+22-11-2021 14:13:34 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class JWTUtils started method: extractUsername with args: {token=eyJhbGciOiJIUzI1NzKNGYVkWWzXTrklHzPlM69a-5sEjvWiudGwhzReauh0}
+22-11-2021 14:13:34 ERROR com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] UnauthorizedException thrown in line: com.backend.hospitalward.security.JWTUtils$$FastClassBySpringCGLIB$$90ce86a7.invoke(<generated>) with message: error.jwt_token_invalid
+22-11-2021 14:13:34 ERROR org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].[dispatcherServlet] [http-nio-8080-exec-3] Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+com.backend.hospitalward.exception.UnauthorizedException: error.jwt_token_invalid
+	at com.backend.hospitalward.security.JWTUtils.extractClaim(JWTUtils.java:36)
+	at com.backend.hospitalward.security.JWTUtils.extractUsername(JWTUtils.java:24)
+	at com.backend.hospitalward.security.JWTUtils$$FastClassBySpringCGLIB$$90ce86a7.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:779)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)
+	at org.springframework.aop.aspectj.AspectJAfterThrowingAdvice.invoke(AspectJAfterThrowingAdvice.java:64)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89)
+	at com.backend.hospitalward.util.logging.AspectLogger.logExit(AspectLogger.java:119)
+	at com.backend.hospitalward.util.logging.AspectLogger.advice(AspectLogger.java:54)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:634)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:624)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:72)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:692)
+	at com.backend.hospitalward.security.JWTUtils$$EnhancerBySpringCGLIB$$7799d24f.extractUsername(<generated>)
+	at com.backend.hospitalward.security.RequestJWTFilter.doFilterInternal(RequestJWTFilter.java:41)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:110)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:80)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:211)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:183)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:358)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:271)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:197)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:542)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:357)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:382)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:893)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1726)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+22-11-2021 14:14:55 INFO org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 6.2.0.Final
+22-11-2021 14:14:55 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 6184 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+22-11-2021 14:14:55 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+22-11-2021 14:14:55 INFO org.springframework.boot.devtools.restart.ChangeableUrls [restartedMain] The Class-Path manifest attribute in C:\Users\Xarria\.m2\repository\org\liquibase\liquibase-core\4.3.5\liquibase-core-4.3.5.jar referenced one or more files that do not exist: file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/commons-cli-1.4.jar,file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/snakeyaml-1.27.jar
+22-11-2021 14:14:55 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+22-11-2021 14:14:55 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+22-11-2021 14:14:56 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+22-11-2021 14:14:56 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 42 ms. Found 4 JPA repository interfaces.
+22-11-2021 14:14:56 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [restartedMain] Bean 'org.springframework.retry.annotation.RetryConfiguration' of type [org.springframework.retry.annotation.RetryConfiguration$$EnhancerBySpringCGLIB$$c63e2574] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+22-11-2021 14:14:56 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [restartedMain] Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@7bf48167' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+22-11-2021 14:14:56 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [restartedMain] Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+22-11-2021 14:14:56 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+22-11-2021 14:14:56 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+22-11-2021 14:14:56 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+22-11-2021 14:14:56 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+22-11-2021 14:14:56 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+22-11-2021 14:14:56 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1133 ms
+22-11-2021 14:14:57 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+22-11-2021 14:14:57 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+22-11-2021 14:14:57 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+22-11-2021 14:14:57 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+22-11-2021 14:14:57 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+22-11-2021 14:14:57 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+22-11-2021 14:14:57 WARN liquibase.hub [restartedMain] Skipping auto-registration
+22-11-2021 14:14:57 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+22-11-2021 14:14:58 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+22-11-2021 14:14:58 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.5.7.Final
+22-11-2021 14:14:58 INFO org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+22-11-2021 14:14:58 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+22-11-2021 14:14:58 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+22-11-2021 14:14:58 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+22-11-2021 14:14:58 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+22-11-2021 14:14:59 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+22-11-2021 14:14:59 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 0 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@24b28bf3
+22-11-2021 14:14:59 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: corsConfigurer with args: {}
+22-11-2021 14:14:59 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: corsConfigurer in 0 ms and returned: com.backend.hospitalward.config.ApplicationConfig$1@2353d40b
+22-11-2021 14:14:59 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+22-11-2021 14:14:59 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig started method: authenticationManagerBean with args: {}
+22-11-2021 14:14:59 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig finished method: authenticationManagerBean in 16 ms and returned: org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter$AuthenticationManagerDelegator@4a197a10
+22-11-2021 14:14:59 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: getCacheManager with args: {}
+22-11-2021 14:14:59 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: getCacheManager in 0 ms and returned: org.springframework.cache.concurrent.ConcurrentMapCacheManager@39b7b334
+22-11-2021 14:14:59 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: restTemplate with args: {}
+22-11-2021 14:14:59 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: restTemplate in 15 ms and returned: org.springframework.web.client.RestTemplate@365be165
+22-11-2021 14:14:59 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: objectMapper with args: {}
+22-11-2021 14:14:59 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: objectMapper in 0 ms and returned: com.fasterxml.jackson.databind.ObjectMapper@299d5185
+22-11-2021 14:14:59 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig started method: daoAuthenticationProvider with args: {}
+22-11-2021 14:14:59 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig finished method: daoAuthenticationProvider in 15 ms and returned: org.springframework.security.authentication.dao.DaoAuthenticationProvider@3e398ba4
+22-11-2021 14:14:59 INFO org.springframework.security.web.DefaultSecurityFilterChain [restartedMain] Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1b2b6f8e, org.springframework.security.web.context.SecurityContextPersistenceFilter@65642561, org.springframework.security.web.header.HeaderWriterFilter@61510252, org.springframework.web.filter.CorsFilter@4a76322f, org.springframework.security.web.authentication.logout.LogoutFilter@4a671160, com.backend.hospitalward.security.RequestJWTFilter@1aa0027, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2dd9ca7b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5fe03089, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7343feaf, org.springframework.security.web.session.SessionManagementFilter@73335051, org.springframework.security.web.access.ExceptionTranslationFilter@320a00bb, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@5d46b56c]
+22-11-2021 14:14:59 INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+22-11-2021 14:14:59 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+22-11-2021 14:14:59 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+22-11-2021 14:15:00 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Started HospitalWardApplication in 4.56 seconds (JVM running for 5.524)
+22-11-2021 14:15:04 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [http-nio-8080-exec-2] Initializing Spring DispatcherServlet 'dispatcherServlet'
+22-11-2021 14:15:04 INFO org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-2] Initializing Servlet 'dispatcherServlet'
+22-11-2021 14:15:04 INFO org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-2] Completed initialization in 1 ms
+22-11-2021 14:15:04 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-2] Class JWTUtils started method: extractUsername with args: {token=eyJhbGciOiJIUzI1NzKNGYVkWWzXTrklHzPlM69a-5sEjvWiudGwhzReauh0}
+22-11-2021 14:15:04 ERROR com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-2] MalformedJwtException thrown in line: io.jsonwebtoken.impl.DefaultJwtParser.parseClaimsJws(DefaultJwtParser.java:541) with message: JWT strings must contain exactly 2 period characters. Found: 0
+22-11-2021 14:15:04 ERROR org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/].[dispatcherServlet] [http-nio-8080-exec-2] Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+io.jsonwebtoken.MalformedJwtException: JWT strings must contain exactly 2 period characters. Found: 0
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:235)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parse(DefaultJwtParser.java:481)
+	at io.jsonwebtoken.impl.DefaultJwtParser.parseClaimsJws(DefaultJwtParser.java:541)
+	at com.backend.hospitalward.security.JWTUtils.extractClaim(JWTUtils.java:30)
+	at com.backend.hospitalward.security.JWTUtils.extractUsername(JWTUtils.java:22)
+	at com.backend.hospitalward.security.JWTUtils$$FastClassBySpringCGLIB$$90ce86a7.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:779)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)
+	at org.springframework.aop.aspectj.AspectJAfterThrowingAdvice.invoke(AspectJAfterThrowingAdvice.java:64)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89)
+	at com.backend.hospitalward.util.logging.AspectLogger.logExit(AspectLogger.java:119)
+	at com.backend.hospitalward.util.logging.AspectLogger.advice(AspectLogger.java:54)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:634)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:624)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:72)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:750)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:692)
+	at com.backend.hospitalward.security.JWTUtils$$EnhancerBySpringCGLIB$$e8920d6d.extractUsername(<generated>)
+	at com.backend.hospitalward.security.RequestJWTFilter.doFilterInternal(RequestJWTFilter.java:41)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:110)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:80)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:211)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:183)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:358)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:271)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:197)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:542)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:135)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:357)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:382)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:893)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1726)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+22-11-2021 14:16:18 INFO org.hibernate.validator.internal.util.Version [background-preinit] HV000001: Hibernate Validator 6.2.0.Final
+22-11-2021 14:16:18 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Starting HospitalWardApplication using Java 11.0.10 on DESKTOP-19QR801 with PID 17572 (D:\inzynier\projekt\backend\HospitalWard\target\classes started by Xarria in D:\inzynier\projekt\backend\HospitalWard)
+22-11-2021 14:16:18 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] No active profile set, falling back to default profiles: default
+22-11-2021 14:16:18 INFO org.springframework.boot.devtools.restart.ChangeableUrls [restartedMain] The Class-Path manifest attribute in C:\Users\Xarria\.m2\repository\org\liquibase\liquibase-core\4.3.5\liquibase-core-4.3.5.jar referenced one or more files that do not exist: file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/commons-cli-1.4.jar,file:/C:/Users/Xarria/.m2/repository/org/liquibase/liquibase-core/4.3.5/snakeyaml-1.27.jar
+22-11-2021 14:16:18 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+22-11-2021 14:16:18 INFO org.springframework.boot.devtools.env.DevToolsPropertyDefaultsPostProcessor [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+22-11-2021 14:16:18 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+22-11-2021 14:16:18 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 47 ms. Found 4 JPA repository interfaces.
+22-11-2021 14:16:19 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [restartedMain] Bean 'org.springframework.retry.annotation.RetryConfiguration' of type [org.springframework.retry.annotation.RetryConfiguration$$EnhancerBySpringCGLIB$$2949761f] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+22-11-2021 14:16:19 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [restartedMain] Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@3980fc6' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+22-11-2021 14:16:19 INFO org.springframework.context.support.PostProcessorRegistrationDelegate$BeanPostProcessorChecker [restartedMain] Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+22-11-2021 14:16:19 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+22-11-2021 14:16:19 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Initializing ProtocolHandler ["http-nio-8080"]
+22-11-2021 14:16:19 INFO org.apache.catalina.core.StandardService [restartedMain] Starting service [Tomcat]
+22-11-2021 14:16:19 INFO org.apache.catalina.core.StandardEngine [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.52]
+22-11-2021 14:16:19 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [restartedMain] Initializing Spring embedded WebApplicationContext
+22-11-2021 14:16:19 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 1155 ms
+22-11-2021 14:16:19 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+22-11-2021 14:16:19 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+22-11-2021 14:16:20 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+22-11-2021 14:16:20 INFO liquibase.changelog [restartedMain] Reading from hospital_ward_db.DATABASECHANGELOG
+22-11-2021 14:16:20 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+22-11-2021 14:16:20 INFO liquibase.lockservice [restartedMain] Successfully acquired change log lock
+22-11-2021 14:16:20 WARN liquibase.hub [restartedMain] Skipping auto-registration
+22-11-2021 14:16:20 INFO liquibase.lockservice [restartedMain] Successfully released change log lock
+22-11-2021 14:16:20 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+22-11-2021 14:16:20 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.5.7.Final
+22-11-2021 14:16:20 INFO org.hibernate.annotations.common.Version [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+22-11-2021 14:16:20 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.MySQL8Dialect
+22-11-2021 14:16:20 WARN org.hibernate.cfg.AnnotationBinder [restartedMain] HHH000457: Joined inheritance hierarchy [com.backend.hospitalward.model.Account] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+22-11-2021 14:16:21 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+22-11-2021 14:16:21 INFO org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+22-11-2021 14:16:21 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: shallowEtagHeaderFilter with args: {}
+22-11-2021 14:16:21 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: shallowEtagHeaderFilter in 0 ms and returned: org.springframework.web.filter.ShallowEtagHeaderFilter@6bc8aa76
+22-11-2021 14:16:21 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: corsConfigurer with args: {}
+22-11-2021 14:16:21 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: corsConfigurer in 0 ms and returned: com.backend.hospitalward.config.ApplicationConfig$1@3ac5bae2
+22-11-2021 14:16:21 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+22-11-2021 14:16:21 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig started method: authenticationManagerBean with args: {}
+22-11-2021 14:16:21 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig finished method: authenticationManagerBean in 0 ms and returned: org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter$AuthenticationManagerDelegator@4100f40b
+22-11-2021 14:16:22 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: getCacheManager with args: {}
+22-11-2021 14:16:22 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: getCacheManager in 0 ms and returned: org.springframework.cache.concurrent.ConcurrentMapCacheManager@43061fc2
+22-11-2021 14:16:22 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: restTemplate with args: {}
+22-11-2021 14:16:22 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: restTemplate in 0 ms and returned: org.springframework.web.client.RestTemplate@78720973
+22-11-2021 14:16:22 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig started method: objectMapper with args: {}
+22-11-2021 14:16:22 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class ApplicationConfig finished method: objectMapper in 0 ms and returned: com.fasterxml.jackson.databind.ObjectMapper@5a8f9aee
+22-11-2021 14:16:22 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig started method: daoAuthenticationProvider with args: {}
+22-11-2021 14:16:22 INFO com.backend.hospitalward.util.logging.AspectLogger [restartedMain] Class SecurityConfig finished method: daoAuthenticationProvider in 15 ms and returned: org.springframework.security.authentication.dao.DaoAuthenticationProvider@4234cd24
+22-11-2021 14:16:22 INFO org.springframework.security.web.DefaultSecurityFilterChain [restartedMain] Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@52acc6a9, org.springframework.security.web.context.SecurityContextPersistenceFilter@405f6ca2, org.springframework.security.web.header.HeaderWriterFilter@540fb852, org.springframework.web.filter.CorsFilter@1069ebe0, org.springframework.security.web.authentication.logout.LogoutFilter@1dcdf336, com.backend.hospitalward.security.RequestJWTFilter@7a4940fd, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5a3e3950, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@146aadb2, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@b1b9261, org.springframework.security.web.session.SessionManagementFilter@2fdee762, org.springframework.security.web.access.ExceptionTranslationFilter@7156270c, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7e6b2d97]
+22-11-2021 14:16:22 INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+22-11-2021 14:16:22 INFO org.apache.coyote.http11.Http11NioProtocol [restartedMain] Starting ProtocolHandler ["http-nio-8080"]
+22-11-2021 14:16:22 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+22-11-2021 14:16:22 INFO com.backend.hospitalward.HospitalWardApplication [restartedMain] Started HospitalWardApplication in 4.565 seconds (JVM running for 5.562)
+22-11-2021 14:16:26 INFO org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/] [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+22-11-2021 14:16:26 INFO org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+22-11-2021 14:16:26 INFO org.springframework.web.servlet.DispatcherServlet [http-nio-8080-exec-1] Completed initialization in 1 ms
+22-11-2021 14:16:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class JWTUtils started method: extractUsername with args: {token=eyJhbGciOiJIUzI1NzKNGYVkWWzXTrklHzPlM69a-5sEjvWiudGwhzReauh0}
+22-11-2021 14:16:26 ERROR com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] MalformedJwtException thrown in line: io.jsonwebtoken.impl.DefaultJwtParser.parseClaimsJws(DefaultJwtParser.java:541) with message: JWT strings must contain exactly 2 period characters. Found: 0
+22-11-2021 14:16:26 ERROR com.backend.hospitalward.security.RequestJWTFilter [http-nio-8080-exec-1] Invalid JWT Token
+22-11-2021 14:16:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class ApplicationExceptionAdvice started method: forbiddenException with args: {e=org.springframework.security.access.AccessDeniedException: Dostęp zabroniony}
+22-11-2021 14:16:26 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-1] Class ApplicationExceptionAdvice finished method: forbiddenException in 2 ms and returned: ExceptionResponse(dateTime=22-11-2021 14:16:26, message=error.access_denied)
+22-11-2021 14:16:35 ERROR com.backend.hospitalward.security.RequestJWTFilter [http-nio-8080-exec-3] Invalid authorization header
+22-11-2021 14:16:35 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class ApplicationExceptionAdvice started method: forbiddenException with args: {e=org.springframework.security.access.AccessDeniedException: Dostęp zabroniony}
+22-11-2021 14:16:35 INFO com.backend.hospitalward.util.logging.AspectLogger [http-nio-8080-exec-3] Class ApplicationExceptionAdvice finished method: forbiddenException in 0 ms and returned: ExceptionResponse(dateTime=22-11-2021 14:16:35, message=error.access_denied)
