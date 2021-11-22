@@ -4,6 +4,7 @@ import com.backend.hospitalward.dto.request.disease.DiseaseCreateRequest;
 import com.backend.hospitalward.dto.response.disease.DiseaseDetailsResponse;
 import com.backend.hospitalward.dto.response.disease.DiseaseGeneralResponse;
 import com.backend.hospitalward.mapper.DiseaseMapper;
+import com.backend.hospitalward.security.annotation.DoctorOrTreatmentDirectorAuthority;
 import com.backend.hospitalward.security.annotation.MedicAuthorities;
 import com.backend.hospitalward.service.DiseaseService;
 import com.backend.hospitalward.util.etag.ETagValidator;
@@ -12,8 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.context.SecurityContext;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ public class DiseaseController {
 
     @MedicAuthorities
     @GetMapping
-    public ResponseEntity<List<DiseaseGeneralResponse>> getAllDiseases(){
+    public ResponseEntity<List<DiseaseGeneralResponse>> getAllDiseases() {
         return ResponseEntity.ok(diseaseService.getAllDiseases().stream()
                 .map(diseaseMapper::toDiseaseGeneralResponse)
                 .collect(Collectors.toList()));
@@ -38,14 +39,14 @@ public class DiseaseController {
 
     @MedicAuthorities
     @GetMapping(path = "/{name}")
-    public ResponseEntity<DiseaseDetailsResponse> getDiseaseByName(@PathVariable("name") String name){
+    public ResponseEntity<DiseaseDetailsResponse> getDiseaseByName(@PathVariable("name") String name) {
         DiseaseDetailsResponse disease = diseaseMapper.toDiseaseDetailsResponse(diseaseService.getDiseaseByName(name));
         return ResponseEntity.ok()
                 .eTag(ETagValidator.calculateDTOSignature(disease))
                 .body(disease);
     }
 
-
+    @DoctorOrTreatmentDirectorAuthority
     @PostMapping
     public ResponseEntity<?> createDisease(@CurrentSecurityContext SecurityContext securityContext,
                                            @RequestBody DiseaseCreateRequest diseaseCreateRequest) {
