@@ -12,8 +12,6 @@ import javax.validation.constraints.Size;
 
 @Data
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-@Getter
-@Setter
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
