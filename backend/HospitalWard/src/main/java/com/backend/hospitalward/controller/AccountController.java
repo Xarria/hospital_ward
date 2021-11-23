@@ -44,33 +44,6 @@ public class AccountController {
 
     AccountMapper accountMapper;
 
-    private List<String> getSpecializations(List<String> specializations) {
-        return specializations != null ? specializations : Collections.emptyList();
-    }
-
-    private void checkOwnETagHeader(@CurrentSecurityContext SecurityContext securityContext
-            , @RequestBody @Valid AccountUpdateRequest accountUpdateRequest, @RequestHeader("If-Match") String eTag) {
-
-        checkETagHeader(accountUpdateRequest.getLogin(), accountUpdateRequest.getVersion(),
-                ETagValidator.verifyDTOIntegrity(eTag, accountUpdateRequest));
-        if (!accountUpdateRequest.getLogin().equals(securityContext.getAuthentication().getName())) {
-            throw new PreconditionFailedException(ErrorKey.NOT_OWN_ACCOUNT);
-        }
-    }
-
-    private void checkETagHeader(String login, Long version, boolean b) {
-        if (login == null || version == null
-                || b) {
-            throw new PreconditionFailedException(ErrorKey.ETAG_INVALID);
-        }
-    }
-
-    private boolean isValidAccessLevel(String accessLevel) {
-        List<String> validAccessLevels = List.of(AccessLevelName.TREATMENT_DIRECTOR, AccessLevelName.HEAD_NURSE,
-                AccessLevelName.DOCTOR, AccessLevelName.SECRETARY);
-        return accessLevel != null && validAccessLevels.contains(accessLevel);
-    }
-
     //region GET
 
     @TreatmentDirectorAuthority
@@ -327,7 +300,7 @@ public class AccountController {
     @TreatmentDirectorAuthority
     @PostMapping(path = "/email/confrim/{login}")
     public ResponseEntity<?> sendAccountConfirmationUrl(@CurrentSecurityContext SecurityContext securityContext,
-                                                  @PathVariable("login") String login) {
+                                                        @PathVariable("login") String login) {
 
         accountService.sendConfirmationUrl(login, securityContext.getAuthentication().getName());
 
@@ -335,4 +308,31 @@ public class AccountController {
     }
 
     //endregion
+
+    private List<String> getSpecializations(List<String> specializations) {
+        return specializations != null ? specializations : Collections.emptyList();
+    }
+
+    private void checkOwnETagHeader(@CurrentSecurityContext SecurityContext securityContext
+            , @RequestBody @Valid AccountUpdateRequest accountUpdateRequest, @RequestHeader("If-Match") String eTag) {
+
+        checkETagHeader(accountUpdateRequest.getLogin(), accountUpdateRequest.getVersion(),
+                ETagValidator.verifyDTOIntegrity(eTag, accountUpdateRequest));
+        if (!accountUpdateRequest.getLogin().equals(securityContext.getAuthentication().getName())) {
+            throw new PreconditionFailedException(ErrorKey.NOT_OWN_ACCOUNT);
+        }
+    }
+
+    private void checkETagHeader(String login, Long version, boolean b) {
+        if (login == null || version == null
+                || b) {
+            throw new PreconditionFailedException(ErrorKey.ETAG_INVALID);
+        }
+    }
+
+    private boolean isValidAccessLevel(String accessLevel) {
+        List<String> validAccessLevels = List.of(AccessLevelName.TREATMENT_DIRECTOR, AccessLevelName.HEAD_NURSE,
+                AccessLevelName.DOCTOR, AccessLevelName.SECRETARY);
+        return accessLevel != null && validAccessLevels.contains(accessLevel);
+    }
 }

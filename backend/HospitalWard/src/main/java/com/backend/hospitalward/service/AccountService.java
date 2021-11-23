@@ -1,7 +1,10 @@
 package com.backend.hospitalward.service;
 
 
-import com.backend.hospitalward.exception.*;
+import com.backend.hospitalward.exception.BadRequestException;
+import com.backend.hospitalward.exception.ConflictException;
+import com.backend.hospitalward.exception.ErrorKey;
+import com.backend.hospitalward.exception.NotFoundException;
 import com.backend.hospitalward.model.*;
 import com.backend.hospitalward.model.common.AccessLevelName;
 import com.backend.hospitalward.model.common.AccountType;
@@ -9,19 +12,16 @@ import com.backend.hospitalward.model.common.UrlActionType;
 import com.backend.hospitalward.repository.AccessLevelRepository;
 import com.backend.hospitalward.repository.AccountRepository;
 import com.backend.hospitalward.repository.SpecializationRepository;
-import com.backend.hospitalward.repository.UrlRepository;
 import com.backend.hospitalward.security.SecurityConstants;
 import com.backend.hospitalward.util.notification.EmailSender;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.security.core.token.Sha512DigestUtils;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -35,10 +35,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.time.temporal.ChronoUnit.SECONDS;
-
 @Service
-@Component
 @RequiredArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
 @Retryable(value = {PersistenceException.class, HibernateException.class, JDBCException.class},
@@ -52,7 +49,7 @@ public class AccountService {
 
     SpecializationRepository specializationRepository;
 
-    UrlRepository urlRepository;
+    UrlService urlService;
 
     EmailSender emailSender;
 
@@ -100,32 +97,6 @@ public class AccountService {
 
     }
 
-    private void createConfirmUrl(Account account, Account director) {
-        Url url = Url.builder()
-                .codeDirector(RandomStringUtils.randomAlphanumeric(5))
-                .codeEmployee(RandomStringUtils.randomAlphanumeric(5))
-                .accountDirector(director)
-                .accountEmployee(account)
-                .actionType(UrlActionType.CONFIRM.name())
-                .creationDate(Timestamp.from(Instant.now()))
-                .expirationDate(Timestamp.from(Instant.now().plus(86400, SECONDS)))
-                .createdBy(director)
-                .build();
-
-        urlRepository.save(url);
-
-        emailSender.sendAccountConfirmationEmails(account.getName(), account.getEmail(), url.getCodeEmployee(),
-                director.getName(), director.getEmail(), url.getCodeDirector());
-    }
-
-    private void deleteOldConfirmUrls(Account account) {
-        List<Url> urls = urlRepository.findUrlsByAccountEmployee(account).stream()
-                .filter(url -> url.getActionType().equals(UrlActionType.CONFIRM.name()))
-                .collect(Collectors.toList());
-
-        urlRepository.deleteAll(urls);
-    }
-
     public void createAccount(Account account, String accessLevel, String createdBy) {
         Account director = accountRepository.findAccountByLogin(createdBy).orElseThrow(() ->
                 new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
@@ -134,7 +105,7 @@ public class AccountService {
 
         accountRepository.save(account);
 
-        createConfirmUrl(account, director);
+        urlService.createConfirmUrl(account, director);
 
     }
 
@@ -158,7 +129,7 @@ public class AccountService {
         medicalStaff.setSpecializations(specializationsList);
         accountRepository.save(medicalStaff);
 
-        createConfirmUrl(medicalStaff, director);
+        urlService.createConfirmUrl(medicalStaff, director);
     }
 
     //endregion
@@ -268,22 +239,7 @@ public class AccountService {
     }
 
     public void confirmAccount(String urlCode, Password password) {
-        if (urlCode == null || urlCode.length() != 10) {
-            throw new NotFoundException(ErrorKey.URL_NOT_FOUND);
-        }
-
-        Url url = urlRepository.findUrlByCodeDirectorAndCodeEmployee(urlCode.substring(0, 5), urlCode.substring(5, 10))
-                .orElseThrow(() -> new NotFoundException(ErrorKey.URL_NOT_FOUND));
-
-        if (Instant.now().isAfter(url.getExpirationDate().toInstant())) {
-            throw new GoneException(ErrorKey.URL_EXPIRED);
-        } else if (!url.getActionType().equals(UrlActionType.CONFIRM.name())) {
-            throw new BadRequestException(ErrorKey.URL_WRONG_ACTION);
-        }
-
-        if (!urlCode.equals(url.getCodeDirector() + url.getCodeEmployee())) {
-            throw new NotFoundException(ErrorKey.URL_NOT_FOUND);
-        }
+        Url url = urlService.validateUrl(urlCode, UrlActionType.CONFIRM.name());
 
         Account account = accountRepository.findAccountByLogin(url.getAccountEmployee().getLogin()).orElseThrow(() ->
                 new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
@@ -291,7 +247,7 @@ public class AccountService {
         account.setConfirmed(true);
         account.setModificationDate(Timestamp.from(Instant.now()));
         accountRepository.save(account);
-        urlRepository.delete(url);
+        urlService.deleteUrl(url);
 
     }
 
@@ -358,20 +314,13 @@ public class AccountService {
         accountRepository.save(account);
 
         if (!account.isConfirmed() && requestedByAccount != null) {
-            createConfirmUrl(account, requestedByAccount);
-            deleteOldConfirmUrls(account);
+            urlService.deleteOldConfirmationUrls(account);
+            urlService.createConfirmUrl(account, requestedByAccount);
         }
     }
 
     public void resetPassword(String urlCode, Password newPassword) {
-        Url url = urlRepository.findUrlByCodeDirectorAndCodeEmployee(urlCode.substring(0, 5), urlCode.substring(5, 10))
-                .orElseThrow(() -> new NotFoundException(ErrorKey.URL_NOT_FOUND));
-
-        if (Instant.now().isAfter(url.getExpirationDate().toInstant())) {
-            throw new GoneException(ErrorKey.URL_EXPIRED);
-        } else if (!url.getActionType().equals(UrlActionType.PASSWORD.name())) {
-            throw new BadRequestException(ErrorKey.URL_WRONG_ACTION);
-        }
+        Url url = urlService.validateUrl(urlCode, UrlActionType.PASSWORD.name());
 
         if (Sha512DigestUtils.shaHex(String.valueOf(newPassword.getValue())).equals(url.getAccountEmployee().getPassword())) {
             throw new ConflictException(ErrorKey.ERROR_SAME_PASSWORD);
@@ -383,8 +332,9 @@ public class AccountService {
         account.setModificationDate(Timestamp.from(Instant.now()));
 
         accountRepository.save(account);
-        urlRepository.delete(url);
+        urlService.deleteUrl(url);
     }
+
 
     //endregion
 
@@ -395,37 +345,9 @@ public class AccountService {
         Account accountDirector = accountRepository.findAccountByNameAndSurname(directorName, directorSurname)
                 .orElseThrow(() -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
 
-        List<Url> urlList = urlRepository.findUrlsByAccountEmployee(accountEmployee).stream()
-                .filter(url -> url.getActionType().equals(UrlActionType.PASSWORD.name()))
-                .collect(Collectors.toList());
+        urlService.deleteOldAndCreteResetPasswordUrl(requestedBy.equals(accountDirector.getLogin()), accountEmployee,
+                accountDirector, email);
 
-        if (!urlList.isEmpty()) {
-            urlList.forEach(urlRepository::delete);
-        }
-
-        Url url = getUrlPasswordReset(accountEmployee, accountDirector);
-
-        if (requestedBy != null) {
-            url.setCreatedBy(accountRepository.findAccountByLogin(requestedBy).orElseThrow(
-                    () -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND)));
-        }
-        urlRepository.save(url);
-
-        emailSender.sendPasswordResetEmails(accountEmployee.getName(), email, url.getCodeEmployee(),
-                accountDirector.getName(), accountDirector.getEmail(), url.getCodeDirector());
-    }
-
-    private Url getUrlPasswordReset(Account accountEmployee, Account accountDirector) {
-        return Url.builder()
-                .creationDate(Timestamp.from(Instant.now()))
-                .accountEmployee(accountEmployee)
-                .accountDirector(accountDirector)
-                .codeEmployee(RandomStringUtils.randomAlphanumeric(5))
-                .codeDirector(RandomStringUtils.randomAlphanumeric(5))
-                .actionType(UrlActionType.PASSWORD.name())
-                .creationDate(Timestamp.from(Instant.now()))
-                .expirationDate(Timestamp.from(Instant.now().plus(86400, SECONDS)))
-                .build();
     }
 
     public void deleteUnconfirmedAccount(String login) {
@@ -436,9 +358,7 @@ public class AccountService {
             throw new ConflictException(ErrorKey.ACCOUNT_CONFIRMED);
         }
 
-        List<Url> urlsForAccount = urlRepository.findUrlsByAccountEmployee(account);
-
-        urlRepository.deleteAll(urlsForAccount);
+        urlService.deleteUrlsForAccount(account);
         accountRepository.delete(account);
 
         emailSender.sendRemovalEmail(account.getName(), account.getEmail());
@@ -455,14 +375,8 @@ public class AccountService {
             throw new ConflictException(ErrorKey.ACCOUNT_CONFIRMED);
         }
 
-        List<Url> urlList = urlRepository.findUrlsByAccountEmployee(accountEmployee).stream()
-                .filter(url -> url.getActionType().equals(UrlActionType.CONFIRM.name()))
-                .collect(Collectors.toList());
-
-        if (!urlList.isEmpty()) {
-            urlList.forEach(urlRepository::delete);
-        }
-
-        createConfirmUrl(accountEmployee, accountDirector);
+        urlService.deleteOldConfirmationUrls(accountEmployee);
+        urlService.createConfirmUrl(accountEmployee, accountDirector);
     }
+
 }
