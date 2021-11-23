@@ -16,9 +16,27 @@ import org.mapstruct.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface AccountMapper extends BaseMapper{
 
     //region NAMED DEFAULTS
+
+    @Named("mapModifiedBy")
+    default String mapModifiedBy(Account account) {
+        if (account.getModifiedBy() != null) {
+            return account.getModifiedBy().getName();
+        }
+        return null;
+    }
+
+    @Named("mapCreatedBy")
+    default String mapCreatedBy(Account account) {
+        if (account.getCreatedBy() != null) {
+            return account.getCreatedBy().getName();
+        }
+        return null;
+    }
 
     @Named("mapAccessLevel")
     default String mapAccessLevel(Account account) {

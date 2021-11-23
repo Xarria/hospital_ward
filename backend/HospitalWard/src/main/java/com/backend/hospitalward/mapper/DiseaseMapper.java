@@ -4,10 +4,29 @@ import com.backend.hospitalward.dto.request.disease.DiseaseCreateRequest;
 import com.backend.hospitalward.dto.request.disease.DiseaseUpdateRequest;
 import com.backend.hospitalward.dto.response.disease.DiseaseDetailsResponse;
 import com.backend.hospitalward.dto.response.disease.DiseaseGeneralResponse;
+import com.backend.hospitalward.model.Account;
 import com.backend.hospitalward.model.Disease;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
 
-public interface DiseaseMapper extends BaseMapper{
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+public interface DiseaseMapper extends BaseMapper {
+
+    @Named("mapModifiedBy")
+    default String mapModifiedBy(Disease disease) {
+        if (disease.getModifiedBy() != null) {
+            return disease.getModifiedBy().getName();
+        }
+        return null;
+    }
+
+    @Named("mapCreatedBy")
+    default String mapCreatedBy(Disease disease) {
+        if (disease.getCreatedBy() != null) {
+            return disease.getCreatedBy().getName();
+        }
+        return null;
+    }
 
     @Mapping(target = "patients", ignore = true)
     Disease toDisease(DiseaseCreateRequest diseaseCreateRequest);
@@ -17,7 +36,7 @@ public interface DiseaseMapper extends BaseMapper{
 
     DiseaseGeneralResponse toDiseaseGeneralResponse(Disease disease);
 
-    @Mapping(target = "createdBy", source = "medicalStaff", qualifiedByName = "mapCreatedBy")
-    @Mapping(target = "modifiedBy", source = "medicalStaff", qualifiedByName = "mapModifiedBy")
+    @Mapping(target = "createdBy", source = "disease", qualifiedByName = "mapCreatedBy")
+    @Mapping(target = "modifiedBy", source = "disease", qualifiedByName = "mapModifiedBy")
     DiseaseDetailsResponse toDiseaseDetailsResponse(Disease disease);
 }

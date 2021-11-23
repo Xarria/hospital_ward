@@ -1,7 +1,7 @@
-type,referral_nr,referral_date,main_doctor,admission_date,urgent,covid_status,status,position_queue
-1,124325324,,1,,TRUE,1,1,1
-2,124325624,,2,,FALSE,2,2,2
-3,124322324,,3,,FALSE,3,2,3
-4,124888824,,2,,FALSE,1,2,4
-1,124321324,,3,,TRUE,2,3,5
-2,124321124,,1,,FALSE,1,3,6
+type,referral_nr,referral_date,main_doctor,admission_date,urgent,covid_status,status
+1,124325324,,1,,TRUE,1,1
+2,124325624,,2,,FALSE,2,2
+3,124322324,,3,,FALSE,3,2
+4,124888824,,2,,FALSE,1,2
+1,124321324,,3,,TRUE,2,3
+2,124321124,,1,,FALSE,1,3

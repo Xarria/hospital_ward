@@ -1,5 +1,6 @@
 package com.backend.hospitalward.service;
 
+import com.backend.hospitalward.exception.ConflictException;
 import com.backend.hospitalward.exception.ErrorKey;
 import com.backend.hospitalward.exception.NotFoundException;
 import com.backend.hospitalward.model.Account;
@@ -24,6 +25,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Component
@@ -55,5 +57,37 @@ public class DiseaseService {
         disease.setCreatedBy(account);
         disease.setCreationDate(Timestamp.from(Instant.now()));
         diseaseRepository.save(disease);
+    }
+
+    public void updateDisease(Disease disease, String modifiedBy) {
+        Disease diseaseFromDB = diseaseRepository.findDiseaseByName(disease.getName()).orElseThrow(() ->
+                new NotFoundException(ErrorKey.DISEASE_NOT_FOUND));
+
+        diseaseFromDB.setVersion(disease.getVersion());
+
+        if (disease.getName() != null && !disease.getName().isEmpty()) {
+            diseaseFromDB.setName(disease.getName());
+        }
+        diseaseFromDB.setCathererRequired(disease.isCathererRequired());
+        diseaseFromDB.setSurgeryRequired(disease.isSurgeryRequired());
+        diseaseFromDB.setUrgent(disease.isUrgent());
+        diseaseFromDB.setModificationDate(Timestamp.from(Instant.now()));
+
+        Account accModifiedBy = accountRepository.findAccountByLogin(modifiedBy).orElseThrow(() ->
+                    new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
+        diseaseFromDB.setModifiedBy(accModifiedBy);
+
+        diseaseRepository.save(diseaseFromDB);
+        }
+
+    public void deleteDisease(String name) {
+        Disease disease = diseaseRepository.findDiseaseByName(name).orElseThrow(() ->
+                new NotFoundException(ErrorKey.DISEASE_NOT_FOUND));
+
+        if (disease.getPatients() != null && !disease.getPatients().isEmpty()) {
+            throw new ConflictException(ErrorKey.DISEASE_ASSIGNED_TO_PATIENT);
+        }
+
+        diseaseRepository.delete(disease);
     }
 }

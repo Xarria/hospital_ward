@@ -2,6 +2,7 @@ package com.backend.hospitalward.repository;
 
 import com.backend.hospitalward.model.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -28,6 +29,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     Optional<Account> findAccountByNameAndSurname(String name, String surname);
 
-    // @Query("SELECT a FROM Account WHERE a.confirmed = false AND time_to_sec(timediff(a.creation_date, now())) < - removalTime")
-    //List<Account> findAccountsByUnconfirmedAndExpired(long removalTime);
+     @Query(value = "SELECT a FROM Account WHERE a.confirmed = false " +
+             "AND time_to_sec(timediff(a.creation_date, now())) < - removalTime", nativeQuery = true)
+    List<Account> findAccountsByUnconfirmedAndExpired(long removalTime);
 }

@@ -1,11 +1,16 @@
 package com.backend.hospitalward.controller;
 
+import com.backend.hospitalward.dto.request.account.AccountUpdateRequest;
 import com.backend.hospitalward.dto.request.disease.DiseaseCreateRequest;
+import com.backend.hospitalward.dto.request.disease.DiseaseUpdateRequest;
 import com.backend.hospitalward.dto.response.disease.DiseaseDetailsResponse;
 import com.backend.hospitalward.dto.response.disease.DiseaseGeneralResponse;
+import com.backend.hospitalward.exception.ErrorKey;
+import com.backend.hospitalward.exception.PreconditionFailedException;
 import com.backend.hospitalward.mapper.DiseaseMapper;
 import com.backend.hospitalward.security.annotation.DoctorOrTreatmentDirectorAuthority;
 import com.backend.hospitalward.security.annotation.MedicAuthorities;
+import com.backend.hospitalward.security.annotation.TreatmentDirectorAuthority;
 import com.backend.hospitalward.service.DiseaseService;
 import com.backend.hospitalward.util.etag.ETagValidator;
 import lombok.AccessLevel;
@@ -16,6 +21,7 @@ import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,11 +55,43 @@ public class DiseaseController {
     @DoctorOrTreatmentDirectorAuthority
     @PostMapping
     public ResponseEntity<?> createDisease(@CurrentSecurityContext SecurityContext securityContext,
-                                           @RequestBody DiseaseCreateRequest diseaseCreateRequest) {
+                                           @RequestBody @Valid DiseaseCreateRequest diseaseCreateRequest) {
         diseaseService.createDisease(diseaseMapper.toDisease(diseaseCreateRequest),
                 securityContext.getAuthentication().getName());
 
         return ResponseEntity.ok().build();
+    }
+
+    @DoctorOrTreatmentDirectorAuthority
+    @PutMapping(path = "/{name}")
+    public ResponseEntity<?> updateDisease(@CurrentSecurityContext SecurityContext securityContext,
+                                           @RequestHeader("If-Match") String eTag,
+                                           @RequestBody @Valid DiseaseUpdateRequest diseaseUpdateRequest) {
+
+        checkETagHeader(diseaseUpdateRequest, eTag);
+
+        diseaseService.updateDisease(diseaseMapper.toDisease(diseaseUpdateRequest),
+                securityContext.getAuthentication().getName());
+
+        return ResponseEntity.ok().build();
+    }
+
+    @TreatmentDirectorAuthority
+    @DeleteMapping(path = "/{name}")
+    public ResponseEntity<?> updateDisease(@PathVariable("name") String name) {
+
+        diseaseService.deleteDisease(name);
+
+        return ResponseEntity.ok().build();
+    }
+
+    private void checkETagHeader(@RequestBody @Valid DiseaseUpdateRequest diseaseUpdateRequest,
+                                 @RequestHeader("If-Match") String eTag) {
+
+        if (diseaseUpdateRequest.getName() == null || diseaseUpdateRequest.getVersion() == null
+                || ETagValidator.verifyDTOIntegrity(eTag, diseaseUpdateRequest)) {
+            throw new PreconditionFailedException(ErrorKey.ETAG_INVALID);
+        }
     }
 
 }

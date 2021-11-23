@@ -45,6 +45,7 @@ public final class ErrorKey {
 
     //region disease
     public static final String DISEASE_NOT_FOUND = "error.disease_not_found";
+    public static final String DISEASE_ASSIGNED_TO_PATIENT = "error.disease_assigned_to_patient";
     //endregion
 
 }

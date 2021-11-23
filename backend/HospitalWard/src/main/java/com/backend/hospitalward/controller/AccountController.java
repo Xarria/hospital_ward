@@ -48,15 +48,20 @@ public class AccountController {
         return specializations != null ? specializations : Collections.emptyList();
     }
 
-    private void checkETagHeader(@CurrentSecurityContext SecurityContext securityContext
+    private void checkOwnETagHeader(@CurrentSecurityContext SecurityContext securityContext
             , @RequestBody @Valid AccountUpdateRequest accountUpdateRequest, @RequestHeader("If-Match") String eTag) {
 
-        if (accountUpdateRequest.getLogin() == null || accountUpdateRequest.getVersion() == null
-                || ETagValidator.verifyDTOIntegrity(eTag, accountUpdateRequest)) {
-            throw new PreconditionFailedException(ErrorKey.ETAG_INVALID);
-        }
+        checkETagHeader(accountUpdateRequest.getLogin(), accountUpdateRequest.getVersion(),
+                ETagValidator.verifyDTOIntegrity(eTag, accountUpdateRequest));
         if (!accountUpdateRequest.getLogin().equals(securityContext.getAuthentication().getName())) {
             throw new PreconditionFailedException(ErrorKey.NOT_OWN_ACCOUNT);
+        }
+    }
+
+    private void checkETagHeader(String login, Long version, boolean b) {
+        if (login == null || version == null
+                || b) {
+            throw new PreconditionFailedException(ErrorKey.ETAG_INVALID);
         }
     }
 
@@ -163,10 +168,8 @@ public class AccountController {
                                                  @RequestBody @Valid AccountUpdateRequest accountUpdateRequest,
                                                  @RequestHeader("If-Match") String eTag) {
 
-        if (accountUpdateRequest.getLogin() == null || accountUpdateRequest.getVersion() == null
-                || ETagValidator.verifyDTOIntegrity(eTag, accountUpdateRequest)) {
-            throw new PreconditionFailedException(ErrorKey.ETAG_INVALID);
-        }
+        checkETagHeader(accountUpdateRequest.getLogin(), accountUpdateRequest.getVersion(),
+                ETagValidator.verifyDTOIntegrity(eTag, accountUpdateRequest));
 
         accountService.updateAccountOffice(accountMapper.toAccount(accountUpdateRequest),
                 securityContext.getAuthentication().getName());
@@ -181,10 +184,8 @@ public class AccountController {
                                                 @RequestBody @Valid MedicalStaffUpdateRequest medicalStaffUpdateRequest,
                                                 @RequestHeader("If-Match") String eTag) {
 
-        if (medicalStaffUpdateRequest.getLogin() == null || medicalStaffUpdateRequest.getVersion() == null
-                || ETagValidator.verifyDTOIntegrity(eTag, medicalStaffUpdateRequest)) {
-            throw new PreconditionFailedException(ErrorKey.ETAG_INVALID);
-        }
+        checkETagHeader(medicalStaffUpdateRequest.getLogin(), medicalStaffUpdateRequest.getVersion(),
+                ETagValidator.verifyDTOIntegrity(eTag, medicalStaffUpdateRequest));
 
         accountService.updateMedicalStaff((MedicalStaff) accountMapper.toAccount(medicalStaffUpdateRequest),
                 securityContext.getAuthentication().getName(), getSpecializations(medicalStaffUpdateRequest.getSpecializations()));
@@ -199,7 +200,7 @@ public class AccountController {
                                                     @RequestBody @Valid AccountUpdateRequest accountUpdateRequest,
                                                     @RequestHeader("If-Match") String eTag) {
 
-        checkETagHeader(securityContext, accountUpdateRequest, eTag);
+        checkOwnETagHeader(securityContext, accountUpdateRequest, eTag);
 
         accountService.updateAccountOffice(accountMapper.toAccount(accountUpdateRequest), accountUpdateRequest.getLogin());
 
@@ -213,7 +214,7 @@ public class AccountController {
                                                    @RequestBody @Valid MedicalStaffUpdateRequest medicalStaffUpdateRequest,
                                                    @RequestHeader("If-Match") String eTag) {
 
-        checkETagHeader(securityContext, medicalStaffUpdateRequest, eTag);
+        checkOwnETagHeader(securityContext, medicalStaffUpdateRequest, eTag);
 
         accountService.updateMedicalStaff((MedicalStaff) accountMapper.toAccount(medicalStaffUpdateRequest),
                 medicalStaffUpdateRequest.getLogin(), getSpecializations(medicalStaffUpdateRequest.getSpecializations()));
@@ -319,6 +320,16 @@ public class AccountController {
 
         accountService.sendResetPasswordUrl(resetPasswordRequest.getEmail(), resetPasswordRequest.getNameDirector(),
                 resetPasswordRequest.getSurnameDirector(), securityContext.getAuthentication().getName());
+
+        return ResponseEntity.ok().build();
+    }
+
+    @TreatmentDirectorAuthority
+    @PostMapping(path = "/email/confrim/{login}")
+    public ResponseEntity<?> sendAccountConfirmationUrl(@CurrentSecurityContext SecurityContext securityContext,
+                                                  @PathVariable("login") String login) {
+
+        accountService.sendConfirmationUrl(login, securityContext.getAuthentication().getName());
 
         return ResponseEntity.ok().build();
     }

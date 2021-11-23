@@ -16,8 +16,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmailSender {
 
-    @Value("${mail.send}")
-    String mailSend;
     @Value("${mail.username}")
     String username;
     @Value("${mail.password}")
@@ -28,9 +26,6 @@ public class EmailSender {
     String from;
 
     void sendEmail(String recipientName, String recipientEmailAddress, String subject, String text) {
-//        if (mailSend.equals("false")) {
-//            return;
-//        }
 
         Email email = EmailBuilder.startingBlank()
                 .from(from, address)
@@ -50,8 +45,8 @@ public class EmailSender {
 
     public void sendModificationEmail(String recipientName, String recipientEmailAddress) {
 
-        String htmlText = "test";
-        String subject = "test";
+        String htmlText = "Twoje konto zostało zmodyfikowane";
+        String subject = "Modyfikacja danych konta";
         sendEmail(recipientName, recipientEmailAddress, subject, htmlText);
 
     }
@@ -62,22 +57,41 @@ public class EmailSender {
 
         String htmlTextEmployee = "test: " + codeEmployee;
         String htmlTextDirector = "testD: " + codeDirector;
-        String subject = "Confirmation";
+        String subject = "Potwierdzenie utworzenia konta";
 
         sendEmail(nameEmployee, emailEmployee, subject, htmlTextEmployee);
         sendEmail(nameDirector, emailDirector, subject, htmlTextDirector);
     }
 
-    public void sendPasswordResetEmails(String name, String emailEmployee, String codeEmployee,
-                                        String emailDirector, String codeDirector) {
+    public void sendPasswordResetEmails(String nameEmployee, String emailEmployee, String codeEmployee,
+                                        String nameDirector, String emailDirector, String codeDirector) {
+
+        String htmlTextEmployee = "test: " + codeEmployee;
+        String htmlTextDirector = "testD: " + codeDirector;
+        String subject = "Resetowanie hasła";
+
+        sendEmail(nameEmployee, emailEmployee, subject, htmlTextEmployee);
+        sendEmail(nameDirector, emailDirector, subject, htmlTextDirector);
     }
 
     public void sendRemovalEmail(String name, String email) {
+
+        String htmlText = "Twoje konto zostało usunięte";
+        String subject = "Usunięcie konta";
+        sendEmail(name, email, subject, htmlText);
     }
 
     public void sendPasswordChangeEmail(String name, String email) {
+
+        String htmlText = "Adres e-mail przypisany do Twojego konta został zmieniony";
+        String subject = "Zmiana adresu e-mail";
+        sendEmail(name, email, subject, htmlText);
     }
 
     public void sendActivityChangedEmail(String name, String email, boolean active) {
+
+        String htmlText = "Aktywność Twojego konta została zmieniona na " + active;
+        String subject = "Zmiana aktywności konta";
+        sendEmail(name, email, subject, htmlText);
     }
 }

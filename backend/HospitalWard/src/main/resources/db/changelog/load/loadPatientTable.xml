@@ -17,7 +17,6 @@
             <column header="urgent" name="urgent" type="boolean"/>
             <column header="covid_status" name="covid_status" type="numeric"/>
             <column header="status" name="status" type="numeric"/>
-            <column header="position_queue" name="position_queue" type="numeric"/>
         </loadData>
     </changeSet>
 </databaseChangeLog>

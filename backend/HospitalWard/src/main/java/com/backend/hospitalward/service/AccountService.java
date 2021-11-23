@@ -412,7 +412,7 @@ public class AccountService {
         urlRepository.save(url);
 
         emailSender.sendPasswordResetEmails(accountEmployee.getName(), email, url.getCodeEmployee(),
-                accountDirector.getEmail(), url.getCodeDirector());
+                accountDirector.getName(), accountDirector.getEmail(), url.getCodeDirector());
     }
 
     private Url getUrlPasswordReset(Account accountEmployee, Account accountDirector) {
@@ -440,5 +440,29 @@ public class AccountService {
 
         urlRepository.deleteAll(urlsForAccount);
         accountRepository.delete(account);
+
+        emailSender.sendRemovalEmail(account.getName(), account.getEmail());
+    }
+
+    public void sendConfirmationUrl(String login, String requestedBy) {
+        Account accountEmployee = accountRepository.findAccountByLogin(login).orElseThrow(
+                () -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
+
+        Account accountDirector = accountRepository.findAccountByLogin(requestedBy).orElseThrow(
+                () -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
+
+        if (accountEmployee.isConfirmed()) {
+            throw new ConflictException(ErrorKey.ACCOUNT_CONFIRMED);
+        }
+
+        List<Url> urlList = urlRepository.findUrlsByAccountEmployee(accountEmployee).stream()
+                .filter(url -> url.getActionType().equals(UrlActionType.CONFIRM.name()))
+                .collect(Collectors.toList());
+
+        if (!urlList.isEmpty()) {
+            urlList.forEach(urlRepository::delete);
+        }
+
+        createConfirmUrl(accountEmployee, accountDirector);
     }
 }
