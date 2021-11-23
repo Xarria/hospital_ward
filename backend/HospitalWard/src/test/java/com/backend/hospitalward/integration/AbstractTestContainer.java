@@ -21,9 +21,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public abstract class AbstractTestContainer {
 
-    static MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:8.0.26");
+    static MySQLContainer<?> mySQLContainer;
 
     static {
+        mySQLContainer = new MySQLContainer<>("mysql:8.0.26");
         mySQLContainer.start();
     }
 

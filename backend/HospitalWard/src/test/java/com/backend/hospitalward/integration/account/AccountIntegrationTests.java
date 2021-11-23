@@ -25,6 +25,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -174,8 +175,8 @@ class AccountIntegrationTests extends AbstractTestContainer {
                 () -> assertNotNull(response),
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
                 () -> assertNotNull(accountService.getAccountByLogin(AccountConstants.NEW_LOGIN1)),
-                () -> assertEquals(AccountConstants.NEW_LOGIN1, urlRepository.findAll().get((int) urlRepository.count() - 1)
-                        .getAccountEmployee().getLogin()),
+                () -> assertTrue(urlRepository.findAll().get((int) urlRepository.count() - 1)
+                        .getAccountEmployee().getLogin().contains(AccountConstants.NEW_LOGIN1)),
                 () -> assertEquals(AccountConstants.NEW_ACCESS_LEVEL, accountService.getAccountByLogin(
                         AccountConstants.NEW_LOGIN1).getAccessLevel().getName()),
                 () -> assertEquals(AccountConstants.TYPE_OFFICE, accountService.getAccountByLogin(
@@ -207,8 +208,8 @@ class AccountIntegrationTests extends AbstractTestContainer {
                 () -> assertNotNull(response),
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
                 () -> assertNotNull(accountService.getAccountByLogin(AccountConstants.NEW_LOGIN2)),
-                () -> assertEquals(AccountConstants.NEW_LOGIN2, urlRepository.findAll().get((int) urlRepository.count() - 1)
-                        .getAccountEmployee().getLogin()),
+                () -> assertTrue(urlRepository.findAll().get((int) urlRepository.count() - 1)
+                        .getAccountEmployee().getLogin().contains(AccountConstants.NEW_LOGIN2)),
                 () -> assertEquals(AccountConstants.NEW_ACCESS_LEVEL2, accountService.getAccountByLogin(
                         AccountConstants.NEW_LOGIN2).getAccessLevel().getName()),
                 () -> assertEquals(AccountConstants.TYPE_MEDIC, accountService.getAccountByLogin(

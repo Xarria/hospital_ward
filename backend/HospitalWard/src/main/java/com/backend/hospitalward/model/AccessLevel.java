@@ -1,6 +1,5 @@
 package com.backend.hospitalward.model;
 
-import com.backend.hospitalward.util.validation.AccessLevelValid;
 import lombok.Data;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
@@ -22,7 +21,6 @@ public class AccessLevel implements GrantedAuthority {
     long id;
 
     @Size(max = 21)
-    @AccessLevelValid
     @Column(name = "name", nullable = false)
     String name;
 

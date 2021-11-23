@@ -78,7 +78,7 @@ public class DiseaseController {
 
     @TreatmentDirectorAuthority
     @DeleteMapping(path = "/{name}")
-    public ResponseEntity<?> updateDisease(@PathVariable("name") String name) {
+    public ResponseEntity<?> deleteDisease(@PathVariable("name") String name) {
 
         diseaseService.deleteDisease(name);
 

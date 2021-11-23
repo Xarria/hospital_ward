@@ -25,11 +25,11 @@ public class Account extends BaseEntity implements UserDetails {
 
     @NotBlank
     @Size(min = 3, max = 50)
-    @Pattern(regexp = "[a-z]+[.][a-z]+[2-9]*")
+   // @Pattern(regexp = "[a-z]+[.][a-z]+[2-9]*")
     @Column(name = "login", nullable = false, length = 50)
     String login;
 
-    @Size(min = 255, max = 255)
+    @Size(max = 255)
     @ToString.Exclude
     @Column(name = "password")
     String password;
@@ -45,13 +45,13 @@ public class Account extends BaseEntity implements UserDetails {
 
     @NotBlank
     @Size(max = 20)
-    @Pattern(regexp = "[A-Z][a-z]+")
+    //@Pattern(regexp = "[A-Z][a-z]+")
     @Column(name = "name", nullable = false, length = 20)
     String name;
 
     @NotBlank
     @Size(max = 30)
-    @Pattern(regexp = "[A-Z][a-z]+")
+   // @Pattern(regexp = "[A-Z][a-z]+")
     @Column(name = "surname", nullable = false, length = 30)
     String surname;
 

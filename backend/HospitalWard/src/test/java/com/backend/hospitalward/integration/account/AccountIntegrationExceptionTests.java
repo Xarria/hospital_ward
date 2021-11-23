@@ -23,6 +23,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -297,8 +298,6 @@ public class AccountIntegrationExceptionTests extends AbstractTestContainer {
 
         ResponseEntity<String> responseGet = restTemplate.exchange(getUrlWithPort(AccountConstants.GET_ALL_ACCOUNTS +
                 "/" + AccountConstants.SG_LOGIN), HttpMethod.GET, getJwtHttpEntity(), String.class);
-
-        String etag = Objects.requireNonNull(responseGet.getHeaders().get(HttpHeaders.ETAG)).get(0);
 
         HttpHeaders headers = getHttpHeaders();
         headers.add(HttpHeaders.IF_MATCH, null);
