@@ -43,6 +43,7 @@ public class EmailSender {
 
     }
 
+    @Async
     public void sendModificationEmail(String recipientName, String recipientEmailAddress) {
 
         String htmlText = "Twoje konto zostało zmodyfikowane";
@@ -63,6 +64,7 @@ public class EmailSender {
         sendEmail(nameDirector, emailDirector, subject, htmlTextDirector);
     }
 
+    @Async
     public void sendPasswordResetEmails(String nameEmployee, String emailEmployee, String codeEmployee,
                                         String nameDirector, String emailDirector, String codeDirector) {
 
@@ -74,6 +76,7 @@ public class EmailSender {
         sendEmail(nameDirector, emailDirector, subject, htmlTextDirector);
     }
 
+    @Async
     public void sendRemovalEmail(String name, String email) {
 
         String htmlText = "Twoje konto zostało usunięte";
@@ -81,6 +84,7 @@ public class EmailSender {
         sendEmail(name, email, subject, htmlText);
     }
 
+    @Async
     public void sendPasswordChangeEmail(String name, String email) {
 
         String htmlText = "Adres e-mail przypisany do Twojego konta został zmieniony";
@@ -88,6 +92,7 @@ public class EmailSender {
         sendEmail(name, email, subject, htmlText);
     }
 
+    @Async
     public void sendActivityChangedEmail(String name, String email, boolean active) {
 
         String htmlText = "Aktywność Twojego konta została zmieniona na " + active;

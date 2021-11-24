@@ -35,7 +35,7 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
 @Retryable(value = {PersistenceException.class, HibernateException.class, JDBCException.class},
         exclude = ConstraintViolationException.class, backoff = @Backoff(delay = 1000))
-@Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, timeout = 3)
+@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, timeout = 3)
 public class UrlService {
 
     UrlRepository urlRepository;
