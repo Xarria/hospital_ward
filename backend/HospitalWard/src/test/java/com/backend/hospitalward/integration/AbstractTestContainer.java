@@ -2,6 +2,7 @@ package com.backend.hospitalward.integration;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -39,7 +40,7 @@ public abstract class AbstractTestContainer {
             ApplicationContextInitializer<ConfigurableApplicationContext> {
 
         @Override
-        public void initialize(ConfigurableApplicationContext applicationContext) {
+        public void initialize(@NotNull ConfigurableApplicationContext applicationContext) {
 
             TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
                     applicationContext,

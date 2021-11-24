@@ -9,7 +9,6 @@ import com.backend.hospitalward.dto.request.medicalStaff.MedicalStaffCreateReque
 import com.backend.hospitalward.dto.request.medicalStaff.MedicalStaffUpdateRequest;
 import com.backend.hospitalward.dto.response.exception.ExceptionResponse;
 import com.backend.hospitalward.exception.ErrorKey;
-import com.backend.hospitalward.integration.AbstractTestContainer;
 import com.backend.hospitalward.integration.common.AccountConstants;
 import com.backend.hospitalward.model.Url;
 import com.backend.hospitalward.repository.UrlRepository;
@@ -18,12 +17,23 @@ import com.backend.hospitalward.service.AccountService;
 import com.google.gson.Gson;
 import io.gsonfire.GsonFireBuilder;
 import liquibase.pro.packaged.T;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.*;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.support.TestPropertySourceUtils;
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -32,9 +42,15 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ActiveProfiles("test")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@ContextConfiguration(initializers = AccountIntegrationExceptionTests.DockerMysqlDataSourceInitializer.class)
+@Testcontainers
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class AccountIntegrationExceptionTests extends AbstractTestContainer {
+public class AccountIntegrationExceptionTests {
 
     @Autowired
     AccountService accountService;
@@ -49,10 +65,41 @@ public class AccountIntegrationExceptionTests extends AbstractTestContainer {
 
     String token;
 
-    String valid_password = AccountConstants.SG_PASSWORD;
+    ////////////////////////
+    static MySQLContainer<?> mySQLContainer;
+
+    static {
+        mySQLContainer = new MySQLContainer<>("mysql:8.0.26");
+        mySQLContainer.start();
+    }
+
+    @LocalServerPort
+    int port;
+
+    public String getUrlWithPort(String uri) {
+        return "http://localhost:" + port + uri;
+    }
+
+    public static class DockerMysqlDataSourceInitializer implements
+            ApplicationContextInitializer<ConfigurableApplicationContext> {
+
+        @Override
+        public void initialize(@NotNull ConfigurableApplicationContext applicationContext) {
+
+            TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
+                    applicationContext,
+                    "spring.datasource.url=" + mySQLContainer.getJdbcUrl(),
+                    "spring.datasource.username=" + mySQLContainer.getUsername(),
+                    "spring.datasource.password=" + mySQLContainer.getPassword()
+            );
+        }
+    }
+
+    ///////////////////////////////////
 
     @BeforeEach
     public void authenticate() {
+        String valid_password = AccountConstants.SG_PASSWORD;
         HttpEntity<Credentials> credentials = new HttpEntity<>(
                 new Credentials(AccountConstants.SG_LOGIN, valid_password), null);
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(AccountConstants.AUTH), HttpMethod.POST, credentials, String.class);
@@ -295,9 +342,6 @@ public class AccountIntegrationExceptionTests extends AbstractTestContainer {
 
         Long version = accountService.getAccountByLogin(
                 AccountConstants.OFFICE_LOGIN).getVersion();
-
-        ResponseEntity<String> responseGet = restTemplate.exchange(getUrlWithPort(AccountConstants.GET_ALL_ACCOUNTS +
-                "/" + AccountConstants.SG_LOGIN), HttpMethod.GET, getJwtHttpEntity(), String.class);
 
         HttpHeaders headers = getHttpHeaders();
         headers.add(HttpHeaders.IF_MATCH, null);
