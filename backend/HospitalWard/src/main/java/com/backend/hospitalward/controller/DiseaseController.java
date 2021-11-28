@@ -57,7 +57,7 @@ public class DiseaseController {
     public ResponseEntity<?> createDisease(@CurrentSecurityContext SecurityContext securityContext,
                                            @RequestBody @Valid DiseaseCreateRequest diseaseCreateRequest) {
         diseaseService.createDisease(diseaseMapper.toDisease(diseaseCreateRequest),
-                securityContext.getAuthentication().getName());
+                securityContext.getAuthentication().getName(), diseaseCreateRequest.getUrgency());
 
         return ResponseEntity.ok().build();
     }
@@ -71,7 +71,7 @@ public class DiseaseController {
         checkETagHeader(diseaseUpdateRequest, eTag);
 
         diseaseService.updateDisease(diseaseMapper.toDisease(diseaseUpdateRequest),
-                securityContext.getAuthentication().getName());
+                securityContext.getAuthentication().getName(), diseaseUpdateRequest.getUrgency());
 
         return ResponseEntity.ok().build();
     }

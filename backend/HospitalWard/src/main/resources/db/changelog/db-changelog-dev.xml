@@ -7,6 +7,7 @@
     <include file="/create/createAccessLevelTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createAccountTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createCovidStatusTable.xml" relativeToChangelogFile="true"/>
+    <include file="/create/createDiseaseUrgencyTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createDiseaseTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createPatientTypeTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createPatientStatusTable.xml" relativeToChangelogFile="true"/>
@@ -24,6 +25,7 @@
     <include file="/load/loadCovidStatusTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadAccessLevelTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadAccountTable.xml" relativeToChangelogFile="true"/>
+    <include file="/load/loadDiseaseUrgencyTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadDiseaseTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadMedicalStaffTable.xml" relativeToChangelogFile="true"/>
     <!--    <include file="/load/loadPatientDiseaseTable.xml" relativeToChangelogFile="true"/>-->

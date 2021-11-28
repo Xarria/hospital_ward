@@ -27,8 +27,9 @@ public class Disease extends BaseEntity {
     String name;
 
     @NotNull
-    @Column(name = "urgent", nullable = false)
-    boolean urgent;
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "urgency", referencedColumnName = "id")
+    DiseaseUrgency urgency;
 
     @NotNull
     @Column(name = "catherer_required", nullable = false)

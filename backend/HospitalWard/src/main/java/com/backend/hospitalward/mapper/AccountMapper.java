@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
-public interface AccountMapper extends BaseMapper{
+public interface AccountMapper {
 
     //region NAMED DEFAULTS
 

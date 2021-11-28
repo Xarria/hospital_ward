@@ -10,7 +10,7 @@ public class DiseaseGeneralResponse {
 
     String name;
 
-    boolean urgent;
+    String urgency;
 
     boolean cathererRequired;
 

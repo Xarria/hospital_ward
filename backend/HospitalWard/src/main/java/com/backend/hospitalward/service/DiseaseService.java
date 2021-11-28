@@ -5,8 +5,10 @@ import com.backend.hospitalward.exception.ErrorKey;
 import com.backend.hospitalward.exception.NotFoundException;
 import com.backend.hospitalward.model.Account;
 import com.backend.hospitalward.model.Disease;
+import com.backend.hospitalward.model.DiseaseUrgency;
 import com.backend.hospitalward.repository.AccountRepository;
 import com.backend.hospitalward.repository.DiseaseRepository;
+import com.backend.hospitalward.repository.DiseaseUrgencyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.HibernateException;
@@ -25,7 +27,6 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @Component
@@ -40,7 +41,9 @@ public class DiseaseService {
 
     AccountRepository accountRepository;
 
-    public List<Disease> getAllDiseases(){
+    DiseaseUrgencyRepository diseaseUrgencyRepository;
+
+    public List<Disease> getAllDiseases() {
         return diseaseRepository.findAll();
     }
 
@@ -49,19 +52,27 @@ public class DiseaseService {
                 -> new NotFoundException(ErrorKey.DISEASE_NOT_FOUND));
     }
 
-    public void createDisease(Disease disease, String login) {
+    public void createDisease(Disease disease, String login, String urgency) {
         Account account = accountRepository.findAccountByLogin(login).orElseThrow(()
                 -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
+        DiseaseUrgency diseaseUrgency = diseaseUrgencyRepository.findDiseaseUrgencyByUrgency(urgency).orElseThrow(()
+                -> new NotFoundException(ErrorKey.DISEASE_URGENCY_NOT_FOUND));
         disease.setVersion(0L);
         disease.setPatients(Collections.emptyList());
+        disease.setUrgency(diseaseUrgency);
         disease.setCreatedBy(account);
         disease.setCreationDate(Timestamp.from(Instant.now()));
         diseaseRepository.save(disease);
     }
 
-    public void updateDisease(Disease disease, String modifiedBy) {
+    public void updateDisease(Disease disease, String modifiedBy, String urgency) {
         Disease diseaseFromDB = diseaseRepository.findDiseaseByName(disease.getName()).orElseThrow(() ->
                 new NotFoundException(ErrorKey.DISEASE_NOT_FOUND));
+        if (urgency != null && !urgency.isEmpty()) {
+            DiseaseUrgency diseaseUrgency = diseaseUrgencyRepository.findDiseaseUrgencyByUrgency(urgency).orElseThrow(()
+                    -> new NotFoundException(ErrorKey.DISEASE_URGENCY_NOT_FOUND));
+            diseaseFromDB.setUrgency(diseaseUrgency);
+        }
 
         diseaseFromDB.setVersion(disease.getVersion());
 
@@ -70,15 +81,14 @@ public class DiseaseService {
         }
         diseaseFromDB.setCathererRequired(disease.isCathererRequired());
         diseaseFromDB.setSurgeryRequired(disease.isSurgeryRequired());
-        diseaseFromDB.setUrgent(disease.isUrgent());
         diseaseFromDB.setModificationDate(Timestamp.from(Instant.now()));
 
         Account accModifiedBy = accountRepository.findAccountByLogin(modifiedBy).orElseThrow(() ->
-                    new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
+                new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
         diseaseFromDB.setModifiedBy(accModifiedBy);
 
         diseaseRepository.save(diseaseFromDB);
-        }
+    }
 
     public void deleteDisease(String name) {
         Disease disease = diseaseRepository.findDiseaseByName(name).orElseThrow(() ->

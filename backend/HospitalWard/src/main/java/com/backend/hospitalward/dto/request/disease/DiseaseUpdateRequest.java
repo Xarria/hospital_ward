@@ -21,7 +21,7 @@ public class DiseaseUpdateRequest extends BaseDTO {
     @NotBlank
     String name;
 
-    boolean urgent;
+    String urgency;
 
     boolean cathererRequired;
 
