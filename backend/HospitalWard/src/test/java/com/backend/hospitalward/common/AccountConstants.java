@@ -1,4 +1,4 @@
-package com.backend.hospitalward.integration.common;
+package com.backend.hospitalward.common;
 
 public final class AccountConstants {
 

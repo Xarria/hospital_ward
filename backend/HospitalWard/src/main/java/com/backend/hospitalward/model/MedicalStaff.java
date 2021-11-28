@@ -2,8 +2,10 @@ package com.backend.hospitalward.model;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -15,7 +17,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@SuperBuilder
 @Table(name = "medical_staff")
 @DiscriminatorValue("MEDIC")
 public class MedicalStaff extends Account {

@@ -2,7 +2,7 @@ package com.backend.hospitalward.integration.auth;
 
 import com.backend.hospitalward.dto.request.auth.Credentials;
 import com.backend.hospitalward.integration.AbstractTestContainer;
-import com.backend.hospitalward.integration.common.AccountConstants;
+import com.backend.hospitalward.common.AccountConstants;
 import com.backend.hospitalward.service.AccountService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 

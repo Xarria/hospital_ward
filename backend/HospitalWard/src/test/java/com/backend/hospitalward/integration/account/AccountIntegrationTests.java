@@ -9,7 +9,7 @@ import com.backend.hospitalward.dto.request.medicalStaff.MedicalStaffCreateReque
 import com.backend.hospitalward.dto.request.medicalStaff.MedicalStaffUpdateRequest;
 import com.backend.hospitalward.dto.response.account.AccountGeneralResponse;
 import com.backend.hospitalward.dto.response.medicalStaff.MedicalStaffGeneralResponse;
-import com.backend.hospitalward.integration.common.AccountConstants;
+import com.backend.hospitalward.common.AccountConstants;
 import com.backend.hospitalward.model.Account;
 import com.backend.hospitalward.model.MedicalStaff;
 import com.backend.hospitalward.model.Url;

@@ -9,7 +9,7 @@ import com.backend.hospitalward.dto.request.medicalStaff.MedicalStaffCreateReque
 import com.backend.hospitalward.dto.request.medicalStaff.MedicalStaffUpdateRequest;
 import com.backend.hospitalward.dto.response.exception.ExceptionResponse;
 import com.backend.hospitalward.exception.ErrorKey;
-import com.backend.hospitalward.integration.common.AccountConstants;
+import com.backend.hospitalward.common.AccountConstants;
 import com.backend.hospitalward.model.Url;
 import com.backend.hospitalward.repository.UrlRepository;
 import com.backend.hospitalward.security.SecurityConstants;
