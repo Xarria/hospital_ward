@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 
 @EqualsAndHashCode(callSuper = true)
 @Data

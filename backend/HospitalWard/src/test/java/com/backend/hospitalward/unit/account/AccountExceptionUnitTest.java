@@ -15,7 +15,6 @@ import com.backend.hospitalward.repository.AccountRepository;
 import com.backend.hospitalward.repository.SpecializationRepository;
 import com.backend.hospitalward.service.AccountService;
 import com.backend.hospitalward.service.UrlService;
-import com.backend.hospitalward.util.notification.EmailSender;
 import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -285,7 +284,7 @@ public class AccountExceptionUnitTest {
         when(accountRepository.findAccountByLogin(any())).thenReturn(Optional.empty());
 
         Exception e = assertThrows(NotFoundException.class, () ->
-                accountService.confirmAccount("1234567890",new Password("password")));
+                accountService.confirmAccount("1234567890", new Password("password")));
 
         assertEquals(ErrorKey.ACCOUNT_NOT_FOUND, e.getMessage());
     }

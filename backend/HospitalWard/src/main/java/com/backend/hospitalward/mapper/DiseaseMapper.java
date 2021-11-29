@@ -4,7 +4,6 @@ import com.backend.hospitalward.dto.request.disease.DiseaseCreateRequest;
 import com.backend.hospitalward.dto.request.disease.DiseaseUpdateRequest;
 import com.backend.hospitalward.dto.response.disease.DiseaseDetailsResponse;
 import com.backend.hospitalward.dto.response.disease.DiseaseGeneralResponse;
-import com.backend.hospitalward.model.Account;
 import com.backend.hospitalward.model.Disease;
 import org.mapstruct.*;
 

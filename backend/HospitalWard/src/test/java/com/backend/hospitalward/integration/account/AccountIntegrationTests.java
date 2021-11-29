@@ -1,5 +1,6 @@
 package com.backend.hospitalward.integration.account;
 
+import com.backend.hospitalward.common.AccountConstants;
 import com.backend.hospitalward.dto.request.account.AccountCreateRequest;
 import com.backend.hospitalward.dto.request.account.AccountUpdateRequest;
 import com.backend.hospitalward.dto.request.account.ChangePasswordRequest;
@@ -9,7 +10,6 @@ import com.backend.hospitalward.dto.request.medicalStaff.MedicalStaffCreateReque
 import com.backend.hospitalward.dto.request.medicalStaff.MedicalStaffUpdateRequest;
 import com.backend.hospitalward.dto.response.account.AccountGeneralResponse;
 import com.backend.hospitalward.dto.response.medicalStaff.MedicalStaffGeneralResponse;
-import com.backend.hospitalward.common.AccountConstants;
 import com.backend.hospitalward.model.Account;
 import com.backend.hospitalward.model.MedicalStaff;
 import com.backend.hospitalward.model.Url;
@@ -55,21 +55,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AccountIntegrationTests {
 
-    @Autowired
-    AccountService accountService;
-
-    @Autowired
-    UrlRepository urlRepository;
-
-    @Autowired
-    TestRestTemplate restTemplate;
-
-    Gson gson;
-
-    String token;
-
-    String valid_password = AccountConstants.SG_PASSWORD;
-
     ////////////////////////
     static MySQLContainer<?> mySQLContainer;
 
@@ -78,29 +63,21 @@ class AccountIntegrationTests {
         mySQLContainer.start();
     }
 
+    @Autowired
+    AccountService accountService;
+    @Autowired
+    UrlRepository urlRepository;
+    @Autowired
+    TestRestTemplate restTemplate;
+    Gson gson;
+    String token;
+    String valid_password = AccountConstants.SG_PASSWORD;
     @LocalServerPort
     int port;
 
     public String getUrlWithPort(String uri) {
         return "http://localhost:" + port + uri;
     }
-
-    public static class DockerMysqlDataSourceInitializer implements
-            ApplicationContextInitializer<ConfigurableApplicationContext> {
-
-        @Override
-        public void initialize(@NotNull ConfigurableApplicationContext applicationContext) {
-
-            TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
-                    applicationContext,
-                    "spring.datasource.url=" + mySQLContainer.getJdbcUrl(),
-                    "spring.datasource.username=" + mySQLContainer.getUsername(),
-                    "spring.datasource.password=" + mySQLContainer.getPassword()
-            );
-        }
-    }
-
-    ///////////////////////////////////
 
     @BeforeEach
     public void authenticate() {
@@ -110,6 +87,8 @@ class AccountIntegrationTests {
 
         token = response.getBody();
     }
+
+    ///////////////////////////////////
 
     @BeforeAll
     public void setUpGson() {
@@ -290,7 +269,6 @@ class AccountIntegrationTests {
 
         valid_password = AccountConstants.NEW_SG_PASSWORD;
     }
-
 
     @Order(7)
     @Test
@@ -614,5 +592,20 @@ class AccountIntegrationTests {
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
                 () -> assertEquals(accountsCount - 1, accountService.getAllAccounts().size())
         );
+    }
+
+    public static class DockerMysqlDataSourceInitializer implements
+            ApplicationContextInitializer<ConfigurableApplicationContext> {
+
+        @Override
+        public void initialize(@NotNull ConfigurableApplicationContext applicationContext) {
+
+            TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
+                    applicationContext,
+                    "spring.datasource.url=" + mySQLContainer.getJdbcUrl(),
+                    "spring.datasource.username=" + mySQLContainer.getUsername(),
+                    "spring.datasource.password=" + mySQLContainer.getPassword()
+            );
+        }
     }
 }

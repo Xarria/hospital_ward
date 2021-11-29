@@ -2,7 +2,6 @@ package com.backend.hospitalward.schedule;
 
 import com.backend.hospitalward.model.Account;
 import com.backend.hospitalward.model.Url;
-import com.backend.hospitalward.model.common.UrlActionType;
 import com.backend.hospitalward.repository.AccountRepository;
 import com.backend.hospitalward.repository.UrlRepository;
 import com.backend.hospitalward.util.notification.EmailSender;
@@ -12,13 +11,10 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @FieldDefaults(level = AccessLevel.PRIVATE)

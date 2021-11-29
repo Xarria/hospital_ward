@@ -1,6 +1,5 @@
 package com.backend.hospitalward.controller;
 
-import com.backend.hospitalward.dto.request.account.AccountUpdateRequest;
 import com.backend.hospitalward.dto.request.disease.DiseaseCreateRequest;
 import com.backend.hospitalward.dto.request.disease.DiseaseUpdateRequest;
 import com.backend.hospitalward.dto.response.disease.DiseaseDetailsResponse;

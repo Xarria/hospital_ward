@@ -2,8 +2,6 @@ package com.backend.hospitalward.unit.url;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class UrlServiceUnitTest {
 
     @Test
