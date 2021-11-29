@@ -318,12 +318,12 @@ class AccountUnitTest {
     void sendResetPasswordUrl() {
         when(accountRepository.findAccountByEmailAndConfirmedIsTrue(any())).thenReturn(Optional.of(accountInactive));
         when(accountRepository.findAccountByNameAndSurname(any(), any())).thenReturn(Optional.of(accountActive));
-        doNothing().when(urlService).deleteOldAndCreteResetPasswordUrl(anyBoolean(), any(), any(), any());
+        doNothing().when(urlService).deleteOldAndCreateResetPasswordUrl(anyBoolean(), any(), any(), any());
 
         accountService.sendResetPasswordUrl("mail@wp.pl", "Marek",
                 "Woźniak", "marek.woźniak");
 
-        verify(urlService).deleteOldAndCreteResetPasswordUrl(anyBoolean(), any(), any(), any());
+        verify(urlService).deleteOldAndCreateResetPasswordUrl(anyBoolean(), any(), any(), any());
     }
 
     @Test

@@ -351,7 +351,7 @@ public class AccountService {
         Account accountDirector = accountRepository.findAccountByNameAndSurname(directorName, directorSurname)
                 .orElseThrow(() -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
 
-        urlService.deleteOldAndCreteResetPasswordUrl(requestedBy.equals(accountDirector.getLogin()), accountEmployee,
+        urlService.deleteOldAndCreateResetPasswordUrl(requestedBy.equals(accountDirector.getLogin()), accountEmployee,
                 accountDirector, email);
 
     }

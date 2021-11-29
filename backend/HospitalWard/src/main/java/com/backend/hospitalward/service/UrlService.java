@@ -52,6 +52,14 @@ public class UrlService {
         urlRepository.deleteAll(urlsForAccount);
     }
 
+    public void deleteOldConfirmationUrls(Account account) {
+        List<Url> urls = urlRepository.findUrlsByAccountEmployee(account).stream()
+                .filter(url -> url.getActionType().equals(UrlActionType.CONFIRM.name()))
+                .collect(Collectors.toList());
+
+        urlRepository.deleteAll(urls);
+    }
+
     public void createConfirmUrl(Account account, Account director) {
         Url url = Url.builder()
                 .codeDirector(RandomStringUtils.randomAlphanumeric(5))
@@ -70,15 +78,7 @@ public class UrlService {
                 director.getName(), director.getEmail(), url.getCodeDirector());
     }
 
-    public void deleteOldConfirmationUrls(Account account) {
-        List<Url> urls = urlRepository.findUrlsByAccountEmployee(account).stream()
-                .filter(url -> url.getActionType().equals(UrlActionType.CONFIRM.name()))
-                .collect(Collectors.toList());
-
-        urlRepository.deleteAll(urls);
-    }
-
-    public Url getUrlPasswordReset(Account accountEmployee, Account accountDirector) {
+    public Url createResetPasswordUrl(Account accountEmployee, Account accountDirector) {
         return Url.builder()
                 .creationDate(Timestamp.from(Instant.now()))
                 .accountEmployee(accountEmployee)
@@ -91,17 +91,15 @@ public class UrlService {
                 .build();
     }
 
-    public void deleteOldAndCreteResetPasswordUrl(boolean setRequestedBy, Account accountEmployee, Account accountDirector,
-                                                  String email) {
-        List<Url> urlList = urlRepository.findUrlsByAccountEmployee(accountEmployee).stream()
+    public void deleteOldAndCreateResetPasswordUrl(boolean setRequestedBy, Account accountEmployee,
+                                                   Account accountDirector, String email) {
+        List<Url> urls = urlRepository.findUrlsByAccountEmployee(accountEmployee).stream()
                 .filter(url -> url.getActionType().equals(UrlActionType.PASSWORD.name()))
                 .collect(Collectors.toList());
 
-        if (!urlList.isEmpty()) {
-            urlList.forEach(urlRepository::delete);
-        }
+        urlRepository.deleteAll(urls);
 
-        Url url = getUrlPasswordReset(accountEmployee, accountDirector);
+        Url url = createResetPasswordUrl(accountEmployee, accountDirector);
 
         if (setRequestedBy) {
             url.setCreatedBy(accountDirector);
