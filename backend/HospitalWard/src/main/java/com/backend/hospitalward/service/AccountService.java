@@ -263,8 +263,13 @@ public class AccountService {
 
         account.setAccessLevel(accessLevel);
         account.setModificationDate(Timestamp.from(Instant.now()));
-        account.setModifiedBy(accountRepository.findAccountByLogin(modifiedBy).orElseThrow(() ->
-                new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND)));
+        if (modifiedBy.equals(account.getLogin())) {
+            account.setModifiedBy(null);
+        } else {
+            Account accModifiedBy = accountRepository.findAccountByLogin(modifiedBy).orElseThrow(() ->
+                    new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
+            account.setModifiedBy(accModifiedBy);
+        }
 
         accountRepository.save(account);
 
@@ -302,7 +307,7 @@ public class AccountService {
 
         Account requestedByAccount = null;
 
-        if (login.equals(requestedBy)) {
+        if (!login.equals(requestedBy)) {
             requestedByAccount = accountRepository.findAccountByLogin(requestedBy).orElseThrow(() ->
                     new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
         }
