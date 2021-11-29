@@ -12,12 +12,10 @@ import com.backend.hospitalward.util.notification.EmailSender;
 import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.security.enterprise.credential.Password;
 import java.sql.Timestamp;
@@ -30,9 +28,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-class AccountServiceUnitTest {
+class AccountUnitTest {
 
     public static final int SECONDS_THRESHOLD = 2;
     @Mock

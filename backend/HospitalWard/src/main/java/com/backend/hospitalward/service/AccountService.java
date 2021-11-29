@@ -256,13 +256,14 @@ public class AccountService {
         Account account = accountRepository.findAccountByLogin(login).orElseThrow(() ->
                 new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
 
-        isAccessLevelConflict(newAccessLevel, account);
-
         AccessLevel accessLevel = accessLevelRepository.findAccessLevelByName(newAccessLevel).orElseThrow(() ->
                 new NotFoundException(ErrorKey.ACCESS_LEVEL_NOT_FOUND));
 
+        isAccessLevelConflict(accessLevel.getName(), account);
+
         account.setAccessLevel(accessLevel);
         account.setModificationDate(Timestamp.from(Instant.now()));
+
         if (modifiedBy.equals(account.getLogin())) {
             account.setModifiedBy(null);
         } else {
@@ -290,10 +291,10 @@ public class AccountService {
         }
     }
 
-    private boolean cannotChangeAccessLevel(String newAccessLevel, Account account, String s) {
-        return accountRepository.findAccountsByAccessLevel_Name(s).size() == 1 &&
-                account.getAccessLevel().getName().equals(s) &&
-                !newAccessLevel.equals(s);
+    private boolean cannotChangeAccessLevel(String newAccessLevel, Account account, String protectedAccessLevel) {
+        return accountRepository.findAccountsByAccessLevel_Name(protectedAccessLevel).size() == 1 &&
+                account.getAccessLevel().getName().equals(protectedAccessLevel) &&
+                !newAccessLevel.equals(protectedAccessLevel);
     }
 
     public void changeEmailAddress(String newEmail, String login, String requestedBy) {
