@@ -18,7 +18,6 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class DiseaseUpdateRequest extends BaseDTO {
 
-    @NotBlank
     String name;
 
     String urgency;

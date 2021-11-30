@@ -52,8 +52,8 @@ public class DiseaseService {
                 -> new NotFoundException(ErrorKey.DISEASE_NOT_FOUND));
     }
 
-    public void createDisease(Disease disease, String login, String urgency) {
-        Account account = accountRepository.findAccountByLogin(login).orElseThrow(()
+    public void createDisease(Disease disease, String createdBy, String urgency) {
+        Account account = accountRepository.findAccountByLogin(createdBy).orElseThrow(()
                 -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
         DiseaseUrgency diseaseUrgency = diseaseUrgencyRepository.findDiseaseUrgencyByUrgency(urgency).orElseThrow(()
                 -> new NotFoundException(ErrorKey.DISEASE_URGENCY_NOT_FOUND));
@@ -65,8 +65,8 @@ public class DiseaseService {
         diseaseRepository.save(disease);
     }
 
-    public void updateDisease(Disease disease, String modifiedBy, String urgency) {
-        Disease diseaseFromDB = diseaseRepository.findDiseaseByName(disease.getName()).orElseThrow(() ->
+    public void updateDisease(Disease disease, String oldName, String modifiedBy, String urgency) {
+        Disease diseaseFromDB = diseaseRepository.findDiseaseByName(oldName).orElseThrow(() ->
                 new NotFoundException(ErrorKey.DISEASE_NOT_FOUND));
         if (urgency != null && !urgency.isEmpty()) {
             DiseaseUrgency diseaseUrgency = diseaseUrgencyRepository.findDiseaseUrgencyByUrgency(urgency).orElseThrow(()
