@@ -22,8 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -69,11 +67,6 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
     @NotNull
     private HttpEntity<T> getJwtHttpEntity() {
         return new HttpEntity<>(null, getHttpHeaders());
-    }
-
-    @NotNull
-    private Timestamp getTimestampToCompare() {
-        return Timestamp.from(Instant.now().minusSeconds(5));
     }
 
     @Order(1)
@@ -233,9 +226,6 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
         String diseaseName = disease.getName();
 
         long version = diseaseService.getDiseaseByName(diseaseName).getVersion();
-
-        ResponseEntity<String> responseGet = restTemplate.exchange(getUrlWithPort(DiseaseConstants.GET_ALL_DISEASES +
-                "/" + diseaseName), HttpMethod.GET, getJwtHttpEntity(), String.class);
 
         HttpHeaders headers = getHttpHeaders();
         headers.add(HttpHeaders.IF_MATCH, null);
