@@ -27,7 +27,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     Optional<Account> findAccountByNameAndSurname(String name, String surname);
 
-    @Query(value = "SELECT a FROM Account WHERE a.confirmed = false " +
-            "AND time_to_sec(timediff(a.creation_date, now())) < - removalTime", nativeQuery = true)
+    @Query(value = "SELECT * FROM Account a WHERE a.confirmed = false " +
+            "AND time_to_sec(timediff(a.creation_date, now())) < -:removalTime", nativeQuery = true)
     List<Account> findAccountsByUnconfirmedAndExpired(long removalTime);
 }

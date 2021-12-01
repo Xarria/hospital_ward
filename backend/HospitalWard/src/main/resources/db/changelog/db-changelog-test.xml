@@ -24,7 +24,8 @@
     <include file="/load/loadCovidStatusTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadAccessLevelTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadAccountTable.xml" relativeToChangelogFile="true"/>
-    <!--    <include file="/load/loadDiseaseTable.xml" relativeToChangelogFile="true"/>-->
+    <include file="/load/loadDiseaseUrgencyTable.xml" relativeToChangelogFile="true"/>
+    <include file="/load/loadDiseaseTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadMedicalStaffTable.xml" relativeToChangelogFile="true"/>
     <!--    <include file="/load/loadPatientDiseaseTable.xml" relativeToChangelogFile="true"/>-->
     <include file="/load/loadPatientTable.xml" relativeToChangelogFile="true"/>

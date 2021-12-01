@@ -55,7 +55,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AccountIntegrationTests {
 
-    ////////////////////////
     static MySQLContainer<?> mySQLContainer;
 
     static {
@@ -65,13 +64,17 @@ class AccountIntegrationTests {
 
     @Autowired
     AccountService accountService;
+
     @Autowired
     UrlRepository urlRepository;
+
     @Autowired
     TestRestTemplate restTemplate;
+
     Gson gson;
     String token;
     String valid_password = AccountConstants.SG_PASSWORD;
+
     @LocalServerPort
     int port;
 
@@ -87,8 +90,6 @@ class AccountIntegrationTests {
 
         token = response.getBody();
     }
-
-    ///////////////////////////////////
 
     @BeforeAll
     public void setUpGson() {
@@ -121,7 +122,7 @@ class AccountIntegrationTests {
 
     @NotNull
     private Timestamp getTimestampToCompare() {
-        return Timestamp.from(Instant.now().minusSeconds(5));
+        return Timestamp.from(Instant.now().minusSeconds(3));
     }
 
     @Order(1)

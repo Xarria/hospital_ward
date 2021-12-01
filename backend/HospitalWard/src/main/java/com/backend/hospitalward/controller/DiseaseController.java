@@ -64,12 +64,12 @@ public class DiseaseController {
     @DoctorOrTreatmentDirectorAuthority
     @PutMapping(path = "/{name}")
     public ResponseEntity<?> updateDisease(@CurrentSecurityContext SecurityContext securityContext,
-                                           @RequestHeader("If-Match") String eTag,
+                                           @RequestHeader("If-Match") String eTag, @PathVariable("name") String oldName,
                                            @RequestBody @Valid DiseaseUpdateRequest diseaseUpdateRequest) {
 
         checkETagHeader(diseaseUpdateRequest, eTag);
 
-        diseaseService.updateDisease(diseaseMapper.toDisease(diseaseUpdateRequest),
+        diseaseService.updateDisease(diseaseMapper.toDisease(diseaseUpdateRequest), oldName,
                 securityContext.getAuthentication().getName(), diseaseUpdateRequest.getUrgency());
 
         return ResponseEntity.ok().build();

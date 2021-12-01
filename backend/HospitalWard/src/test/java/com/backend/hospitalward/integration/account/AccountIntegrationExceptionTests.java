@@ -52,7 +52,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AccountIntegrationExceptionTests {
 
-    ////////////////////////
     static MySQLContainer<?> mySQLContainer;
 
     static {
@@ -80,12 +79,11 @@ public class AccountIntegrationExceptionTests {
         String valid_password = AccountConstants.SG_PASSWORD;
         HttpEntity<Credentials> credentials = new HttpEntity<>(
                 new Credentials(AccountConstants.SG_LOGIN, valid_password), null);
-        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(AccountConstants.AUTH), HttpMethod.POST, credentials, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(AccountConstants.AUTH), HttpMethod.POST,
+                credentials, String.class);
 
         token = response.getBody();
     }
-
-    ///////////////////////////////////
 
     @BeforeAll
     public void setUpGson() {
