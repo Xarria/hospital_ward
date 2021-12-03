@@ -19,9 +19,6 @@ public class DiseaseCreateRequest {
     @NotBlank
     String name;
 
-    @NotBlank
-    String urgency;
-
     @NotNull
     boolean cathererRequired;
 

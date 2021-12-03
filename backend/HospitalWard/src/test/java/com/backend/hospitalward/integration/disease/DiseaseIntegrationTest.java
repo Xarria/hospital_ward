@@ -117,7 +117,6 @@ class DiseaseIntegrationTest extends AbstractTestContainer {
         assertAll(
                 () -> assertNotNull(response),
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
-                () -> assertEquals(disease.getUrgency().getUrgency(), diseaseDetailsResponse.getUrgency()),
                 () -> assertEquals(disease.getCreationDate(), diseaseDetailsResponse.getCreationDate())
         );
     }
@@ -130,7 +129,6 @@ class DiseaseIntegrationTest extends AbstractTestContainer {
                         .name("DiseaseName")
                         .cathererRequired(true)
                         .surgeryRequired(false)
-                        .urgency("HIGH")
                         .build(), getHttpHeaders()
         );
 
@@ -141,8 +139,6 @@ class DiseaseIntegrationTest extends AbstractTestContainer {
                 () -> assertNotNull(response),
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
                 () -> assertNotNull(diseaseService.getDiseaseByName("DiseaseName")),
-                () -> assertEquals("HIGH", diseaseService.getDiseaseByName("DiseaseName")
-                        .getUrgency().getUrgency()),
                 () -> assertTrue(diseaseService.getDiseaseByName("DiseaseName").isCathererRequired()),
                 () -> assertFalse(diseaseService.getDiseaseByName("DiseaseName").isSurgeryRequired())
         );
@@ -167,7 +163,6 @@ class DiseaseIntegrationTest extends AbstractTestContainer {
         HttpEntity<DiseaseUpdateRequest> diseaseUpdateRequestHttpEntity = new HttpEntity<>(
                 DiseaseUpdateRequest.builder()
                         .name("UpdatedName")
-                        .urgency("HIGH")
                         .version(version)
                         .build(), headers);
 
@@ -179,8 +174,6 @@ class DiseaseIntegrationTest extends AbstractTestContainer {
                 () -> assertNotNull(response),
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
                 () -> assertNotNull(diseaseService.getDiseaseByName("UpdatedName")),
-                () -> assertEquals("HIGH", diseaseService.getDiseaseByName("UpdatedName")
-                        .getUrgency().getUrgency()),
                 () -> assertTrue(diseaseService.getDiseaseByName("UpdatedName").getModificationDate()
                         .after(getTimestampToCompare()))
         );

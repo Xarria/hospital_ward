@@ -27,11 +27,6 @@ public class Disease extends BaseEntity {
     String name;
 
     @NotNull
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "urgency", referencedColumnName = "id")
-    DiseaseUrgency urgency;
-
-    @NotNull
     @Column(name = "catherer_required", nullable = false)
     boolean cathererRequired;
 

@@ -27,26 +27,14 @@ public interface DiseaseMapper {
         return null;
     }
 
-    @Named("mapUrgency")
-    default String mapUrgency(Disease disease) {
-        if (disease.getUrgency() != null) {
-            return disease.getUrgency().getUrgency();
-        }
-        return null;
-    }
-
-    @Mapping(target = "urgency", ignore = true)
     @Mapping(target = "patients", ignore = true)
     Disease toDisease(DiseaseCreateRequest diseaseCreateRequest);
 
-    @Mapping(target = "urgency", ignore = true)
     @Mapping(target = "patients", ignore = true)
     Disease toDisease(DiseaseUpdateRequest diseaseUpdateRequest);
 
-    @Mapping(target = "urgency", source = "disease", qualifiedByName = "mapUrgency")
     DiseaseGeneralResponse toDiseaseGeneralResponse(Disease disease);
 
-    @Mapping(target = "urgency", source = "disease", qualifiedByName = "mapUrgency")
     @Mapping(target = "createdBy", source = "disease", qualifiedByName = "mapCreatedBy")
     @Mapping(target = "modifiedBy", source = "disease", qualifiedByName = "mapModifiedBy")
     DiseaseDetailsResponse toDiseaseDetailsResponse(Disease disease);

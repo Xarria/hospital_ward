@@ -46,7 +46,7 @@ public class RequestJWTFilter extends OncePerRequestFilter {
                 log.error("Invalid JWT Token");
             }
         } else {
-            log.error("Invalid authorization header");
+            log.warn("Invalid authorization header");
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

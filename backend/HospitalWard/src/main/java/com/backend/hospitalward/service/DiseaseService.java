@@ -5,10 +5,8 @@ import com.backend.hospitalward.exception.ErrorKey;
 import com.backend.hospitalward.exception.NotFoundException;
 import com.backend.hospitalward.model.Account;
 import com.backend.hospitalward.model.Disease;
-import com.backend.hospitalward.model.DiseaseUrgency;
 import com.backend.hospitalward.repository.AccountRepository;
 import com.backend.hospitalward.repository.DiseaseRepository;
-import com.backend.hospitalward.repository.DiseaseUrgencyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.HibernateException;
@@ -41,8 +39,6 @@ public class DiseaseService {
 
     AccountRepository accountRepository;
 
-    DiseaseUrgencyRepository diseaseUrgencyRepository;
-
     public List<Disease> getAllDiseases() {
         return diseaseRepository.findAll();
     }
@@ -52,27 +48,19 @@ public class DiseaseService {
                 -> new NotFoundException(ErrorKey.DISEASE_NOT_FOUND));
     }
 
-    public void createDisease(Disease disease, String createdBy, String urgency) {
+    public void createDisease(Disease disease, String createdBy) {
         Account account = accountRepository.findAccountByLogin(createdBy).orElseThrow(()
                 -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
-        DiseaseUrgency diseaseUrgency = diseaseUrgencyRepository.findDiseaseUrgencyByUrgency(urgency).orElseThrow(()
-                -> new NotFoundException(ErrorKey.DISEASE_URGENCY_NOT_FOUND));
         disease.setVersion(0L);
         disease.setPatients(Collections.emptyList());
-        disease.setUrgency(diseaseUrgency);
         disease.setCreatedBy(account);
         disease.setCreationDate(Timestamp.from(Instant.now()));
         diseaseRepository.save(disease);
     }
 
-    public void updateDisease(Disease disease, String oldName, String modifiedBy, String urgency) {
+    public void updateDisease(Disease disease, String oldName, String modifiedBy) {
         Disease diseaseFromDB = diseaseRepository.findDiseaseByName(oldName).orElseThrow(() ->
                 new NotFoundException(ErrorKey.DISEASE_NOT_FOUND));
-        if (urgency != null && !urgency.isEmpty()) {
-            DiseaseUrgency diseaseUrgency = diseaseUrgencyRepository.findDiseaseUrgencyByUrgency(urgency).orElseThrow(()
-                    -> new NotFoundException(ErrorKey.DISEASE_URGENCY_NOT_FOUND));
-            diseaseFromDB.setUrgency(diseaseUrgency);
-        }
 
         diseaseFromDB.setVersion(disease.getVersion());
 

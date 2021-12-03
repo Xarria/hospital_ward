@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet id="1" author="liquibase">
+        <createTable tableName="patient_position">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="queue" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_position_queue" references="queue(queue_id)"/>
+            </column>
+            <column name="patient" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_position_patient" references="patient(id)"/>
+            </column>
+            <column name="position" type="integer">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

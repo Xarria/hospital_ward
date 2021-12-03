@@ -1,5 +1,6 @@
 package com.backend.hospitalward.model;
 
+import com.backend.hospitalward.model.common.PatientTypeName;
 import lombok.AccessLevel;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -7,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Builder
@@ -32,7 +34,7 @@ public class Patient extends BaseEntity {
 
     @NotBlank
     @Size(max = 1)
-    @Pattern(regexp = "[MFU]")
+    @Pattern(regexp = "[MF]")
     @Column(name = "sex", nullable = false, table = "Personal_data")
     String sex;
 
@@ -44,13 +46,16 @@ public class Patient extends BaseEntity {
     )
     List<Disease> diseases;
 
-    //TODO dopytać o walidację
     @Size(min = 1)
     @Column(name = "referral_nr", length = 30)
     String referralNr;
 
     @Column(name = "referral_date")
     Timestamp referralDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="queue")
+    Queue queue;
 
     @NotNull
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
@@ -78,8 +83,9 @@ public class Patient extends BaseEntity {
     @Column(name = "surname", nullable = false, length = 30, table = "Personal_data")
     String surname;
 
-    @Column(name = "admission_date")
-    Timestamp admissionDate;
+    @NotNull
+    @Column(name = "admission_date", nullable = false)
+    Date admissionDate;
 
     @NotNull
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
@@ -88,8 +94,13 @@ public class Patient extends BaseEntity {
 
     @NotBlank
     @Pattern(regexp = "[0-9]{9,11}")
-    @Column(name = "phone_number", nullable = false, length = 11, table = "Personal_data")
+    @Column(name = "phone_number", length = 11, table = "Personal_data")
     String phoneNumber;
+
+    @NotBlank
+    @Email
+    @Column(name = "email_address", length = 50, table = "Personal_data")
+    String emailAddress;
 
     @NotNull
     @Column(name = "urgent", nullable = false)
@@ -110,5 +121,30 @@ public class Patient extends BaseEntity {
 
     @Column(name = "modification_date")
     private Timestamp modificationDate;
+
+    public String findPatientType() {
+        if (urgent) {
+            return PatientTypeName.URGENT.name();
+        }
+        if (isUnder9MonthsOlds()) {
+            return PatientTypeName.INTENSIVE_SUPERVISION.name();
+        }
+        if (isUnder6YearsOld()) {
+            return PatientTypeName.UNDER_6.name();
+        }
+        if (sex.equals("M")) {
+            return PatientTypeName.BOY.name();
+        } else {
+            return PatientTypeName.GIRL.name();
+        }
+    }
+
+    private boolean isUnder9MonthsOlds() {
+        return age.endsWith("M") && Integer.parseInt(age.substring(0, age.length() - 1)) <= 9;
+    }
+
+    private boolean isUnder6YearsOld() {
+        return age.endsWith("M") || age.endsWith("Y") && Integer.parseInt(age.substring(0, age.length() - 1)) <= 6;
+    }
 
 }

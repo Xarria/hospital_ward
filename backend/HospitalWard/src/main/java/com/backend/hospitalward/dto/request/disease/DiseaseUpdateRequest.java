@@ -20,8 +20,6 @@ public class DiseaseUpdateRequest extends BaseDTO {
 
     String name;
 
-    String urgency;
-
     boolean cathererRequired;
 
     boolean surgeryRequired;

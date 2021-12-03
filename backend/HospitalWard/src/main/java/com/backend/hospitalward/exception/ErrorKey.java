@@ -47,6 +47,17 @@ public final class ErrorKey {
     public static final String DISEASE_NOT_FOUND = "error.disease_not_found";
     public static final String DISEASE_ASSIGNED_TO_PATIENT = "error.disease_assigned_to_patient";
     public static final String DISEASE_URGENCY_NOT_FOUND = "error.disease_urgency_not_found";
+
+    //endregion
+
+    //region patient
+    public static final String PATIENT_NOT_FOUND = "error.patient_not_found";
+    public static final String MAIN_DOCTOR_NOT_MEDIC = "error.main_doctor_is_not_medical_staff";
+    public static final String COVID_STATUS_NOT_FOUND = "error.covid_status_not_found";
+    public static final String PATIENT_TYPE_NOT_FOUND = "error.patient_type_not_found";
+    public static final String PATIENT_STATUS_NOT_FOUND = "error.patient_status_not_found";
+    public static final String PATIENT_CONFIRMED = "error.patient_already_confirmed";
+    public static final String NO_PERMISSION_TO_CREATE_URGENT_PATIENT = "error.no_permission_to_create_urgent_patient";
     //endregion
 
 }

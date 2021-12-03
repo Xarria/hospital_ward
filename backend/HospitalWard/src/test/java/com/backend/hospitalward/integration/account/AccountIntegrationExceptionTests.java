@@ -10,30 +10,21 @@ import com.backend.hospitalward.dto.request.medicalStaff.MedicalStaffCreateReque
 import com.backend.hospitalward.dto.request.medicalStaff.MedicalStaffUpdateRequest;
 import com.backend.hospitalward.dto.response.exception.ExceptionResponse;
 import com.backend.hospitalward.exception.ErrorKey;
+import com.backend.hospitalward.integration.AbstractTestContainer;
 import com.backend.hospitalward.model.Url;
 import com.backend.hospitalward.repository.UrlRepository;
 import com.backend.hospitalward.security.SecurityConstants;
 import com.backend.hospitalward.service.AccountService;
 import com.google.gson.Gson;
-import io.gsonfire.GsonFireBuilder;
+import com.google.gson.GsonBuilder;
 import liquibase.pro.packaged.T;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.*;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.support.TestPropertySourceUtils;
-import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -42,22 +33,10 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ActiveProfiles("test")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@ContextConfiguration(initializers = AccountIntegrationExceptionTests.DockerMysqlDataSourceInitializer.class)
-@Testcontainers
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class AccountIntegrationExceptionTests {
-
-    static MySQLContainer<?> mySQLContainer;
-
-    static {
-        mySQLContainer = new MySQLContainer<>("mysql:8.0.26");
-        mySQLContainer.start();
-    }
+public class AccountIntegrationExceptionTests extends AbstractTestContainer {
 
     @Autowired
     AccountService accountService;
@@ -67,12 +46,6 @@ public class AccountIntegrationExceptionTests {
     TestRestTemplate restTemplate;
     Gson gson;
     String token;
-    @LocalServerPort
-    int port;
-
-    public String getUrlWithPort(String uri) {
-        return "http://localhost:" + port + uri;
-    }
 
     @BeforeEach
     public void authenticate() {
@@ -87,8 +60,9 @@ public class AccountIntegrationExceptionTests {
 
     @BeforeAll
     public void setUpGson() {
-        GsonFireBuilder builder = new GsonFireBuilder();
-        gson = builder.createGson();
+        GsonBuilder builder = new GsonBuilder();
+        builder.setDateFormat("yyyy-MM-dd hh:mm:ss");
+        gson = builder.create();
     }
 
     @NotNull
@@ -702,21 +676,6 @@ public class AccountIntegrationExceptionTests {
                 () -> assertNotNull(response),
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode())
         );
-    }
-
-    public static class DockerMysqlDataSourceInitializer implements
-            ApplicationContextInitializer<ConfigurableApplicationContext> {
-
-        @Override
-        public void initialize(@NotNull ConfigurableApplicationContext applicationContext) {
-
-            TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
-                    applicationContext,
-                    "spring.datasource.url=" + mySQLContainer.getJdbcUrl(),
-                    "spring.datasource.username=" + mySQLContainer.getUsername(),
-                    "spring.datasource.password=" + mySQLContainer.getPassword()
-            );
-        }
     }
 
 }

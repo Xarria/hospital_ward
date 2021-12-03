@@ -25,9 +25,7 @@
             <column name="surname" type="varchar(30)">
                 <constraints nullable="false"/>
             </column>
-            <column name="phone_number" type="varchar(11)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="phone_number" type="varchar(11)"/>
             <column name="email_address" type="varchar(50)"/>
         </createTable>
     </changeSet>

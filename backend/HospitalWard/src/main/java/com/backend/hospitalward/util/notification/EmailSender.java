@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmailSender {
 
+    @Value("${mail.send}")
+    boolean sendMail;
     @Value("${mail.username}")
     String username;
     @Value("${mail.password}")
@@ -26,6 +28,9 @@ public class EmailSender {
     String from;
 
     void sendEmail(String recipientName, String recipientEmailAddress, String subject, String text) {
+        if (!sendMail) {
+            return;
+        }
 
         Email email = EmailBuilder.startingBlank()
                 .from(from, address)

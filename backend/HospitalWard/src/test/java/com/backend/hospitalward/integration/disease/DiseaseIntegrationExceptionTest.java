@@ -95,7 +95,6 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
                         .name("DiseaseName")
                         .cathererRequired(true)
                         .surgeryRequired(false)
-                        .urgency("NonExistingUrgency")
                         .build(), getHttpHeaders()
         );
 
@@ -130,7 +129,6 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
         HttpEntity<DiseaseUpdateRequest> diseaseUpdateRequestHttpEntity = new HttpEntity<>(
                 DiseaseUpdateRequest.builder()
                         .name("UpdatedName")
-                        .urgency("HIGH")
                         .version(version)
                         .build(), headers);
 
@@ -166,7 +164,6 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
         HttpEntity<DiseaseUpdateRequest> diseaseUpdateRequestHttpEntity = new HttpEntity<>(
                 DiseaseUpdateRequest.builder()
                         .name("UpdatedName")
-                        .urgency("NonExistingName")
                         .version(version)
                         .build(), headers);
 
@@ -202,7 +199,6 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
         HttpEntity<DiseaseUpdateRequest> diseaseUpdateRequestHttpEntity = new HttpEntity<>(
                 DiseaseUpdateRequest.builder()
                         .name("UpdatedName")
-                        .urgency("HIGH")
                         .version(version + 1)
                         .build(), headers);
 
@@ -233,7 +229,6 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
         HttpEntity<DiseaseUpdateRequest> diseaseUpdateRequestHttpEntity = new HttpEntity<>(
                 DiseaseUpdateRequest.builder()
                         .name("UpdatedName")
-                        .urgency("HIGH")
                         .version(version)
                         .build(), headers);
 
@@ -270,7 +265,6 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
         HttpEntity<DiseaseUpdateRequest> diseaseUpdateRequestHttpEntity = new HttpEntity<>(
                 DiseaseUpdateRequest.builder()
                         .name(disease2.getName())
-                        .urgency("HIGH")
                         .version(version)
                         .build(), headers);
 

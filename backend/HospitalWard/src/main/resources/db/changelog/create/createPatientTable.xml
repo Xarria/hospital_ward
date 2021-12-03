@@ -25,8 +25,8 @@
             <column name="main_doctor" type="bigint">
                 <constraints nullable="true" foreignKeyName="fk_patient_doctor" references="account(id)"/>
             </column>
-            <column name="admission_date" type="timestamp">
-                <constraints nullable="true"/>
+            <column name="admission_date" type="date">
+                <constraints nullable="false"/>
             </column>
             <column name="status" type="bigint">
                 <constraints nullable="false" foreignKeyName="fk_patient_status" references="patient_status(id)"/>
@@ -36,6 +36,9 @@
             </column>
             <column name="covid_status" type="bigint">
                 <constraints nullable="false" foreignKeyName="fk_patient_covid_status" references="covid_status(id)"/>
+            </column>
+            <column name="queue" type="bigint">
+                <constraints foreignKeyName="fk_patient_queue" references="queue(id)"/>
             </column>
             <column name="creation_date" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>

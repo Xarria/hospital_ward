@@ -10,6 +10,7 @@
     <include file="/create/createDiseaseUrgencyTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createDiseaseTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createPatientTypeTable.xml" relativeToChangelogFile="true"/>
+    <include file="/create/createQueueTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createPatientStatusTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createPatientTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createMedicalStaffTable.xml" relativeToChangelogFile="true"/>

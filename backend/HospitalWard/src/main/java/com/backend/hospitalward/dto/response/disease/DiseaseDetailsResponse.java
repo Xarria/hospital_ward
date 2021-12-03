@@ -17,8 +17,6 @@ public class DiseaseDetailsResponse extends BaseDTO implements SignableDTO {
 
     String name;
 
-    String urgency;
-
     boolean cathererRequired;
 
     boolean surgeryRequired;

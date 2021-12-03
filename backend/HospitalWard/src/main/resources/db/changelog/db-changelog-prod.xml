@@ -10,6 +10,7 @@
     <include file="/create/createDiseaseUrgencyTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createDiseaseTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createPatientTypeTable.xml" relativeToChangelogFile="true"/>
+    <include file="/create/createQueueTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createPatientTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createMedicalStaffTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createSpecializationTable.xml" relativeToChangelogFile="true"/>
@@ -18,8 +19,12 @@
     <include file="/create/createPersonalDataTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createAuthView.xml" relativeToChangelogFile="true"/>
     <include file="/create/createUrlTable.xml" relativeToChangelogFile="true"/>
+    <include file="/create/createQueueTable.xml" relativeToChangelogFile="true"/>
 
     <include file="/load/loadPatientTypeTable.xml" relativeToChangelogFile="true"/>
+    <include file="/load/loadPatientStatusTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadCovidStatusTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadAccessLevelTable.xml" relativeToChangelogFile="true"/>
+    <include file="/load/loadDiseaseUrgencyTable.xml" relativeToChangelogFile="true"/>
+    <include file="/load/loadSpecializationTable.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

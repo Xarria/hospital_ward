@@ -9,8 +9,6 @@ public class DiseaseGeneralResponse {
 
     String name;
 
-    String urgency;
-
     boolean cathererRequired;
 
     boolean surgeryRequired;
