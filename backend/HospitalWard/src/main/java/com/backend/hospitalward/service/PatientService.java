@@ -68,8 +68,8 @@ public class PatientService {
 
     public void createPatient(Patient patient, String createdBy, List<String> diseases, String mainDoctorLogin,
                               String covidStatus) {
-        if(checkIfDateIsWeekend(patient.getAdmissionDate().toLocalDate()) ||
-                patient.getAdmissionDate().toLocalDate().get(ChronoField.DAY_OF_WEEK) == 5) {
+        if(checkIfDateIsWeekendOrFriday(patient.getAdmissionDate().toLocalDate()) ||
+                !checkIfDateIsAtLeastTwoWeeksFromToday(patient.getAdmissionDate().toLocalDate())) {
             throw new ConflictException(ErrorKey.ADMISSION_DATE_WEEKEND_OR_FRIDAY);
         }
 
@@ -116,6 +116,7 @@ public class PatientService {
                               String requestedBy) {
         Patient patientFromDB = patientRepository.findPatientById(id).orElseThrow(()
                 -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
+
         if (patient.getPesel() != null && !patient.getPesel().isEmpty()) {
             patientFromDB.setPesel(patient.getPesel());
         }
@@ -157,6 +158,10 @@ public class PatientService {
         Patient patient = patientRepository.findPatientById(id).orElseThrow(()
                 -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
 
+        if (patient.getStatus().getName().equals(PatientStatusName.CONFIRMED_TWICE.name())) {
+            throw new BadRequestException(ErrorKey.PATIENT_CONFIRMED);
+        }
+
         queueService.checkIfPatientIsInAQueueForDate(Date.valueOf(queueDate), patient);
 
         setPatientStatus(patient);
@@ -181,12 +186,18 @@ public class PatientService {
     }
 
     public void changePatientAdmissionDate(Long id, Date date, String modifiedBy) {
-        if (checkIfDateIsWeekend(date.toLocalDate())) {
+        if (checkIfDateIsWeekendOrFriday(date.toLocalDate())
+                || !checkIfDateIsAtLeastTwoWeeksFromToday(date.toLocalDate())) {
             throw new ConflictException(ErrorKey.ADMISSION_DATE_WEEKEND);
         }
 
         Patient patient = patientRepository.findPatientById(id).orElseThrow(()
                 -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
+
+        if (patient.getStatus().getName().equals(PatientStatusName.CONFIRMED_TWICE.name())
+                && patient.getAdmissionDate().toLocalDate().isBefore(LocalDate.now())) {
+            throw new BadRequestException(ErrorKey.PATIENT_ALREADY_ADMITTED);
+        }
 
         if (!patient.isUrgent()) {
             if (!queueService.checkIfPatientCanBeAddedForDate(patient.getAdmissionDate())) {
@@ -213,6 +224,12 @@ public class PatientService {
     public void changePatientUrgency(Long id, boolean urgent, String modifiedBy) {
         Patient patient = patientRepository.findPatientById(id).orElseThrow(()
                 -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
+
+        if (patient.getStatus().getName().equals(PatientStatusName.CONFIRMED_TWICE.name())
+                && patient.getAdmissionDate().toLocalDate().isBefore(LocalDate.now())) {
+            throw new BadRequestException(ErrorKey.PATIENT_ALREADY_ADMITTED);
+        }
+
         patient.setUrgent(urgent);
         patient.setModificationDate(Timestamp.from(Instant.now()));
         if (modifiedBy != null) {
@@ -224,7 +241,7 @@ public class PatientService {
 
         patientRepository.save(patient);
 
-        //TODO refresh kolejki
+        queueService.refreshQueue(patient.getQueue());
     }
 
     public void deletePatient(Long id) {
@@ -271,8 +288,13 @@ public class PatientService {
         }
     }
 
-    private boolean checkIfDateIsWeekend(LocalDate date) {
-        return date.get(ChronoField.DAY_OF_WEEK) == 7 || date.get(ChronoField.DAY_OF_WEEK) == 6;
+    private boolean checkIfDateIsWeekendOrFriday(LocalDate date) {
+        return date.get(ChronoField.DAY_OF_WEEK) == 7 || date.get(ChronoField.DAY_OF_WEEK) == 6
+                || date.get(ChronoField.DAY_OF_WEEK) == 5;
+    }
+
+    private boolean checkIfDateIsAtLeastTwoWeeksFromToday(LocalDate date) {
+        return date.minusDays(14).isAfter(LocalDate.now()) || date.minusDays(14).isEqual(LocalDate.now());
     }
 
 }
