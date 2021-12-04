@@ -46,8 +46,8 @@ public class QueueService {
 
     PatientStatusRepository patientStatusRepository;
 
-    public List<Queue> getAllQueues() {
-        return queueRepository.findAll();
+    public List<Queue> getAllCurrentQueues() {
+        return queueRepository.findQueuesByDateAfter(Date.valueOf(LocalDate.now().minusDays(1)));
     }
 
     public Queue getQueueForDate(Date date) {
@@ -198,6 +198,7 @@ public class QueueService {
                 date = date.plusDays(1);
             }
         }
+        //TODO email
     }
 
     public void lockQueueForDateIfNecessary(Date date) {
@@ -205,6 +206,7 @@ public class QueueService {
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
         if (queue.getPatientsConfirmed().size() >= 8) {
             queue.setLocked(true);
+            //przerzucenie innych na następny wolny termin + email
         }
     }
 

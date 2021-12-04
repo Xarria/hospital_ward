@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,4 +23,6 @@ public interface QueueRepository extends JpaRepository<Queue, Long> {
     List<Queue> findQueuesByLockedTrue();
 
     Optional<Queue> findQueueByPatientsWaitingContains(Patient patient);
+
+    List<Queue> findQueuesByDateAfter(Date date);
 }
