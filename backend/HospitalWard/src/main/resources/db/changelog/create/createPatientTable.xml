@@ -40,6 +40,7 @@
             <column name="queue" type="bigint">
                 <constraints foreignKeyName="fk_patient_queue" references="queue(id)"/>
             </column>
+            <column name="position" type="integer"/>
             <column name="creation_date" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>

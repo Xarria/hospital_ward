@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.sql.Timestamp;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Builder
@@ -53,9 +53,16 @@ public class Patient extends BaseEntity {
     @Column(name = "referral_date")
     Timestamp referralDate;
 
+    //queue
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="queue")
     Queue queue;
+
+    @Column(name = "position")
+    Integer positionInQueue;
+
+    //
 
     @NotNull
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH)

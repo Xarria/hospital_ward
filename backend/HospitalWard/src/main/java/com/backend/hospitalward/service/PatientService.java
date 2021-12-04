@@ -23,9 +23,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.PersistenceException;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.temporal.ChronoField;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,6 +51,8 @@ public class PatientService {
 
     PatientStatusRepository patientStatusRepository;
 
+    QueueService queueService;
+
     public List<Patient> getAllPatients() {
         return patientRepository.findAll();
     }
@@ -58,8 +62,16 @@ public class PatientService {
                 -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
     }
 
+    public List<LocalDate> getFullAdmissionDates() {
+        return queueService.findFullAdmissionDates();
+    }
+
     public void createPatient(Patient patient, String createdBy, List<String> diseases, String mainDoctorLogin,
                               String covidStatus) {
+        if(checkIfDateIsWeekend(patient.getAdmissionDate().toLocalDate())) {
+            throw new ConflictException(ErrorKey.ADMISSION_DATE_WEEKEND);
+        }
+
         setMainDoctor(patient, mainDoctorLogin);
         patient.setVersion(0L);
         patient.setCreationDate(Timestamp.from(Instant.now()));
@@ -86,9 +98,17 @@ public class PatientService {
         patient.setStatus(patientStatusRepository.findPatientStatusByName(PatientStatusName.WAITING.name())
                 .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_STATUS_NOT_FOUND)));
 
-        // dodać do kolejki, refresh queue, check if queue should be locked
+        if (!patient.isUrgent()) {
+            if (!queueService.checkIfPatientCanBeAddedForDate(patient.getAdmissionDate())) {
+                throw new ConflictException(ErrorKey.QUEUE_LOCKED_OR_FULL);
+            }
+        }
 
         patientRepository.save(patient);
+
+        queueService.addPatientToQueue(patient);
+
+        //TODO EMAIL
     }
 
     public void updatePatient(Patient patient, List<String> diseases, String mainDoctor, String covidStatus, Long id,
@@ -132,27 +152,53 @@ public class PatientService {
         patientRepository.save(patientFromDB);
     }
 
-    public void confirmPatient(Long id) {
+    public void confirmPatient(Long id, LocalDate queueDate) {
         Patient patient = patientRepository.findPatientById(id).orElseThrow(()
                 -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
-        if (patient.getStatus().getName().equals(PatientStatusName.WAITING.name())) {
-            patient.setStatus(patientStatusRepository.findPatientStatusByName(PatientStatusName.CONFIRMED_ONCE.name())
-                    .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_STATUS_NOT_FOUND)));
-        } else {
-            patient.setStatus(patientStatusRepository.findPatientStatusByName(PatientStatusName.CONFIRMED_TWICE.name())
-                    .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_STATUS_NOT_FOUND)));
-        }
-        //sprawdzić czy jest 8 potwierdzonych, jak tak to niepotwierdzonych przerzucić na kolejny dzień
 
+        queueService.checkIfPatientIsInAQueueForDate(Date.valueOf(queueDate), patient);
+
+        setPatientStatus(patient);
+
+        if (patient.getStatus().getName().equals(PatientStatusName.CONFIRMED_TWICE.name())) {
+
+            if (queueService.checkIfQueueForDateIsLocked(Date.valueOf(queueDate))) {
+                if (patient.isUrgent()) {
+                    queueService.switchPatients(patient, Date.valueOf(queueDate));
+                } else {
+                    throw new ConflictException(ErrorKey.QUEUE_LOCKED);
+                }
+            } else {
+                queueService.confirmPatient(patient, queueDate);
+            }
+
+            queueService.lockQueueForDateIfNecessary(Date.valueOf(queueDate));
+            patient.setAdmissionDate(Date.valueOf(queueDate));
+        }
         patientRepository.save(patient);
 
     }
 
     public void changePatientAdmissionDate(Long id, Date date, String modifiedBy) {
+        if (checkIfDateIsWeekend(date.toLocalDate())) {
+            throw new ConflictException(ErrorKey.ADMISSION_DATE_WEEKEND);
+        }
+
         Patient patient = patientRepository.findPatientById(id).orElseThrow(()
                 -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
+
+        if (!patient.isUrgent()) {
+            if (!queueService.checkIfPatientCanBeAddedForDate(patient.getAdmissionDate())) {
+                throw new ConflictException(ErrorKey.QUEUE_LOCKED_OR_FULL);
+            }
+        }
+
+        queueService.switchPatientQueue(patient, date);
+
         patient.setAdmissionDate(date);
         patient.setModificationDate(Timestamp.from(Instant.now()));
+        patient.setStatus(patientStatusRepository.findPatientStatusByName(PatientStatusName.WAITING.name())
+                .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_STATUS_NOT_FOUND)));
         if (modifiedBy != null) {
             patient.setModifiedBy(accountRepository.findAccountByLogin(modifiedBy).orElseThrow(()
                     -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND)));
@@ -161,8 +207,6 @@ public class PatientService {
         }
 
         patientRepository.save(patient);
-
-        //TODO check czy można na ten dzień
     }
 
     public void changePatientUrgency(Long id, boolean urgent, String modifiedBy) {
@@ -183,12 +227,14 @@ public class PatientService {
     }
 
     public void deletePatient(Long id) {
-        //TODO usunąć z kolejki
         Patient patient = patientRepository.findPatientById(id).orElseThrow(()
                 -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
         if (patient.getStatus().getName().equals(PatientStatusName.CONFIRMED_TWICE.name())) {
             throw new ConflictException(ErrorKey.PATIENT_CONFIRMED);
         }
+
+        queueService.removePatientFromQueue(patient);
+
         patientRepository.delete(patient);
     }
 
@@ -212,6 +258,20 @@ public class PatientService {
                 .map(name -> diseaseRepository.findDiseaseByName(name).orElseThrow(() ->
                         new NotFoundException(ErrorKey.DISEASE_NOT_FOUND)))
                 .collect(Collectors.toList());
+    }
+
+    private void setPatientStatus(Patient patient) {
+        if (patient.getStatus().getName().equals(PatientStatusName.WAITING.name())) {
+            patient.setStatus(patientStatusRepository.findPatientStatusByName(PatientStatusName.CONFIRMED_ONCE.name())
+                    .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_STATUS_NOT_FOUND)));
+        } else {
+            patient.setStatus(patientStatusRepository.findPatientStatusByName(PatientStatusName.CONFIRMED_TWICE.name())
+                    .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_STATUS_NOT_FOUND)));
+        }
+    }
+
+    private boolean checkIfDateIsWeekend(LocalDate date) {
+        return date.get(ChronoField.DAY_OF_WEEK) == 7 || date.get(ChronoField.DAY_OF_WEEK) == 6;
     }
 
 }
