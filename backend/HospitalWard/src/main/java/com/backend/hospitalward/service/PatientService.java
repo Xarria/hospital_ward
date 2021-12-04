@@ -68,8 +68,9 @@ public class PatientService {
 
     public void createPatient(Patient patient, String createdBy, List<String> diseases, String mainDoctorLogin,
                               String covidStatus) {
-        if(checkIfDateIsWeekend(patient.getAdmissionDate().toLocalDate())) {
-            throw new ConflictException(ErrorKey.ADMISSION_DATE_WEEKEND);
+        if(checkIfDateIsWeekend(patient.getAdmissionDate().toLocalDate()) ||
+                patient.getAdmissionDate().toLocalDate().get(ChronoField.DAY_OF_WEEK) == 5) {
+            throw new ConflictException(ErrorKey.ADMISSION_DATE_WEEKEND_OR_FRIDAY);
         }
 
         setMainDoctor(patient, mainDoctorLogin);

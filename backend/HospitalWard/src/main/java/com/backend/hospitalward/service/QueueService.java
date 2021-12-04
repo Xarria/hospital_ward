@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.ejb.Local;
 import javax.persistence.PersistenceException;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -46,6 +45,10 @@ public class QueueService {
     QueueRepository queueRepository;
 
     PatientStatusRepository patientStatusRepository;
+
+    public List<Queue> getAllQueues() {
+        return queueRepository.findAll();
+    }
 
     public Queue getQueueForDate(Date date) {
         return queueRepository.findQueueByDate(date).orElseThrow(()
@@ -107,7 +110,7 @@ public class QueueService {
 
         queue.getPatientsWaiting().add(patient);
 
-        //refresh
+        refreshQueue(queue);
 
         queueRepository.save(queue);
     }
@@ -123,7 +126,8 @@ public class QueueService {
 
         newQueue.getPatientsWaiting().add(patient);
 
-        //refresh obu
+        refreshQueue(oldQueue);
+        refreshQueue(newQueue);
 
         queueRepository.save(oldQueue);
         queueRepository.save(newQueue);
@@ -152,9 +156,9 @@ public class QueueService {
 
         patientRepository.save(lowestPriorityPatient);
 
-        queueRepository.save(queue);
+        refreshQueue(queue);
 
-        //refresh
+        queueRepository.save(queue);
     }
 
     public void transferPatientToNextUnlockedQueue(Patient patient, Date previousDate) {
@@ -167,7 +171,8 @@ public class QueueService {
         if (!unlockedQueues.isEmpty()) {
             unlockedQueues.sort(Comparator.comparing(Queue::getDate));
             patient.setQueue(unlockedQueues.get(0));
-            //refresh
+            refreshQueue(unlockedQueues.get(0));
+            queueRepository.save(unlockedQueues.get(0));
             return;
         }
 
@@ -210,7 +215,7 @@ public class QueueService {
         queue.getPatientsWaiting().remove(patient);
         queue.getPatientsConfirmed().add(patient);
 
-        //refresh
+        refreshQueue(queue);
 
         queueRepository.save(queue);
     }
@@ -221,8 +226,9 @@ public class QueueService {
 
         queue.getPatientsWaiting().remove(patient);
 
+        refreshQueue(queue);
+
         queueRepository.save(queue);
-        //refresh
     }
 
     public void checkIfPatientIsInAQueueForDate(Date date, Patient patient) {
@@ -233,15 +239,58 @@ public class QueueService {
         }
     }
 
-//    public void refreshQueueForDate(Date date) {
-//        calculatePatientsPositions(date);
-//    }
+    public void refreshQueue(Queue queue) {
+        queue.setPatientsWaiting(calculatePatientsPositions(queue));
+    }
 
     public void transferUnconfirmedPatientsForNextUnlockedDate() {
 
     }
 
-    private void calculatePatientsPositions(Queue queue) {
+    private List<Patient> calculatePatientsPositions(Queue queue) {
+        List<Patient> waitingPatients = queue.getPatientsWaiting();
+
+        List<Patient> sortedUrgentPatients = waitingPatients.stream()
+                .filter(Patient::isUrgent)
+                .sorted(Comparator.comparing(Patient::getAdmissionDate))
+                .collect(Collectors.toList());
+
+        waitingPatients.removeAll(sortedUrgentPatients);
+
+        List<Patient> sortedCathererOrSurgeryPatients = waitingPatients.stream()
+                .filter(patient -> patient.getDiseases().stream()
+                        .anyMatch(disease -> disease.isCathererRequired() || disease.isSurgeryRequired()))
+                .sorted(Comparator.comparing(Patient::getAdmissionDate))
+                .collect(Collectors.toList());
+
+        waitingPatients.removeAll(sortedCathererOrSurgeryPatients);
+
+        List<Patient> otherPatients = waitingPatients.stream()
+                .sorted(Comparator.comparing(Patient::getAdmissionDate))
+                .collect(Collectors.toList());
+
+        List<Patient> allSortedPatients = new ArrayList<>();
+
+        allSortedPatients.addAll(sortedUrgentPatients);
+        allSortedPatients.addAll(sortedCathererOrSurgeryPatients);
+        allSortedPatients.addAll(otherPatients);
+
+        rewritePatientsPositions(allSortedPatients);
+
+        return allSortedPatients;
+
+    }
+
+    private void rewritePatientsPositions(List<Patient> allSortedPatients) {
+        for (int i = 0; i < allSortedPatients.size(); i++) {
+            Long id = allSortedPatients.get(i).getId();
+
+            Patient patient = patientRepository.findPatientById(id).orElseThrow(()
+            -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
+
+            patient.setPositionInQueue(i);
+            patientRepository.save(patient);
+        }
     }
 
     private boolean checkIfDateIsSaturday(LocalDate date) {
