@@ -4,14 +4,15 @@ import com.backend.hospitalward.model.common.PatientTypeName;
 import lombok.AccessLevel;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.sql.Timestamp;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
-@Builder
+@SuperBuilder
 @Getter
 @Setter
 @AllArgsConstructor

@@ -26,10 +26,7 @@ import javax.persistence.PersistenceException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -259,9 +256,14 @@ public class QueueService {
     public void lockQueueForDateIfNecessary(Date date) {
         Queue queue = queueRepository.findQueueByDate(date).orElseThrow(()
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
+        if (queue.isLocked()) {
+            return;
+        }
         if (queue.getPatientsConfirmed().size() >= 8) {
             queue.setLocked(true);
-            transferPatientsFromLockedQueue(queue);
+            if (queue.getPatientsWaiting() != null && !queue.getPatientsWaiting().isEmpty()) {
+                transferPatientsFromLockedQueue(queue);
+            }
             queueRepository.save(queue);
         }
     }
@@ -285,14 +287,23 @@ public class QueueService {
         lockedQueue.setPatientsWaiting(new ArrayList<>());
 
         lockedQueue.getPatientsWaiting().forEach(patientRepository::save);
+
+        refreshQueue(newQueue);
+        queueRepository.save(newQueue);
     }
 
     public void confirmPatient(Patient patient, LocalDate date) {
         Queue queue = queueRepository.findQueueByDate(Date.valueOf(date)).orElseThrow(()
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
 
-        queue.getPatientsWaiting().remove(patient);
-        queue.getPatientsConfirmed().add(patient);
+        List<Patient> waitingPatients = new LinkedList<>(queue.getPatientsWaiting());
+        List<Patient> confirmedPatients = new LinkedList<>(queue.getPatientsConfirmed());
+
+        waitingPatients.remove(patient);
+        confirmedPatients.add(patient);
+
+        queue.setPatientsWaiting(waitingPatients);
+        queue.setPatientsConfirmed(confirmedPatients);
 
         refreshQueue(queue);
 
@@ -303,7 +314,10 @@ public class QueueService {
         Queue queue = queueRepository.findQueueByPatientsWaitingContains(patient).orElseThrow(()
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
 
-        queue.getPatientsWaiting().remove(patient);
+        List<Patient> waitingPatients = new LinkedList<>(queue.getPatientsWaiting());
+        waitingPatients.remove(patient);
+
+        queue.setPatientsWaiting(waitingPatients);
 
         refreshQueue(queue);
 
@@ -319,7 +333,9 @@ public class QueueService {
     }
 
     public void refreshQueue(Queue queue) {
-        queue.setPatientsWaiting(calculatePatientsPositions(queue));
+        if (!queue.isLocked()) {
+            queue.setPatientsWaiting(calculatePatientsPositions(queue));
+        }
     }
 
     public List<Patient> getWaitingPatientsForPastQueues() {
@@ -332,16 +348,21 @@ public class QueueService {
     }
 
     private List<Patient> calculatePatientsPositions(Queue queue) {
-        List<Patient> waitingPatients = queue.getPatientsWaiting();
+        List<Patient> waitingPatients = new LinkedList<>(queue.getPatientsWaiting());
 
-        if (waitingPatients.size() <= 1) {
+        if (waitingPatients.isEmpty()) {
+            return waitingPatients;
+        }
+
+        if (waitingPatients.size() == 1) {
+            rewritePatientsPositions(waitingPatients);
             return waitingPatients;
         }
 
         List<Patient> sortedUrgentPatients = waitingPatients.stream()
                 .filter(Patient::isUrgent)
                 .sorted(Comparator.comparing(Patient::getAdmissionDate))
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(LinkedList::new));
 
         waitingPatients.removeAll(sortedUrgentPatients);
 
@@ -349,15 +370,15 @@ public class QueueService {
                 .filter(patient -> patient.getDiseases().stream()
                         .anyMatch(disease -> disease.isCathererRequired() || disease.isSurgeryRequired()))
                 .sorted(Comparator.comparing(Patient::getAdmissionDate))
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(LinkedList::new));
 
         waitingPatients.removeAll(sortedCathererOrSurgeryPatients);
 
         List<Patient> otherPatients = waitingPatients.stream()
                 .sorted(Comparator.comparing(Patient::getAdmissionDate))
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(LinkedList::new));
 
-        List<Patient> allSortedPatients = new ArrayList<>();
+        List<Patient> allSortedPatients = new LinkedList<>();
 
         allSortedPatients.addAll(sortedUrgentPatients);
         allSortedPatients.addAll(sortedCathererOrSurgeryPatients);
