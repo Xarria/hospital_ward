@@ -204,7 +204,6 @@ public class PatientService {
                 throw new ConflictException(ErrorKey.QUEUE_LOCKED_OR_FULL);
             }
         }
-
         queueService.switchPatientQueue(patient, date);
 
         patient.setAdmissionDate(date);

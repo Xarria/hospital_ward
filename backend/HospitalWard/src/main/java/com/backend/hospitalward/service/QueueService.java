@@ -147,6 +147,7 @@ public class QueueService {
         queue.getPatientsConfirmed().add(urgentPatient);
 
         urgentPatient.setPositionInQueue(lowestPriorityPatient.getPositionInQueue());
+        urgentPatient.setQueue(queue);
         urgentPatient.setStatus(patientStatusRepository.findPatientStatusByName(PatientStatusName.CONFIRMED_TWICE.name())
                 .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_STATUS_NOT_FOUND)));
 
@@ -172,6 +173,7 @@ public class QueueService {
         if (!unlockedQueues.isEmpty()) {
             unlockedQueues.sort(Comparator.comparing(Queue::getDate));
             patient.setQueue(unlockedQueues.get(0));
+            unlockedQueues.get(0).getPatientsWaiting().add(patient);
             refreshQueue(unlockedQueues.get(0));
             queueRepository.save(unlockedQueues.get(0));
             return;
@@ -323,7 +325,7 @@ public class QueueService {
     public List<Patient> getWaitingPatientsForPastQueues() {
         List<Queue> pastQueues = queueRepository.findQueuesByDateBefore(Date.valueOf(LocalDate.now()));
 
-       return pastQueues.stream()
+        return pastQueues.stream()
                 .map(Queue::getPatientsWaiting)
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
@@ -331,6 +333,10 @@ public class QueueService {
 
     private List<Patient> calculatePatientsPositions(Queue queue) {
         List<Patient> waitingPatients = queue.getPatientsWaiting();
+
+        if (waitingPatients.size() <= 1) {
+            return waitingPatients;
+        }
 
         List<Patient> sortedUrgentPatients = waitingPatients.stream()
                 .filter(Patient::isUrgent)
@@ -368,7 +374,7 @@ public class QueueService {
             Long id = allSortedPatients.get(i).getId();
 
             Patient patient = patientRepository.findPatientById(id).orElseThrow(()
-            -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
+                    -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
 
             patient.setPositionInQueue(i);
             patientRepository.save(patient);
