@@ -18,9 +18,9 @@ public interface QueueRepository extends JpaRepository<Queue, Long> {
 
     Optional<Queue> findQueueByDate(Date date);
 
-    List<Queue> findQueuesByLockedFalse();
+    List<Queue> findQueuesByLockedFalseAndDateAfter(Date date);
 
-    List<Queue> findQueuesByLockedTrue();
+    List<Queue> findQueuesByLockedTrueAndDateAfter(Date date);
 
     Optional<Queue> findQueueByPatientsWaitingContains(Patient patient);
 

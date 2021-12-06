@@ -105,10 +105,7 @@ public class PatientService {
             }
         }
 
-        patientRepository.save(patient);
-
         queueService.addPatientToQueue(patient);
-
         //TODO EMAIL
     }
 
