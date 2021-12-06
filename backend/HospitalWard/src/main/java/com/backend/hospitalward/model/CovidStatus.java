@@ -2,7 +2,9 @@ package com.backend.hospitalward.model;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +17,8 @@ import javax.validation.constraints.Size;
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
+@SuperBuilder
+@NoArgsConstructor
 @Table(name = "covid_status")
 public class CovidStatus {
 

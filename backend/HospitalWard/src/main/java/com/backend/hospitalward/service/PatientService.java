@@ -62,15 +62,11 @@ public class PatientService {
                 -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
     }
 
-    public List<LocalDate> getFullAdmissionDates() {
-        return queueService.findFullAdmissionDates();
-    }
-
     public void createPatient(Patient patient, String createdBy, List<String> diseases, String mainDoctorLogin,
                               String covidStatus) {
-        if(checkIfDateIsWeekendOrFriday(patient.getAdmissionDate().toLocalDate()) ||
+        if (checkIfDateIsWeekendOrFriday(patient.getAdmissionDate().toLocalDate()) ||
                 !checkIfDateIsAtLeastTwoWeeksFromToday(patient.getAdmissionDate().toLocalDate())) {
-            throw new ConflictException(ErrorKey.ADMISSION_DATE_WEEKEND_OR_FRIDAY);
+            throw new ConflictException(ErrorKey.INVALID_ADMISSION_DATE);
         }
 
         setMainDoctor(patient, mainDoctorLogin);
@@ -114,42 +110,11 @@ public class PatientService {
         Patient patientFromDB = patientRepository.findPatientById(id).orElseThrow(()
                 -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
 
-        if (patient.getPesel() != null && !patient.getPesel().isEmpty()) {
-            patientFromDB.setPesel(patient.getPesel());
-        }
-        if (patient.getAge() != null && !patient.getAge().isEmpty()){
-            patientFromDB.setAge(patient.getAge());
-            patientFromDB.setPatientType(patientTypeRepository.findPatientTypeByName(patient.findPatientType())
-                    .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_TYPE_NOT_FOUND)));
-        }
-        if (patient.getSex() != null && (!patient.getSex().equals("M") || !patient.getSex().equals("F"))){
-            patientFromDB.setSex(patient.getSex());
-        }
-        if (diseases != null && !diseases.isEmpty()) {
-            patientFromDB.setDiseases(getDiseasesFromDatabase(diseases));
-        }
-        if (mainDoctor != null && !mainDoctor.isEmpty()) {
-            setMainDoctor(patientFromDB, mainDoctor);
-        }
-        if (covidStatus != null && !covidStatus.isEmpty()) {
-            patientFromDB.setCovidStatus(covidStatusRepository.findCovidStatusByStatus(covidStatus).orElseThrow(()
-                    -> new NotFoundException(ErrorKey.COVID_STATUS_NOT_FOUND)));
-        }
-        if (patient.getName() != null && !patient.getName().isEmpty()) {
-            patientFromDB.setName(patient.getName());
-        }
-        if (patient.getSurname() != null && !patient.getSurname().isEmpty()) {
-            patientFromDB.setSurname(patient.getSurname());
-        }
-        if (patient.getPhoneNumber() != null && !patient.getPhoneNumber().isEmpty()) {
-            patientFromDB.setPhoneNumber(patient.getPhoneNumber());
-        }
-        if (patient.getEmailAddress() != null && !patient.getEmailAddress().isEmpty()) {
-            patientFromDB.setEmailAddress(patient.getEmailAddress());
-        }
+        setPatientFields(patient, diseases, mainDoctor, covidStatus, patientFromDB, requestedBy);
 
         patientRepository.save(patientFromDB);
     }
+
 
     public void confirmPatient(Long id, LocalDate queueDate) {
         Patient patient = patientRepository.findPatientById(id).orElseThrow(()
@@ -180,6 +145,7 @@ public class PatientService {
         }
         patientRepository.save(patient);
 
+        //todo email
     }
 
     public void changePatientAdmissionDate(Long id, Date date, String modifiedBy) {
@@ -207,14 +173,12 @@ public class PatientService {
         patient.setModificationDate(Timestamp.from(Instant.now()));
         patient.setStatus(patientStatusRepository.findPatientStatusByName(PatientStatusName.WAITING.name())
                 .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_STATUS_NOT_FOUND)));
-        if (modifiedBy != null) {
-            patient.setModifiedBy(accountRepository.findAccountByLogin(modifiedBy).orElseThrow(()
-                    -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND)));
-        } else {
-            patient.setModifiedBy(null);
-        }
+        patient.setModifiedBy(accountRepository.findAccountByLogin(modifiedBy).orElseThrow(()
+                -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND)));
 
         patientRepository.save(patient);
+
+        //TODO email
     }
 
     public void changePatientUrgency(Long id, boolean urgent, String modifiedBy) {
@@ -228,12 +192,8 @@ public class PatientService {
 
         patient.setUrgent(urgent);
         patient.setModificationDate(Timestamp.from(Instant.now()));
-        if (modifiedBy != null) {
-            patient.setModifiedBy(accountRepository.findAccountByLogin(modifiedBy).orElseThrow(()
-                    -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND)));
-        } else {
-            patient.setModifiedBy(null);
-        }
+        patient.setModifiedBy(accountRepository.findAccountByLogin(modifiedBy).orElseThrow(()
+                -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND)));
 
         patientRepository.save(patient);
 
@@ -250,6 +210,7 @@ public class PatientService {
         queueService.removePatientFromQueue(patient);
 
         patientRepository.delete(patient);
+        //todo email
     }
 
     private boolean hasPermissionToCreateUrgentPatient(Account createdByAccount) {
@@ -293,4 +254,44 @@ public class PatientService {
         return date.minusDays(14).isAfter(LocalDate.now()) || date.minusDays(14).isEqual(LocalDate.now());
     }
 
+    private void setPatientFields(Patient patient, List<String> diseases, String mainDoctor, String covidStatus,
+                                  Patient patientFromDB, String requestedBy) {
+        if (patient.getPesel() != null && !patient.getPesel().isEmpty()) {
+            patientFromDB.setPesel(patient.getPesel());
+        }
+        if (patient.getAge() != null && !patient.getAge().isEmpty()) {
+            patientFromDB.setAge(patient.getAge());
+            patientFromDB.setPatientType(patientTypeRepository.findPatientTypeByName(patient.findPatientType())
+                    .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_TYPE_NOT_FOUND)));
+        }
+        if (patient.getSex() != null && (patient.getSex().equals("M") || patient.getSex().equals("F"))) {
+            patientFromDB.setSex(patient.getSex());
+        }
+        if (diseases != null && !diseases.isEmpty()) {
+            patientFromDB.setDiseases(getDiseasesFromDatabase(diseases));
+        }
+        if (mainDoctor != null && !mainDoctor.isEmpty()) {
+            setMainDoctor(patientFromDB, mainDoctor);
+        }
+        if (covidStatus != null && !covidStatus.isEmpty()) {
+            patientFromDB.setCovidStatus(covidStatusRepository.findCovidStatusByStatus(covidStatus).orElseThrow(()
+                    -> new NotFoundException(ErrorKey.COVID_STATUS_NOT_FOUND)));
+        }
+        if (patient.getName() != null && !patient.getName().isEmpty()) {
+            patientFromDB.setName(patient.getName());
+        }
+        if (patient.getSurname() != null && !patient.getSurname().isEmpty()) {
+            patientFromDB.setSurname(patient.getSurname());
+        }
+        if (patient.getPhoneNumber() != null && !patient.getPhoneNumber().isEmpty()) {
+            patientFromDB.setPhoneNumber(patient.getPhoneNumber());
+        }
+        if (patient.getEmailAddress() != null && !patient.getEmailAddress().isEmpty()) {
+            patientFromDB.setEmailAddress(patient.getEmailAddress());
+        }
+        Account modifiedBy = accountRepository.findAccountByLogin(requestedBy).orElseThrow(()
+                -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
+        patient.setModifiedBy(modifiedBy);
+        patient.setModificationDate(Timestamp.from(Instant.now()));
+    }
 }

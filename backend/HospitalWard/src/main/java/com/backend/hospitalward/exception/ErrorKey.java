@@ -67,7 +67,7 @@ public final class ErrorKey {
     public static final String QUEUE_LOCKED = "error.queue_locked";
     public static final String PATIENT_WRONG_QUEUE = "error.patient_does_not_belong_to_queue_for_provided_date";
     public static final String ADMISSION_DATE_WEEKEND = "error.admission_date_weekend";
-    public static final String ADMISSION_DATE_WEEKEND_OR_FRIDAY = "error.admission_date_weekend_or_friday";
+    public static final String INVALID_ADMISSION_DATE = "error.admission_date_weekend_or_friday";
     public static final String PATIENT_ALREADY_ADMITTED = "error.patient_already_admitted";
     //endregion
 
