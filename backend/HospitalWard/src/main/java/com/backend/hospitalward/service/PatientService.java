@@ -102,12 +102,11 @@ public class PatientService {
         }
 
         queueService.addPatientToQueue(patient);
-        //TODO EMAIL
     }
 
-    public void updatePatient(Patient patient, List<String> diseases, String mainDoctor, String covidStatus, Long id,
+    public void updatePatient(Patient patient, List<String> diseases, String mainDoctor, String covidStatus,
                               String requestedBy) {
-        Patient patientFromDB = patientRepository.findPatientById(id).orElseThrow(()
+        Patient patientFromDB = patientRepository.findPatientById(patient.getId()).orElseThrow(()
                 -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
 
         setPatientFields(patient, diseases, mainDoctor, covidStatus, patientFromDB, requestedBy);
@@ -144,13 +143,11 @@ public class PatientService {
             patient.setAdmissionDate(Date.valueOf(queueDate));
         }
         patientRepository.save(patient);
-
-        //todo email
     }
 
-    public void changePatientAdmissionDate(Long id, Date date, String modifiedBy) {
-        if (checkIfDateIsWeekendOrFriday(date.toLocalDate())
-                || !checkIfDateIsAtLeastTwoWeeksFromToday(date.toLocalDate())) {
+    public void changePatientAdmissionDate(Long id, LocalDate date, String modifiedBy) {
+        if (checkIfDateIsWeekendOrFriday(date)
+                || !checkIfDateIsAtLeastTwoWeeksFromToday(date)) {
             throw new ConflictException(ErrorKey.ADMISSION_DATE_WEEKEND);
         }
 
@@ -167,9 +164,9 @@ public class PatientService {
                 throw new ConflictException(ErrorKey.QUEUE_LOCKED_OR_FULL);
             }
         }
-        queueService.switchPatientQueue(patient, date);
+        queueService.switchPatientQueue(patient, Date.valueOf(date));
 
-        patient.setAdmissionDate(date);
+        patient.setAdmissionDate(Date.valueOf(date));
         patient.setModificationDate(Timestamp.from(Instant.now()));
         patient.setStatus(patientStatusRepository.findPatientStatusByName(PatientStatusName.WAITING.name())
                 .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_STATUS_NOT_FOUND)));
@@ -177,8 +174,6 @@ public class PatientService {
                 -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND)));
 
         patientRepository.save(patient);
-
-        //TODO email
     }
 
     public void changePatientUrgency(Long id, boolean urgent, String modifiedBy) {
@@ -210,7 +205,6 @@ public class PatientService {
         queueService.removePatientFromQueue(patient);
 
         patientRepository.delete(patient);
-        //todo email
     }
 
     private boolean hasPermissionToCreateUrgentPatient(Account createdByAccount) {

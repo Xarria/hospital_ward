@@ -25,8 +25,6 @@ public class PatientGeneralResponse {
 
     String mainDoctor;
 
-    String covidStatus;
-
     String name;
 
     String surname;
@@ -36,5 +34,9 @@ public class PatientGeneralResponse {
     String status;
 
     boolean urgent;
+
+    boolean cathererRequired;
+
+    boolean surgeryRequired;
 
 }

@@ -48,8 +48,8 @@ public class QueueService {
         return queueRepository.findQueuesByDateAfter(Date.valueOf(LocalDate.now().minusDays(1)));
     }
 
-    public Queue getQueueForDate(Date date) {
-        return queueRepository.findQueueByDate(date).orElseThrow(()
+    public Queue getQueueForDate(LocalDate date) {
+        return queueRepository.findQueueByDate(Date.valueOf(date)).orElseThrow(()
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
     }
 

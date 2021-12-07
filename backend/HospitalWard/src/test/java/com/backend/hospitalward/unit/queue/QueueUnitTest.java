@@ -91,7 +91,7 @@ class QueueUnitTest {
     void getQueueForDate() {
         when(queueRepository.findQueueByDate(Date.valueOf(LocalDate.now()))).thenReturn(Optional.of(emptyCurrentQueue));
 
-        Queue queue = queueService.getQueueForDate(Date.valueOf(LocalDate.now()));
+        Queue queue = queueService.getQueueForDate(LocalDate.now());
 
         assertEquals(emptyCurrentQueue, queue);
     }

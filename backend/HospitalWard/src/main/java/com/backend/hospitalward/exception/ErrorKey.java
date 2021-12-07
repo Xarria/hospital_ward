@@ -58,6 +58,10 @@ public final class ErrorKey {
     public static final String PATIENT_STATUS_NOT_FOUND = "error.patient_status_not_found";
     public static final String PATIENT_CONFIRMED = "error.patient_already_confirmed";
     public static final String NO_PERMISSION_TO_CREATE_URGENT_PATIENT = "error.no_permission_to_create_urgent_patient";
+    public static final String ADMISSION_DATE_WEEKEND = "error.admission_date_weekend";
+    public static final String INVALID_ADMISSION_DATE = "error.admission_date_weekend_or_friday";
+    public static final String PATIENT_ALREADY_ADMITTED = "error.patient_already_admitted";
+    public static final String PATIENT_NOT_URGENT = "error.patient_not_urgent";
 
     //endregion
 
@@ -66,9 +70,6 @@ public final class ErrorKey {
     public static final String QUEUE_LOCKED_OR_FULL = "error.queue_for_date_is_locked_or_full";
     public static final String QUEUE_LOCKED = "error.queue_locked";
     public static final String PATIENT_WRONG_QUEUE = "error.patient_does_not_belong_to_queue_for_provided_date";
-    public static final String ADMISSION_DATE_WEEKEND = "error.admission_date_weekend";
-    public static final String INVALID_ADMISSION_DATE = "error.admission_date_weekend_or_friday";
-    public static final String PATIENT_ALREADY_ADMITTED = "error.patient_already_admitted";
     //endregion
 
 }

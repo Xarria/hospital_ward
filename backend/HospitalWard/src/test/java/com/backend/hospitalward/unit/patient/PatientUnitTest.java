@@ -1,4 +1,4 @@
-package com.backend.hospitalward.service;
+package com.backend.hospitalward.unit.patient;
 
 import com.backend.hospitalward.exception.BadRequestException;
 import com.backend.hospitalward.exception.ConflictException;
@@ -7,6 +7,8 @@ import com.backend.hospitalward.model.*;
 import com.backend.hospitalward.model.common.AccessLevelName;
 import com.backend.hospitalward.model.common.PatientStatusName;
 import com.backend.hospitalward.repository.*;
+import com.backend.hospitalward.service.PatientService;
+import com.backend.hospitalward.service.QueueService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -233,7 +235,7 @@ class PatientUnitTest {
         when(accountRepository.findAccountByLogin("requestedBy")).thenReturn(Optional.of(Account.builder().build()));
 
         patientService.updatePatient(Patient.builder().sex("M").urgent(true).build(), null, null,
-                "VACCINATED", 1L, "requestedBy");
+                "VACCINATED", "requestedBy");
 
         verify(patientRepository).save(patientOther);
 
@@ -249,7 +251,7 @@ class PatientUnitTest {
         when(accountRepository.findAccountByLogin("requestedBy")).thenReturn(Optional.of(Account.builder().build()));
 
         patientService.updatePatient(Patient.builder().sex("INVALID").urgent(true).build(), null, null,
-                "VACCINATED", 1L, "requestedBy");
+                "VACCINATED", "requestedBy");
 
         verify(patientRepository).save(patientOther);
 
@@ -263,7 +265,7 @@ class PatientUnitTest {
         when(patientRepository.findPatientById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> patientService.updatePatient(Patient.builder().sex("INVALID")
-                        .urgent(true).build(), null, null, "VACCINATED", 1L,
+                        .urgent(true).build(), null, null, "VACCINATED",
                 "requestedBy"));
     }
 
@@ -343,7 +345,7 @@ class PatientUnitTest {
     @Test
     void shouldThrowExceptionWhenChangePatientAdmissionDateWeekend() {
         assertThrows(ConflictException.class, () -> patientService.changePatientAdmissionDate(1L,
-                Date.valueOf(LocalDate.of(2022, 3, 19)), "modifiedBy"));
+                LocalDate.of(2022, 3, 19), "modifiedBy"));
 
     }
 
@@ -356,7 +358,7 @@ class PatientUnitTest {
         when(queueService.checkIfPatientCanBeAddedForDate(any())).thenReturn(false);
 
         assertThrows(BadRequestException.class, () -> patientService.changePatientAdmissionDate(1L,
-                Date.valueOf(LocalDate.of(2022, 2, 16)), "modifiedBy"));
+                LocalDate.of(2022, 2, 16), "modifiedBy"));
 
         assertEquals(LocalDate.now().minusDays(10), patientOther.getAdmissionDate().toLocalDate());
     }
@@ -369,7 +371,7 @@ class PatientUnitTest {
         when(queueService.checkIfPatientCanBeAddedForDate(any())).thenReturn(false);
 
         assertThrows(ConflictException.class, () -> patientService.changePatientAdmissionDate(1L,
-                Date.valueOf(LocalDate.of(2022, 2, 16)), "modifiedBy"));
+                LocalDate.of(2022, 2, 16), "modifiedBy"));
 
         assertEquals(psConfirmedOnce, patientOther.getStatus());
         assertNotEquals(LocalDate.of(2022, 2, 16), patientOther.getAdmissionDate().toLocalDate());
@@ -383,7 +385,7 @@ class PatientUnitTest {
         when(accountRepository.findAccountByLogin(any())).thenReturn(Optional.of(doctor));
         when(queueService.checkIfPatientCanBeAddedForDate(any())).thenReturn(false);
 
-        patientService.changePatientAdmissionDate(1L, Date.valueOf(LocalDate.of(2022, 2, 16)),
+        patientService.changePatientAdmissionDate(1L, LocalDate.of(2022, 2, 16),
                 "modifiedBy");
 
         verify(patientRepository).save(patientUrgent2);
@@ -400,7 +402,7 @@ class PatientUnitTest {
         when(accountRepository.findAccountByLogin(any())).thenReturn(Optional.of(doctor));
         when(queueService.checkIfPatientCanBeAddedForDate(any())).thenReturn(true);
 
-        patientService.changePatientAdmissionDate(1L, Date.valueOf(LocalDate.of(2022, 2, 16)),
+        patientService.changePatientAdmissionDate(1L, LocalDate.of(2022, 2, 16),
                 "modifiedBy");
 
         verify(patientRepository).save(patientUrgent2);
