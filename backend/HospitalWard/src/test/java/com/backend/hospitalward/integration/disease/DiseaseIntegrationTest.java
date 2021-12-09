@@ -190,7 +190,7 @@ class DiseaseIntegrationTest extends AbstractTestContainer {
                         .build(), getHttpHeaders()
         );
 
-        ResponseEntity<String> responseCreate = restTemplate.exchange(getUrlWithPort(DiseaseConstants.GET_ALL_DISEASES),
+        restTemplate.exchange(getUrlWithPort(DiseaseConstants.GET_ALL_DISEASES),
                 HttpMethod.POST, diseaseCreateRequestHttpEntity, String.class);
 
 
