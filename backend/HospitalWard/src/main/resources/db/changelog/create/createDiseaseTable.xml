@@ -16,9 +16,6 @@
             <column name="name" type="varchar(255)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="urgency" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="fk_disease_urgency" references="disease_urgency(id)"/>
-            </column>
             <column name="catherer_required" type="boolean">
                 <constraints nullable="false"/>
             </column>

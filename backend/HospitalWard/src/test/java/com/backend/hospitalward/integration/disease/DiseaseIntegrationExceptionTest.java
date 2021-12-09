@@ -7,6 +7,7 @@ import com.backend.hospitalward.dto.request.disease.DiseaseCreateRequest;
 import com.backend.hospitalward.dto.request.disease.DiseaseUpdateRequest;
 import com.backend.hospitalward.dto.response.exception.ExceptionResponse;
 import com.backend.hospitalward.exception.ErrorKey;
+import com.backend.hospitalward.exception.NotFoundException;
 import com.backend.hospitalward.integration.AbstractTestContainer;
 import com.backend.hospitalward.model.Disease;
 import com.backend.hospitalward.security.SecurityConstants;
@@ -89,29 +90,6 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
 
     @Order(2)
     @Test
-    void shouldReturn404WhenCreateDiseaseDiseaseUrgencyNotFound() {
-        HttpEntity<DiseaseCreateRequest> diseaseCreateRequestHttpEntity = new HttpEntity<>(
-                DiseaseCreateRequest.builder()
-                        .name("DiseaseName")
-                        .cathererRequired(true)
-                        .surgeryRequired(false)
-                        .build(), getHttpHeaders()
-        );
-
-        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(DiseaseConstants.GET_ALL_DISEASES),
-                HttpMethod.POST, diseaseCreateRequestHttpEntity, String.class);
-
-        ExceptionResponse exceptionResponse = gson.fromJson(response.getBody(), ExceptionResponse.class);
-
-        assertAll(
-                () -> assertNotNull(response),
-                () -> assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode()),
-                () -> assertEquals(ErrorKey.DISEASE_URGENCY_NOT_FOUND, exceptionResponse.getMessage())
-        );
-    }
-
-    @Order(3)
-    @Test
     void shouldReturn404WhenUpdateDiseaseNotFound() {
         Disease disease = diseaseService.getAllDiseases().get(0);
         String diseaseName = disease.getName();
@@ -145,42 +123,7 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
         );
     }
 
-    @Order(4)
-    @Test
-    void shouldReturn404WhenUpdateDiseaseDiseaseUrgencyNotFound() {
-        Disease disease = diseaseService.getAllDiseases().get(0);
-        String diseaseName = disease.getName();
-
-        Long version = diseaseService.getDiseaseByName(diseaseName).getVersion();
-
-        ResponseEntity<String> responseGet = restTemplate.exchange(getUrlWithPort(DiseaseConstants.GET_ALL_DISEASES +
-                "/" + diseaseName), HttpMethod.GET, getJwtHttpEntity(), String.class);
-
-        String etag = Objects.requireNonNull(responseGet.getHeaders().get(HttpHeaders.ETAG)).get(0);
-
-        HttpHeaders headers = getHttpHeaders();
-        headers.add(HttpHeaders.IF_MATCH, etag.substring(1, etag.length() - 1));
-
-        HttpEntity<DiseaseUpdateRequest> diseaseUpdateRequestHttpEntity = new HttpEntity<>(
-                DiseaseUpdateRequest.builder()
-                        .name("UpdatedName")
-                        .version(version)
-                        .build(), headers);
-
-        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(DiseaseConstants.GET_ALL_DISEASES
-                        + "/" + diseaseName),
-                HttpMethod.PUT, diseaseUpdateRequestHttpEntity, String.class);
-
-        ExceptionResponse exceptionResponse = gson.fromJson(response.getBody(), ExceptionResponse.class);
-
-        assertAll(
-                () -> assertNotNull(response),
-                () -> assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode()),
-                () -> assertEquals(ErrorKey.DISEASE_URGENCY_NOT_FOUND, exceptionResponse.getMessage())
-        );
-    }
-
-    @Order(5)
+    @Order(3)
     @Test
     void shouldReturn412WhenUpdateDiseaseInvalidVersion() {
         Disease disease = diseaseService.getAllDiseases().get(0);
@@ -215,7 +158,7 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
         );
     }
 
-    @Order(6)
+    @Order(4)
     @Test
     void shouldReturn412WhenUpdateDiseaseNoETag() {
         Disease disease = diseaseService.getAllDiseases().get(0);
@@ -245,7 +188,7 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
         );
     }
 
-    @Order(7)
+    @Order(5)
     @Test
     void shouldReturn409WhenUpdateDiseaseNameNotUnique() {
         Disease disease = diseaseService.getAllDiseases().get(0);
@@ -281,7 +224,7 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
         );
     }
 
-    @Order(8)
+    @Order(6)
     @Test
     void shouldReturn404WhenDeleteDiseaseNotFound() {
 
@@ -299,20 +242,22 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
     }
 
     //TODO when has a patient
-//    @Order(9)
-//    @Test
-//    void deleteDisease() {
-//        Disease disease = diseaseService.getAllDiseases().get(2);
-//        String diseaseName = disease.getName();
-//
-//        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(DiseaseConstants.GET_ALL_DISEASES
-//                        + "/" + diseaseName),
-//                HttpMethod.DELETE, getJwtHttpEntity(), String.class);
-//
-//        assertAll(
-//                () -> assertNotNull(response),
-//                () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
-//                () -> assertThrows(NotFoundException.class, () -> diseaseService.getDiseaseByName(diseaseName))
-//        );
-//    }
+    @Order(7)
+    @Test
+    void deleteDisease() {
+        Disease disease = diseaseService.getAllDiseases().get(2);
+        String diseaseName = disease.getName();
+
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(DiseaseConstants.GET_ALL_DISEASES
+                        + "/" + diseaseName),
+                HttpMethod.DELETE, getJwtHttpEntity(), String.class);
+
+        ExceptionResponse exceptionResponse = gson.fromJson(response.getBody(), ExceptionResponse.class);
+
+        assertAll(
+                () -> assertNotNull(response),
+                () -> assertEquals(HttpStatus.CONFLICT, response.getStatusCode()),
+                () -> assertEquals(ErrorKey.DISEASE_ASSIGNED_TO_PATIENT, exceptionResponse.getMessage())
+        );
+    }
 }

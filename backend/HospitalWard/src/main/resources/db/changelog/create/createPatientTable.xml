@@ -19,7 +19,7 @@
             <column name="referral_nr" type="varchar(30)">
                 <constraints nullable="true" unique="true"/>
             </column>
-            <column name="referral_date" type="timestamp">
+            <column name="referral_date" type="date">
                 <constraints nullable="true"/>
             </column>
             <column name="main_doctor" type="bigint">

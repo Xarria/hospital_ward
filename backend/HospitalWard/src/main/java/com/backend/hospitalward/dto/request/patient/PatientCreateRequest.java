@@ -5,6 +5,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 @EqualsAndHashCode()
@@ -25,7 +26,7 @@ public class PatientCreateRequest {
 
     String referralNr;
 
-    Timestamp referralDate;
+    LocalDate referralDate;
 
     String mainDoctor;
 
@@ -35,7 +36,7 @@ public class PatientCreateRequest {
 
     String surname;
 
-    Timestamp admissionDate;
+    LocalDate admissionDate;
 
     String phoneNumber;
 

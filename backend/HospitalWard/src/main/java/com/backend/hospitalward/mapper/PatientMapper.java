@@ -5,35 +5,37 @@ import com.backend.hospitalward.dto.request.patient.PatientUpdateRequest;
 import com.backend.hospitalward.dto.response.disease.DiseaseGeneralResponse;
 import com.backend.hospitalward.dto.response.patient.PatientDetailsResponse;
 import com.backend.hospitalward.dto.response.patient.PatientGeneralResponse;
-import com.backend.hospitalward.model.Account;
-import com.backend.hospitalward.model.Disease;
-import com.backend.hospitalward.model.Patient;
+import com.backend.hospitalward.model.*;
+import com.backend.hospitalward.security.annotation.MedicAuthorities;
 import org.mapstruct.*;
+
+import java.sql.Date;
+import java.time.LocalDate;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface PatientMapper {
 
     @Named("mapPatientType")
-    default String mapPatientType(Patient patient) {
-        if (patient.getPatientType() != null) {
-            return patient.getPatientType().getName();
+    default String mapPatientType(PatientType patientType) {
+        if (patientType != null) {
+            return patientType.getName();
         }
         return null;
     }
 
     @Named("mapPatientStatus")
-    default String mapPatientStatus(Patient patient) {
-        if (patient.getStatus() != null) {
-            return patient.getStatus().getName();
+    default String mapPatientStatus(PatientStatus patientStatus) {
+        if (patientStatus != null) {
+            return patientStatus.getName();
         }
         return null;
     }
 
     @Named("mapCovidStatus")
-    default String mapCovidStatus(Patient patient) {
-        if (patient.getCovidStatus() != null) {
-            return patient.getCovidStatus().getStatus();
+    default String mapCovidStatus(CovidStatus covidStatus) {
+        if (covidStatus != null) {
+            return covidStatus.getStatus();
         }
         return null;
     }
@@ -55,25 +57,41 @@ public interface PatientMapper {
     }
 
     @Named("mapMainDoctor")
-    default String mapMainDoctor(Patient patient) {
-        if (patient.getMainDoctor() != null) {
-            return patient.getMainDoctor().getLogin();
+    default String mapMainDoctor(Account medicalStaff) {
+        if (medicalStaff != null) {
+            return medicalStaff.getLogin();
         }
         return null;
     }
 
     @Named("mapModifiedBy")
     default String mapModifiedBy(Account account) {
-        if (account.getModifiedBy() != null) {
-            return account.getModifiedBy().getName();
+        if (account != null) {
+            return account.getName();
         }
         return null;
     }
 
     @Named("mapCreatedBy")
     default String mapCreatedBy(Account account) {
-        if (account.getCreatedBy() != null) {
-            return account.getCreatedBy().getName();
+        if (account != null) {
+            return account.getName();
+        }
+        return null;
+    }
+
+    @Named("mapDateToLocalDate")
+    default LocalDate mapAdmissionDateToLocal(Date date) {
+        if (date != null) {
+            return date.toLocalDate();
+        }
+        return null;
+    }
+
+    @Named("mapLocalDateToDate")
+    default Date mapAdmissionDateToDate(LocalDate localDate) {
+        if (localDate != null) {
+            return Date.valueOf(localDate);
         }
         return null;
     }
@@ -81,8 +99,10 @@ public interface PatientMapper {
     @Mapping(target = "patientType", qualifiedByName = "mapPatientType")
     @Mapping(target = "status", qualifiedByName = "mapPatientStatus")
     @Mapping(target = "mainDoctor", qualifiedByName = "mapMainDoctor")
-    @Mapping(target = "cathererRequired", qualifiedByName = "mapCathererRequired")
-    @Mapping(target = "surgeryRequired", qualifiedByName = "mapSurgeryRequired")
+    @Mapping(target = "cathererRequired", source = "patient", qualifiedByName = "mapCathererRequired")
+    @Mapping(target = "surgeryRequired", source = "patient", qualifiedByName = "mapSurgeryRequired")
+    @Mapping(target = "admissionDate", qualifiedByName = "mapDateToLocalDate")
+    @Mapping(target = "referralDate", qualifiedByName = "mapDateToLocalDate")
     PatientGeneralResponse toPatientGeneralResponse(Patient patient);
 
     @Mapping(target = "covidStatus", qualifiedByName = "mapCovidStatus")
@@ -91,6 +111,8 @@ public interface PatientMapper {
     @Mapping(target = "mainDoctor", qualifiedByName = "mapMainDoctor")
     @Mapping(target = "createdBy", qualifiedByName = "mapCreatedBy")
     @Mapping(target = "modifiedBy", qualifiedByName = "mapModifiedBy")
+    @Mapping(target = "admissionDate", qualifiedByName = "mapDateToLocalDate")
+    @Mapping(target = "referralDate", qualifiedByName = "mapDateToLocalDate")
     PatientDetailsResponse toPatientDetailsResponse(Patient patient);
 
     DiseaseGeneralResponse toDiseaseGeneralResponse(Disease disease);
@@ -101,6 +123,9 @@ public interface PatientMapper {
     @Mapping(target = "mainDoctor", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "modifiedBy", ignore = true)
+    @Mapping(target = "diseases", ignore = true)
+    @Mapping(target = "admissionDate", qualifiedByName = "mapLocalDateToDate")
+    @Mapping(target = "referralDate", qualifiedByName = "mapLocalDateToDate")
     Patient toPatient(PatientCreateRequest patientCreateRequest);
 
     @Mapping(target = "covidStatus", ignore = true)
@@ -109,6 +134,7 @@ public interface PatientMapper {
     @Mapping(target = "mainDoctor", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "modifiedBy", ignore = true)
+    @Mapping(target = "diseases", ignore = true)
     Patient toPatient(PatientUpdateRequest patientUpdateRequest);
 
 

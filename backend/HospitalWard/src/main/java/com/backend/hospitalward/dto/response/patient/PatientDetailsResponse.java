@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -27,7 +28,7 @@ public class PatientDetailsResponse extends BaseDTO implements SignableDTO {
 
     String referralNr;
 
-    Timestamp referralDate;
+    LocalDate referralDate;
 
     String patientType;
 
@@ -39,7 +40,7 @@ public class PatientDetailsResponse extends BaseDTO implements SignableDTO {
 
     String surname;
 
-    Timestamp admissionDate;
+    LocalDate admissionDate;
 
     String status;
 

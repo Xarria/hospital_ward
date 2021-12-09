@@ -24,16 +24,16 @@ public interface AccountMapper {
 
     @Named("mapModifiedBy")
     default String mapModifiedBy(Account account) {
-        if (account.getModifiedBy() != null) {
-            return account.getModifiedBy().getName();
+        if (account != null) {
+            return account.getName();
         }
         return null;
     }
 
     @Named("mapCreatedBy")
     default String mapCreatedBy(Account account) {
-        if (account.getCreatedBy() != null) {
-            return account.getCreatedBy().getName();
+        if (account != null) {
+            return account.getName();
         }
         return null;
     }

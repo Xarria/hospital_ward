@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @EqualsAndHashCode()
 @Data
@@ -19,7 +20,7 @@ public class PatientGeneralResponse {
 
     String referralNr;
 
-    Timestamp referralDate;
+    LocalDate referralDate;
 
     String patientType;
 
@@ -29,7 +30,7 @@ public class PatientGeneralResponse {
 
     String surname;
 
-    Timestamp admissionDate;
+    LocalDate admissionDate;
 
     String status;
 

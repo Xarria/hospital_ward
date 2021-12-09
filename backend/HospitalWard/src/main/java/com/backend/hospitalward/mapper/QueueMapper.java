@@ -2,11 +2,11 @@ package com.backend.hospitalward.mapper;
 
 import com.backend.hospitalward.dto.response.patient.PatientGeneralResponse;
 import com.backend.hospitalward.dto.response.queue.QueueResponse;
-import com.backend.hospitalward.model.Disease;
-import com.backend.hospitalward.model.Patient;
-import com.backend.hospitalward.model.Queue;
+import com.backend.hospitalward.model.*;
 import org.mapstruct.*;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
@@ -14,25 +14,25 @@ import java.util.List;
 public interface QueueMapper {
 
     @Named("mapPatientType")
-    default String mapPatientType(Patient patient) {
-        if (patient.getPatientType() != null) {
-            return patient.getPatientType().getName();
+    default String mapPatientType(PatientType patientType) {
+        if (patientType != null) {
+            return patientType.getName();
         }
         return null;
     }
 
     @Named("mapPatientStatus")
-    default String mapPatientStatus(Patient patient) {
-        if (patient.getStatus() != null) {
-            return patient.getStatus().getName();
+    default String mapPatientStatus(PatientStatus patientStatus) {
+        if (patientStatus != null) {
+            return patientStatus.getName();
         }
         return null;
     }
 
     @Named("mapCovidStatus")
-    default String mapCovidStatus(Patient patient) {
-        if (patient.getCovidStatus() != null) {
-            return patient.getCovidStatus().getStatus();
+    default String mapCovidStatus(CovidStatus covidStatus) {
+        if (covidStatus != null) {
+            return covidStatus.getStatus();
         }
         return null;
     }
@@ -54,9 +54,25 @@ public interface QueueMapper {
     }
 
     @Named("mapMainDoctor")
-    default String mapMainDoctor(Patient patient) {
-        if (patient.getMainDoctor() != null) {
-            return patient.getMainDoctor().getLogin();
+    default String mapMainDoctor(Account medicalStaff) {
+        if (medicalStaff != null) {
+            return medicalStaff.getLogin();
+        }
+        return null;
+    }
+
+    @Named("mapDateToLocalDate")
+    default LocalDate mapAdmissionDateToLocal(Date date) {
+        if (date != null) {
+            return date.toLocalDate();
+        }
+        return null;
+    }
+
+    @Named("mapLocalDateToDate")
+    default Date mapAdmissionDateToDate(LocalDate localDate) {
+        if (localDate != null) {
+            return Date.valueOf(localDate);
         }
         return null;
     }
@@ -66,7 +82,9 @@ public interface QueueMapper {
     @Mapping(target = "patientType", qualifiedByName = "mapPatientType")
     @Mapping(target = "status", qualifiedByName = "mapPatientStatus")
     @Mapping(target = "mainDoctor", qualifiedByName = "mapMainDoctor")
-    @Mapping(target = "cathererRequired", qualifiedByName = "mapCathererRequired")
-    @Mapping(target = "surgeryRequired", qualifiedByName = "mapSurgeryRequired")
-    List<PatientGeneralResponse> toPatientGeneralResponse(List<Patient> patients);
+    @Mapping(target = "cathererRequired", source = "patient", qualifiedByName = "mapCathererRequired")
+    @Mapping(target = "surgeryRequired", source = "patient", qualifiedByName = "mapSurgeryRequired")
+    @Mapping(target = "admissionDate", qualifiedByName = "mapDateToLocalDate")
+    @Mapping(target = "referralDate", qualifiedByName = "mapDateToLocalDate")
+    PatientGeneralResponse toPatientGeneralResponse(Patient patient);
 }

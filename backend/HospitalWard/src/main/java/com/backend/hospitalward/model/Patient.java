@@ -52,7 +52,7 @@ public class Patient extends BaseEntity {
     String referralNr;
 
     @Column(name = "referral_date")
-    Timestamp referralDate;
+    Date referralDate;
 
     //queue
 

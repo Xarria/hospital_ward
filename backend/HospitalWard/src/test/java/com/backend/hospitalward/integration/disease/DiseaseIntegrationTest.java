@@ -182,17 +182,26 @@ class DiseaseIntegrationTest extends AbstractTestContainer {
     @Order(5)
     @Test
     void deleteDisease() {
-        Disease disease = diseaseService.getAllDiseases().get(2);
-        String diseaseName = disease.getName();
+        HttpEntity<DiseaseCreateRequest> diseaseCreateRequestHttpEntity = new HttpEntity<>(
+                DiseaseCreateRequest.builder()
+                        .name("DiseaseName2")
+                        .cathererRequired(true)
+                        .surgeryRequired(false)
+                        .build(), getHttpHeaders()
+        );
+
+        ResponseEntity<String> responseCreate = restTemplate.exchange(getUrlWithPort(DiseaseConstants.GET_ALL_DISEASES),
+                HttpMethod.POST, diseaseCreateRequestHttpEntity, String.class);
+
 
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(DiseaseConstants.GET_ALL_DISEASES
-                        + "/" + diseaseName),
+                        + "/" + "DiseaseName2"),
                 HttpMethod.DELETE, getJwtHttpEntity(), String.class);
 
         assertAll(
                 () -> assertNotNull(response),
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
-                () -> assertThrows(NotFoundException.class, () -> diseaseService.getDiseaseByName(diseaseName))
+                () -> assertThrows(NotFoundException.class, () -> diseaseService.getDiseaseByName("DiseaseName2"))
         );
     }
 }
