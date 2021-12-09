@@ -14,10 +14,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Objects;
-import java.util.StringJoiner;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -189,6 +186,7 @@ public class AspectLogger {
                 .add(e.getStackTrace()[2].toString())
                 .add("with message:")
                 .add(e.getMessage());
+        e.printStackTrace();
 
         return message.toString();
     }

@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.PersistenceException;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
 import java.util.*;
@@ -45,23 +44,23 @@ public class QueueService {
 
 
     public List<Queue> getAllCurrentQueues() {
-        return queueRepository.findQueuesByDateAfter(Date.valueOf(LocalDate.now().minusDays(1)));
+        return queueRepository.findQueuesByDateAfter(LocalDate.now().minusDays(1));
     }
 
     public Queue getQueueForDate(LocalDate date) {
-        return queueRepository.findQueueByDate(Date.valueOf(date)).orElseThrow(()
+        return queueRepository.findQueueByDate(date).orElseThrow(()
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
     }
 
     public List<LocalDate> findFullAdmissionDates() {
         return queueRepository.findAll().stream()
                 .filter(queue -> queue.getAllPatients().size() >= 8)
-                .map(queue -> queue.getDate().toLocalDate())
+                .map(Queue::getDate)
                 .collect(Collectors.toList());
     }
 
-    public void createQueueForDateIfNotExists(Date date) {
-        if (checkIfDateIsWeekend(date.toLocalDate())) {
+    public void createQueueForDateIfNotExists(LocalDate date) {
+        if (checkIfDateIsWeekend(date)) {
             throw new ConflictException(ErrorKey.ADMISSION_DATE_WEEKEND);
         }
         if (checkIfQueueForDateExists(date)) {
@@ -69,16 +68,17 @@ public class QueueService {
         }
         queueRepository.save(Queue.builder()
                 .date(date)
-                .patientsWaiting(new ArrayList<>())
                 .patientsConfirmed(new ArrayList<>())
+                .patientsWaiting(new ArrayList<>())
+                .locked(false)
                 .build());
     }
 
-    public boolean checkIfQueueForDateExists(Date date) {
+    public boolean checkIfQueueForDateExists(LocalDate date) {
         return queueRepository.findQueueByDate(date).isPresent();
     }
 
-    public boolean checkIfPatientCanBeAddedForDate(Date date) {
+    public boolean checkIfPatientCanBeAddedForDate(LocalDate date) {
         Optional<Queue> queueForDate = queueRepository.findQueueByDate(date);
         if (queueForDate.isPresent()) {
             Queue queue = queueForDate.get();
@@ -89,7 +89,7 @@ public class QueueService {
         }
     }
 
-    public boolean checkIfQueueForDateIsLocked(Date date) {
+    public boolean checkIfQueueForDateIsLocked(LocalDate date) {
         Optional<Queue> queueForDate = queueRepository.findQueueByDate(date);
         if (queueForDate.isPresent()) {
             Queue queue = queueForDate.get();
@@ -111,12 +111,14 @@ public class QueueService {
         queue.setPatientsWaiting(waitingPatients);
 
         patient.setQueue(queue);
+        patientRepository.save(patient);
+
         refreshQueue(queue);
 
         queueRepository.save(queue);
     }
 
-    public void switchPatientQueue(Patient patient, Date newQueueDate) {
+    public void switchPatientQueue(Patient patient, LocalDate newQueueDate) {
         Queue oldQueue = queueRepository.findQueueByPatientsWaitingContains(patient).orElseThrow(()
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
         Queue newQueue = queueRepository.findQueueByDate(newQueueDate).orElseThrow(()
@@ -142,7 +144,7 @@ public class QueueService {
         queueRepository.save(newQueue);
     }
 
-    public void switchPatients(Patient urgentPatient, Date date) {
+    public void switchPatients(Patient urgentPatient, LocalDate date) {
         Queue queue = queueRepository.findQueueByDate(date).orElseThrow(()
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
 
@@ -169,11 +171,11 @@ public class QueueService {
         queueRepository.save(queue);
     }
 
-    public void transferPatientToNextUnlockedQueue(Patient patient, Date previousDate) {
-        List<Queue> unlockedQueues = queueRepository.findQueuesByLockedFalseAndDateAfter(Date.valueOf(LocalDate.now()));
-        List<Queue> lockedQueues = queueRepository.findQueuesByLockedTrueAndDateAfter(Date.valueOf(LocalDate.now()));
+    public void transferPatientToNextUnlockedQueue(Patient patient, LocalDate previousDate) {
+        List<Queue> unlockedQueues = queueRepository.findQueuesByLockedFalseAndDateAfter(LocalDate.now());
+        List<Queue> lockedQueues = queueRepository.findQueuesByLockedTrueAndDateAfter(LocalDate.now());
         List<LocalDate> lockedQueuesDates = lockedQueues.stream()
-                .map(queue -> queue.getDate().toLocalDate())
+                .map(Queue::getDate)
                 .collect(Collectors.toList());
 
         if (!unlockedQueues.isEmpty()) {
@@ -194,7 +196,7 @@ public class QueueService {
             return;
         }
 
-        LocalDate date = previousDate.toLocalDate().plusDays(1);
+        LocalDate date = previousDate.plusDays(1);
 
         while (true) {
             if (checkIfDateIsSaturday(date)) {
@@ -204,8 +206,8 @@ public class QueueService {
             }
 
             if (!lockedQueuesDates.contains(date)) {
-                createQueueForDateIfNotExists(Date.valueOf(date));
-                Queue createdQueue = queueRepository.findQueueByDate(Date.valueOf(date)).orElseThrow(()
+                createQueueForDateIfNotExists(date);
+                Queue createdQueue = queueRepository.findQueueByDate(date).orElseThrow(()
                         -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
                 patient.setQueue(createdQueue);
                 createdQueue.setPatientsWaiting(List.of(patient));
@@ -216,15 +218,14 @@ public class QueueService {
                 date = date.plusDays(1);
             }
         }
-        //TODO email
     }
 
     //TODO spytać czy transfer może być na szybciej niż 2 tygodnie
-    public void transferPatientsForNextUnlockedDateAndClearOldQueues(Date previousDate, List<Patient> patients) {
-        List<Queue> unlockedQueues = queueRepository.findQueuesByLockedFalseAndDateAfter(Date.valueOf(LocalDate.now()));
-        List<Queue> lockedQueues = queueRepository.findQueuesByLockedTrueAndDateAfter(Date.valueOf(LocalDate.now()));
+    public void transferPatientsForNextUnlockedDateAndClearOldQueues(LocalDate previousDate, List<Patient> patients) {
+        List<Queue> unlockedQueues = queueRepository.findQueuesByLockedFalseAndDateAfter(LocalDate.now());
+        List<Queue> lockedQueues = queueRepository.findQueuesByLockedTrueAndDateAfter(LocalDate.now());
         List<LocalDate> lockedQueuesDates = lockedQueues.stream()
-                .map(queue -> queue.getDate().toLocalDate())
+                .map(Queue::getDate)
                 .collect(Collectors.toList());
 
         if (unlockedQueues.size() > 1) {
@@ -260,13 +261,13 @@ public class QueueService {
 
     }
 
-    private Queue findNewQueue(Date previousDate, List<Queue> unlockedQueues, List<LocalDate> lockedQueuesDates) {
+    private Queue findNewQueue(LocalDate previousDate, List<Queue> unlockedQueues, List<LocalDate> lockedQueuesDates) {
         Queue newQueue;
         if (!unlockedQueues.isEmpty()) {
             return unlockedQueues.get(0);
         }
 
-        LocalDate date = previousDate.toLocalDate().plusDays(1);
+        LocalDate date = previousDate.plusDays(1);
 
         while (true) {
             if (checkIfDateIsSaturday(date)) {
@@ -276,8 +277,8 @@ public class QueueService {
             }
 
             if (!lockedQueuesDates.contains(date)) {
-                createQueueForDateIfNotExists(Date.valueOf(date));
-                newQueue = queueRepository.findQueueByDate(Date.valueOf(date)).orElseThrow(()
+                createQueueForDateIfNotExists(date);
+                newQueue = queueRepository.findQueueByDate(date).orElseThrow(()
                         -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
                 return newQueue;
             } else {
@@ -286,7 +287,7 @@ public class QueueService {
         }
     }
 
-    public void lockQueueForDateIfNecessary(Date date) {
+    public void lockQueueForDateIfNecessary(LocalDate date) {
         Queue queue = queueRepository.findQueueByDate(date).orElseThrow(()
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
         if (queue.isLocked()) {
@@ -302,10 +303,10 @@ public class QueueService {
     }
 
     private void transferPatientsFromLockedQueue(Queue lockedQueue) {
-        List<Queue> unlockedQueues = queueRepository.findQueuesByLockedFalseAndDateAfter(Date.valueOf(LocalDate.now()));
-        List<Queue> lockedQueues = queueRepository.findQueuesByLockedTrueAndDateAfter(Date.valueOf(LocalDate.now()));
+        List<Queue> unlockedQueues = queueRepository.findQueuesByLockedFalseAndDateAfter(LocalDate.now());
+        List<Queue> lockedQueues = queueRepository.findQueuesByLockedTrueAndDateAfter(LocalDate.now());
         List<LocalDate> lockedQueuesDates = lockedQueues.stream()
-                .map(queue -> queue.getDate().toLocalDate())
+                .map(queue -> queue.getDate())
                 .collect(Collectors.toList());
 
         if (unlockedQueues.size() > 1) {
@@ -335,7 +336,7 @@ public class QueueService {
     }
 
     public void confirmPatient(Patient patient, LocalDate date) {
-        Queue queue = queueRepository.findQueueByDate(Date.valueOf(date)).orElseThrow(()
+        Queue queue = queueRepository.findQueueByDate(date).orElseThrow(()
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
 
         List<Patient> waitingPatients = new LinkedList<>(queue.getPatientsWaiting());
@@ -366,7 +367,7 @@ public class QueueService {
         queueRepository.save(queue);
     }
 
-    public void checkIfPatientIsInAQueueForDate(Date date, Patient patient) {
+    public void checkIfPatientIsInAQueueForDate(LocalDate date, Patient patient) {
         Queue queue = queueRepository.findQueueByDate(date).orElseThrow(()
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
         if (!queue.getPatientsWaiting().contains(patient)) {
@@ -381,7 +382,7 @@ public class QueueService {
     }
 
     public List<Patient> getWaitingPatientsForPastQueues() {
-        List<Queue> pastQueues = queueRepository.findQueuesByDateBefore(Date.valueOf(LocalDate.now()));
+        List<Queue> pastQueues = queueRepository.findQueuesByDateBefore(LocalDate.now());
 
         return pastQueues.stream()
                 .map(Queue::getPatientsWaiting)

@@ -20,7 +20,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -89,7 +88,7 @@ class QueueUnitTest {
 
     @Test
     void getQueueForDate() {
-        when(queueRepository.findQueueByDate(Date.valueOf(LocalDate.now()))).thenReturn(Optional.of(emptyCurrentQueue));
+        when(queueRepository.findQueueByDate(LocalDate.now())).thenReturn(Optional.of(emptyCurrentQueue));
 
         Queue queue = queueService.getQueueForDate(LocalDate.now());
 
@@ -103,7 +102,7 @@ class QueueUnitTest {
 
         List<Queue> fullQueues = List.of(fullCurrentQueue, fullLockedCurrentQueue, fullUnlockedOldQueue);
         List<LocalDate> fullQueuesDates = fullQueues.stream().filter(queue -> queue.getAllPatients().size() >= 8)
-                .map(queue -> queue.getDate().toLocalDate()).collect(Collectors.toList());
+                .map(Queue::getDate).collect(Collectors.toList());
 
         List<LocalDate> fullAdmissionDates = queueService.findFullAdmissionDates();
 
@@ -112,7 +111,7 @@ class QueueUnitTest {
 
     @Test
     void createQueueForDateIfNotExists() {
-        Date date = Date.valueOf(LocalDate.of(2021, 12, 9));
+        LocalDate date = LocalDate.of(2021, 12, 9);
 
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.empty());
 
@@ -127,7 +126,7 @@ class QueueUnitTest {
 
     @Test
     void shouldNotQueueForDateIfNotExistsWhenQueueExists() {
-        Date date = Date.valueOf(LocalDate.of(2021, 12, 9));
+        LocalDate date = LocalDate.of(2021, 12, 9);
 
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.of(new Queue()));
 
@@ -138,14 +137,14 @@ class QueueUnitTest {
 
     @Test
     void shouldThrowExceptionWhenDateIsWeekend() {
-        Date date = Date.valueOf(LocalDate.of(2021, 12, 5));
+        LocalDate date = LocalDate.of(2021, 12, 5);
 
         assertThrows(ConflictException.class, () -> queueService.createQueueForDateIfNotExists(date));
     }
 
     @Test
     void checkIfPatientCanBeAddedForDateNoQueue() {
-        Date date = Date.valueOf(LocalDate.of(2021, 12, 9));
+        LocalDate date = LocalDate.of(2021, 12, 9);
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.empty());
 
         assertTrue(queueService.checkIfPatientCanBeAddedForDate(date));
@@ -155,7 +154,7 @@ class QueueUnitTest {
 
     @Test
     void checkIfPatientCanBeAddedForDateQueueUnlockedAndNotFull() {
-        Date date = Date.valueOf(LocalDate.of(2021, 12, 9));
+        LocalDate date = LocalDate.of(2021, 12, 9);
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.of(notFullCurrentQueue));
 
         assertTrue(queueService.checkIfPatientCanBeAddedForDate(date));
@@ -165,7 +164,7 @@ class QueueUnitTest {
 
     @Test
     void checkIfPatientCanBeAddedForDateQueueLocked() {
-        Date date = Date.valueOf(LocalDate.of(2021, 12, 9));
+        LocalDate date = LocalDate.of(2021, 12, 9);
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.of(fullLockedCurrentQueue));
 
         assertFalse(queueService.checkIfPatientCanBeAddedForDate(date));
@@ -175,7 +174,7 @@ class QueueUnitTest {
 
     @Test
     void checkIfPatientCanBeAddedForDateQueueFull() {
-        Date date = Date.valueOf(LocalDate.of(2021, 12, 9));
+        LocalDate date = LocalDate.of(2021, 12, 9);
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.of(fullCurrentQueue));
 
         assertFalse(queueService.checkIfPatientCanBeAddedForDate(date));
@@ -185,7 +184,7 @@ class QueueUnitTest {
 
     @Test
     void checkIfQueueForDateIsLockedFullUnlockedQueue() {
-        Date date = Date.valueOf(LocalDate.of(2021, 12, 9));
+        LocalDate date = LocalDate.of(2021, 12, 9);
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.of(fullCurrentQueue));
 
         assertFalse(queueService.checkIfQueueForDateIsLocked(date));
@@ -195,7 +194,7 @@ class QueueUnitTest {
 
     @Test
     void checkIfQueueForDateIsLockedNoQueue() {
-        Date date = Date.valueOf(LocalDate.of(2021, 12, 9));
+        LocalDate date = LocalDate.of(2021, 12, 9);
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.empty());
 
         assertFalse(queueService.checkIfQueueForDateIsLocked(date));
@@ -205,7 +204,7 @@ class QueueUnitTest {
 
     @Test
     void checkIfQueueForDateIsLockedLockedQueue() {
-        Date date = Date.valueOf(LocalDate.of(2021, 12, 9));
+        LocalDate date = LocalDate.of(2021, 12, 9);
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.of(fullLockedCurrentQueue));
 
         assertTrue(queueService.checkIfQueueForDateIsLocked(date));
@@ -220,7 +219,7 @@ class QueueUnitTest {
         when(patientRepository.findPatientById(4L)).thenReturn(Optional.of(pSurgery2));
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.of(notFullCurrentQueue));
 
-        notFullCurrentQueue.setDate(Date.valueOf(LocalDate.of(2021, 12, 6)));
+        notFullCurrentQueue.setDate(LocalDate.of(2021, 12, 6));
         pUrgent2.setAdmissionDate(notFullCurrentQueue.getDate());
 
         queueService.addPatientToQueue(pUrgent2);
@@ -292,7 +291,7 @@ class QueueUnitTest {
                 .thenReturn(Optional.of(psWaiting));
         //when
 
-        queueService.switchPatients(pSurgery, Date.valueOf(LocalDate.of(2021, 12, 6)));
+        queueService.switchPatients(pSurgery, LocalDate.of(2021, 12, 6));
         //then
 
         verify(patientRepository).save(pOther4);
@@ -317,7 +316,7 @@ class QueueUnitTest {
         when(patientStatusRepository.findPatientStatusByName(any())).thenReturn(Optional.of(psWaiting));
         //when
 
-        queueService.transferPatientToNextUnlockedQueue(pOther3, Date.valueOf(LocalDate.of(2021, 12, 6)));
+        queueService.transferPatientToNextUnlockedQueue(pOther3, LocalDate.of(2021, 12, 6));
         //then
 
         verify(patientRepository).save(any());
@@ -337,13 +336,13 @@ class QueueUnitTest {
         when(queueRepository.findQueuesByLockedFalseAndDateAfter(any())).thenReturn(Collections.emptyList());
         when(queueRepository.findQueuesByLockedTrueAndDateAfter(any())).thenReturn(List.of(fullLockedCurrentQueue));
         when(patientStatusRepository.findPatientStatusByName(any())).thenReturn(Optional.of(psWaiting));
-        when(queueRepository.findQueueByDate(Date.valueOf(LocalDate.of(2021, 12, 8))))
+        when(queueRepository.findQueueByDate(LocalDate.of(2021, 12, 8)))
                 .thenReturn(Optional.of(newQueue));
         //when
 
-        fullLockedCurrentQueue.setDate(Date.valueOf(LocalDate.of(2021, 12, 7)));
+        fullLockedCurrentQueue.setDate(LocalDate.of(2021, 12, 7));
 
-        queueService.transferPatientToNextUnlockedQueue(pOther3, Date.valueOf(LocalDate.of(2021, 12, 6)));
+        queueService.transferPatientToNextUnlockedQueue(pOther3, LocalDate.of(2021, 12, 6));
         //then
 
         verify(patientRepository).save(pOther3);
@@ -373,7 +372,7 @@ class QueueUnitTest {
         patients.forEach(p -> p.setQueue(fullUnlockedOldQueue));
         //when
 
-        queueService.transferPatientsForNextUnlockedDateAndClearOldQueues(Date.valueOf(LocalDate.now().minusDays(1)),
+        queueService.transferPatientsForNextUnlockedDateAndClearOldQueues(LocalDate.now().minusDays(1),
                 patients);
 
         //then
@@ -420,19 +419,19 @@ class QueueUnitTest {
         when(queueRepository.findQueuesByLockedFalseAndDateAfter(any())).thenReturn(Collections.emptyList());
         when(queueRepository.findQueuesByLockedTrueAndDateAfter(any())).thenReturn(List.of(fullLockedCurrentQueue,
                 emptyCurrentQueue));
-        when(queueRepository.findQueueByDate(Date.valueOf(LocalDate.of(2021, 12, 8))))
+        when(queueRepository.findQueueByDate(LocalDate.of(2021, 12, 8)))
                 .thenReturn(Optional.of(newQueue));
         when(patientStatusRepository.findPatientStatusByName(any())).thenReturn(Optional.of(psWaiting));
 
-        fullLockedCurrentQueue.setDate(Date.valueOf(LocalDate.of(2021, 12, 6)));
-        emptyCurrentQueue.setDate(Date.valueOf(LocalDate.of(2021, 12, 7)));
+        fullLockedCurrentQueue.setDate(LocalDate.of(2021, 12, 6));
+        emptyCurrentQueue.setDate(LocalDate.of(2021, 12, 7));
 
         List<Patient> patients = List.of(pUrgent, pUrgent2, pOther3, pOther4, pSurgery2, pSurgery);
         patients.forEach(p -> p.setQueue(fullUnlockedOldQueue));
         //when
 
-        queueService.transferPatientsForNextUnlockedDateAndClearOldQueues(Date.valueOf(
-                LocalDate.of(2021, 12, 5)), patients);
+        queueService.transferPatientsForNextUnlockedDateAndClearOldQueues(
+                LocalDate.of(2021, 12, 5), patients);
 
         //then
         verify(patientRepository, times(6)).save(any());
@@ -468,7 +467,7 @@ class QueueUnitTest {
     void lockQueueForDateIfNecessary() {
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.of(fullUnlockedAllConfirmedQueue));
 
-        queueService.lockQueueForDateIfNecessary(Date.valueOf(LocalDate.now()));
+        queueService.lockQueueForDateIfNecessary(LocalDate.now());
 
         verify(queueRepository).save(queueCapture.capture());
 
@@ -485,7 +484,7 @@ class QueueUnitTest {
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.of(fullUnlockedCurrentQueueWithWaiting));
         //when
 
-        queueService.lockQueueForDateIfNecessary(Date.valueOf(LocalDate.now()));
+        queueService.lockQueueForDateIfNecessary(LocalDate.now());
         //then
 
         verify(patientRepository).save(any());
@@ -509,16 +508,16 @@ class QueueUnitTest {
         when(queueRepository.findQueuesByLockedFalseAndDateAfter(any())).thenReturn(Collections.emptyList());
         when(queueRepository.findQueuesByLockedTrueAndDateAfter(any())).thenReturn(List.of(fullLockedCurrentQueue));
         when(patientStatusRepository.findPatientStatusByName(any())).thenReturn(Optional.of(psWaiting));
-        when(queueRepository.findQueueByDate(Date.valueOf(LocalDate.of(2021, 12, 6))))
+        when(queueRepository.findQueueByDate(LocalDate.of(2021, 12, 6)))
                 .thenReturn(Optional.of(fullUnlockedCurrentQueueWithWaiting));
-        when(queueRepository.findQueueByDate(Date.valueOf(LocalDate.of(2021, 12, 8))))
+        when(queueRepository.findQueueByDate(LocalDate.of(2021, 12, 8)))
                 .thenReturn(Optional.of(newQueue));
 
-        fullUnlockedCurrentQueueWithWaiting.setDate(Date.valueOf(LocalDate.of(2021, 12, 6)));
-        fullLockedCurrentQueue.setDate(Date.valueOf(LocalDate.of(2021, 12, 7)));
+        fullUnlockedCurrentQueueWithWaiting.setDate(LocalDate.of(2021, 12, 6));
+        fullLockedCurrentQueue.setDate(LocalDate.of(2021, 12, 7));
         //when
 
-        queueService.lockQueueForDateIfNecessary(Date.valueOf(LocalDate.of(2021, 12, 6)));
+        queueService.lockQueueForDateIfNecessary(LocalDate.of(2021, 12, 6));
         //then
 
         verify(patientRepository).save(any());
@@ -539,7 +538,7 @@ class QueueUnitTest {
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> queueService.lockQueueForDateIfNecessary(
-                Date.valueOf(LocalDate.now())));
+                LocalDate.now()));
 
     }
 
@@ -614,7 +613,7 @@ class QueueUnitTest {
     void checkIfPatientIsInAQueueForDate() {
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.of(fullCurrentQueue));
 
-        assertDoesNotThrow(() -> queueService.checkIfPatientIsInAQueueForDate(Date.valueOf(LocalDate.now().plusDays(3)),
+        assertDoesNotThrow(() -> queueService.checkIfPatientIsInAQueueForDate(LocalDate.now().plusDays(3),
                 pOther3));
     }
 
@@ -623,7 +622,7 @@ class QueueUnitTest {
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> queueService.checkIfPatientIsInAQueueForDate(
-                Date.valueOf(LocalDate.now().plusDays(3)), pOther3));
+                LocalDate.now().plusDays(3), pOther3));
     }
 
     @Test
@@ -631,7 +630,7 @@ class QueueUnitTest {
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.of(emptyCurrentQueue));
 
         assertThrows(BadRequestException.class, () -> queueService.checkIfPatientIsInAQueueForDate(
-                Date.valueOf(LocalDate.now().plusDays(3)), pOther3));
+                LocalDate.now().plusDays(3), pOther3));
     }
 
     @Test
@@ -674,48 +673,48 @@ class QueueUnitTest {
 
     private void initPatients() {
         pUrgent = Patient.builder().id(1).urgent(true).diseases(List.of(diseaseNoSurgery)).status(psWaiting)
-                .admissionDate(Date.valueOf(LocalDate.now().plusDays(2))).build();
+                .admissionDate(LocalDate.now().plusDays(2)).build();
         pUrgent2 = Patient.builder().id(2).urgent(true).diseases(List.of(diseaseSurgery)).status(psWaiting)
-                .admissionDate(Date.valueOf(LocalDate.now().minusDays(1))).build();
+                .admissionDate(LocalDate.now().minusDays(1)).build();
         pSurgery = Patient.builder().id(3).urgent(false).diseases(List.of(diseaseSurgery)).status(psWaiting)
-                .admissionDate(Date.valueOf(LocalDate.now().plusDays(2))).build();
+                .admissionDate(LocalDate.now().plusDays(2)).build();
         pSurgery2 = Patient.builder().id(4).urgent(false).diseases(List.of(diseaseSurgery)).status(psWaiting)
-                .admissionDate(Date.valueOf(LocalDate.now().minusDays(1))).build();
+                .admissionDate(LocalDate.now().minusDays(1)).build();
         pSurgery3 = Patient.builder().id(5).urgent(false).diseases(List.of(diseaseSurgery)).status(psWaiting)
-                .admissionDate(Date.valueOf(LocalDate.now().minusDays(4))).build();
+                .admissionDate(LocalDate.now().minusDays(4)).build();
         pOther = Patient.builder().id(6).urgent(false).diseases(List.of(diseaseNoSurgery)).status(psWaiting)
-                .admissionDate(Date.valueOf(LocalDate.now().minusDays(4))).build();
+                .admissionDate(LocalDate.now().minusDays(4)).build();
         pOther2 = Patient.builder().id(7).urgent(false).diseases(List.of(diseaseNoSurgery)).status(psWaiting)
-                .admissionDate(Date.valueOf(LocalDate.now().minusDays(2))).build();
+                .admissionDate(LocalDate.now().minusDays(2)).build();
         pOther3 = Patient.builder().id(8).urgent(false).diseases(List.of(diseaseNoSurgery)).status(psWaiting)
-                .admissionDate(Date.valueOf(LocalDate.now().minusDays(1))).build();
+                .admissionDate(LocalDate.now().minusDays(1)).build();
         pOther4 = Patient.builder().id(9).urgent(false).diseases(List.of(diseaseNoSurgery)).status(psWaiting)
-                .admissionDate(Date.valueOf(LocalDate.now().plusDays(2))).build();
+                .admissionDate(LocalDate.now().plusDays(2)).build();
     }
 
     private void initQueues() {
-        emptyCurrentQueue = Queue.builder().date(Date.valueOf(LocalDate.now().plusDays(1))).locked(false)
+        emptyCurrentQueue = Queue.builder().date(LocalDate.now().plusDays(1)).locked(false)
                 .patientsWaiting(Collections.emptyList()).patientsConfirmed(Collections.emptyList()).build();
-        emptyOldQueue = Queue.builder().date(Date.valueOf(LocalDate.now().minusDays(6)))
+        emptyOldQueue = Queue.builder().date(LocalDate.now().minusDays(6))
                 .patientsWaiting(Collections.emptyList()).patientsConfirmed(Collections.emptyList()).build();
-        fullCurrentQueue = Queue.builder().date(Date.valueOf(LocalDate.now().plusDays(3))).locked(false)
+        fullCurrentQueue = Queue.builder().date(LocalDate.now().plusDays(3)).locked(false)
                 .patientsWaiting(List.of(pUrgent, pUrgent2, pOther3, pOther4, pSurgery2, pSurgery3))
                 .patientsConfirmed(List.of(pOther2, pOther)).build();
-        fullLockedCurrentQueue = Queue.builder().date(Date.valueOf(LocalDate.now().plusDays(4))).locked(true)
+        fullLockedCurrentQueue = Queue.builder().date(LocalDate.now().plusDays(4)).locked(true)
                 .patientsWaiting(Collections.emptyList())
                 .patientsConfirmed(List.of(pOther2, pOther, pSurgery3, pUrgent, pUrgent2, pOther3, pOther4, pSurgery2))
                 .build();
-        fullUnlockedAllConfirmedQueue = Queue.builder().date(Date.valueOf(LocalDate.now().plusDays(4))).locked(false)
+        fullUnlockedAllConfirmedQueue = Queue.builder().date(LocalDate.now().plusDays(4)).locked(false)
                 .patientsWaiting(Collections.emptyList())
                 .patientsConfirmed(List.of(pOther2, pOther, pSurgery3, pUrgent, pUrgent2, pOther3, pOther4, pSurgery2))
                 .build();
-        notFullCurrentQueue = Queue.builder().date(Date.valueOf(LocalDate.now().plusDays(5))).locked(false)
+        notFullCurrentQueue = Queue.builder().date(LocalDate.now().plusDays(5)).locked(false)
                 .patientsWaiting(List.of(pUrgent, pSurgery2))
                 .patientsConfirmed(List.of(pOther2, pOther)).build();
-        fullUnlockedOldQueue = Queue.builder().date(Date.valueOf(LocalDate.now().minusDays(2))).locked(false)
+        fullUnlockedOldQueue = Queue.builder().date(LocalDate.now().minusDays(2)).locked(false)
                 .patientsWaiting(List.of(pUrgent, pUrgent2, pOther3, pOther4, pSurgery2, pSurgery))
                 .patientsConfirmed(List.of(pOther2, pOther, pSurgery3)).build();
-        fullUnlockedCurrentQueueWithWaiting = Queue.builder().date(Date.valueOf(LocalDate.now().plusDays(4)))
+        fullUnlockedCurrentQueueWithWaiting = Queue.builder().date(LocalDate.now().plusDays(4))
                 .locked(false).patientsWaiting(List.of(pSurgery))
                 .patientsConfirmed(List.of(pOther2, pOther, pSurgery3, pUrgent, pUrgent2, pOther3, pOther4, pSurgery2))
                 .build();

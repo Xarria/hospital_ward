@@ -27,7 +27,7 @@ public class QueueScheduler {
             return;
         }
 
-        queueService.transferPatientsForNextUnlockedDateAndClearOldQueues(Date.valueOf(LocalDate.now()), waitingPatients);
+        queueService.transferPatientsForNextUnlockedDateAndClearOldQueues(LocalDate.now(), waitingPatients);
 
     }
 }

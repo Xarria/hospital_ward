@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 @SuperBuilder
@@ -28,8 +29,8 @@ public class Patient extends BaseEntity {
     String pesel;
 
     @NotBlank
-    @Size(max = 3, min = 2)
-    @Pattern(regexp = "[1-9][0-9]*[MY]")
+//    @Size(max = 3, min = 2)
+//    @Pattern(regexp = "[1-9][0-9]*[MY]")
     @Column(name = "age", nullable = false, length = 3, table = "Personal_data")
     String age;
 
@@ -52,7 +53,7 @@ public class Patient extends BaseEntity {
     String referralNr;
 
     @Column(name = "referral_date")
-    Date referralDate;
+    LocalDate referralDate;
 
     //queue
 
@@ -81,32 +82,28 @@ public class Patient extends BaseEntity {
 
     @NotBlank
     @Size(max = 20)
-    @Pattern(regexp = "[A-Z][a-z]+")
     @Column(name = "name", nullable = false, length = 20, table = "Personal_data")
     String name;
 
     @NotBlank
     @Size(max = 30)
-    @Pattern(regexp = "[A-Z][a-z]+")
     @Column(name = "surname", nullable = false, length = 30, table = "Personal_data")
     String surname;
 
     @NotNull
     @Column(name = "admission_date", nullable = false)
-    Date admissionDate;
+    LocalDate admissionDate;
 
     @NotNull
     @ManyToOne(optional = false, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "status", referencedColumnName = "id")
     PatientStatus status;
 
-    @NotBlank
-    @Pattern(regexp = "[0-9]{9,11}")
+//    @Pattern(regexp = "[0-9]{9,11}")
     @Column(name = "phone_number", length = 11, table = "Personal_data")
     String phoneNumber;
 
-    @NotBlank
-    @Email
+//    @Email
     @Column(name = "email_address", length = 50, table = "Personal_data")
     String emailAddress;
 

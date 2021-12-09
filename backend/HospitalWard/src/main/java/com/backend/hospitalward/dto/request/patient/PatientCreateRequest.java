@@ -1,10 +1,13 @@
 package com.backend.hospitalward.dto.request.patient;
 
+import com.backend.hospitalward.util.serialization.LocalDateJsonDeserializer;
+import com.backend.hospitalward.util.serialization.LocalDateJsonSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -26,6 +29,8 @@ public class PatientCreateRequest {
 
     String referralNr;
 
+    @JsonSerialize(using = LocalDateJsonSerializer.class)
+    @JsonDeserialize(using = LocalDateJsonDeserializer.class)
     LocalDate referralDate;
 
     String mainDoctor;
@@ -36,6 +41,8 @@ public class PatientCreateRequest {
 
     String surname;
 
+    @JsonSerialize(using = LocalDateJsonSerializer.class)
+    @JsonDeserialize(using = LocalDateJsonDeserializer.class)
     LocalDate admissionDate;
 
     String phoneNumber;

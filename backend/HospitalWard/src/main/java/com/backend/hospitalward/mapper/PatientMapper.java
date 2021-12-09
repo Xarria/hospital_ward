@@ -79,30 +79,11 @@ public interface PatientMapper {
         }
         return null;
     }
-
-    @Named("mapDateToLocalDate")
-    default LocalDate mapAdmissionDateToLocal(Date date) {
-        if (date != null) {
-            return date.toLocalDate();
-        }
-        return null;
-    }
-
-    @Named("mapLocalDateToDate")
-    default Date mapAdmissionDateToDate(LocalDate localDate) {
-        if (localDate != null) {
-            return Date.valueOf(localDate);
-        }
-        return null;
-    }
-
     @Mapping(target = "patientType", qualifiedByName = "mapPatientType")
     @Mapping(target = "status", qualifiedByName = "mapPatientStatus")
     @Mapping(target = "mainDoctor", qualifiedByName = "mapMainDoctor")
     @Mapping(target = "cathererRequired", source = "patient", qualifiedByName = "mapCathererRequired")
     @Mapping(target = "surgeryRequired", source = "patient", qualifiedByName = "mapSurgeryRequired")
-    @Mapping(target = "admissionDate", qualifiedByName = "mapDateToLocalDate")
-    @Mapping(target = "referralDate", qualifiedByName = "mapDateToLocalDate")
     PatientGeneralResponse toPatientGeneralResponse(Patient patient);
 
     @Mapping(target = "covidStatus", qualifiedByName = "mapCovidStatus")
@@ -111,8 +92,6 @@ public interface PatientMapper {
     @Mapping(target = "mainDoctor", qualifiedByName = "mapMainDoctor")
     @Mapping(target = "createdBy", qualifiedByName = "mapCreatedBy")
     @Mapping(target = "modifiedBy", qualifiedByName = "mapModifiedBy")
-    @Mapping(target = "admissionDate", qualifiedByName = "mapDateToLocalDate")
-    @Mapping(target = "referralDate", qualifiedByName = "mapDateToLocalDate")
     PatientDetailsResponse toPatientDetailsResponse(Patient patient);
 
     DiseaseGeneralResponse toDiseaseGeneralResponse(Disease disease);
@@ -124,8 +103,6 @@ public interface PatientMapper {
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "modifiedBy", ignore = true)
     @Mapping(target = "diseases", ignore = true)
-    @Mapping(target = "admissionDate", qualifiedByName = "mapLocalDateToDate")
-    @Mapping(target = "referralDate", qualifiedByName = "mapLocalDateToDate")
     Patient toPatient(PatientCreateRequest patientCreateRequest);
 
     @Mapping(target = "covidStatus", ignore = true)

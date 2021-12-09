@@ -42,9 +42,9 @@ public class QueueController {
         return ResponseEntity.ok(queueMapper.toQueueResponse(queueService.getQueueForDate(queueDate)));
     }
 
-    @Authenticated
-    @GetMapping("/fullDates}")
-    public ResponseEntity<List<LocalDate>> getFullAdmissionDates() {
-        return ResponseEntity.ok(queueService.findFullAdmissionDates());
-    }
+//    @Authenticated
+//    @GetMapping("/fullDates}")
+//    public ResponseEntity<List<LocalDate>> getFullAdmissionDates() {
+//        return ResponseEntity.ok(queueService.findFullAdmissionDates());
+//    }
 }

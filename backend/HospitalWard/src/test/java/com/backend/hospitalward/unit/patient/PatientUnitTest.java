@@ -212,7 +212,7 @@ class PatientUnitTest {
 
     @Test
     void shouldThrowExceptionWhenCreatePatientAdmissionDateWeekend() {
-        patientOther.setAdmissionDate(Date.valueOf(LocalDate.of(2022, 2, 19)));
+        patientOther.setAdmissionDate(LocalDate.of(2022, 2, 19));
 
         assertThrows(ConflictException.class, () -> patientService.createPatient(patientOther, "createdBy",
                 new ArrayList<>(), "mainDoctor", "VACCINATED"));
@@ -221,7 +221,7 @@ class PatientUnitTest {
 
     @Test
     void shouldThrowExceptionWhenCreatePatientAdmissionDateUnderTwoWeeksFromNow() {
-        patientOther.setAdmissionDate(Date.valueOf(LocalDate.of(2021, 12, 15)));
+        patientOther.setAdmissionDate(LocalDate.of(2021, 12, 15));
 
         assertThrows(ConflictException.class, () -> patientService.createPatient(patientOther, "createdBy",
                 new ArrayList<>(), "mainDoctor", "VACCINATED"));
@@ -283,7 +283,7 @@ class PatientUnitTest {
         verify(queueService).confirmPatient(any(), any());
         verify(patientRepository).save(patientOther);
 
-        assertEquals(LocalDate.of(2022, 3, 7), patientOther.getAdmissionDate().toLocalDate());
+        assertEquals(LocalDate.of(2022, 3, 7), patientOther.getAdmissionDate());
     }
 
     @Test
@@ -315,7 +315,7 @@ class PatientUnitTest {
         verify(queueService).switchPatients(any(), any());
         verify(patientRepository).save(patientUrgent);
 
-        assertEquals(LocalDate.of(2022, 3, 7), patientUrgent.getAdmissionDate().toLocalDate());
+        assertEquals(LocalDate.of(2022, 3, 7), patientUrgent.getAdmissionDate());
     }
 
     @Test
@@ -352,7 +352,7 @@ class PatientUnitTest {
     @Test
     void shouldThrowExceptionWhenChangePatientAdmissionDateAlreadyAdmitted() {
         patientOther.setStatus(psConfirmedTwice);
-        patientOther.setAdmissionDate(Date.valueOf(LocalDate.now().minusDays(10)));
+        patientOther.setAdmissionDate(LocalDate.now().minusDays(10));
         when(patientRepository.findPatientById(anyLong())).thenReturn(Optional.of(patientOther));
         when(accountRepository.findAccountByLogin(any())).thenReturn(Optional.of(doctor));
         when(queueService.checkIfPatientCanBeAddedForDate(any())).thenReturn(false);
@@ -360,7 +360,7 @@ class PatientUnitTest {
         assertThrows(BadRequestException.class, () -> patientService.changePatientAdmissionDate(1L,
                 LocalDate.of(2022, 2, 16), "modifiedBy"));
 
-        assertEquals(LocalDate.now().minusDays(10), patientOther.getAdmissionDate().toLocalDate());
+        assertEquals(LocalDate.now().minusDays(10), patientOther.getAdmissionDate());
     }
 
     @Test
@@ -374,7 +374,7 @@ class PatientUnitTest {
                 LocalDate.of(2022, 2, 16), "modifiedBy"));
 
         assertEquals(psConfirmedOnce, patientOther.getStatus());
-        assertNotEquals(LocalDate.of(2022, 2, 16), patientOther.getAdmissionDate().toLocalDate());
+        assertNotEquals(LocalDate.of(2022, 2, 16), patientOther.getAdmissionDate());
     }
 
     @Test
@@ -391,7 +391,7 @@ class PatientUnitTest {
         verify(patientRepository).save(patientUrgent2);
 
         assertEquals(psWaiting, patientUrgent2.getStatus());
-        assertEquals(LocalDate.of(2022, 2, 16), patientUrgent2.getAdmissionDate().toLocalDate());
+        assertEquals(LocalDate.of(2022, 2, 16), patientUrgent2.getAdmissionDate());
     }
 
     @Test
@@ -408,7 +408,7 @@ class PatientUnitTest {
         verify(patientRepository).save(patientUrgent2);
 
         assertEquals(psWaiting, patientUrgent2.getStatus());
-        assertEquals(LocalDate.of(2022, 2, 16), patientUrgent2.getAdmissionDate().toLocalDate());
+        assertEquals(LocalDate.of(2022, 2, 16), patientUrgent2.getAdmissionDate());
     }
 
     @Test
@@ -428,7 +428,7 @@ class PatientUnitTest {
     @Test
     void shouldThrowExceptionWhenChangePatientUrgencyAlreadyAdmitted() {
         patientOther.setStatus(psConfirmedTwice);
-        patientOther.setAdmissionDate(Date.valueOf(LocalDate.of(2021, 12, 1)));
+        patientOther.setAdmissionDate(LocalDate.of(2021, 12, 1));
         when(patientRepository.findPatientById(anyLong())).thenReturn(Optional.of(patientOther));
 
         assertThrows(BadRequestException.class, () -> patientService.changePatientUrgency(1L, true,
@@ -461,17 +461,17 @@ class PatientUnitTest {
 
     private void initFields() {
         patientUrgent = Patient.builder()
-                .admissionDate(Date.valueOf(LocalDate.of(2022, 6, 13)))
+                .admissionDate(LocalDate.of(2022, 6, 13))
                 .urgent(true)
                 .age("7M").build();
 
         patientUrgent2 = Patient.builder()
-                .admissionDate(Date.valueOf(LocalDate.of(2022, 3, 13)))
+                .admissionDate(LocalDate.of(2022, 3, 13))
                 .urgent(true)
                 .age("4Y").build();
 
         patientOther = Patient.builder()
-                .admissionDate(Date.valueOf(LocalDate.of(2022, 3, 8)))
+                .admissionDate(LocalDate.of(2022, 3, 8))
                 .urgent(false)
                 .age("12Y")
                 .sex("F")

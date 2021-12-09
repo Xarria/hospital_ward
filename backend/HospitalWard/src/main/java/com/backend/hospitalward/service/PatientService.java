@@ -64,8 +64,8 @@ public class PatientService {
 
     public void createPatient(Patient patient, String createdBy, List<String> diseases, String mainDoctorLogin,
                               String covidStatus) {
-        if (checkIfDateIsWeekendOrFriday(patient.getAdmissionDate().toLocalDate()) ||
-                !checkIfDateIsAtLeastTwoWeeksFromToday(patient.getAdmissionDate().toLocalDate())) {
+        if (checkIfDateIsWeekendOrFriday(patient.getAdmissionDate()) ||
+                !checkIfDateIsAtLeastTwoWeeksFromToday(patient.getAdmissionDate())) {
             throw new ConflictException(ErrorKey.INVALID_ADMISSION_DATE);
         }
 
@@ -123,15 +123,15 @@ public class PatientService {
             throw new BadRequestException(ErrorKey.PATIENT_CONFIRMED);
         }
 
-        queueService.checkIfPatientIsInAQueueForDate(Date.valueOf(queueDate), patient);
+        queueService.checkIfPatientIsInAQueueForDate(queueDate, patient);
 
         setPatientStatus(patient);
 
         if (patient.getStatus().getName().equals(PatientStatusName.CONFIRMED_TWICE.name())) {
 
-            if (queueService.checkIfQueueForDateIsLocked(Date.valueOf(queueDate))) {
+            if (queueService.checkIfQueueForDateIsLocked(queueDate)) {
                 if (patient.isUrgent()) {
-                    queueService.switchPatients(patient, Date.valueOf(queueDate));
+                    queueService.switchPatients(patient, queueDate);
                 } else {
                     throw new ConflictException(ErrorKey.QUEUE_LOCKED);
                 }
@@ -139,8 +139,8 @@ public class PatientService {
                 queueService.confirmPatient(patient, queueDate);
             }
 
-            queueService.lockQueueForDateIfNecessary(Date.valueOf(queueDate));
-            patient.setAdmissionDate(Date.valueOf(queueDate));
+            //queueService.lockQueueForDateIfNecessary(Date.valueOf(queueDate));
+            patient.setAdmissionDate(queueDate);
         }
         patientRepository.save(patient);
     }
@@ -155,7 +155,7 @@ public class PatientService {
                 -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
 
         if (patient.getStatus().getName().equals(PatientStatusName.CONFIRMED_TWICE.name())
-                && patient.getAdmissionDate().toLocalDate().isBefore(LocalDate.now())) {
+                && patient.getAdmissionDate().isBefore(LocalDate.now())) {
             throw new BadRequestException(ErrorKey.PATIENT_ALREADY_ADMITTED);
         }
 
@@ -164,9 +164,9 @@ public class PatientService {
                 throw new ConflictException(ErrorKey.QUEUE_LOCKED_OR_FULL);
             }
         }
-        queueService.switchPatientQueue(patient, Date.valueOf(date));
+        queueService.switchPatientQueue(patient, date);
 
-        patient.setAdmissionDate(Date.valueOf(date));
+        patient.setAdmissionDate(date);
         patient.setModificationDate(Timestamp.from(Instant.now()));
         patient.setStatus(patientStatusRepository.findPatientStatusByName(PatientStatusName.WAITING.name())
                 .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_STATUS_NOT_FOUND)));
@@ -181,7 +181,7 @@ public class PatientService {
                 -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
 
         if (patient.getStatus().getName().equals(PatientStatusName.CONFIRMED_TWICE.name())
-                && patient.getAdmissionDate().toLocalDate().isBefore(LocalDate.now())) {
+                && patient.getAdmissionDate().isBefore(LocalDate.now())) {
             throw new BadRequestException(ErrorKey.PATIENT_ALREADY_ADMITTED);
         }
 

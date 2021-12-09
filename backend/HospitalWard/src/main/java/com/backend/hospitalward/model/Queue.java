@@ -1,14 +1,13 @@
 package com.backend.hospitalward.model;
 
-import lombok.*;
 import lombok.AccessLevel;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +28,9 @@ public class Queue {
 
     @Future
     @NotNull
+//    @Temporal(TemporalType.DATE)
     @Column(name = "date", nullable = false, unique = true)
-    private Date date;
+    private LocalDate date;
 
     @OneToMany(mappedBy = "queue", fetch = FetchType.EAGER)
     List<Patient> patientsWaiting;

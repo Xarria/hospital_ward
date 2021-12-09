@@ -8,7 +8,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,15 +17,15 @@ import java.util.Optional;
 @Transactional(propagation = Propagation.MANDATORY, isolation = Isolation.READ_COMMITTED, timeout = 3)
 public interface QueueRepository extends JpaRepository<Queue, Long> {
 
-    Optional<Queue> findQueueByDate(Date date);
+    Optional<Queue> findQueueByDate(LocalDate date);
 
-    List<Queue> findQueuesByLockedFalseAndDateAfter(Date date);
+    List<Queue> findQueuesByLockedFalseAndDateAfter(LocalDate date);
 
-    List<Queue> findQueuesByLockedTrueAndDateAfter(Date date);
+    List<Queue> findQueuesByLockedTrueAndDateAfter(LocalDate date);
 
     Optional<Queue> findQueueByPatientsWaitingContains(Patient patient);
 
-    List<Queue> findQueuesByDateAfter(Date date);
+    List<Queue> findQueuesByDateAfter(LocalDate date);
 
-    List<Queue> findQueuesByDateBefore(Date date);
+    List<Queue> findQueuesByDateBefore(LocalDate date);
 }
