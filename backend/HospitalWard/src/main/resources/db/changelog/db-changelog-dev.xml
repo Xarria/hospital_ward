@@ -28,9 +28,10 @@
     <include file="/load/loadDiseaseUrgencyTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadDiseaseTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadMedicalStaffTable.xml" relativeToChangelogFile="true"/>
-    <!--    <include file="/load/loadPatientDiseaseTable.xml" relativeToChangelogFile="true"/>-->
+    <include file="/load/loadQueueTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadPatientTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadPersonalDataTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadSpecializationTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadMedicalStaffSpecializationTable.xml" relativeToChangelogFile="true"/>
+    <include file="/load/loadPatientDiseaseTable.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
