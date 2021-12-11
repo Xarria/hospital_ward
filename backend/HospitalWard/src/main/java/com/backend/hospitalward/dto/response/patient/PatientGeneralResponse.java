@@ -30,6 +30,8 @@ public class PatientGeneralResponse {
 
     String surname;
 
+    int positionInQueue;
+
     LocalDate admissionDate;
 
     String status;

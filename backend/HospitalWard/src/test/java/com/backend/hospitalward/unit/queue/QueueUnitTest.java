@@ -75,6 +75,16 @@ class QueueUnitTest {
         initPatients();
         initQueues();
         MockitoAnnotations.openMocks(this);
+
+        when(patientRepository.findPatientById(1L)).thenReturn(Optional.of(pUrgent));
+        when(patientRepository.findPatientById(2L)).thenReturn(Optional.of(pUrgent2));
+        when(patientRepository.findPatientById(3L)).thenReturn(Optional.of(pSurgery));
+        when(patientRepository.findPatientById(4L)).thenReturn(Optional.of(pSurgery2));
+        when(patientRepository.findPatientById(5L)).thenReturn(Optional.of(pSurgery3));
+        when(patientRepository.findPatientById(6L)).thenReturn(Optional.of(pOther));
+        when(patientRepository.findPatientById(7L)).thenReturn(Optional.of(pOther2));
+        when(patientRepository.findPatientById(8L)).thenReturn(Optional.of(pOther3));
+        when(patientRepository.findPatientById(9L)).thenReturn(Optional.of(pOther4));
     }
 
     @Test
@@ -101,7 +111,7 @@ class QueueUnitTest {
                 fullLockedCurrentQueue, notFullCurrentQueue, fullUnlockedOldQueue));
 
         List<Queue> fullQueues = List.of(fullCurrentQueue, fullLockedCurrentQueue, fullUnlockedOldQueue);
-        List<LocalDate> fullQueuesDates = fullQueues.stream().filter(queue -> queue.getAllPatients().size() >= 8)
+        List<LocalDate> fullQueuesDates = fullQueues.stream().filter(queue -> queue.getPatients().size() >= 8)
                 .map(Queue::getDate).collect(Collectors.toList());
 
         List<LocalDate> fullAdmissionDates = queueService.findFullAdmissionDates();
@@ -120,8 +130,7 @@ class QueueUnitTest {
         verify(queueRepository).save(queueCapture.capture());
 
         assertEquals(date, queueCapture.getValue().getDate());
-        assertEquals(new ArrayList<>(), queueCapture.getValue().getPatientsWaiting());
-        assertEquals(new ArrayList<>(), queueCapture.getValue().getPatientsConfirmed());
+        assertEquals(new ArrayList<>(), queueCapture.getValue().getPatients());
     }
 
     @Test
@@ -214,9 +223,6 @@ class QueueUnitTest {
 
     @Test
     void addPatientToQueue() {
-        when(patientRepository.findPatientById(1L)).thenReturn(Optional.of(pUrgent));
-        when(patientRepository.findPatientById(2L)).thenReturn(Optional.of(pUrgent2));
-        when(patientRepository.findPatientById(4L)).thenReturn(Optional.of(pSurgery2));
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.of(notFullCurrentQueue));
 
         notFullCurrentQueue.setDate(LocalDate.of(2021, 12, 6));
@@ -224,12 +230,12 @@ class QueueUnitTest {
 
         queueService.addPatientToQueue(pUrgent2);
 
-        verify(patientRepository, times(3)).save(any());
+        verify(patientRepository, times(6)).save(any());
         verify(queueRepository).save(notFullCurrentQueue);
 
-        assertEquals(notFullCurrentQueue.getPatientsWaiting().get(0), pUrgent2);
-        assertEquals(notFullCurrentQueue.getPatientsWaiting().get(1), pUrgent);
-        assertEquals(notFullCurrentQueue.getPatientsWaiting().get(2), pSurgery2);
+        assertEquals(notFullCurrentQueue.getPatients().get(0), pUrgent2);
+        assertEquals(notFullCurrentQueue.getPatients().get(1), pUrgent);
+        assertEquals(notFullCurrentQueue.getPatients().get(2), pSurgery2);
         assertEquals(0, pUrgent2.getPositionInQueue());
         assertEquals(1, pUrgent.getPositionInQueue());
         assertEquals(2, pSurgery2.getPositionInQueue());
@@ -238,29 +244,23 @@ class QueueUnitTest {
 
     @Test
     void switchPatientQueue() {
-        when(patientRepository.findPatientById(1L)).thenReturn(Optional.of(pUrgent));
-        when(patientRepository.findPatientById(2L)).thenReturn(Optional.of(pUrgent2));
-        when(patientRepository.findPatientById(4L)).thenReturn(Optional.of(pSurgery2));
-        when(patientRepository.findPatientById(5L)).thenReturn(Optional.of(pSurgery3));
-        when(patientRepository.findPatientById(8L)).thenReturn(Optional.of(pOther3));
-        when(patientRepository.findPatientById(9L)).thenReturn(Optional.of(pOther4));
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.of(notFullCurrentQueue));
-        when(queueRepository.findQueueByPatientsWaitingContains(pUrgent2)).thenReturn(Optional.of(fullCurrentQueue));
+        when(queueRepository.findQueueByPatientsContains(pUrgent2)).thenReturn(Optional.of(fullCurrentQueue));
 
-        fullCurrentQueue.setPatientsWaiting(List.of(pUrgent2, pSurgery3, pOther4, pOther3));
+        fullCurrentQueue.setPatients(List.of(pUrgent2, pSurgery3, pOther4, pOther3));
 
         queueService.switchPatientQueue(pUrgent2, notFullCurrentQueue.getDate());
 
-        verify(patientRepository, times(6)).save(any());
-        assertEquals(fullCurrentQueue.getPatientsWaiting().get(0), pSurgery3);
-        assertEquals(fullCurrentQueue.getPatientsWaiting().get(1), pOther3);
-        assertEquals(fullCurrentQueue.getPatientsWaiting().get(2), pOther4);
+        verify(patientRepository, times(8)).save(any());
+        assertEquals(fullCurrentQueue.getPatients().get(0), pSurgery3);
+        assertEquals(fullCurrentQueue.getPatients().get(1), pOther3);
+        assertEquals(fullCurrentQueue.getPatients().get(2), pOther4);
         assertEquals(0, pSurgery3.getPositionInQueue());
         assertEquals(1, pOther3.getPositionInQueue());
         assertEquals(2, pOther4.getPositionInQueue());
-        assertEquals(notFullCurrentQueue.getPatientsWaiting().get(0), pUrgent2);
-        assertEquals(notFullCurrentQueue.getPatientsWaiting().get(1), pUrgent);
-        assertEquals(notFullCurrentQueue.getPatientsWaiting().get(2), pSurgery2);
+        assertEquals(notFullCurrentQueue.getPatients().get(0), pUrgent2);
+        assertEquals(notFullCurrentQueue.getPatients().get(1), pUrgent);
+        assertEquals(notFullCurrentQueue.getPatients().get(2), pSurgery2);
         assertEquals(notFullCurrentQueue, pUrgent2.getQueue());
         assertEquals(0, pUrgent2.getPositionInQueue());
         assertEquals(1, pUrgent.getPositionInQueue());
@@ -281,7 +281,6 @@ class QueueUnitTest {
         pOther4.setPositionInQueue(7);
         pOther4.setStatus(psConfirmedTwice);
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.of(fullLockedCurrentQueue));
-        when(patientRepository.findPatientById(9L)).thenReturn(Optional.of(pOther4));
         when(queueRepository.findQueuesByLockedFalseAndDateAfter(any())).thenReturn(List.of(fullCurrentQueue,
                 emptyCurrentQueue));
         when(queueRepository.findQueuesByLockedTrueAndDateAfter(any())).thenReturn(List.of(fullLockedCurrentQueue));
@@ -298,10 +297,10 @@ class QueueUnitTest {
         verify(queueRepository).save(emptyCurrentQueue);
         verify(queueRepository).save(fullLockedCurrentQueue);
 
-        assertTrue(fullLockedCurrentQueue.getPatientsConfirmed().contains(pSurgery));
+        assertTrue(fullLockedCurrentQueue.getConfirmedPatients().contains(pSurgery));
         assertEquals(fullLockedCurrentQueue, pSurgery.getQueue());
-        assertEquals(1, emptyCurrentQueue.getPatientsWaiting().size());
-        assertEquals(emptyCurrentQueue.getPatientsWaiting().get(0), pOther4);
+        assertEquals(1, emptyCurrentQueue.getWaitingPatients().size());
+        assertEquals(emptyCurrentQueue.getWaitingPatients().get(0), pOther4);
         assertEquals(0, pOther4.getPositionInQueue());
         assertEquals(emptyCurrentQueue, pOther4.getQueue());
     }
@@ -309,7 +308,6 @@ class QueueUnitTest {
     @Test
     void transferPatientToNextUnlockedQueue() {
         //given
-        when(patientRepository.findPatientById(8L)).thenReturn(Optional.of(pOther3));
         when(queueRepository.findQueuesByLockedFalseAndDateAfter(any())).thenReturn(List.of(fullCurrentQueue,
                 emptyCurrentQueue));
         when(queueRepository.findQueuesByLockedTrueAndDateAfter(any())).thenReturn(List.of(fullLockedCurrentQueue));
@@ -322,8 +320,8 @@ class QueueUnitTest {
         verify(patientRepository).save(any());
         verify(queueRepository).save(emptyCurrentQueue);
 
-        assertEquals(1, emptyCurrentQueue.getPatientsWaiting().size());
-        assertEquals(emptyCurrentQueue.getPatientsWaiting().get(0), pOther3);
+        assertEquals(1, emptyCurrentQueue.getWaitingPatients().size());
+        assertEquals(emptyCurrentQueue.getWaitingPatients().get(0), pOther3);
         assertEquals(0, pOther3.getPositionInQueue());
         assertEquals(emptyCurrentQueue, pOther3.getQueue());
     }
@@ -332,7 +330,6 @@ class QueueUnitTest {
     void transferPatientToNextUnlockedQueueNoUnlockedQueue() {
         //given
         Queue newQueue = Queue.builder().build();
-        when(patientRepository.findPatientById(8L)).thenReturn(Optional.of(pOther3));
         when(queueRepository.findQueuesByLockedFalseAndDateAfter(any())).thenReturn(Collections.emptyList());
         when(queueRepository.findQueuesByLockedTrueAndDateAfter(any())).thenReturn(List.of(fullLockedCurrentQueue));
         when(patientStatusRepository.findPatientStatusByName(any())).thenReturn(Optional.of(psWaiting));
@@ -348,21 +345,17 @@ class QueueUnitTest {
         verify(patientRepository).save(pOther3);
         verify(queueRepository).save(newQueue);
 
-        assertEquals(1, newQueue.getPatientsWaiting().size());
-        assertEquals(newQueue.getPatientsWaiting().get(0), pOther3);
+        assertEquals(1, newQueue.getPatients().size());
+        assertEquals(newQueue.getPatients().get(0), pOther3);
         assertEquals(0, pOther3.getPositionInQueue());
         assertEquals(newQueue, pOther3.getQueue());
     }
 
     @Test
     void transferPatientsForNextUnlockedDateAndClearOldQueuesWhenThereAreUnlockedQueues() {
-        //given
-        when(patientRepository.findPatientById(1L)).thenReturn(Optional.of(pUrgent));
-        when(patientRepository.findPatientById(2L)).thenReturn(Optional.of(pUrgent2));
-        when(patientRepository.findPatientById(3L)).thenReturn(Optional.of(pSurgery));
-        when(patientRepository.findPatientById(4L)).thenReturn(Optional.of(pSurgery2));
-        when(patientRepository.findPatientById(8L)).thenReturn(Optional.of(pOther3));
-        when(patientRepository.findPatientById(9L)).thenReturn(Optional.of(pOther4));
+        //give
+        List.of(pOther, pOther2, pSurgery3).forEach(p -> p.setStatus(psConfirmedTwice));
+
         when(queueRepository.findQueuesByLockedFalseAndDateAfter(any())).thenReturn(List.of(fullCurrentQueue,
                 notFullCurrentQueue, emptyCurrentQueue));
         when(queueRepository.findQueuesByLockedTrueAndDateAfter(any())).thenReturn(List.of(fullLockedCurrentQueue));
@@ -380,17 +373,17 @@ class QueueUnitTest {
         verify(queueRepository).save(emptyCurrentQueue);
         verify(queueRepository).save(fullUnlockedOldQueue);
 
-        assertEquals(new ArrayList<>(), fullUnlockedOldQueue.getPatientsWaiting());
-        assertEquals(List.of(pOther2, pOther, pSurgery3), fullUnlockedOldQueue.getPatientsConfirmed());
+        assertEquals(new ArrayList<>(), fullUnlockedOldQueue.getWaitingPatients());
+        assertEquals(List.of(pOther2, pOther, pSurgery3), fullUnlockedOldQueue.getPatients());
         assertTrue(fullUnlockedOldQueue.isLocked());
-        assertEquals(patients.size(), emptyCurrentQueue.getPatientsWaiting().size());
+        assertEquals(patients.size(), emptyCurrentQueue.getWaitingPatients().size());
         //new order: pUrgent2, pUrgent, pSurgery2, pSurgery, pOther3, pOther4
-        assertEquals(emptyCurrentQueue.getPatientsWaiting().get(0), pUrgent2);
-        assertEquals(emptyCurrentQueue.getPatientsWaiting().get(1), pUrgent);
-        assertEquals(emptyCurrentQueue.getPatientsWaiting().get(2), pSurgery2);
-        assertEquals(emptyCurrentQueue.getPatientsWaiting().get(3), pSurgery);
-        assertEquals(emptyCurrentQueue.getPatientsWaiting().get(4), pOther3);
-        assertEquals(emptyCurrentQueue.getPatientsWaiting().get(5), pOther4);
+        assertEquals(emptyCurrentQueue.getPatients().get(0), pUrgent2);
+        assertEquals(emptyCurrentQueue.getPatients().get(1), pUrgent);
+        assertEquals(emptyCurrentQueue.getPatients().get(2), pSurgery2);
+        assertEquals(emptyCurrentQueue.getPatients().get(3), pSurgery);
+        assertEquals(emptyCurrentQueue.getPatients().get(4), pOther3);
+        assertEquals(emptyCurrentQueue.getPatients().get(5), pOther4);
         assertEquals(0, pUrgent2.getPositionInQueue());
         assertEquals(1, pUrgent.getPositionInQueue());
         assertEquals(2, pSurgery2.getPositionInQueue());
@@ -408,14 +401,10 @@ class QueueUnitTest {
     @Test
     void transferPatientsForNextUnlockedDateAndClearOldQueuesWhenNoUnlockedQueues() {
         //given
+        List.of(pOther, pOther2, pSurgery3).forEach(p -> p.setStatus(psConfirmedTwice));
+
         Queue newQueue = Queue.builder().build();
 
-        when(patientRepository.findPatientById(1L)).thenReturn(Optional.of(pUrgent));
-        when(patientRepository.findPatientById(2L)).thenReturn(Optional.of(pUrgent2));
-        when(patientRepository.findPatientById(3L)).thenReturn(Optional.of(pSurgery));
-        when(patientRepository.findPatientById(4L)).thenReturn(Optional.of(pSurgery2));
-        when(patientRepository.findPatientById(8L)).thenReturn(Optional.of(pOther3));
-        when(patientRepository.findPatientById(9L)).thenReturn(Optional.of(pOther4));
         when(queueRepository.findQueuesByLockedFalseAndDateAfter(any())).thenReturn(Collections.emptyList());
         when(queueRepository.findQueuesByLockedTrueAndDateAfter(any())).thenReturn(List.of(fullLockedCurrentQueue,
                 emptyCurrentQueue));
@@ -438,17 +427,17 @@ class QueueUnitTest {
         verify(queueRepository).save(newQueue);
         verify(queueRepository).save(fullUnlockedOldQueue);
 
-        assertEquals(new ArrayList<>(), fullUnlockedOldQueue.getPatientsWaiting());
-        assertEquals(List.of(pOther2, pOther, pSurgery3), fullUnlockedOldQueue.getPatientsConfirmed());
+        assertEquals(new ArrayList<>(), fullUnlockedOldQueue.getWaitingPatients());
+        assertEquals(List.of(pOther2, pOther, pSurgery3), fullUnlockedOldQueue.getConfirmedPatients());
         assertTrue(fullUnlockedOldQueue.isLocked());
-        assertEquals(patients.size(), newQueue.getPatientsWaiting().size());
+        assertEquals(patients.size(), newQueue.getPatients().size());
         //new order: pUrgent2, pUrgent, pSurgery2, pSurgery, pOther3, pOther4
-        assertEquals(newQueue.getPatientsWaiting().get(0), pUrgent2);
-        assertEquals(newQueue.getPatientsWaiting().get(1), pUrgent);
-        assertEquals(newQueue.getPatientsWaiting().get(2), pSurgery2);
-        assertEquals(newQueue.getPatientsWaiting().get(3), pSurgery);
-        assertEquals(newQueue.getPatientsWaiting().get(4), pOther3);
-        assertEquals(newQueue.getPatientsWaiting().get(5), pOther4);
+        assertEquals(newQueue.getPatients().get(0), pUrgent2);
+        assertEquals(newQueue.getPatients().get(1), pUrgent);
+        assertEquals(newQueue.getPatients().get(2), pSurgery2);
+        assertEquals(newQueue.getPatients().get(3), pSurgery);
+        assertEquals(newQueue.getPatients().get(4), pOther3);
+        assertEquals(newQueue.getPatients().get(5), pOther4);
         assertEquals(0, pUrgent2.getPositionInQueue());
         assertEquals(1, pUrgent.getPositionInQueue());
         assertEquals(2, pSurgery2.getPositionInQueue());
@@ -465,6 +454,9 @@ class QueueUnitTest {
 
     @Test
     void lockQueueForDateIfNecessary() {
+        List.of(pOther2, pOther, pSurgery3, pUrgent, pUrgent2, pOther3, pOther4, pSurgery2)
+                .forEach(p -> p.setStatus(psConfirmedTwice));
+
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.of(fullUnlockedAllConfirmedQueue));
 
         queueService.lockQueueForDateIfNecessary(LocalDate.now());
@@ -477,7 +469,9 @@ class QueueUnitTest {
     @Test
     void lockQueueForDateIfNecessaryNotEmptyWaitingPatientsQueueUnlockedQueueExists() {
         //given
-        when(patientRepository.findPatientById(3L)).thenReturn(Optional.of(pSurgery));
+        List.of(pOther2, pOther, pSurgery3, pUrgent, pUrgent2, pOther3, pOther4, pSurgery2)
+                .forEach(p -> p.setStatus(psConfirmedTwice));
+
         when(queueRepository.findQueuesByLockedFalseAndDateAfter(any())).thenReturn(List.of(emptyCurrentQueue));
         when(queueRepository.findQueuesByLockedTrueAndDateAfter(any())).thenReturn(List.of(fullLockedCurrentQueue));
         when(patientStatusRepository.findPatientStatusByName(any())).thenReturn(Optional.of(psWaiting));
@@ -491,11 +485,11 @@ class QueueUnitTest {
         verify(queueRepository).save(emptyCurrentQueue);
         verify(queueRepository).save(fullUnlockedCurrentQueueWithWaiting);
 
-        assertEquals(new ArrayList<>(), fullUnlockedCurrentQueueWithWaiting.getPatientsWaiting());
-        assertEquals(8, fullUnlockedCurrentQueueWithWaiting.getPatientsConfirmed().size());
+        assertEquals(new ArrayList<>(), fullUnlockedCurrentQueueWithWaiting.getWaitingPatients());
+        assertEquals(8, fullUnlockedCurrentQueueWithWaiting.getConfirmedPatients().size());
         assertTrue(fullUnlockedCurrentQueueWithWaiting.isLocked());
-        assertEquals(1, emptyCurrentQueue.getPatientsWaiting().size());
-        assertEquals(emptyCurrentQueue.getPatientsWaiting().get(0), pSurgery);
+        assertEquals(1, emptyCurrentQueue.getPatients().size());
+        assertEquals(emptyCurrentQueue.getPatients().get(0), pSurgery);
         assertEquals(0, pSurgery.getPositionInQueue());
         assertEquals(emptyCurrentQueue, pSurgery.getQueue());
     }
@@ -503,8 +497,10 @@ class QueueUnitTest {
     @Test
     void lockQueueForDateIfNecessaryNotEmptyWaitingPatientsQueueNoUnlockedQueue() {
         //given
+        List.of(pOther2, pOther, pSurgery3, pUrgent, pUrgent2, pOther3, pOther4, pSurgery2)
+                .forEach(p -> p.setStatus(psConfirmedTwice));
+
         Queue newQueue = Queue.builder().build();
-        when(patientRepository.findPatientById(3L)).thenReturn(Optional.of(pSurgery));
         when(queueRepository.findQueuesByLockedFalseAndDateAfter(any())).thenReturn(Collections.emptyList());
         when(queueRepository.findQueuesByLockedTrueAndDateAfter(any())).thenReturn(List.of(fullLockedCurrentQueue));
         when(patientStatusRepository.findPatientStatusByName(any())).thenReturn(Optional.of(psWaiting));
@@ -524,11 +520,11 @@ class QueueUnitTest {
         verify(queueRepository).save(newQueue);
         verify(queueRepository).save(fullUnlockedCurrentQueueWithWaiting);
 
-        assertEquals(new ArrayList<>(), fullUnlockedCurrentQueueWithWaiting.getPatientsWaiting());
-        assertEquals(8, fullUnlockedCurrentQueueWithWaiting.getPatientsConfirmed().size());
+        assertEquals(new ArrayList<>(), fullUnlockedCurrentQueueWithWaiting.getWaitingPatients());
+        assertEquals(8, fullUnlockedCurrentQueueWithWaiting.getConfirmedPatients().size());
         assertTrue(fullUnlockedCurrentQueueWithWaiting.isLocked());
-        assertEquals(1, newQueue.getPatientsWaiting().size());
-        assertEquals(newQueue.getPatientsWaiting().get(0), pSurgery);
+        assertEquals(1, newQueue.getPatients().size());
+        assertEquals(newQueue.getPatients().get(0), pSurgery);
         assertEquals(0, pSurgery.getPositionInQueue());
         assertEquals(newQueue, pSurgery.getQueue());
     }
@@ -544,17 +540,18 @@ class QueueUnitTest {
 
     @Test
     void confirmPatient() {
+        pSurgery2.setStatus(psConfirmedTwice);
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.of(notFullCurrentQueue));
-        when(patientRepository.findPatientById(1L)).thenReturn(Optional.of(pUrgent));
 
         queueService.confirmPatient(pSurgery2, LocalDate.now());
 
-        verify(patientRepository).save(any());
+        verify(patientRepository, times(4)).save(any());
         verify(queueRepository).save(any());
 
-        assertEquals(notFullCurrentQueue.getPatientsWaiting().get(0), pUrgent);
-        assertTrue(notFullCurrentQueue.getPatientsConfirmed().contains(pSurgery2));
-        assertFalse(notFullCurrentQueue.getPatientsWaiting().contains(pSurgery2));
+        assertEquals(notFullCurrentQueue.getPatients().get(0), pUrgent);
+        assertEquals(notFullCurrentQueue.getPatients().get(1), pSurgery2);
+        assertTrue(notFullCurrentQueue.getConfirmedPatients().contains(pSurgery2));
+        assertFalse(notFullCurrentQueue.getWaitingPatients().contains(pSurgery2));
         assertEquals(0, pUrgent.getPositionInQueue());
 
     }
@@ -573,35 +570,34 @@ class QueueUnitTest {
     @Test
     void removePatientFromQueue() {
         //old order: pUrgent, pUrgent2, pOther3, pOther4, pSurgery2, pSurgery3
-        when(patientRepository.findPatientById(1L)).thenReturn(Optional.of(pUrgent));
-        when(patientRepository.findPatientById(2L)).thenReturn(Optional.of(pUrgent2));
-        when(patientRepository.findPatientById(4L)).thenReturn(Optional.of(pSurgery2));
-        when(patientRepository.findPatientById(8L)).thenReturn(Optional.of(pOther3));
-        when(patientRepository.findPatientById(9L)).thenReturn(Optional.of(pOther4));
 
-        when(queueRepository.findQueueByPatientsWaitingContains(pSurgery3)).thenReturn(Optional.of(fullCurrentQueue));
+        when(queueRepository.findQueueByPatientsContains(pSurgery3)).thenReturn(Optional.of(fullCurrentQueue));
 
         queueService.removePatientFromQueue(pSurgery3);
 
-        verify(patientRepository, times(5)).save(any());
+        verify(patientRepository, times(7)).save(any());
         verify(queueRepository).save(any());
         //new order: pUrgent2, pUrgent, pSurgery2, pOther3, pOther4
-        assertEquals(fullCurrentQueue.getPatientsWaiting().get(0), pUrgent2);
-        assertEquals(fullCurrentQueue.getPatientsWaiting().get(1), pUrgent);
-        assertEquals(fullCurrentQueue.getPatientsWaiting().get(2), pSurgery2);
-        assertEquals(fullCurrentQueue.getPatientsWaiting().get(3), pOther3);
-        assertEquals(fullCurrentQueue.getPatientsWaiting().get(4), pOther4);
+        assertEquals(fullCurrentQueue.getPatients().get(0), pUrgent2);
+        assertEquals(fullCurrentQueue.getPatients().get(1), pUrgent);
+        assertEquals(fullCurrentQueue.getPatients().get(2), pSurgery2);
+        assertEquals(fullCurrentQueue.getPatients().get(3), pOther);
+        assertEquals(fullCurrentQueue.getPatients().get(4), pOther2);
+        assertEquals(fullCurrentQueue.getPatients().get(5), pOther3);
+        assertEquals(fullCurrentQueue.getPatients().get(6), pOther4);
         assertEquals(0, pUrgent2.getPositionInQueue());
         assertEquals(1, pUrgent.getPositionInQueue());
         assertEquals(2, pSurgery2.getPositionInQueue());
-        assertEquals(3, pOther3.getPositionInQueue());
-        assertEquals(4, pOther4.getPositionInQueue());
+        assertEquals(3, pOther.getPositionInQueue());
+        assertEquals(4, pOther2.getPositionInQueue());
+        assertEquals(5, pOther3.getPositionInQueue());
+        assertEquals(6, pOther4.getPositionInQueue());
     }
 
     @Test
     void shouldThrowExceptionWhenRemovePatientFromQueueNotFound() {
 
-        when(queueRepository.findQueueByPatientsWaitingContains(pSurgery3)).thenReturn(Optional.empty());
+        when(queueRepository.findQueueByPatientsContains(pSurgery3)).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> queueService.removePatientFromQueue(pSurgery3));
 
@@ -636,29 +632,27 @@ class QueueUnitTest {
     @Test
     void refreshQueue() {
         //old order: pUrgent, pUrgent2, pOther3, pOther4, pSurgery2, pSurgery3
-        when(patientRepository.findPatientById(1L)).thenReturn(Optional.of(pUrgent));
-        when(patientRepository.findPatientById(2L)).thenReturn(Optional.of(pUrgent2));
-        when(patientRepository.findPatientById(4L)).thenReturn(Optional.of(pSurgery2));
-        when(patientRepository.findPatientById(5L)).thenReturn(Optional.of(pSurgery3));
-        when(patientRepository.findPatientById(8L)).thenReturn(Optional.of(pOther3));
-        when(patientRepository.findPatientById(9L)).thenReturn(Optional.of(pOther4));
 
         queueService.refreshQueue(fullCurrentQueue);
 
-        verify(patientRepository, times(6)).save(any());
+        verify(patientRepository, times(8)).save(any());
         //new order: pUrgent2, pUrgent, pSurgery3, pSurgery2, pOther3, pOther4
-        assertEquals(fullCurrentQueue.getPatientsWaiting().get(0), pUrgent2);
-        assertEquals(fullCurrentQueue.getPatientsWaiting().get(1), pUrgent);
-        assertEquals(fullCurrentQueue.getPatientsWaiting().get(2), pSurgery3);
-        assertEquals(fullCurrentQueue.getPatientsWaiting().get(3), pSurgery2);
-        assertEquals(fullCurrentQueue.getPatientsWaiting().get(4), pOther3);
-        assertEquals(fullCurrentQueue.getPatientsWaiting().get(5), pOther4);
+        assertEquals(fullCurrentQueue.getPatients().get(0), pUrgent2);
+        assertEquals(fullCurrentQueue.getPatients().get(1), pUrgent);
+        assertEquals(fullCurrentQueue.getPatients().get(2), pSurgery3);
+        assertEquals(fullCurrentQueue.getPatients().get(3), pSurgery2);
+        assertEquals(fullCurrentQueue.getPatients().get(4), pOther);
+        assertEquals(fullCurrentQueue.getPatients().get(5), pOther2);
+        assertEquals(fullCurrentQueue.getPatients().get(6), pOther3);
+        assertEquals(fullCurrentQueue.getPatients().get(7), pOther4);
         assertEquals(0, pUrgent2.getPositionInQueue());
         assertEquals(1, pUrgent.getPositionInQueue());
         assertEquals(2, pSurgery3.getPositionInQueue());
         assertEquals(3, pSurgery2.getPositionInQueue());
-        assertEquals(4, pOther3.getPositionInQueue());
-        assertEquals(5, pOther4.getPositionInQueue());
+        assertEquals(4, pOther.getPositionInQueue());
+        assertEquals(5, pOther2.getPositionInQueue());
+        assertEquals(6, pOther3.getPositionInQueue());
+        assertEquals(7, pOther4.getPositionInQueue());
     }
 
     @Test
@@ -667,7 +661,7 @@ class QueueUnitTest {
 
         List<Patient> patients = queueService.getWaitingPatientsForPastQueues();
 
-        assertEquals(fullUnlockedOldQueue.getPatientsWaiting(), patients);
+        assertEquals(fullUnlockedOldQueue.getWaitingPatients(), patients);
     }
 
 
@@ -690,33 +684,30 @@ class QueueUnitTest {
                 .admissionDate(LocalDate.now().minusDays(1)).build();
         pOther4 = Patient.builder().id(9).urgent(false).diseases(List.of(diseaseNoSurgery)).status(psWaiting)
                 .admissionDate(LocalDate.now().plusDays(2)).build();
+
     }
 
     private void initQueues() {
         emptyCurrentQueue = Queue.builder().date(LocalDate.now().plusDays(1)).locked(false)
-                .patientsWaiting(Collections.emptyList()).patientsConfirmed(Collections.emptyList()).build();
+                .patients(Collections.emptyList()).build();
         emptyOldQueue = Queue.builder().date(LocalDate.now().minusDays(6))
-                .patientsWaiting(Collections.emptyList()).patientsConfirmed(Collections.emptyList()).build();
+                .patients(Collections.emptyList()).build();
         fullCurrentQueue = Queue.builder().date(LocalDate.now().plusDays(3)).locked(false)
-                .patientsWaiting(List.of(pUrgent, pUrgent2, pOther3, pOther4, pSurgery2, pSurgery3))
-                .patientsConfirmed(List.of(pOther2, pOther)).build();
+                .patients(List.of(pOther2, pOther, pUrgent, pUrgent2, pOther3, pOther4, pSurgery2, pSurgery3)).build();
         fullLockedCurrentQueue = Queue.builder().date(LocalDate.now().plusDays(4)).locked(true)
-                .patientsWaiting(Collections.emptyList())
-                .patientsConfirmed(List.of(pOther2, pOther, pSurgery3, pUrgent, pUrgent2, pOther3, pOther4, pSurgery2))
+                .patients(List.of(pOther2, pOther, pSurgery3, pUrgent, pUrgent2, pOther3, pOther4, pSurgery2))
                 .build();
         fullUnlockedAllConfirmedQueue = Queue.builder().date(LocalDate.now().plusDays(4)).locked(false)
-                .patientsWaiting(Collections.emptyList())
-                .patientsConfirmed(List.of(pOther2, pOther, pSurgery3, pUrgent, pUrgent2, pOther3, pOther4, pSurgery2))
+                .patients(List.of(pOther2, pOther, pSurgery3, pUrgent, pUrgent2, pOther3, pOther4, pSurgery2))
                 .build();
         notFullCurrentQueue = Queue.builder().date(LocalDate.now().plusDays(5)).locked(false)
-                .patientsWaiting(List.of(pUrgent, pSurgery2))
-                .patientsConfirmed(List.of(pOther2, pOther)).build();
+                .patients(List.of(pUrgent, pSurgery2, pOther2, pOther)).build();
         fullUnlockedOldQueue = Queue.builder().date(LocalDate.now().minusDays(2)).locked(false)
-                .patientsWaiting(List.of(pUrgent, pUrgent2, pOther3, pOther4, pSurgery2, pSurgery))
-                .patientsConfirmed(List.of(pOther2, pOther, pSurgery3)).build();
+                .patients(List.of(pUrgent, pUrgent2, pOther3, pOther4, pSurgery2, pSurgery,pOther2, pOther, pSurgery3))
+                .build();
         fullUnlockedCurrentQueueWithWaiting = Queue.builder().date(LocalDate.now().plusDays(4))
-                .locked(false).patientsWaiting(List.of(pSurgery))
-                .patientsConfirmed(List.of(pOther2, pOther, pSurgery3, pUrgent, pUrgent2, pOther3, pOther4, pSurgery2))
+                .locked(false)
+                .patients(List.of(pOther2, pOther, pSurgery, pSurgery3, pUrgent, pUrgent2, pOther3, pOther4, pSurgery2))
                 .build();
     }
 }

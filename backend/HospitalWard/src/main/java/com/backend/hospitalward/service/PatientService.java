@@ -139,7 +139,7 @@ public class PatientService {
                 queueService.confirmPatient(patient, queueDate);
             }
 
-            //queueService.lockQueueForDateIfNecessary(Date.valueOf(queueDate));
+            queueService.lockQueueForDateIfNecessary(queueDate);
             patient.setAdmissionDate(queueDate);
         }
         patientRepository.save(patient);

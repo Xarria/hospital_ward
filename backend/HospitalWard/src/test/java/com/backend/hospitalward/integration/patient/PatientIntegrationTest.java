@@ -75,10 +75,6 @@ class PatientIntegrationTest extends AbstractTestContainer {
         return new HttpEntity<>(null, getHttpHeaders());
     }
 
-    @BeforeEach
-    void setUp() {
-    }
-
     @Order(1)
     @Test
     void getAllPatients() {
@@ -121,7 +117,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
                 () -> assertEquals(0, newPatient.getPositionInQueue()),
                 () -> assertEquals(currentQueuesCount + 1, queueService.getAllCurrentQueues().size()),
                 () -> assertEquals(List.of(newPatient),
-                        queueService.getQueueForDate(newPatient.getAdmissionDate()).getPatientsWaiting())
+                        queueService.getQueueForDate(newPatient.getAdmissionDate()).getPatients())
         );
     }
 
@@ -130,7 +126,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
     void shouldAddPatientToExistingQueueWhenCreatePatient() {
         int currentQueuesCount = queueService.getAllCurrentQueues().size();
         Queue queue = queueService.getQueueForDate(LocalDate.of(2022, 3, 17));
-        int patientsInQueueCount = queue.getPatientsWaiting().size();
+        int patientsInQueueCount = queue.getPatients().size();
 
         HttpEntity<PatientCreateRequest> patientCreateRequestHttpEntity = new HttpEntity<>(
                 PatientCreateRequest.builder()
@@ -142,7 +138,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
                         .admissionDate(LocalDate.of(2022, 3, 17))
                         .mainDoctor("jan.kowalski")
                         .pesel("45565555555")
-                        .referralNr("12134234")
+                        .referralNr("121574234")
                         .sex("F")
                         .urgent(true).build(), getHttpHeaders()
         );
@@ -158,10 +154,10 @@ class PatientIntegrationTest extends AbstractTestContainer {
                 () -> assertEquals("VACCINATED", newPatient.getCovidStatus().getStatus()),
                 () -> assertEquals(0, newPatient.getPositionInQueue()),
                 () -> assertEquals(currentQueuesCount, queueService.getAllCurrentQueues().size()),
-                () -> assertTrue(queueService.getQueueForDate(newPatient.getAdmissionDate()).getPatientsWaiting()
+                () -> assertTrue(queueService.getQueueForDate(newPatient.getAdmissionDate()).getPatients()
                         .contains(newPatient)),
                 () -> assertEquals(patientsInQueueCount + 1, queueService.getQueueForDate(
-                        newPatient.getAdmissionDate()).getPatientsWaiting().size())
+                        newPatient.getAdmissionDate()).getPatients().size())
         );
     }
 

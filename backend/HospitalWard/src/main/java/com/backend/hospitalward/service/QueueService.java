@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.PersistenceException;
+import javax.ws.rs.core.Link;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
 import java.util.*;
@@ -54,7 +55,7 @@ public class QueueService {
 
     public List<LocalDate> findFullAdmissionDates() {
         return queueRepository.findAll().stream()
-                .filter(queue -> queue.getAllPatients().size() >= 8)
+                .filter(queue -> queue.getPatients().size() >= 8)
                 .map(Queue::getDate)
                 .collect(Collectors.toList());
     }
@@ -68,8 +69,7 @@ public class QueueService {
         }
         queueRepository.save(Queue.builder()
                 .date(date)
-                .patientsConfirmed(new ArrayList<>())
-                .patientsWaiting(new ArrayList<>())
+                .patients(new ArrayList<>())
                 .locked(false)
                 .build());
     }
@@ -82,7 +82,7 @@ public class QueueService {
         Optional<Queue> queueForDate = queueRepository.findQueueByDate(date);
         if (queueForDate.isPresent()) {
             Queue queue = queueForDate.get();
-            return !queue.isLocked() && queue.getAllPatients().size() < 8;
+            return !queue.isLocked() && queue.getPatients().size() < 8;
         } else {
             createQueueForDateIfNotExists(date);
             return true;
@@ -106,9 +106,9 @@ public class QueueService {
         Queue queue = queueRepository.findQueueByDate(patient.getAdmissionDate()).orElseThrow(()
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
 
-        List<Patient> waitingPatients = new LinkedList<>(queue.getPatientsWaiting());
-        waitingPatients.add(patient);
-        queue.setPatientsWaiting(waitingPatients);
+        List<Patient> patients = new LinkedList<>(queue.getPatients());
+        patients.add(patient);
+        queue.setPatients(patients);
 
         patient.setQueue(queue);
         patientRepository.save(patient);
@@ -119,21 +119,18 @@ public class QueueService {
     }
 
     public void switchPatientQueue(Patient patient, LocalDate newQueueDate) {
-        Queue oldQueue = queueRepository.findQueueByPatientsWaitingContains(patient).orElseThrow(()
+        Queue oldQueue = queueRepository.findQueueByPatientsContains(patient).orElseThrow(()
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
         Queue newQueue = queueRepository.findQueueByDate(newQueueDate).orElseThrow(()
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
 
-        List<Patient> oldQueueWaitingPatients = new LinkedList<>(oldQueue.getPatientsWaiting());
-        oldQueueWaitingPatients.remove(patient);
-        oldQueue.setPatientsWaiting(oldQueueWaitingPatients);
-        List<Patient> oldQueueConfirmedPatients = new LinkedList<>(oldQueue.getPatientsConfirmed());
-        oldQueueConfirmedPatients.remove(patient);
-        oldQueue.setPatientsConfirmed(oldQueueConfirmedPatients);
+        List<Patient> oldQueuePatients = new LinkedList<>(oldQueue.getPatients());
+        oldQueuePatients.remove(patient);
+        oldQueue.setPatients(oldQueuePatients);
 
-        List<Patient> newQueueWaitingPatients = new LinkedList<>(newQueue.getPatientsWaiting());
-        newQueueWaitingPatients.add(patient);
-        newQueue.setPatientsWaiting(newQueueWaitingPatients);
+        List<Patient> newQueuePatients = new LinkedList<>(newQueue.getPatients());
+        newQueuePatients.add(patient);
+        newQueue.setPatients(newQueuePatients);
 
         patient.setQueue(newQueue);
 
@@ -148,15 +145,14 @@ public class QueueService {
         Queue queue = queueRepository.findQueueByDate(date).orElseThrow(()
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
 
-        Patient lowestPriorityPatient = queue.getPatientsConfirmed().stream()
-                .filter(patient -> patient.getPositionInQueue() == queue.getPatientsConfirmed().size() - 1)
-                .findFirst()
+        Patient lowestPriorityPatient = queue.getConfirmedPatients().stream()
+                .max(Comparator.comparing(Patient::getPositionInQueue))
                 .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
 
-        List<Patient> queuePatientsConfirmed = new LinkedList<>(queue.getPatientsConfirmed());
-        queuePatientsConfirmed.remove(lowestPriorityPatient);
-        queuePatientsConfirmed.add(urgentPatient);
-        queue.setPatientsConfirmed(queuePatientsConfirmed);
+        List<Patient> queuePatients = new LinkedList<>(queue.getPatients());
+        queuePatients.remove(lowestPriorityPatient);
+        queuePatients.add(urgentPatient);
+        queue.setPatients(queuePatients);
 
         urgentPatient.setPositionInQueue(lowestPriorityPatient.getPositionInQueue());
         urgentPatient.setQueue(queue);
@@ -179,17 +175,16 @@ public class QueueService {
                 .collect(Collectors.toList());
 
         if (!unlockedQueues.isEmpty()) {
-            unlockedQueues = unlockedQueues.stream()
-                    .sorted(Comparator.comparing(Queue::getDate))
-                    .collect(Collectors.toList());
-            Queue newQueue = unlockedQueues.get(0);
+            Queue newQueue = unlockedQueues.stream()
+                    .min(Comparator.comparing(Queue::getDate))
+                    .get();
             patient.setQueue(newQueue);
-            if (newQueue.getPatientsWaiting() != null && !newQueue.getPatientsWaiting().isEmpty()) {
-                List<Patient> newQueueWaitingPatients = new LinkedList<>(newQueue.getPatientsWaiting());
-                newQueueWaitingPatients.add(patient);
-                newQueue.setPatientsWaiting(newQueueWaitingPatients);
+            if (newQueue.getPatients() != null && !newQueue.getPatients().isEmpty()) {
+                List<Patient> newQueuePatients = new LinkedList<>(newQueue.getPatients());
+                newQueuePatients.add(patient);
+                newQueue.setPatients(newQueuePatients);
             } else {
-                newQueue.setPatientsWaiting(List.of(patient));
+                newQueue.setPatients(List.of(patient));
             }
             refreshQueue(newQueue);
             queueRepository.save(newQueue);
@@ -210,7 +205,7 @@ public class QueueService {
                 Queue createdQueue = queueRepository.findQueueByDate(date).orElseThrow(()
                         -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
                 patient.setQueue(createdQueue);
-                createdQueue.setPatientsWaiting(List.of(patient));
+                createdQueue.setPatients(List.of(patient));
                 refreshQueue(createdQueue);
                 queueRepository.save(createdQueue);
                 break;
@@ -220,7 +215,6 @@ public class QueueService {
         }
     }
 
-    //TODO spytać czy transfer może być na szybciej niż 2 tygodnie
     public void transferPatientsForNextUnlockedDateAndClearOldQueues(LocalDate previousDate, List<Patient> patients) {
         List<Queue> unlockedQueues = queueRepository.findQueuesByLockedFalseAndDateAfter(LocalDate.now());
         List<Queue> lockedQueues = queueRepository.findQueuesByLockedTrueAndDateAfter(LocalDate.now());
@@ -243,15 +237,20 @@ public class QueueService {
                 .findPatientStatusByName(PatientStatusName.WAITING.name())
                 .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_STATUS_NOT_FOUND))));
 
-        oldQueues.forEach(queue -> queue.setPatientsWaiting(new ArrayList<>()));
+        for (Queue oldQueue: oldQueues) {
+            List<Patient> oldQueuePatients = new LinkedList<>(oldQueue.getPatients());
+            oldQueuePatients.removeAll(patients);
+            oldQueue.setPatients(oldQueuePatients);
+        }
+
         oldQueues.forEach(queue -> queue.setLocked(true));
 
-        if (newQueue.getPatientsWaiting() != null && !newQueue.getPatientsWaiting().isEmpty()) {
-            List<Patient> newQueuePatients = new LinkedList<>(newQueue.getPatientsWaiting());
+        if (newQueue.getPatients() != null && !newQueue.getPatients().isEmpty()) {
+            List<Patient> newQueuePatients = new LinkedList<>(newQueue.getPatients());
             newQueuePatients.addAll(patients);
-            newQueue.setPatientsWaiting(newQueuePatients);
+            newQueue.setPatients(newQueuePatients);
         } else {
-            newQueue.setPatientsWaiting(patients);
+            newQueue.setPatients(patients);
         }
 
         refreshQueue(newQueue);
@@ -293,9 +292,9 @@ public class QueueService {
         if (queue.isLocked()) {
             return;
         }
-        if (queue.getPatientsConfirmed().size() >= 8) {
+        if (queue.getConfirmedPatients().size() >= 8) {
             queue.setLocked(true);
-            if (queue.getPatientsWaiting() != null && !queue.getPatientsWaiting().isEmpty()) {
+            if (queue.getWaitingPatients() != null && !queue.getWaitingPatients().isEmpty()) {
                 transferPatientsFromLockedQueue(queue);
             }
             queueRepository.save(queue);
@@ -306,7 +305,7 @@ public class QueueService {
         List<Queue> unlockedQueues = queueRepository.findQueuesByLockedFalseAndDateAfter(LocalDate.now());
         List<Queue> lockedQueues = queueRepository.findQueuesByLockedTrueAndDateAfter(LocalDate.now());
         List<LocalDate> lockedQueuesDates = lockedQueues.stream()
-                .map(queue -> queue.getDate())
+                .map(Queue::getDate)
                 .collect(Collectors.toList());
 
         if (unlockedQueues.size() > 1) {
@@ -317,20 +316,22 @@ public class QueueService {
 
         Queue newQueue = findNewQueue(lockedQueue.getDate(), unlockedQueues, lockedQueuesDates);
 
-        lockedQueue.getPatientsWaiting().forEach(patient -> patient.setQueue(newQueue));
-        lockedQueue.getPatientsWaiting().forEach(patient -> patient.setStatus(patientStatusRepository
+        lockedQueue.getWaitingPatients().forEach(patient -> patient.setQueue(newQueue));
+        lockedQueue.getWaitingPatients().forEach(patient -> patient.setStatus(patientStatusRepository
                 .findPatientStatusByName(PatientStatusName.WAITING.name())
                 .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_STATUS_NOT_FOUND))));
 
-        if (newQueue.getPatientsWaiting() != null && !newQueue.getPatientsWaiting().isEmpty()) {
-            List<Patient> newQueuePatients = new LinkedList<>(newQueue.getPatientsWaiting());
-            newQueuePatients.addAll(lockedQueue.getPatientsWaiting());
-            newQueue.setPatientsWaiting(newQueuePatients);
+        if (newQueue.getPatients() != null && !newQueue.getPatients().isEmpty()) {
+            List<Patient> newQueuePatients = new LinkedList<>(newQueue.getPatients());
+            newQueuePatients.addAll(lockedQueue.getWaitingPatients());
+            newQueue.setPatients(newQueuePatients);
         } else {
-            newQueue.setPatientsWaiting(lockedQueue.getPatientsWaiting());
+            newQueue.setPatients(lockedQueue.getWaitingPatients());
         }
 
-        lockedQueue.setPatientsWaiting(new ArrayList<>());
+        List<Patient> lockedQueuePatients = new LinkedList<>(lockedQueue.getPatients());
+        lockedQueuePatients.removeAll(lockedQueue.getWaitingPatients());
+        lockedQueue.setPatients(lockedQueuePatients);
         refreshQueue(newQueue);
         queueRepository.save(newQueue);
     }
@@ -339,28 +340,19 @@ public class QueueService {
         Queue queue = queueRepository.findQueueByDate(date).orElseThrow(()
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
 
-        List<Patient> waitingPatients = new LinkedList<>(queue.getPatientsWaiting());
-        List<Patient> confirmedPatients = new LinkedList<>(queue.getPatientsConfirmed());
-
-        waitingPatients.remove(patient);
-        confirmedPatients.add(patient);
-
-        queue.setPatientsWaiting(waitingPatients);
-        queue.setPatientsConfirmed(confirmedPatients);
-
         refreshQueue(queue);
 
         queueRepository.save(queue);
     }
 
     public void removePatientFromQueue(Patient patient) {
-        Queue queue = queueRepository.findQueueByPatientsWaitingContains(patient).orElseThrow(()
+        Queue queue = queueRepository.findQueueByPatientsContains(patient).orElseThrow(()
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
 
-        List<Patient> waitingPatients = new LinkedList<>(queue.getPatientsWaiting());
-        waitingPatients.remove(patient);
+        List<Patient> patients = new LinkedList<>(queue.getPatients());
+        patients.remove(patient);
 
-        queue.setPatientsWaiting(waitingPatients);
+        queue.setPatients(patients);
 
         refreshQueue(queue);
 
@@ -370,14 +362,14 @@ public class QueueService {
     public void checkIfPatientIsInAQueueForDate(LocalDate date, Patient patient) {
         Queue queue = queueRepository.findQueueByDate(date).orElseThrow(()
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
-        if (!queue.getPatientsWaiting().contains(patient)) {
+        if (!queue.getPatients().contains(patient)) {
             throw new BadRequestException(ErrorKey.PATIENT_WRONG_QUEUE);
         }
     }
 
     public void refreshQueue(Queue queue) {
         if (!queue.isLocked()) {
-            queue.setPatientsWaiting(calculatePatientsPositions(queue));
+            queue.setPatients(calculatePatientsPositions(queue));
         }
     }
 
@@ -385,39 +377,39 @@ public class QueueService {
         List<Queue> pastQueues = queueRepository.findQueuesByDateBefore(LocalDate.now());
 
         return pastQueues.stream()
-                .map(Queue::getPatientsWaiting)
+                .map(Queue::getWaitingPatients)
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
     }
 
     private List<Patient> calculatePatientsPositions(Queue queue) {
-        List<Patient> waitingPatients = new LinkedList<>(queue.getPatientsWaiting());
+        List<Patient> patients = new LinkedList<>(queue.getPatients());
 
-        if (waitingPatients.isEmpty()) {
-            return waitingPatients;
+        if (patients.isEmpty()) {
+            return patients;
         }
 
-        if (waitingPatients.size() == 1) {
-            rewritePatientsPositions(waitingPatients);
-            return waitingPatients;
+        if (patients.size() == 1) {
+            rewritePatientsPositions(patients);
+            return patients;
         }
 
-        List<Patient> sortedUrgentPatients = waitingPatients.stream()
+        List<Patient> sortedUrgentPatients = patients.stream()
                 .filter(Patient::isUrgent)
                 .sorted(Comparator.comparing(Patient::getAdmissionDate))
                 .collect(Collectors.toCollection(LinkedList::new));
 
-        waitingPatients.removeAll(sortedUrgentPatients);
+        patients.removeAll(sortedUrgentPatients);
 
-        List<Patient> sortedCathererOrSurgeryPatients = waitingPatients.stream()
+        List<Patient> sortedCathererOrSurgeryPatients = patients.stream()
                 .filter(patient -> patient.getDiseases().stream()
                         .anyMatch(disease -> disease.isCathererRequired() || disease.isSurgeryRequired()))
                 .sorted(Comparator.comparing(Patient::getAdmissionDate))
                 .collect(Collectors.toCollection(LinkedList::new));
 
-        waitingPatients.removeAll(sortedCathererOrSurgeryPatients);
+        patients.removeAll(sortedCathererOrSurgeryPatients);
 
-        List<Patient> otherPatients = waitingPatients.stream()
+        List<Patient> otherPatients = patients.stream()
                 .sorted(Comparator.comparing(Patient::getAdmissionDate))
                 .collect(Collectors.toCollection(LinkedList::new));
 

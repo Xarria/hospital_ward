@@ -1,5 +1,6 @@
 package com.backend.hospitalward.model;
 
+import com.backend.hospitalward.model.common.PatientStatusName;
 import lombok.AccessLevel;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -28,25 +30,26 @@ public class Queue {
 
     @Future
     @NotNull
-//    @Temporal(TemporalType.DATE)
     @Column(name = "date", nullable = false, unique = true)
     private LocalDate date;
 
     @OneToMany(mappedBy = "queue", fetch = FetchType.EAGER)
-    List<Patient> patientsWaiting;
-
-    @OneToMany(mappedBy = "queue", fetch = FetchType.EAGER)
-    List<Patient> patientsConfirmed;
+    List<Patient> patients;
 
     @NotNull
     @Column(name = "locked", nullable = false)
     private boolean locked;
 
-    public List<Patient> getAllPatients(){
-        List<Patient> allPatients = new ArrayList<>();
-        allPatients.addAll(patientsWaiting);
-        allPatients.addAll(patientsConfirmed);
-        return allPatients;
+    public List<Patient> getWaitingPatients(){
+        return patients.stream()
+                .filter(p -> !p.getStatus().getName().equals(PatientStatusName.CONFIRMED_TWICE.name()))
+                .collect(Collectors.toList());
+    }
+
+    public List<Patient> getConfirmedPatients(){
+        return patients.stream()
+                .filter(p -> p.getStatus().getName().equals(PatientStatusName.CONFIRMED_TWICE.name()))
+                .collect(Collectors.toList());
     }
 
 }
