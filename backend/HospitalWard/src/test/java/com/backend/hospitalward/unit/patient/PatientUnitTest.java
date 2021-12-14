@@ -233,11 +233,13 @@ class PatientUnitTest {
         when(patientRepository.findPatientById(anyLong())).thenReturn(Optional.of(patientOther));
         when(covidStatusRepository.findCovidStatusByStatus(any())).thenReturn(Optional.of(csVaccinated));
         when(accountRepository.findAccountByLogin("requestedBy")).thenReturn(Optional.of(Account.builder().build()));
+        when(diseaseRepository.findDiseaseByName(any())).thenReturn(Optional.of(Disease.builder().build()));
 
-        patientService.updatePatient(Patient.builder().sex("M").urgent(true).build(), null, null,
+        patientService.updatePatient(Patient.builder().sex("M").urgent(true).build(), List.of("disease"), null,
                 "VACCINATED", "requestedBy");
 
         verify(patientRepository).save(patientOther);
+        verify(queueService).refreshQueue(patientOther.getQueue());
 
         assertEquals("M", patientOther.getSex());
         assertFalse(patientOther.isUrgent());

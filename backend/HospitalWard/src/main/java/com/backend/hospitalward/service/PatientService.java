@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.PersistenceException;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -76,14 +75,14 @@ public class PatientService {
             throw new ConflictException(ErrorKey.NO_PERMISSION_TO_CREATE_URGENT_PATIENT);
         }
 
-        if (createdBy != null) {
-            Account createdByAccount = accountRepository.findAccountByLogin(createdBy).orElseThrow(()
-                    -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
-            if (patient.isUrgent() && !hasPermissionToCreateUrgentPatient(createdByAccount)) {
-                throw new ConflictException(ErrorKey.NO_PERMISSION_TO_CREATE_URGENT_PATIENT);
-            }
-            patient.setCreatedBy(createdByAccount);
+
+        Account createdByAccount = accountRepository.findAccountByLogin(createdBy).orElseThrow(()
+                -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
+        if (patient.isUrgent() && !hasPermissionToCreateUrgentPatient(createdByAccount)) {
+            throw new ConflictException(ErrorKey.NO_PERMISSION_TO_CREATE_URGENT_PATIENT);
         }
+        patient.setCreatedBy(createdByAccount);
+
 
         patient.setDiseases(getDiseasesFromDatabase(diseases));
         patient.setCovidStatus(covidStatusRepository.findCovidStatusByStatus(covidStatus).orElseThrow(()
@@ -263,6 +262,7 @@ public class PatientService {
         }
         if (diseases != null && !diseases.isEmpty()) {
             patientFromDB.setDiseases(getDiseasesFromDatabase(diseases));
+            queueService.refreshQueue(patientFromDB.getQueue());
         }
         if (mainDoctor != null && !mainDoctor.isEmpty()) {
             setMainDoctor(patientFromDB, mainDoctor);

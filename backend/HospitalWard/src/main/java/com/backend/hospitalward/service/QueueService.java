@@ -368,9 +368,10 @@ public class QueueService {
     }
 
     public void refreshQueue(Queue queue) {
-        if (!queue.isLocked()) {
+//        zakomentowane bo przy dodawaniu pilnego do zamkniętej kolejki nie ustala mu pozycji
+//        if (!queue.isLocked()) {
             queue.setPatients(calculatePatientsPositions(queue));
-        }
+//        }
     }
 
     public List<Patient> getWaitingPatientsForPastQueues() {

@@ -117,7 +117,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
                 () -> assertEquals(0, newPatient.getPositionInQueue()),
                 () -> assertEquals(currentQueuesCount + 1, queueService.getAllCurrentQueues().size()),
                 () -> assertEquals(List.of(newPatient),
-                        queueService.getQueueForDate(newPatient.getAdmissionDate()).getPatients())
+                        queueService.getQueueForDate(newPatient.getAdmissionDate()).getWaitingPatients())
         );
     }
 
@@ -127,6 +127,8 @@ class PatientIntegrationTest extends AbstractTestContainer {
         int currentQueuesCount = queueService.getAllCurrentQueues().size();
         Queue queue = queueService.getQueueForDate(LocalDate.of(2022, 3, 17));
         int patientsInQueueCount = queue.getPatients().size();
+        int patientsWaitingCount = queue.getWaitingPatients().size();
+        int patientConfirmedCount = queue.getConfirmedPatients().size();
 
         HttpEntity<PatientCreateRequest> patientCreateRequestHttpEntity = new HttpEntity<>(
                 PatientCreateRequest.builder()
@@ -140,6 +142,51 @@ class PatientIntegrationTest extends AbstractTestContainer {
                         .pesel("45565555555")
                         .referralNr("121574234")
                         .sex("F")
+                        .urgent(false).build(), getHttpHeaders()
+        );
+
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients"),
+                HttpMethod.POST, patientCreateRequestHttpEntity, String.class);
+
+        Patient newPatient = patientService.getPatientById((long) patientService.getAllPatients().size());
+
+        assertAll(
+                () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
+                () -> assertEquals("GIRL", newPatient.getPatientType().getName()),
+                () -> assertEquals("VACCINATED", newPatient.getCovidStatus().getStatus()),
+                () -> assertEquals(2, newPatient.getPositionInQueue()),
+                () -> assertEquals(currentQueuesCount, queueService.getAllCurrentQueues().size()),
+                () -> assertTrue(queueService.getQueueForDate(newPatient.getAdmissionDate()).getPatients()
+                        .contains(newPatient)),
+                () -> assertEquals(patientsInQueueCount + 1, queueService.getQueueForDate(
+                        newPatient.getAdmissionDate()).getPatients().size()),
+                () -> assertEquals(patientsWaitingCount + 1, queueService.getQueueForDate(
+                        newPatient.getAdmissionDate()).getWaitingPatients().size()),
+                () -> assertEquals(patientConfirmedCount, queueService.getQueueForDate(
+                        newPatient.getAdmissionDate()).getConfirmedPatients().size())
+        );
+    }
+
+    @Test
+    void shouldCreateUrgentPatientWhenQueueLocked() {
+        int currentQueuesCount = queueService.getAllCurrentQueues().size();
+        Queue queue = queueService.getQueueForDate(LocalDate.of(2022, 3, 15));
+        int patientsInQueueCount = queue.getPatients().size();
+        int patientsWaitingCount = queue.getWaitingPatients().size();
+        int patientConfirmedCount = queue.getConfirmedPatients().size();
+
+        HttpEntity<PatientCreateRequest> patientCreateRequestHttpEntity = new HttpEntity<>(
+                PatientCreateRequest.builder()
+                        .name("Alicja")
+                        .surname("Nowak")
+                        .age("7Y")
+                        .covidStatus("VACCINATED")
+                        .diseases(List.of("Katar"))
+                        .admissionDate(LocalDate.of(2022, 3, 15))
+                        .mainDoctor("jan.kowalski")
+                        .pesel("45565555555")
+                        .referralNr("12159908984")
+                        .sex("F")
                         .urgent(true).build(), getHttpHeaders()
         );
 
@@ -152,17 +199,17 @@ class PatientIntegrationTest extends AbstractTestContainer {
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
                 () -> assertEquals("URGENT", newPatient.getPatientType().getName()),
                 () -> assertEquals("VACCINATED", newPatient.getCovidStatus().getStatus()),
-                () -> assertEquals(0, newPatient.getPositionInQueue()),
+                () -> assertEquals(2, newPatient.getPositionInQueue()),
                 () -> assertEquals(currentQueuesCount, queueService.getAllCurrentQueues().size()),
                 () -> assertTrue(queueService.getQueueForDate(newPatient.getAdmissionDate()).getPatients()
                         .contains(newPatient)),
                 () -> assertEquals(patientsInQueueCount + 1, queueService.getQueueForDate(
-                        newPatient.getAdmissionDate()).getPatients().size())
+                        newPatient.getAdmissionDate()).getPatients().size()),
+                () -> assertEquals(patientsWaitingCount + 1, queueService.getQueueForDate(
+                        newPatient.getAdmissionDate()).getWaitingPatients().size()),
+                () -> assertEquals(patientConfirmedCount, queueService.getQueueForDate(
+                        newPatient.getAdmissionDate()).getConfirmedPatients().size())
         );
-    }
-
-    @Test
-    void createUrgentPatient() {
     }
 
     @Test
