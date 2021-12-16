@@ -7,6 +7,7 @@ import com.backend.hospitalward.exception.NotFoundException;
 import com.backend.hospitalward.model.Account;
 import com.backend.hospitalward.model.Disease;
 import com.backend.hospitalward.model.Patient;
+import com.backend.hospitalward.model.Queue;
 import com.backend.hospitalward.model.common.AccessLevelName;
 import com.backend.hospitalward.model.common.PatientStatusName;
 import com.backend.hospitalward.repository.*;
@@ -57,8 +58,9 @@ public class PatientService {
     }
 
     public Patient getPatientById(Long id) {
-        return patientRepository.findPatientById(id).orElseThrow(()
+        Patient patient = patientRepository.findPatientById(id).orElseThrow(()
                 -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
+        return patient;
     }
 
     public void createPatient(Patient patient, String createdBy, List<String> diseases, String mainDoctorLogin,
@@ -103,9 +105,9 @@ public class PatientService {
         queueService.addPatientToQueue(patient);
     }
 
-    public void updatePatient(Patient patient, List<String> diseases, String mainDoctor, String covidStatus,
+    public void updatePatient(long id, Patient patient, List<String> diseases, String mainDoctor, String covidStatus,
                               String requestedBy) {
-        Patient patientFromDB = patientRepository.findPatientById(patient.getId()).orElseThrow(()
+        Patient patientFromDB = patientRepository.findPatientById(id).orElseThrow(()
                 -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
 
         setPatientFields(patient, diseases, mainDoctor, covidStatus, patientFromDB, requestedBy);
@@ -114,7 +116,7 @@ public class PatientService {
     }
 
 
-    public void confirmPatient(Long id, LocalDate queueDate) {
+    public void confirmPatient(Long id) {
         Patient patient = patientRepository.findPatientById(id).orElseThrow(()
                 -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
 
@@ -122,9 +124,9 @@ public class PatientService {
             throw new BadRequestException(ErrorKey.PATIENT_CONFIRMED);
         }
 
-        queueService.checkIfPatientIsInAQueueForDate(queueDate, patient);
-
         setPatientStatus(patient);
+
+        LocalDate queueDate = patient.getQueue().getDate();
 
         if (patient.getStatus().getName().equals(PatientStatusName.CONFIRMED_TWICE.name())) {
 
@@ -134,14 +136,13 @@ public class PatientService {
                 } else {
                     throw new ConflictException(ErrorKey.QUEUE_LOCKED);
                 }
-            } else {
-                queueService.confirmPatient(patient, queueDate);
             }
 
-            queueService.lockQueueForDateIfNecessary(queueDate);
             patient.setAdmissionDate(queueDate);
         }
         patientRepository.save(patient);
+
+        queueService.lockQueueForDateIfNecessary(queueDate);
     }
 
     public void changePatientAdmissionDate(Long id, LocalDate date, String modifiedBy) {
@@ -259,6 +260,8 @@ public class PatientService {
         }
         if (patient.getSex() != null && (patient.getSex().equals("M") || patient.getSex().equals("F"))) {
             patientFromDB.setSex(patient.getSex());
+            patientFromDB.setPatientType(patientTypeRepository.findPatientTypeByName(patient.findPatientType())
+                    .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_TYPE_NOT_FOUND)));
         }
         if (diseases != null && !diseases.isEmpty()) {
             patientFromDB.setDiseases(getDiseasesFromDatabase(diseases));
@@ -285,7 +288,7 @@ public class PatientService {
         }
         Account modifiedBy = accountRepository.findAccountByLogin(requestedBy).orElseThrow(()
                 -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
-        patient.setModifiedBy(modifiedBy);
-        patient.setModificationDate(Timestamp.from(Instant.now()));
+        patientFromDB.setModifiedBy(modifiedBy);
+        patientFromDB.setModificationDate(Timestamp.from(Instant.now()));
     }
 }

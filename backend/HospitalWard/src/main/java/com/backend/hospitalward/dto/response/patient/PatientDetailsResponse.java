@@ -3,6 +3,10 @@ package com.backend.hospitalward.dto.response.patient;
 import com.backend.hospitalward.dto.BaseDTO;
 import com.backend.hospitalward.dto.response.disease.DiseaseGeneralResponse;
 import com.backend.hospitalward.util.etag.SignableDTO;
+import com.backend.hospitalward.util.serialization.LocalDateJsonDeserializer;
+import com.backend.hospitalward.util.serialization.LocalDateJsonSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
@@ -28,6 +32,8 @@ public class PatientDetailsResponse extends BaseDTO implements SignableDTO {
 
     String referralNr;
 
+    @JsonDeserialize(using = LocalDateJsonDeserializer.class)
+    @JsonSerialize(using = LocalDateJsonSerializer.class)
     LocalDate referralDate;
 
     String patientType;
@@ -40,6 +46,8 @@ public class PatientDetailsResponse extends BaseDTO implements SignableDTO {
 
     String surname;
 
+    @JsonDeserialize(using = LocalDateJsonDeserializer.class)
+    @JsonSerialize(using = LocalDateJsonSerializer.class)
     LocalDate admissionDate;
 
     String status;

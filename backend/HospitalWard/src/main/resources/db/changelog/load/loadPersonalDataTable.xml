@@ -11,7 +11,7 @@
                   relativeToChangelogFile="true">
             <column header="id" name="id" type="numeric"/>
             <column header="pesel" name="pesel" type="string"/>
-            <column header="age" name="age" type="numeric"/>
+            <column header="age" name="age" type="string"/>
             <column header="sex" name="sex" type="string"/>
             <column header="name" name="name" type="string"/>
             <column header="surname" name="surname" type="string"/>

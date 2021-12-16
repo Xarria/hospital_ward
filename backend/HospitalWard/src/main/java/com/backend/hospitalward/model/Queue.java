@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import javax.validation.constraints.Future;
@@ -33,7 +35,7 @@ public class Queue {
     @Column(name = "date", nullable = false, unique = true)
     private LocalDate date;
 
-    @OneToMany(mappedBy = "queue", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "queue", cascade = CascadeType.REFRESH)
     List<Patient> patients;
 
     @NotNull

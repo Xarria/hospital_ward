@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.PersistenceException;
-import javax.ws.rs.core.Link;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
 import java.util.*;
@@ -336,14 +335,14 @@ public class QueueService {
         queueRepository.save(newQueue);
     }
 
-    public void confirmPatient(Patient patient, LocalDate date) {
-        Queue queue = queueRepository.findQueueByDate(date).orElseThrow(()
-                -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
-
-        refreshQueue(queue);
-
-        queueRepository.save(queue);
-    }
+//    public void confirmPatient(Patient patient, LocalDate date) {
+//        Queue queue = queueRepository.findQueueByDate(date).orElseThrow(()
+//                -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
+//
+//        refreshQueue(queue);
+//
+//        queueRepository.save(queue);
+//    }
 
     public void removePatientFromQueue(Patient patient) {
         Queue queue = queueRepository.findQueueByPatientsContains(patient).orElseThrow(()

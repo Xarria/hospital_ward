@@ -61,22 +61,6 @@ public interface QueueMapper {
         return null;
     }
 
-    @Named("mapDateToLocalDate")
-    default LocalDate mapAdmissionDateToLocal(Date date) {
-        if (date != null) {
-            return date.toLocalDate();
-        }
-        return null;
-    }
-
-    @Named("mapLocalDateToDate")
-    default Date mapAdmissionDateToDate(LocalDate localDate) {
-        if (localDate != null) {
-            return Date.valueOf(localDate);
-        }
-        return null;
-    }
-
     QueueResponse toQueueResponse(Queue queue);
 
     @Mapping(target = "patientType", qualifiedByName = "mapPatientType")
@@ -84,7 +68,5 @@ public interface QueueMapper {
     @Mapping(target = "mainDoctor", qualifiedByName = "mapMainDoctor")
     @Mapping(target = "cathererRequired", source = "patient", qualifiedByName = "mapCathererRequired")
     @Mapping(target = "surgeryRequired", source = "patient", qualifiedByName = "mapSurgeryRequired")
-    @Mapping(target = "admissionDate", qualifiedByName = "mapDateToLocalDate")
-    @Mapping(target = "referralDate", qualifiedByName = "mapDateToLocalDate")
     PatientGeneralResponse toPatientGeneralResponse(Patient patient);
 }

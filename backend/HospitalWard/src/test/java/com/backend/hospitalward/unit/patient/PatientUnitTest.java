@@ -235,7 +235,7 @@ class PatientUnitTest {
         when(accountRepository.findAccountByLogin("requestedBy")).thenReturn(Optional.of(Account.builder().build()));
         when(diseaseRepository.findDiseaseByName(any())).thenReturn(Optional.of(Disease.builder().build()));
 
-        patientService.updatePatient(Patient.builder().sex("M").urgent(true).build(), List.of("disease"), null,
+        patientService.updatePatient(1L, Patient.builder().sex("M").urgent(true).build(), List.of("disease"), null,
                 "VACCINATED", "requestedBy");
 
         verify(patientRepository).save(patientOther);
@@ -252,7 +252,7 @@ class PatientUnitTest {
         when(covidStatusRepository.findCovidStatusByStatus(any())).thenReturn(Optional.of(csVaccinated));
         when(accountRepository.findAccountByLogin("requestedBy")).thenReturn(Optional.of(Account.builder().build()));
 
-        patientService.updatePatient(Patient.builder().sex("INVALID").urgent(true).build(), null, null,
+        patientService.updatePatient(1L, Patient.builder().sex("INVALID").urgent(true).build(), null, null,
                 "VACCINATED", "requestedBy");
 
         verify(patientRepository).save(patientOther);
@@ -266,7 +266,7 @@ class PatientUnitTest {
     void shouldThrowExceptionWhenUpdatePatientNotFound() {
         when(patientRepository.findPatientById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> patientService.updatePatient(Patient.builder().sex("INVALID")
+        assertThrows(NotFoundException.class, () -> patientService.updatePatient(1L, Patient.builder().sex("INVALID")
                         .urgent(true).build(), null, null, "VACCINATED",
                 "requestedBy"));
     }
@@ -274,15 +274,15 @@ class PatientUnitTest {
     @Test
     void confirmPatientStatusChangeToConfirmedTwice() {
         patientOther.setStatus(psConfirmedOnce);
+        patientOther.setQueue(Queue.builder().date(LocalDate.of(2022, 3, 7)).build());
 
         when(patientRepository.findPatientById(anyLong())).thenReturn(Optional.of(patientOther));
         when(patientStatusRepository.findPatientStatusByName(PatientStatusName.CONFIRMED_TWICE.name()))
                 .thenReturn(Optional.of(psConfirmedTwice));
         when(queueService.checkIfQueueForDateIsLocked(any())).thenReturn(false);
 
-        patientService.confirmPatient(1L, LocalDate.of(2022, 3, 7));
+        patientService.confirmPatient(1L);
 
-        verify(queueService).confirmPatient(any(), any());
         verify(patientRepository).save(patientOther);
 
         assertEquals(LocalDate.of(2022, 3, 7), patientOther.getAdmissionDate());
@@ -291,12 +291,13 @@ class PatientUnitTest {
     @Test
     void confirmPatientStatusChangeToConfirmedOnce() {
         patientOther.setStatus(psWaiting);
+        patientOther.setQueue(Queue.builder().date(LocalDate.of(2021, 3, 7)).build());
 
         when(patientRepository.findPatientById(anyLong())).thenReturn(Optional.of(patientOther));
         when(patientStatusRepository.findPatientStatusByName(PatientStatusName.CONFIRMED_ONCE.name()))
                 .thenReturn(Optional.of(psConfirmedOnce));
 
-        patientService.confirmPatient(1L, LocalDate.now());
+        patientService.confirmPatient(1L);
 
         verify(patientRepository).save(patientOther);
 
@@ -306,13 +307,14 @@ class PatientUnitTest {
     @Test
     void confirmPatientUrgentQueueLocked() {
         patientUrgent.setStatus(psConfirmedOnce);
+        patientUrgent.setQueue(Queue.builder().date(LocalDate.of(2022, 3, 7)).build());
 
         when(patientRepository.findPatientById(anyLong())).thenReturn(Optional.of(patientUrgent));
         when(patientStatusRepository.findPatientStatusByName(PatientStatusName.CONFIRMED_TWICE.name()))
                 .thenReturn(Optional.of(psConfirmedTwice));
         when(queueService.checkIfQueueForDateIsLocked(any())).thenReturn(true);
 
-        patientService.confirmPatient(1L, LocalDate.of(2022, 3, 7));
+        patientService.confirmPatient(1L);
 
         verify(queueService).switchPatients(any(), any());
         verify(patientRepository).save(patientUrgent);
@@ -323,14 +325,14 @@ class PatientUnitTest {
     @Test
     void shouldThrowExceptionWhenConfirmPatientQueueLocked() {
         patientOther.setStatus(psConfirmedOnce);
+        patientOther.setQueue(Queue.builder().date(LocalDate.of(2022, 3, 7)).build());
 
         when(patientRepository.findPatientById(anyLong())).thenReturn(Optional.of(patientOther));
         when(patientStatusRepository.findPatientStatusByName(PatientStatusName.CONFIRMED_TWICE.name()))
                 .thenReturn(Optional.of(psConfirmedTwice));
         when(queueService.checkIfQueueForDateIsLocked(any())).thenReturn(true);
 
-        assertThrows(ConflictException.class, () -> patientService.confirmPatient(1L,
-                LocalDate.of(2022, 3, 7)));
+        assertThrows(ConflictException.class, () -> patientService.confirmPatient(1L));
 
     }
 
@@ -340,7 +342,7 @@ class PatientUnitTest {
 
         when(patientRepository.findPatientById(anyLong())).thenReturn(Optional.of(patientOther));
 
-        assertThrows(BadRequestException.class, () -> patientService.confirmPatient(1L, LocalDate.now()));
+        assertThrows(BadRequestException.class, () -> patientService.confirmPatient(1L));
 
     }
 

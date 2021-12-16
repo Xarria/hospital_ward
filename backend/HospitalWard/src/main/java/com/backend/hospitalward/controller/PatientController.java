@@ -8,6 +8,7 @@ import com.backend.hospitalward.exception.BadRequestException;
 import com.backend.hospitalward.exception.ErrorKey;
 import com.backend.hospitalward.exception.PreconditionFailedException;
 import com.backend.hospitalward.mapper.PatientMapper;
+import com.backend.hospitalward.model.Patient;
 import com.backend.hospitalward.security.annotation.Authenticated;
 import com.backend.hospitalward.security.annotation.MedicAuthorities;
 import com.backend.hospitalward.security.annotation.TreatmentDirectorAuthority;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -84,25 +86,40 @@ public class PatientController {
     }
 
     @Authenticated
-    @PutMapping
-    public ResponseEntity<?> updatePatient(@RequestBody @Valid PatientUpdateRequest patientUpdateRequest,
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updatePatient(@PathVariable("id") long id,
+                                           @RequestBody @Valid PatientUpdateRequest patientUpdateRequest,
                                            @CurrentSecurityContext SecurityContext securityContext,
                                            @RequestHeader("If-Match") String eTag) {
 
         checkETagHeader(patientUpdateRequest, eTag);
 
-        patientService.updatePatient(patientMapper.toPatient(patientUpdateRequest), patientUpdateRequest.getDiseases(),
-                patientUpdateRequest.getMainDoctor(), patientUpdateRequest.getCovidStatus(),
+        Patient patient = patientMapper.toPatient(patientUpdateRequest);
+
+        patientService.updatePatient(id, patient, getDiseases(patientUpdateRequest),
+                getMainDoctor(patientUpdateRequest), getCovidStatus(patientUpdateRequest),
                 securityContext.getAuthentication().getName());
 
         return ResponseEntity.ok().build();
     }
 
+    private List<String> getDiseases(PatientUpdateRequest patientUpdateRequest) {
+        return patientUpdateRequest.getDiseases() != null ? patientUpdateRequest.getDiseases() : Collections.emptyList();
+    }
+
+    private String getMainDoctor(PatientUpdateRequest patientUpdateRequest) {
+        return patientUpdateRequest.getMainDoctor() != null ? patientUpdateRequest.getMainDoctor() : "";
+    }
+
+    private String getCovidStatus(PatientUpdateRequest patientUpdateRequest) {
+        return patientUpdateRequest.getCovidStatus() != null ? patientUpdateRequest.getCovidStatus() : "";
+    }
+
     @MedicAuthorities
     @PutMapping("/confirm/{id}")
-    public ResponseEntity<?> confirmPatient(@PathVariable("id") long id, @RequestBody LocalDate queueDate) {
+    public ResponseEntity<?> confirmPatient(@PathVariable("id") long id) {
 
-        patientService.confirmPatient(id, queueDate);
+        patientService.confirmPatient(id);
 
         return ResponseEntity.ok().build();
     }
@@ -120,7 +137,7 @@ public class PatientController {
     @TreatmentDirectorAuthority
     @PutMapping("/urgency/{id}")
     public ResponseEntity<?> changeUrgency(@PathVariable("id") long id, @RequestBody boolean urgent,
-                                                 @CurrentSecurityContext SecurityContext securityContext) {
+                                           @CurrentSecurityContext SecurityContext securityContext) {
 
         patientService.changePatientUrgency(id, urgent, securityContext.getAuthentication().getName());
 

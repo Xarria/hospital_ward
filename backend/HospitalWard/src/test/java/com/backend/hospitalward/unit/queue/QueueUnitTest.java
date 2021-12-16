@@ -539,35 +539,6 @@ class QueueUnitTest {
     }
 
     @Test
-    void confirmPatient() {
-        pSurgery2.setStatus(psConfirmedTwice);
-        when(queueRepository.findQueueByDate(any())).thenReturn(Optional.of(notFullCurrentQueue));
-
-        queueService.confirmPatient(pSurgery2, LocalDate.now());
-
-        verify(patientRepository, times(4)).save(any());
-        verify(queueRepository).save(any());
-
-        assertEquals(notFullCurrentQueue.getPatients().get(0), pUrgent);
-        assertEquals(notFullCurrentQueue.getPatients().get(1), pSurgery2);
-        assertTrue(notFullCurrentQueue.getConfirmedPatients().contains(pSurgery2));
-        assertFalse(notFullCurrentQueue.getWaitingPatients().contains(pSurgery2));
-        assertEquals(0, pUrgent.getPositionInQueue());
-
-    }
-
-    @Test
-    void shouldThrowExceptionWhenConfirmPatientQueueNotFound() {
-        when(queueRepository.findQueueByDate(any())).thenReturn(Optional.empty());
-
-        assertThrows(NotFoundException.class, () -> queueService.confirmPatient(pSurgery2, LocalDate.now()));
-
-        verify(patientRepository, never()).save(any());
-        verify(queueRepository, never()).save(any());
-
-    }
-
-    @Test
     void removePatientFromQueue() {
         //old order: pUrgent, pUrgent2, pOther3, pOther4, pSurgery2, pSurgery3
 

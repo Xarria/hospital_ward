@@ -1,21 +1,25 @@
 package com.backend.hospitalward.integration.patient;
 
 import com.backend.hospitalward.common.AccountConstants;
-import com.backend.hospitalward.common.DiseaseConstants;
 import com.backend.hospitalward.dto.request.auth.Credentials;
-import com.backend.hospitalward.dto.request.disease.DiseaseCreateRequest;
 import com.backend.hospitalward.dto.request.patient.PatientCreateRequest;
+import com.backend.hospitalward.dto.request.patient.PatientUpdateRequest;
+import com.backend.hospitalward.dto.response.disease.DiseaseGeneralResponse;
+import com.backend.hospitalward.dto.response.patient.PatientDetailsResponse;
+import com.backend.hospitalward.dto.response.patient.PatientGeneralResponse;
+import com.backend.hospitalward.exception.NotFoundException;
 import com.backend.hospitalward.integration.AbstractTestContainer;
 import com.backend.hospitalward.model.Patient;
 import com.backend.hospitalward.model.Queue;
-import com.backend.hospitalward.repository.UrlRepository;
 import com.backend.hospitalward.security.SecurityConstants;
-import com.backend.hospitalward.service.AccountService;
 import com.backend.hospitalward.service.PatientService;
 import com.backend.hospitalward.service.QueueService;
+import com.backend.hospitalward.util.serialization.LocalDateJsonDeserializer;
+import com.backend.hospitalward.util.serialization.LocalDateJsonSerializer;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
+import liquibase.pro.packaged.O;
 import liquibase.pro.packaged.T;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -24,11 +28,17 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.testcontainers.shaded.com.fasterxml.jackson.core.type.TypeReference;
 
+import java.lang.reflect.Type;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -41,8 +51,8 @@ class PatientIntegrationTest extends AbstractTestContainer {
     QueueService queueService;
     @Autowired
     TestRestTemplate restTemplate;
-    Gson gson;
     String token;
+    ObjectMapper objectMapper;
 
     @BeforeEach
     public void authenticate() {
@@ -56,10 +66,8 @@ class PatientIntegrationTest extends AbstractTestContainer {
     }
 
     @BeforeAll
-    public void setUpGsonAndJsonMapper() {
-        GsonBuilder builder = new GsonBuilder();
-        builder.setDateFormat("yyyy-MM-dd hh:mm:ss");
-        gson = builder.create();
+    public void setUpJsonMapper() {
+        objectMapper = new ObjectMapper();
     }
 
     @NotNull
@@ -75,17 +83,26 @@ class PatientIntegrationTest extends AbstractTestContainer {
         return new HttpEntity<>(null, getHttpHeaders());
     }
 
+
     @Order(1)
     @Test
-    void getAllPatients() {
+    void getPatientById() throws JsonProcessingException {
+        Patient patient = patientService.getPatientById(20L);
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/20")
+                , HttpMethod.GET, getJwtHttpEntity(), String.class);
+
+        PatientDetailsResponse patientDetailsResponse = objectMapper.readValue(response.getBody(), PatientDetailsResponse.class);
+
+        assertAll(
+                () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
+                () -> assertEquals(patient.getName(), patientDetailsResponse.getName()),
+                () -> assertEquals(patient.getDiseases().size(), patientDetailsResponse.getDiseases().size()),
+                () -> assertEquals(patient.getDiseases().get(0).getName(),
+                        patientDetailsResponse.getDiseases().get(0).getName())
+        );
     }
 
     @Order(2)
-    @Test
-    void getPatientById() {
-    }
-
-    @Order(3)
     @Test
     void shouldCreateNewQueueWhenCreatePatientWithNonExistingDate() {
         int currentQueuesCount = queueService.getAllCurrentQueues().size();
@@ -121,7 +138,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
         );
     }
 
-    @Order(4)
+    @Order(3)
     @Test
     void shouldAddPatientToExistingQueueWhenCreatePatient() {
         int currentQueuesCount = queueService.getAllCurrentQueues().size();
@@ -167,6 +184,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
         );
     }
 
+    @Order(4)
     @Test
     void shouldCreateUrgentPatientWhenQueueLocked() {
         int currentQueuesCount = queueService.getAllCurrentQueues().size();
@@ -199,7 +217,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
                 () -> assertEquals("URGENT", newPatient.getPatientType().getName()),
                 () -> assertEquals("VACCINATED", newPatient.getCovidStatus().getStatus()),
-                () -> assertEquals(2, newPatient.getPositionInQueue()),
+                () -> assertEquals(3, newPatient.getPositionInQueue()),
                 () -> assertEquals(currentQueuesCount, queueService.getAllCurrentQueues().size()),
                 () -> assertTrue(queueService.getQueueForDate(newPatient.getAdmissionDate()).getPatients()
                         .contains(newPatient)),
@@ -212,23 +230,297 @@ class PatientIntegrationTest extends AbstractTestContainer {
         );
     }
 
+    @Order(5)
     @Test
-    void updatePatient() {
+    void shouldNotChangePatientPositionWhenUpdatePatientWithoutDisease() {
+        Long version = patientService.getPatientById(20L).getVersion();
+
+        ResponseEntity<String> responseGet = restTemplate.exchange(getUrlWithPort("/patients/20")
+                , HttpMethod.GET, getJwtHttpEntity(), String.class);
+
+        String etag = Objects.requireNonNull(responseGet.getHeaders().get(HttpHeaders.ETAG)).get(0);
+
+        HttpHeaders headers = getHttpHeaders();
+        headers.add(HttpHeaders.IF_MATCH, etag.substring(1, etag.length() - 1));
+
+        Patient patient = patientService.getPatientById(20L);
+        int currentPosition = patient.getPositionInQueue();
+
+        assertEquals("BOY", patient.getPatientType().getName());
+        assertEquals("Dawid", patient.getName());
+
+        HttpEntity<PatientUpdateRequest> patientUpdateRequestHttpEntity = new HttpEntity<>(
+                PatientUpdateRequest.builder()
+                        .name("Norbert")
+                        .version(version)
+                        .age("5Y").build(), headers
+        );
+
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/20"),
+                HttpMethod.PUT, patientUpdateRequestHttpEntity, String.class);
+
+        Patient updatedPatient = patientService.getPatientById(20L);
+
+        assertAll(
+                () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
+                () -> assertEquals("UNDER_6", updatedPatient.getPatientType().getName()),
+                () -> assertEquals("Norbert", updatedPatient.getName()),
+                () -> assertEquals("5Y", updatedPatient.getAge()),
+                () -> assertEquals(currentPosition, updatedPatient.getPositionInQueue())
+        );
     }
 
+    @Order(6)
     @Test
-    void confirmPatient() {
+    void shouldChangePatientPositionWhenUpdatePatientDisease() {
+        Long version = patientService.getPatientById(22L).getVersion();
+
+        ResponseEntity<String> responseGet = restTemplate.exchange(getUrlWithPort("/patients/22")
+                , HttpMethod.GET, getJwtHttpEntity(), String.class);
+
+        String etag = Objects.requireNonNull(responseGet.getHeaders().get(HttpHeaders.ETAG)).get(0);
+
+        HttpHeaders headers = getHttpHeaders();
+        headers.add(HttpHeaders.IF_MATCH, etag.substring(1, etag.length() - 1));
+
+        Patient patient = patientService.getPatientById(22L);
+
+        assertEquals("Paulina", patient.getName());
+        assertEquals(0, patient.getPositionInQueue());
+
+        HttpEntity<PatientUpdateRequest> patientUpdateRequestHttpEntity = new HttpEntity<>(
+                PatientUpdateRequest.builder()
+                        .name("Janina")
+                        .version(version)
+                        .diseases(List.of("Kaszel")).build(), headers
+        );
+
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/22"),
+                HttpMethod.PUT, patientUpdateRequestHttpEntity, String.class);
+
+        Patient updatedPatient = patientService.getPatientById(22L);
+
+        assertAll(
+                () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
+                () -> assertEquals("Kaszel", updatedPatient.getDiseases().get(0).getName()),
+                () -> assertEquals("Janina", updatedPatient.getName()),
+                () -> assertEquals(2, updatedPatient.getPositionInQueue())
+        );
     }
 
+    @Order(7)
     @Test
-    void changeAdmissionDate() {
+    void shouldChangeStatusToConfirmedOnceAndLeaveQueueUnlockedWhenConfirmPatient() {
+        Patient patientBefore = patientService.getPatientById(22L);
+        LocalDate admissionDate = patientBefore.getAdmissionDate();
+        Queue patientQueue = patientBefore.getQueue();
+
+        assertAll(
+                () -> assertEquals("WAITING", patientBefore.getStatus().getName()),
+                () -> assertEquals(2, patientBefore.getPositionInQueue())
+        );
+
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/confirm/22"),
+                HttpMethod.PUT, getJwtHttpEntity(), String.class);
+
+        Patient confirmedPatient = patientService.getPatientById(22L);
+
+        assertAll(
+                () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
+                () -> assertEquals("CONFIRMED_ONCE", confirmedPatient.getStatus().getName()),
+                () -> assertEquals(2, confirmedPatient.getPositionInQueue()),
+                () -> assertEquals(admissionDate, confirmedPatient.getAdmissionDate()),
+                () -> assertEquals(patientQueue.getDate(), confirmedPatient.getQueue().getDate()),
+                () -> assertFalse(confirmedPatient.getQueue().isLocked()),
+                () -> assertTrue(confirmedPatient.getQueue().getWaitingPatients().contains(confirmedPatient))
+        );
     }
 
+    @Order(8)
     @Test
-    void changeUrgency() {
+    void shouldChangeStatusToConfirmedTwiceAndLeaveQueueUnlockedWhenConfirmPatient() {
+        Patient patientBefore = patientService.getPatientById(21L);
+        Queue patientQueue = patientBefore.getQueue();
+
+        assertAll(
+                () -> assertEquals("CONFIRMED_ONCE", patientBefore.getStatus().getName()),
+                () -> assertEquals(0, patientBefore.getPositionInQueue())
+        );
+
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/confirm/21"),
+                HttpMethod.PUT, getJwtHttpEntity(), String.class);
+
+        Patient confirmedPatient = patientService.getPatientById(21L);
+
+        assertAll(
+                () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
+                () -> assertEquals("CONFIRMED_TWICE", confirmedPatient.getStatus().getName()),
+                () -> assertEquals(0, confirmedPatient.getPositionInQueue()),
+                () -> assertEquals(confirmedPatient.getQueue().getDate(), confirmedPatient.getAdmissionDate()),
+                () -> assertEquals(patientQueue.getDate(), confirmedPatient.getQueue().getDate()),
+                () -> assertFalse(confirmedPatient.getQueue().isLocked()),
+                () -> assertTrue(confirmedPatient.getQueue().getConfirmedPatients().contains(confirmedPatient))
+        );
     }
 
+    @Order(9)
     @Test
-    void deletePatient() {
+    void shouldChangeStatusToConfirmedTwiceLockQueueAndTransferWaitingPatientsWhenConfirmPatient() {
+        Patient patientBefore = patientService.getPatientById(18L);
+        Queue patientQueue = patientBefore.getQueue();
+
+        Queue expectedNewQueue = queueService.getQueueForDate(LocalDate.of(2022, 3, 17));
+        int expectedQueueSizeWaiting = expectedNewQueue.getWaitingPatients().size();
+
+        assertAll(
+                () -> assertEquals("CONFIRMED_ONCE", patientBefore.getStatus().getName()),
+                () -> assertEquals(7, patientBefore.getPositionInQueue()),
+                () -> assertEquals(2, patientBefore.getQueue().getWaitingPatients().size())
+        );
+
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/confirm/18"),
+                HttpMethod.PUT, getJwtHttpEntity(), String.class);
+
+        Patient confirmedPatient = patientService.getPatientById(18L);
+        Queue expectedNewQueueAfter = queueService.getQueueForDate(LocalDate.of(2022, 3, 17));
+
+        assertAll(
+                () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
+                () -> assertEquals("CONFIRMED_TWICE", confirmedPatient.getStatus().getName()),
+                () -> assertEquals(7, confirmedPatient.getPositionInQueue()),
+                () -> assertEquals(confirmedPatient.getQueue().getDate(), confirmedPatient.getAdmissionDate()),
+                () -> assertEquals(patientQueue.getDate(), confirmedPatient.getQueue().getDate()),
+                () -> assertTrue(confirmedPatient.getQueue().isLocked()),
+                () -> assertTrue(confirmedPatient.getQueue().getConfirmedPatients().contains(confirmedPatient)),
+                () -> assertTrue(confirmedPatient.getQueue().getWaitingPatients().isEmpty()),
+                () -> assertEquals(expectedQueueSizeWaiting + 1, expectedNewQueueAfter.getWaitingPatients().size()),
+                () -> assertEquals(10L, expectedNewQueueAfter.getWaitingPatients().get(0).getId()),
+                () -> assertEquals(0, patientService.getPatientById(10L).getPositionInQueue()),
+                () -> assertEquals("WAITING", patientService.getPatientById(10L).getStatus().getName()),
+                () -> assertEquals(expectedNewQueue.getDate(), patientService.getPatientById(10L).getQueue().getDate())
+        );
+    }
+
+    @Order(10)
+    @Test
+    void shouldSwitchPatientsWhenQueueIsLockedAndConfirmPatient() {
+        Patient patientBefore = patientService.getPatientById(9L);
+        Queue patientQueue = queueService.getQueueForDate(patientBefore.getQueue().getDate());
+        long lowestPriorityPatientId = patientQueue.getPatients().stream()
+                .filter(p -> p.getPositionInQueue() == patientQueue.getPatients().size() - 1).findFirst().get().getId();
+        assertAll(
+                () -> assertEquals("CONFIRMED_ONCE", patientBefore.getStatus().getName()),
+                () -> assertEquals(2, patientBefore.getPositionInQueue()),
+                () -> assertEquals(2, patientBefore.getQueue().getWaitingPatients().size()),
+                () -> assertEquals("CONFIRMED_TWICE", patientService.getPatientById(lowestPriorityPatientId)
+                        .getStatus().getName())
+        );
+
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/confirm/9"),
+                HttpMethod.PUT, getJwtHttpEntity(), String.class);
+
+        Patient confirmedPatient = patientService.getPatientById(9L);
+        Queue expectedNewQueueAfter = queueService.getQueueForDate(LocalDate.of(2022, 3, 17));
+
+        assertAll(
+                () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
+                () -> assertEquals("CONFIRMED_TWICE", confirmedPatient.getStatus().getName()),
+                () -> assertEquals(9, confirmedPatient.getPositionInQueue()),
+                () -> assertEquals(confirmedPatient.getQueue().getDate(), confirmedPatient.getAdmissionDate()),
+                () -> assertEquals(patientQueue.getDate(), confirmedPatient.getQueue().getDate()),
+                () -> assertTrue(confirmedPatient.getQueue().isLocked()),
+                () -> assertTrue(confirmedPatient.getQueue().getConfirmedPatients().contains(confirmedPatient)),
+                () -> assertEquals(1, confirmedPatient.getQueue().getWaitingPatients().size()),
+                () -> assertFalse(confirmedPatient.getQueue().getPatients().contains(patientService.getPatientById(lowestPriorityPatientId))),
+                () -> assertTrue(expectedNewQueueAfter.getWaitingPatients().contains(patientService.getPatientById(lowestPriorityPatientId))),
+                () -> assertEquals(3, patientService.getPatientById(lowestPriorityPatientId).getPositionInQueue())
+        );
+    }
+
+    @Order(11)
+    @Test
+    void shouldChangeAdmissionDateToExistingQueue() {
+
+    }
+
+    @Order(12)
+    @Test
+    void shouldChangeAdmissionDateToExistingQueueUrgentPatient() {
+
+    }
+
+    @Order(13)
+    @Test
+    void shouldChangeAdmissionDateToNewQueue() {
+
+    }
+
+    @Order(14)
+    @Test
+    void shouldChangeUrgencyToUrgent() {
+        Patient patientBefore = patientService.getPatientById(22L);
+
+        assertAll(
+                () -> assertFalse(patientBefore.isUrgent()),
+                () -> assertEquals(4, patientBefore.getPositionInQueue())
+        );
+
+        HttpEntity<Boolean> httpEntity= new HttpEntity<>(true, getHttpHeaders());
+
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/urgency/22"),
+                HttpMethod.PUT, httpEntity, String.class);
+
+        Patient urgentPatient = patientService.getPatientById(22L);
+
+        assertAll(
+                () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
+                () -> assertTrue(urgentPatient.isUrgent()),
+                () -> assertEquals(0, urgentPatient.getPositionInQueue())
+        );
+    }
+
+    @Order(15)
+    @Test
+    void shouldChangeUrgencyToNotUrgent() {
+        Patient patientBefore = patientService.getPatientById(1L);
+
+        assertAll(
+                () -> assertTrue( patientBefore.isUrgent()),
+                () -> assertEquals(0, patientBefore.getPositionInQueue())
+        );
+
+        HttpEntity<Boolean> httpEntity= new HttpEntity<>(false, getHttpHeaders());
+
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/urgency/1"),
+                HttpMethod.PUT, httpEntity, String.class);
+
+        Patient urgentPatient = patientService.getPatientById(1L);
+
+        assertAll(
+                () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
+                () -> assertFalse(urgentPatient.isUrgent()),
+                () -> assertEquals(3, urgentPatient.getPositionInQueue())
+        );
+    }
+
+    @Order(16)
+    @Test
+    void shouldDeletePatientWhenNotConfirmed() {
+        Patient patient = patientService.getPatientById(22L);
+        LocalDate patientQueueDate = patient.getQueue().getDate();
+
+        assertAll(
+                () -> assertDoesNotThrow(() -> patientService.getPatientById(22L)),
+                () -> assertTrue(queueService.getQueueForDate(patientQueueDate).getPatients().contains(patient))
+        );
+
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/22"),
+                HttpMethod.DELETE, getJwtHttpEntity(), String.class);
+
+        assertAll(
+                () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
+                () -> assertThrows(NotFoundException.class, () -> patientService.getPatientById(22L)),
+                () -> assertFalse(queueService.getQueueForDate(patientQueueDate).getPatients().contains(patient))
+        );
     }
 }

@@ -40,7 +40,7 @@ public class Patient extends BaseEntity {
     @Column(name = "sex", nullable = false, table = "Personal_data")
     String sex;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = CascadeType.REFRESH)
     @JoinTable(
             name = "patient_disease",
             joinColumns = {@JoinColumn(name = "patient")},
@@ -57,7 +57,7 @@ public class Patient extends BaseEntity {
 
     //queue
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name="queue")
     Queue queue;
 
