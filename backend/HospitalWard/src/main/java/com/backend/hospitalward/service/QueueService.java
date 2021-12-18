@@ -136,7 +136,7 @@ public class QueueService {
         refreshQueue(oldQueue);
         refreshQueue(newQueue);
 
-        queueRepository.save(oldQueue);
+        changeQueueLockStatusIfNecessary(oldQueue.getDate());
         queueRepository.save(newQueue);
     }
 
@@ -285,19 +285,19 @@ public class QueueService {
         }
     }
 
-    public void lockQueueForDateIfNecessary(LocalDate date) {
+    public void changeQueueLockStatusIfNecessary(LocalDate date) {
         Queue queue = queueRepository.findQueueByDate(date).orElseThrow(()
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
-        if (queue.isLocked()) {
-            return;
-        }
         if (queue.getConfirmedPatients().size() >= 8) {
             queue.setLocked(true);
             if (queue.getWaitingPatients() != null && !queue.getWaitingPatients().isEmpty()) {
                 transferPatientsFromLockedQueue(queue);
             }
-            queueRepository.save(queue);
         }
+        else {
+            queue.setLocked(false);
+        }
+        queueRepository.save(queue);
     }
 
     private void transferPatientsFromLockedQueue(Queue lockedQueue) {

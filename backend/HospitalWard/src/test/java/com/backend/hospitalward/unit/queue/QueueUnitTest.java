@@ -459,7 +459,7 @@ class QueueUnitTest {
 
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.of(fullUnlockedAllConfirmedQueue));
 
-        queueService.lockQueueForDateIfNecessary(LocalDate.now());
+        queueService.changeQueueLockStatusIfNecessary(LocalDate.now());
 
         verify(queueRepository).save(queueCapture.capture());
 
@@ -478,7 +478,7 @@ class QueueUnitTest {
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.of(fullUnlockedCurrentQueueWithWaiting));
         //when
 
-        queueService.lockQueueForDateIfNecessary(LocalDate.now());
+        queueService.changeQueueLockStatusIfNecessary(LocalDate.now());
         //then
 
         verify(patientRepository).save(any());
@@ -513,7 +513,7 @@ class QueueUnitTest {
         fullLockedCurrentQueue.setDate(LocalDate.of(2021, 12, 7));
         //when
 
-        queueService.lockQueueForDateIfNecessary(LocalDate.of(2021, 12, 6));
+        queueService.changeQueueLockStatusIfNecessary(LocalDate.of(2021, 12, 6));
         //then
 
         verify(patientRepository).save(any());
@@ -533,7 +533,7 @@ class QueueUnitTest {
     void shouldThrowExceptionWhenLockQueueForDateIfNecessaryQueueNotFound() {
         when(queueRepository.findQueueByDate(any())).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> queueService.lockQueueForDateIfNecessary(
+        assertThrows(NotFoundException.class, () -> queueService.changeQueueLockStatusIfNecessary(
                 LocalDate.now()));
 
     }

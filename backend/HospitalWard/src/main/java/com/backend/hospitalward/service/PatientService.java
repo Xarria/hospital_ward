@@ -7,7 +7,6 @@ import com.backend.hospitalward.exception.NotFoundException;
 import com.backend.hospitalward.model.Account;
 import com.backend.hospitalward.model.Disease;
 import com.backend.hospitalward.model.Patient;
-import com.backend.hospitalward.model.Queue;
 import com.backend.hospitalward.model.common.AccessLevelName;
 import com.backend.hospitalward.model.common.PatientStatusName;
 import com.backend.hospitalward.repository.*;
@@ -142,7 +141,7 @@ public class PatientService {
         }
         patientRepository.save(patient);
 
-        queueService.lockQueueForDateIfNecessary(queueDate);
+        queueService.changeQueueLockStatusIfNecessary(queueDate);
     }
 
     public void changePatientAdmissionDate(Long id, LocalDate date, String modifiedBy) {
@@ -159,19 +158,21 @@ public class PatientService {
             throw new BadRequestException(ErrorKey.PATIENT_ALREADY_ADMITTED);
         }
 
-        if (!patient.isUrgent()) {
-            if (!queueService.checkIfPatientCanBeAddedForDate(patient.getAdmissionDate())) {
+        if (!queueService.checkIfPatientCanBeAddedForDate(date)) {
+            if (!patient.isUrgent()) {
                 throw new ConflictException(ErrorKey.QUEUE_LOCKED_OR_FULL);
             }
         }
-        queueService.switchPatientQueue(patient, date);
 
-        patient.setAdmissionDate(date);
         patient.setModificationDate(Timestamp.from(Instant.now()));
         patient.setStatus(patientStatusRepository.findPatientStatusByName(PatientStatusName.WAITING.name())
                 .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_STATUS_NOT_FOUND)));
         patient.setModifiedBy(accountRepository.findAccountByLogin(modifiedBy).orElseThrow(()
                 -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND)));
+
+        queueService.switchPatientQueue(patient, date);
+
+        patient.setAdmissionDate(date);
 
         patientRepository.save(patient);
     }
