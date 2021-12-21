@@ -62,7 +62,8 @@ public final class ErrorKey {
     public static final String INVALID_ADMISSION_DATE = "error.admission_date_weekend_or_friday";
     public static final String PATIENT_ALREADY_ADMITTED = "error.patient_already_admitted";
     public static final String PATIENT_NOT_URGENT = "error.patient_not_urgent";
-
+    public static final String CONTACT_INFO_REQUIRED = "error.phone_number_or_email_required";
+    public static final String REFERRAL_INFO_REQUIRED = "error.referral_number_or_date_required";
     //endregion
 
     //region queue

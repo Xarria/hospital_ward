@@ -79,7 +79,7 @@ class AccountIntegrationTests {
     int port;
 
     public String getUrlWithPort(String uri) {
-        return "http://localhost:" + port + uri;
+        return "https://localhost:" + port + uri;
     }
 
     @BeforeEach

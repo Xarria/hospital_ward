@@ -241,7 +241,6 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
         );
     }
 
-    //TODO when has a patient
     @Order(7)
     @Test
     void deleteDisease() {

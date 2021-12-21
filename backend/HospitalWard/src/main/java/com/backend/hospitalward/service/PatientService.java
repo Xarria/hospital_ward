@@ -57,9 +57,8 @@ public class PatientService {
     }
 
     public Patient getPatientById(Long id) {
-        Patient patient = patientRepository.findPatientById(id).orElseThrow(()
+        return patientRepository.findPatientById(id).orElseThrow(()
                 -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
-        return patient;
     }
 
     public void createPatient(Patient patient, String createdBy, List<String> diseases, String mainDoctorLogin,
@@ -67,6 +66,14 @@ public class PatientService {
         if (checkIfDateIsWeekendOrFriday(patient.getAdmissionDate()) ||
                 !checkIfDateIsAtLeastTwoWeeksFromToday(patient.getAdmissionDate())) {
             throw new ConflictException(ErrorKey.INVALID_ADMISSION_DATE);
+        }
+
+        if (patient.getPhoneNumber() == null && patient.getEmailAddress() == null) {
+            throw new ConflictException(ErrorKey.CONTACT_INFO_REQUIRED);
+        }
+
+        if (patient.getReferralDate() == null && patient.getReferralNr() == null) {
+            throw new ConflictException(ErrorKey.REFERRAL_INFO_REQUIRED);
         }
 
         setMainDoctor(patient, mainDoctorLogin);
@@ -120,7 +127,7 @@ public class PatientService {
                 -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
 
         if (patient.getStatus().getName().equals(PatientStatusName.CONFIRMED_TWICE.name())) {
-            throw new BadRequestException(ErrorKey.PATIENT_CONFIRMED);
+            throw new ConflictException(ErrorKey.PATIENT_CONFIRMED);
         }
 
         setPatientStatus(patient);
@@ -145,8 +152,7 @@ public class PatientService {
     }
 
     public void changePatientAdmissionDate(Long id, LocalDate date, String modifiedBy) {
-        if (checkIfDateIsWeekendOrFriday(date)
-                || !checkIfDateIsAtLeastTwoWeeksFromToday(date)) {
+        if (checkIfDateIsWeekendOrFriday(date)) {
             throw new ConflictException(ErrorKey.ADMISSION_DATE_WEEKEND);
         }
 

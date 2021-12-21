@@ -335,15 +335,6 @@ public class QueueService {
         queueRepository.save(newQueue);
     }
 
-//    public void confirmPatient(Patient patient, LocalDate date) {
-//        Queue queue = queueRepository.findQueueByDate(date).orElseThrow(()
-//                -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
-//
-//        refreshQueue(queue);
-//
-//        queueRepository.save(queue);
-//    }
-
     public void removePatientFromQueue(Patient patient) {
         Queue queue = queueRepository.findQueueByPatientsContains(patient).orElseThrow(()
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
@@ -367,10 +358,7 @@ public class QueueService {
     }
 
     public void refreshQueue(Queue queue) {
-//        zakomentowane bo przy dodawaniu pilnego do zamkniętej kolejki nie ustala mu pozycji
-//        if (!queue.isLocked()) {
             queue.setPatients(calculatePatientsPositions(queue));
-//        }
     }
 
     public List<Patient> getWaitingPatientsForPastQueues() {

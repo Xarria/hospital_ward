@@ -186,7 +186,6 @@ public class AspectLogger {
                 .add(e.getStackTrace()[2].toString())
                 .add("with message:")
                 .add(e.getMessage());
-        e.printStackTrace();
 
         return message.toString();
     }

@@ -143,6 +143,22 @@ class PatientUnitTest {
     }
 
     @Test
+    void shouldThrowExceptionWhenCreatePatientNoContactInfo() {
+        patientOther.setPhoneNumber(null);
+
+        assertThrows(ConflictException.class, () -> patientService.createPatient(patientOther, "createdBy",
+                new ArrayList<>(), "mainDoctor", "VACCINATED"));
+    }
+
+    @Test
+    void shouldThrowExceptionWhenCreatePatientNoReferralInfo() {
+        patientOther.setReferralNr(null);
+
+        assertThrows(ConflictException.class, () -> patientService.createPatient(patientOther, "createdBy",
+                new ArrayList<>(), "mainDoctor", "VACCINATED"));
+    }
+
+    @Test
     void shouldThrowExceptionWhenCreatePatientCovidStatusNotFound() {
         when(accountRepository.findAccountByLogin("mainDoctor")).thenReturn(Optional.of(doctor));
         when(accountRepository.findAccountByLogin("createdBy")).thenReturn(Optional.of(Account.builder()
@@ -234,6 +250,7 @@ class PatientUnitTest {
         when(covidStatusRepository.findCovidStatusByStatus(any())).thenReturn(Optional.of(csVaccinated));
         when(accountRepository.findAccountByLogin("requestedBy")).thenReturn(Optional.of(Account.builder().build()));
         when(diseaseRepository.findDiseaseByName(any())).thenReturn(Optional.of(Disease.builder().build()));
+        when(patientTypeRepository.findPatientTypeByName(any())).thenReturn(Optional.of(new PatientType()));
 
         patientService.updatePatient(1L, Patient.builder().sex("M").urgent(true).build(), List.of("disease"), null,
                 "VACCINATED", "requestedBy");
@@ -342,7 +359,7 @@ class PatientUnitTest {
 
         when(patientRepository.findPatientById(anyLong())).thenReturn(Optional.of(patientOther));
 
-        assertThrows(BadRequestException.class, () -> patientService.confirmPatient(1L));
+        assertThrows(ConflictException.class, () -> patientService.confirmPatient(1L));
 
     }
 
@@ -467,17 +484,23 @@ class PatientUnitTest {
         patientUrgent = Patient.builder()
                 .admissionDate(LocalDate.of(2022, 6, 13))
                 .urgent(true)
+                .phoneNumber("123356889")
+                .referralNr("12159908984")
                 .age("7M").build();
 
         patientUrgent2 = Patient.builder()
                 .admissionDate(LocalDate.of(2022, 3, 13))
                 .urgent(true)
+                .phoneNumber("123456889")
+                .referralNr("12159908984")
                 .age("4Y").build();
 
         patientOther = Patient.builder()
                 .admissionDate(LocalDate.of(2022, 3, 8))
                 .urgent(false)
                 .age("12Y")
+                .phoneNumber("123457789")
+                .referralNr("12159908984")
                 .sex("F")
                 .build();
         allPatients = List.of(patientOther, patientUrgent2, patientUrgent);

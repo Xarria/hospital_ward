@@ -33,7 +33,7 @@ public abstract class AbstractTestContainer {
     int port;
 
     public String getUrlWithPort(String uri) {
-        return "http://localhost:" + port + uri;
+        return "https://localhost:" + port + uri;
     }
 
     public static class DockerMysqlDataSourceInitializer implements
