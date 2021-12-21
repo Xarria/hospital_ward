@@ -5,8 +5,11 @@ import com.backend.hospitalward.dto.response.queue.QueueResponse;
 import com.backend.hospitalward.model.*;
 import org.mapstruct.*;
 
+import javax.ws.rs.core.Link;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
@@ -61,7 +64,32 @@ public interface QueueMapper {
         return null;
     }
 
+    @Named("mapWaitingPatients")
+    default List<PatientGeneralResponse> mapWaitingPatients(Queue queue) {
+        List<Patient> waitingPatients = queue.getWaitingPatients();
+        List<PatientGeneralResponse> patientGeneralResponseList = new LinkedList<>();
+
+        for(Patient patient: waitingPatients) {
+            patientGeneralResponseList.add(toPatientGeneralResponse(patient));
+        }
+        return patientGeneralResponseList;
+    }
+
+    @Named("mapConfirmedPatients")
+    default List<PatientGeneralResponse> mapConfirmedPatients(Queue queue) {
+        List<Patient> confirmedPatients = queue.getConfirmedPatients();
+        List<PatientGeneralResponse> patientGeneralResponseList = new LinkedList<>();
+
+        for(Patient patient: confirmedPatients) {
+            patientGeneralResponseList.add(toPatientGeneralResponse(patient));
+        }
+        return patientGeneralResponseList;
+    }
+
+    @Mapping(target = "patientsWaiting", qualifiedByName = "mapWaitingPatients", source = "queue")
+    @Mapping(target = "patientsConfirmed", qualifiedByName = "mapConfirmedPatients", source = "queue")
     QueueResponse toQueueResponse(Queue queue);
+
 
     @Mapping(target = "patientType", qualifiedByName = "mapPatientType")
     @Mapping(target = "status", qualifiedByName = "mapPatientStatus")

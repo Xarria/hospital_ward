@@ -8,6 +8,7 @@ import com.backend.hospitalward.service.QueueService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,13 +39,15 @@ public class QueueController {
 
     @MedicAuthorities
     @GetMapping("/{queueDate}")
-    public ResponseEntity<QueueResponse> getQueueByDate(@PathVariable("queueDate") LocalDate queueDate) {
+    public ResponseEntity<QueueResponse> getQueueByDate(@PathVariable("queueDate")
+                                                        @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate queueDate) {
         return ResponseEntity.ok(queueMapper.toQueueResponse(queueService.getQueueForDate(queueDate)));
     }
 
-//    @Authenticated
-//    @GetMapping("/fullDates}")
-//    public ResponseEntity<List<LocalDate>> getFullAdmissionDates() {
-//        return ResponseEntity.ok(queueService.findFullAdmissionDates());
-//    }
+    @Authenticated
+    @GetMapping("/fullDates}")
+    public ResponseEntity<List<LocalDate>> getFullAdmissionDates() {
+        return ResponseEntity.ok(queueService.findFullAdmissionDates());
+    }
+
 }
