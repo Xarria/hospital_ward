@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth-service';
 import {Router} from '@angular/router';
@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(
+  constructor(private authService: AuthService,
               private router: Router) {
   }
 
@@ -25,17 +25,16 @@ export class LoginComponent implements OnInit {
   }
 
   login(login: string, password: string): void {
-    alert('HLKO');
-    // this.authService.auth(login, password).subscribe(
-    //   (response: string) => {
-    //     this.authService.setSession(response);
-    //     this.goToCalendar();
-    //   },
-    //   () => this.error = true
-    // );
+    this.authService.auth(login, password).subscribe(
+      (response: string) => {
+        this.authService.setSession(response);
+        this.goToCalendar();
+      },
+      () => this.error = true
+    );
   }
 
   goToCalendar(): void {
-  this.router.navigate(['/diseases']);
+    this.router.navigate(['/diseases']);
   }
 }
