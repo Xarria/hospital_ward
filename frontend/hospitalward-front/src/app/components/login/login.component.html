@@ -1,20 +1,16 @@
 <div class="container">
-  <mat-toolbar class="mat-primary">
-    <span class="fill-space-toolbar"></span>
-    <span>Oddział kardiologii dziecięcej ICZMP</span>
-    <span class="fill-space-toolbar"></span>
-  </mat-toolbar>
-
 
   <div class="centered-form">
     <form action="" [formGroup]="loginForm" (ngSubmit)="loginForm && login(loginField.value, passwordField.value)">
+      <div class="centered-text">Logowanie</div>
       <div class="form-controls">
-        <div class="centered-text">Logowanie</div>
         <mat-form-field>
-          <input #loginField id="login" matInput formControlName="login" placeholder="Login">
+          <input #loginField id="login" matInput formControlName="login" placeholder="*Login">
+          <mat-error *ngIf="loginForm.controls.login.invalid && loginForm.controls.login.touched">Pole wymagane</mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input #passwordField id="password" matInput formControlName="password" placeholder="Password">
+          <input #passwordField id="password" type="password" matInput formControlName="password" placeholder="*Password">
+          <mat-error *ngIf="loginForm.controls.password.invalid && loginForm.controls.password.touched">Pole wymagane</mat-error>
         </mat-form-field>
 
         <button mat-button class="mat-raised-button mat-primary" [disabled]="!loginForm.valid" >Login</button>

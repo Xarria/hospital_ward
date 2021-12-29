@@ -15,7 +15,7 @@ export class AuthService {
   constructor(private http: HttpClient,
               private cookieService: CookieService,
               private router: Router) {
-    this.url = environment.appUrl + '/auth';
+    this.url = environment.appUrl + 'auth';
   }
 
   auth(login: string, password: string): any {
@@ -42,7 +42,6 @@ export class AuthService {
     this.router.navigate(['/']);
     this.cookieService.delete('token');
     this.cookieService.delete('login');
-    this.cookieService.delete('currentAccessLevel');
     this.cookieService.delete('accessLevel');
     this.cookieService.delete('expirationTime');
     this.cookieService.delete('timezone');

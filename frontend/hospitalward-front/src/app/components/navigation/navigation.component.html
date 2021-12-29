@@ -1,0 +1,16 @@
+<mat-toolbar class="mat-primary nav">
+  <span>Oddział kardiologii dziecięcej ICZMP</span>
+  <div class="fill-remaining-space"></div>
+  <div class="left-nav">
+    <span class="mat-h5 nav-link" *ngIf="!identityService.isGuest()" id="login"
+          routerLink="/patients/add">Zalogowano jako: {{ identityService.getLogin() }}</span>
+    <a class="mat-raised-button nav-link" *ngIf="identityService.isTreatmentDirectorOrDoctor()" id="diseasesLink"
+       routerLink="/diseases">Choroby</a>
+    <a class="mat-raised-button nav-link" *ngIf="!identityService.isSecretary() && !identityService.isGuest()"
+       id="patientsLink" routerLink="/patients">Pacjenci</a>
+    <a class="mat-raised-button nav-link" *ngIf="!identityService.isGuest()" id="queuesLink" routerLink="/queues">Kolejki</a>
+    <a class="mat-raised-button nav-link" *ngIf="identityService.isSecretary()" id="addPatientLink"
+       routerLink="/patients/add">Utwórz pacjenta</a>
+    <a class="mat-raised-button mat-primary nav-link" *ngIf="!identityService.isGuest()" id="logoutLink" (click)="signOut()">Wyloguj</a>
+  </div>
+</mat-toolbar>

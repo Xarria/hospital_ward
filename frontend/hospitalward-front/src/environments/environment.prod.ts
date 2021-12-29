@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  appUrl: 'https://localhost:443'
+  appUrl: 'http://localhost:8080/'
 };
