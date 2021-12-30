@@ -1,0 +1,44 @@
+<div class="">
+    <mat-grid-list cols="2" rowHeight="400px">
+      <mat-grid-tile>
+        <div class="form-controls">
+          <mat-form-field floatLabel="always">
+            <input id="name" matInput placeholder="Nazwa choroby" [disabled]="true"
+                   value="{{diseaseService.disease.name}}">
+          </mat-form-field>
+          <mat-form-field floatLabel="always">
+            <input id="createdBy" matInput placeholder="Utworzone przez" [disabled]="true"
+                   value="{{diseaseService.disease.createdBy}}">
+          </mat-form-field>
+          <mat-form-field floatLabel="always">
+            <input id="creationDate" matInput placeholder="Data utworzenia" [disabled]="true"
+                   value="{{diseaseService.disease.creationDate}}">
+          </mat-form-field>
+          <mat-form-field floatLabel="always">
+            <input id="modifiedBy" matInput placeholder="Zmodyfikowane przez" [disabled]="true"
+                   value="{{diseaseService.disease.modifiedBy}}">
+          </mat-form-field>
+          <mat-form-field floatLabel="always">
+            <input id="modificationDate" matInput placeholder="Data modyfikacji" [disabled]="true"
+                   value="{{diseaseService.disease.modificationDate}}">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div class="form-controls">
+          <mat-checkbox id="catherer" [(ngModel)]="diseaseService.disease.cathererRequired">
+            Wymagane cewnikowanie
+          </mat-checkbox>
+          <mat-checkbox id="surgery" [(ngModel)]="diseaseService.disease.surgeryRequired">
+            Wymagany zabieg
+          </mat-checkbox>
+          <div class="buttons">
+            <button mat-button class="mat-raised-button mat-primary btn" (click)="modify()">
+              Modyfikuj
+            </button>
+            <button mat-button class="mat-raised-button btn" color="warn" (click)="close()">Anuluj</button>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+</div>
