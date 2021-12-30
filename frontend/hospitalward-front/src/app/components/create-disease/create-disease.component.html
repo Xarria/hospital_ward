@@ -1,0 +1,19 @@
+<div class="">
+  <form action="" [formGroup]="diseaseForm" (ngSubmit)="diseaseForm && create(nameField.value)">
+    <div class="form-controls">
+      <mat-form-field>
+        <input #nameField id="name" matInput formControlName="name" placeholder="*Nazwa choroby">
+        <mat-error *ngIf="diseaseForm.controls.name.invalid && diseaseForm.controls.name.touched">Pole wymagane
+        </mat-error>
+      </mat-form-field>
+      <mat-checkbox id="catherer" formControlName="cathererRequired" (change)="checkCathererCheckbox($event)">
+        Wymagane cewnikowanie
+      </mat-checkbox>
+      <mat-checkbox id="surgery" formControlName="surgeryRequired" (change)="checkSurgeryCheckbox($event)">
+        Wymagany zabieg
+      </mat-checkbox>
+
+      <button mat-button class="mat-raised-button mat-primary" [disabled]="!diseaseForm.valid">Utwórz</button>
+    </div>
+  </form>
+</div>

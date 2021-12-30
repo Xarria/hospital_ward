@@ -3,6 +3,8 @@ import {DiseaseTableService} from '../../services/disease-table-service';
 import {DiseaseGeneral} from '../../model/disease-general';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {CreateDiseaseComponent} from '../create-disease/create-disease.component';
 
 @Component({
   selector: 'app-disease-list',
@@ -16,7 +18,8 @@ export class DiseaseListComponent implements OnInit {
   searchKey = '';
 
   constructor(private diseaseService: DiseaseTableService,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              private dialog: MatDialog) {
     this.diseaseData = new MatTableDataSource<DiseaseGeneral>();
   }
 
@@ -69,5 +72,15 @@ export class DiseaseListComponent implements OnInit {
         }
         })
     );
+  }
+
+  createDisease(): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '40%';
+    const dialogRef = this.dialog.open(CreateDiseaseComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(() => {
+      this.refresh();
+    });
   }
 }

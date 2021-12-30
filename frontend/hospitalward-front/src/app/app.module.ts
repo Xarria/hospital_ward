@@ -20,13 +20,20 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import {CdkColumnDef} from '@angular/cdk/table';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatDialogModule} from '@angular/material/dialog';
+import { CreateDiseaseComponent } from './components/create-disease/create-disease.component';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { ModifyDiseaseComponent } from './components/modify-disease/modify-disease.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     DiseaseListComponent,
-    NavigationComponent
+    NavigationComponent,
+    CreateDiseaseComponent,
+    ModifyDiseaseComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +48,10 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     HttpClientModule,
     MatIconModule,
     FormsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule,
+    MatButtonToggleModule,
+    MatCheckboxModule
   ],
   providers: [
     CookieService,
@@ -49,7 +59,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     AuthService,
     CdkColumnDef
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [CreateDiseaseComponent]
 })
 export class AppModule {
 }

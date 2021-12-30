@@ -8,7 +8,7 @@ import {CookieService} from 'ngx-cookie-service';
 @Injectable({
   providedIn: 'root'
 })
-export class DiseaseTableService implements OnDestroy{
+export class DiseaseTableService implements OnDestroy {
 
   public diseases: DiseaseGeneral[];
   private readonly url: string;
@@ -43,4 +43,31 @@ export class DiseaseTableService implements OnDestroy{
     this.diseases = [];
   }
 
+  addDisease(name: string, catherer: boolean, surgery: boolean): Observable<any> {
+    return this.http.post(this.url, {
+      name: name,
+      cathererRequired: catherer,
+      surgeryRequired: surgery
+    }, {
+      headers: {
+        Authorization: 'Bearer ' + this.cookieService.get('token')
+      },
+      observe: 'body',
+      responseType: 'json'
+    });
+  }
+
+  modifyDisease(name: string, catherer: boolean, surgery: boolean): Observable<any> {
+    return this.http.post(this.url, {
+      name: name,
+      cathererRequired: catherer,
+      surgeryRequired: surgery
+    }, {
+      headers: {
+        Authorization: 'Bearer ' + this.cookieService.get('token')
+      },
+      observe: 'body',
+      responseType: 'json'
+    });
+  }
 }
