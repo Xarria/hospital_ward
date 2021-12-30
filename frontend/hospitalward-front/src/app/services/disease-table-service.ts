@@ -56,18 +56,4 @@ export class DiseaseTableService implements OnDestroy {
       responseType: 'json'
     });
   }
-
-  modifyDisease(name: string, catherer: boolean, surgery: boolean): Observable<any> {
-    return this.http.post(this.url, {
-      name: name,
-      cathererRequired: catherer,
-      surgeryRequired: surgery
-    }, {
-      headers: {
-        Authorization: 'Bearer ' + this.cookieService.get('token')
-      },
-      observe: 'body',
-      responseType: 'json'
-    });
-  }
 }

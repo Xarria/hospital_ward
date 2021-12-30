@@ -7,6 +7,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -20,9 +21,8 @@ import javax.validation.ConstraintViolationException;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class PersistenceExceptionAdvice {
 
-    //TODO statusy
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(OptimisticLockException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
     public ExceptionResponse optimisticLockException(Exception e) {
         return ExceptionResponse.singleException(e.getMessage());
     }

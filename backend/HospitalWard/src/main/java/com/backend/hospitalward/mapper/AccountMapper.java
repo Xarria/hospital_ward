@@ -25,7 +25,7 @@ public interface AccountMapper {
     @Named("mapModifiedBy")
     default String mapModifiedBy(Account account) {
         if (account != null) {
-            return account.getName();
+            return account.getLogin();
         }
         return null;
     }
@@ -33,7 +33,7 @@ public interface AccountMapper {
     @Named("mapCreatedBy")
     default String mapCreatedBy(Account account) {
         if (account != null) {
-            return account.getName();
+            return account.getLogin();
         }
         return null;
     }

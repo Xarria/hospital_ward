@@ -25,6 +25,7 @@ import { CreateDiseaseComponent } from './components/create-disease/create-disea
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { ModifyDiseaseComponent } from './components/modify-disease/modify-disease.component';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { ModifyDiseaseComponent } from './components/modify-disease/modify-disea
     MatSnackBarModule,
     MatDialogModule,
     MatButtonToggleModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatGridListModule
   ],
   providers: [
     CookieService,
@@ -60,7 +62,7 @@ import { ModifyDiseaseComponent } from './components/modify-disease/modify-disea
     CdkColumnDef
   ],
   bootstrap: [AppComponent],
-  entryComponents: [CreateDiseaseComponent]
+  entryComponents: [CreateDiseaseComponent, ModifyDiseaseComponent]
 })
 export class AppModule {
 }

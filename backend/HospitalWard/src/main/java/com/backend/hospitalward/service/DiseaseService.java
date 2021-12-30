@@ -6,6 +6,7 @@ import com.backend.hospitalward.exception.NotFoundException;
 import com.backend.hospitalward.model.Account;
 import com.backend.hospitalward.model.Disease;
 import com.backend.hospitalward.repository.AccountRepository;
+import com.backend.hospitalward.repository.BaseRepository;
 import com.backend.hospitalward.repository.DiseaseRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -38,6 +40,8 @@ public class DiseaseService {
     DiseaseRepository diseaseRepository;
 
     AccountRepository accountRepository;
+
+    BaseRepository baseRepository;
 
     public List<Disease> getAllDiseases() {
         return diseaseRepository.findAll();
@@ -58,15 +62,14 @@ public class DiseaseService {
         diseaseRepository.save(disease);
     }
 
-    public void updateDisease(Disease disease, String oldName, String modifiedBy) {
-        Disease diseaseFromDB = diseaseRepository.findDiseaseByName(oldName).orElseThrow(() ->
+    public void updateDisease(Disease disease, String name, String modifiedBy) {
+        Disease diseaseFromDB = diseaseRepository.findDiseaseByName(name).orElseThrow(() ->
                 new NotFoundException(ErrorKey.DISEASE_NOT_FOUND));
+
+        baseRepository.detach(diseaseFromDB);
 
         diseaseFromDB.setVersion(disease.getVersion());
 
-        if (disease.getName() != null && !disease.getName().isEmpty()) {
-            diseaseFromDB.setName(disease.getName());
-        }
         diseaseFromDB.setCathererRequired(disease.isCathererRequired());
         diseaseFromDB.setSurgeryRequired(disease.isSurgeryRequired());
         diseaseFromDB.setModificationDate(Timestamp.from(Instant.now()));

@@ -32,8 +32,6 @@ export class CreateDiseaseComponent implements OnInit {
   }
 
   create(name: string): void {
-    console.log(this.isCathererRequired);
-    console.log(this.isSurgeryRequired);
     this.diseaseService.addDisease(name, this.isCathererRequired, this.isSurgeryRequired).subscribe(
       () => {
         this.close();

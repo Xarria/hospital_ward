@@ -5,6 +5,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {CreateDiseaseComponent} from '../create-disease/create-disease.component';
+import {ModifyDiseaseComponent} from '../modify-disease/modify-disease.component';
 
 @Component({
   selector: 'app-disease-list',
@@ -83,4 +84,16 @@ export class DiseaseListComponent implements OnInit {
       this.refresh();
     });
   }
+
+  openDetails(name: string): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = false;
+    dialogConfig.width = '50%';
+    dialogConfig.data = name;
+    const dialogRef = this.dialog.open(ModifyDiseaseComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(() => {
+      this.refresh();
+    });
+  }
+
 }

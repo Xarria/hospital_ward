@@ -14,7 +14,7 @@ public interface DiseaseMapper {
     @Named("mapModifiedBy")
     default String mapModifiedBy(Disease disease) {
         if (disease.getModifiedBy() != null) {
-            return disease.getModifiedBy().getName();
+            return disease.getModifiedBy().getLogin();
         }
         return null;
     }
@@ -22,7 +22,7 @@ public interface DiseaseMapper {
     @Named("mapCreatedBy")
     default String mapCreatedBy(Disease disease) {
         if (disease.getCreatedBy() != null) {
-            return disease.getCreatedBy().getName();
+            return disease.getCreatedBy().getLogin();
         }
         return null;
     }
@@ -38,4 +38,5 @@ public interface DiseaseMapper {
     @Mapping(target = "createdBy", source = "disease", qualifiedByName = "mapCreatedBy")
     @Mapping(target = "modifiedBy", source = "disease", qualifiedByName = "mapModifiedBy")
     DiseaseDetailsResponse toDiseaseDetailsResponse(Disease disease);
+
 }

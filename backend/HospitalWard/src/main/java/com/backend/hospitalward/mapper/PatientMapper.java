@@ -67,7 +67,7 @@ public interface PatientMapper {
     @Named("mapModifiedBy")
     default String mapModifiedBy(Account account) {
         if (account != null) {
-            return account.getName();
+            return account.getLogin();
         }
         return null;
     }
@@ -75,7 +75,7 @@ public interface PatientMapper {
     @Named("mapCreatedBy")
     default String mapCreatedBy(Account account) {
         if (account != null) {
-            return account.getName();
+            return account.getLogin();
         }
         return null;
     }
