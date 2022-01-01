@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -48,7 +47,7 @@ public class DiseaseService {
     }
 
     public Disease getDiseaseByName(String name) {
-        return diseaseRepository.findDiseaseByName(name).orElseThrow(()
+        return diseaseRepository.findDiseaseByLatinName(name).orElseThrow(()
                 -> new NotFoundException(ErrorKey.DISEASE_NOT_FOUND));
     }
 
@@ -63,7 +62,8 @@ public class DiseaseService {
     }
 
     public void updateDisease(Disease disease, String name, String modifiedBy) {
-        Disease diseaseFromDB = diseaseRepository.findDiseaseByName(name).orElseThrow(() ->
+        //TODO refresh kolejki kiedy są pacjenci
+        Disease diseaseFromDB = diseaseRepository.findDiseaseByLatinName(name).orElseThrow(() ->
                 new NotFoundException(ErrorKey.DISEASE_NOT_FOUND));
 
         baseRepository.detach(diseaseFromDB);
@@ -82,7 +82,7 @@ public class DiseaseService {
     }
 
     public void deleteDisease(String name) {
-        Disease disease = diseaseRepository.findDiseaseByName(name).orElseThrow(() ->
+        Disease disease = diseaseRepository.findDiseaseByLatinName(name).orElseThrow(() ->
                 new NotFoundException(ErrorKey.DISEASE_NOT_FOUND));
 
         if (disease.getPatients() != null && !disease.getPatients().isEmpty()) {

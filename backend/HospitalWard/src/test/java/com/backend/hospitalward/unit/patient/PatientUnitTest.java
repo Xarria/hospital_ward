@@ -15,7 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +95,7 @@ class PatientUnitTest {
         when(accountRepository.findAccountByLogin("mainDoctor")).thenReturn(Optional.of(doctor));
         when(accountRepository.findAccountByLogin("createdBy")).thenReturn(Optional.of(Account.builder()
                 .accessLevel(accessLevel).build()));
-        when(diseaseRepository.findDiseaseByName(any())).thenReturn(Optional.of(new Disease()));
+        when(diseaseRepository.findDiseaseByLatinName(any())).thenReturn(Optional.of(new Disease()));
         when(covidStatusRepository.findCovidStatusByStatus(any())).thenReturn(Optional.of(csVaccinated));
         when(patientTypeRepository.findPatientTypeByName(any())).thenReturn(Optional.of(pt));
         when(patientStatusRepository.findPatientStatusByName(any())).thenReturn(Optional.of(new PatientStatus()));
@@ -114,7 +113,7 @@ class PatientUnitTest {
         when(accountRepository.findAccountByLogin("mainDoctor")).thenReturn(Optional.of(doctor));
         when(accountRepository.findAccountByLogin("createdBy")).thenReturn(Optional.of(Account.builder()
                 .accessLevel(accessLevel).build()));
-        when(diseaseRepository.findDiseaseByName(any())).thenReturn(Optional.of(new Disease()));
+        when(diseaseRepository.findDiseaseByLatinName(any())).thenReturn(Optional.of(new Disease()));
         when(covidStatusRepository.findCovidStatusByStatus(any())).thenReturn(Optional.of(csVaccinated));
         when(patientTypeRepository.findPatientTypeByName(any())).thenReturn(Optional.of(pt));
         when(patientStatusRepository.findPatientStatusByName(any())).thenReturn(Optional.of(new PatientStatus()));
@@ -132,7 +131,7 @@ class PatientUnitTest {
         when(accountRepository.findAccountByLogin("mainDoctor")).thenReturn(Optional.of(doctor));
         when(accountRepository.findAccountByLogin("createdBy")).thenReturn(Optional.of(Account.builder()
                 .accessLevel(accessLevel).build()));
-        when(diseaseRepository.findDiseaseByName(any())).thenReturn(Optional.of(new Disease()));
+        when(diseaseRepository.findDiseaseByLatinName(any())).thenReturn(Optional.of(new Disease()));
         when(covidStatusRepository.findCovidStatusByStatus(any())).thenReturn(Optional.of(csVaccinated));
         when(patientTypeRepository.findPatientTypeByName(any())).thenReturn(Optional.of(pt));
         when(patientStatusRepository.findPatientStatusByName(any())).thenReturn(Optional.of(new PatientStatus()));
@@ -163,7 +162,7 @@ class PatientUnitTest {
         when(accountRepository.findAccountByLogin("mainDoctor")).thenReturn(Optional.of(doctor));
         when(accountRepository.findAccountByLogin("createdBy")).thenReturn(Optional.of(Account.builder()
                 .accessLevel(accessLevel).build()));
-        when(diseaseRepository.findDiseaseByName(any())).thenReturn(Optional.of(new Disease()));
+        when(diseaseRepository.findDiseaseByLatinName(any())).thenReturn(Optional.of(new Disease()));
         when(covidStatusRepository.findCovidStatusByStatus(any())).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> patientService.createPatient(patientOther, "createdBy",
@@ -175,7 +174,7 @@ class PatientUnitTest {
         when(accountRepository.findAccountByLogin("mainDoctor")).thenReturn(Optional.of(doctor));
         when(accountRepository.findAccountByLogin("createdBy")).thenReturn(Optional.of(Account.builder()
                 .accessLevel(accessLevel).build()));
-        when(diseaseRepository.findDiseaseByName(any())).thenReturn(Optional.of(new Disease()));
+        when(diseaseRepository.findDiseaseByLatinName(any())).thenReturn(Optional.of(new Disease()));
         when(covidStatusRepository.findCovidStatusByStatus(any())).thenReturn(Optional.of(csVaccinated));
         when(patientTypeRepository.findPatientTypeByName(any())).thenReturn(Optional.of(pt));
         when(patientStatusRepository.findPatientStatusByName(any())).thenReturn(Optional.empty());
@@ -189,7 +188,7 @@ class PatientUnitTest {
         when(accountRepository.findAccountByLogin("mainDoctor")).thenReturn(Optional.of(doctor));
         when(accountRepository.findAccountByLogin("createdBy")).thenReturn(Optional.of(Account.builder()
                 .accessLevel(accessLevel).build()));
-        when(diseaseRepository.findDiseaseByName(any())).thenReturn(Optional.of(new Disease()));
+        when(diseaseRepository.findDiseaseByLatinName(any())).thenReturn(Optional.of(new Disease()));
         when(covidStatusRepository.findCovidStatusByStatus(any())).thenReturn(Optional.of(csVaccinated));
         when(patientTypeRepository.findPatientTypeByName(any())).thenReturn(Optional.empty());
 
@@ -249,7 +248,7 @@ class PatientUnitTest {
         when(patientRepository.findPatientById(anyLong())).thenReturn(Optional.of(patientOther));
         when(covidStatusRepository.findCovidStatusByStatus(any())).thenReturn(Optional.of(csVaccinated));
         when(accountRepository.findAccountByLogin("requestedBy")).thenReturn(Optional.of(Account.builder().build()));
-        when(diseaseRepository.findDiseaseByName(any())).thenReturn(Optional.of(Disease.builder().build()));
+        when(diseaseRepository.findDiseaseByLatinName(any())).thenReturn(Optional.of(Disease.builder().build()));
         when(patientTypeRepository.findPatientTypeByName(any())).thenReturn(Optional.of(new PatientType()));
 
         patientService.updatePatient(1L, Patient.builder().sex("M").urgent(true).build(), List.of("disease"), null,

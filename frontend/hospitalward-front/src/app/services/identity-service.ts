@@ -35,4 +35,7 @@ export class IdentityService {
     return this.cookieService.get('accessLevel') === '';
   }
 
+  getAccessLevel(): string {
+    return this.cookieService.get('accessLevel');
+  }
 }

@@ -3,11 +3,9 @@ package com.backend.hospitalward.integration.disease;
 import com.backend.hospitalward.common.AccountConstants;
 import com.backend.hospitalward.common.DiseaseConstants;
 import com.backend.hospitalward.dto.request.auth.Credentials;
-import com.backend.hospitalward.dto.request.disease.DiseaseCreateRequest;
 import com.backend.hospitalward.dto.request.disease.DiseaseUpdateRequest;
 import com.backend.hospitalward.dto.response.exception.ExceptionResponse;
 import com.backend.hospitalward.exception.ErrorKey;
-import com.backend.hospitalward.exception.NotFoundException;
 import com.backend.hospitalward.integration.AbstractTestContainer;
 import com.backend.hospitalward.model.Disease;
 import com.backend.hospitalward.security.SecurityConstants;
@@ -92,7 +90,7 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
     @Test
     void shouldReturn404WhenUpdateDiseaseNotFound() {
         Disease disease = diseaseService.getAllDiseases().get(0);
-        String diseaseName = disease.getName();
+        String diseaseName = disease.getLatinName();
 
         Long version = diseaseService.getDiseaseByName(diseaseName).getVersion();
 
@@ -106,7 +104,7 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
 
         HttpEntity<DiseaseUpdateRequest> diseaseUpdateRequestHttpEntity = new HttpEntity<>(
                 DiseaseUpdateRequest.builder()
-                        .name("UpdatedName")
+                        .latinName("UpdatedName")
                         .version(version)
                         .build(), headers);
 
@@ -127,7 +125,7 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
     @Test
     void shouldReturn412WhenUpdateDiseaseInvalidVersion() {
         Disease disease = diseaseService.getAllDiseases().get(0);
-        String diseaseName = disease.getName();
+        String diseaseName = disease.getLatinName();
 
         long version = diseaseService.getDiseaseByName(diseaseName).getVersion();
 
@@ -141,7 +139,7 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
 
         HttpEntity<DiseaseUpdateRequest> diseaseUpdateRequestHttpEntity = new HttpEntity<>(
                 DiseaseUpdateRequest.builder()
-                        .name("UpdatedName")
+                        .latinName("UpdatedName")
                         .version(version + 1)
                         .build(), headers);
 
@@ -162,7 +160,7 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
     @Test
     void shouldReturn412WhenUpdateDiseaseNoETag() {
         Disease disease = diseaseService.getAllDiseases().get(0);
-        String diseaseName = disease.getName();
+        String diseaseName = disease.getLatinName();
 
         long version = diseaseService.getDiseaseByName(diseaseName).getVersion();
 
@@ -171,7 +169,7 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
 
         HttpEntity<DiseaseUpdateRequest> diseaseUpdateRequestHttpEntity = new HttpEntity<>(
                 DiseaseUpdateRequest.builder()
-                        .name("UpdatedName")
+                        .latinName("UpdatedName")
                         .version(version)
                         .build(), headers);
 
@@ -193,7 +191,7 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
     void shouldReturn409WhenUpdateDiseaseNameNotUnique() {
         Disease disease = diseaseService.getAllDiseases().get(0);
         Disease disease2 = diseaseService.getAllDiseases().get(1);
-        String diseaseName = disease.getName();
+        String diseaseName = disease.getLatinName();
 
         long version = diseaseService.getDiseaseByName(diseaseName).getVersion();
 
@@ -207,7 +205,7 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
 
         HttpEntity<DiseaseUpdateRequest> diseaseUpdateRequestHttpEntity = new HttpEntity<>(
                 DiseaseUpdateRequest.builder()
-                        .name(disease2.getName())
+                        .latinName(disease2.getLatinName())
                         .version(version)
                         .build(), headers);
 
@@ -245,7 +243,7 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
     @Test
     void deleteDisease() {
         Disease disease = diseaseService.getAllDiseases().get(2);
-        String diseaseName = disease.getName();
+        String diseaseName = disease.getLatinName();
 
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(DiseaseConstants.GET_ALL_DISEASES
                         + "/" + diseaseName),

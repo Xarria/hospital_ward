@@ -43,9 +43,10 @@ export class DiseaseTableService implements OnDestroy {
     this.diseases = [];
   }
 
-  addDisease(name: string, catherer: boolean, surgery: boolean): Observable<any> {
+  addDisease(name: string, latinName: string, catherer: boolean, surgery: boolean): Observable<any> {
     return this.http.post(this.url, {
-      name: name,
+      polishName: name,
+      latinName: latinName,
       cathererRequired: catherer,
       surgeryRequired: surgery
     }, {

@@ -1,6 +1,7 @@
 export interface DiseaseDetails {
   version: number;
-  name: string;
+  polishName: string;
+  latinName: string;
   cathererRequired: boolean;
   surgeryRequired: boolean;
   createdBy: string;

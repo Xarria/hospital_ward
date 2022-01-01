@@ -1,0 +1,46 @@
+{
+  "disease": {
+    "nameRequired" : "*Name",
+    "latinNameRequired": "*Latin name",
+    "latinName": "Latin name",
+    "name": "Name",
+    "catherer": "Catherer required",
+    "surgery": "Surgery required"
+  },
+  "common": {
+    "create": "Create",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "fieldRequired": "Field is required",
+    "search": "Search",
+    "modifiedBy": "Modified by",
+    "modificationDate": "Modification date",
+    "createdBy": "Created by",
+    "creationDate": "Creation date"
+  },
+  "login": {
+    "signIn": "Sign In",
+    "login": "*Username",
+    "password": "*Password"
+  },
+  "navigation": {
+    "hospitalWard": "Cardiology clinic",
+    "createPatient": "Create a patient",
+    "login": "Logged in as:",
+    "diseases": "Diseases",
+    "patients": "Patients",
+    "logout": "Log out",
+    "queues": "Daily queues"
+  },
+  "snackbar": {
+    "createDiseaseSuccess" : "Disease created successfully",
+    "createDisease409": "Disease with such name already exists",
+    "defaultError": "Error occured",
+    "deleteDiseaseSuccess" : "Disease deleted successfully",
+    "deleteDisease409": "Disease is already assigned to a patient",
+    "loginInvalid": "Invalid credentials",
+    "modifyDiseaseSuccess" : "Disease modified successfully",
+    "modifyDisease404": "Disease does not exist",
+    "modifyDisease400": "Disease was modified during modification"
+  }
+}

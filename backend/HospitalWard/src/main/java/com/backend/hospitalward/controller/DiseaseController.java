@@ -64,12 +64,12 @@ public class DiseaseController {
     @DoctorOrTreatmentDirectorAuthority
     @PutMapping(path = "/{name}")
     public ResponseEntity<?> updateDisease(@CurrentSecurityContext SecurityContext securityContext,
-                                           @RequestHeader("If-Match") String eTag, @PathVariable("name") String oldName,
+                                           @RequestHeader("If-Match") String eTag, @PathVariable("name") String latinName,
                                            @RequestBody @Valid DiseaseUpdateRequest diseaseUpdateRequest) {
 
         checkETagHeader(diseaseUpdateRequest, eTag);
 
-        diseaseService.updateDisease(diseaseMapper.toDisease(diseaseUpdateRequest), oldName,
+        diseaseService.updateDisease(diseaseMapper.toDisease(diseaseUpdateRequest), latinName,
                 securityContext.getAuthentication().getName());
 
         return ResponseEntity.ok().build();
@@ -87,7 +87,7 @@ public class DiseaseController {
     private void checkETagHeader(@RequestBody @Valid DiseaseUpdateRequest diseaseUpdateRequest,
                                  @RequestHeader("If-Match") String eTag) {
 
-        if (diseaseUpdateRequest.getName() == null || diseaseUpdateRequest.getVersion() == null
+        if (diseaseUpdateRequest.getLatinName() == null || diseaseUpdateRequest.getVersion() == null
                 || ETagValidator.verifyDTOIntegrity(eTag, diseaseUpdateRequest)) {
             throw new PreconditionFailedException(ErrorKey.ETAG_INVALID);
         }

@@ -4,29 +4,33 @@
   </button>
   <button mat-raised-button class="mat-primary add-btn" (click)="createDisease()">
     <mat-icon>add</mat-icon>
-    Utwórz
+    {{'common.create' | translate}}
   </button>
   <mat-form-field class="search-field" floatLabel="never">
-    <input matInput [(ngModel)]="searchKey" placeholder="Wyszukaj" autocomplete="off" (keyup)="applyFilter()">
+    <input matInput [(ngModel)]="searchKey" placeholder="{{'common.search' | translate}}" autocomplete="off" (keyup)="applyFilter()">
     <button *ngIf="searchKey" mat-button matSuffix mat-icon-button aria-label>
       <mat-icon (click)="clearSearch()">close</mat-icon>
     </button>
   </mat-form-field>
 </div>
 <mat-table class="table" [dataSource]="diseaseData">
-  <ng-container matColumnDef="Name">
-    <mat-header-cell *matHeaderCellDef>Nazwa</mat-header-cell>
-    <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
+  <ng-container *ngIf="isPolishLanguage()" matColumnDef="Name">
+    <mat-header-cell *matHeaderCellDef>{{'disease.name' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.polishName}}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="Latin name">
+    <mat-header-cell *matHeaderCellDef>{{'disease.latinName' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.latinName}}</mat-cell>
   </ng-container>
   <ng-container matColumnDef="Catherer required">
-    <mat-header-cell *matHeaderCellDef>Cewnik</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef>{{'disease.catherer' | translate}}</mat-header-cell>
     <mat-cell *matCellDef="let element">
       <mat-icon *ngIf="element.cathererRequired">check_circle_outline</mat-icon>
       <mat-icon *ngIf="!element.cathererRequired">highlight_off</mat-icon>
     </mat-cell>
   </ng-container>
   <ng-container matColumnDef="Surgery required">
-    <mat-header-cell *matHeaderCellDef>Zabieg</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef>{{'disease.surgery' | translate}}</mat-header-cell>
     <mat-cell *matCellDef="let element">
       <mat-icon *ngIf="element.surgeryRequired">check_circle_outline</mat-icon>
       <mat-icon *ngIf="!element.surgeryRequired">highlight_off</mat-icon>
@@ -35,10 +39,10 @@
   <ng-container matColumnDef=" ">
     <mat-header-cell *matHeaderCellDef></mat-header-cell>
     <mat-cell *matCellDef="let element">
-      <button mat-icon-button (click)="openDetails(element.name)">
+      <button mat-icon-button (click)="openDetails(element.latinName)">
         <mat-icon>launch</mat-icon>
       </button>
-      <button mat-icon-button color="warn" (click)="deleteDisease(element.name)">
+      <button mat-icon-button color="warn" (click)="deleteDisease(element.latinName)">
         <mat-icon>delete_outline</mat-icon>
       </button>
     </mat-cell>

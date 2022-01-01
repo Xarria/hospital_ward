@@ -10,7 +10,8 @@
                   file="/csv/disease.csv"
                   relativeToChangelogFile="true">
             <column header="id" name="id" type="numeric"/>
-            <column header="name" name="name" type="string"/>
+            <column header="latin_name" name="latin_name" type="string"/>
+            <column header="polish_name" name="polish_name" type="string"/>
             <column header="catherer_required" name="catherer_required" type="boolean"/>
             <column header="surgery_required" name="surgery_required" type="boolean"/>
         </loadData>

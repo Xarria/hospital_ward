@@ -15,7 +15,9 @@ import java.sql.Timestamp;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class DiseaseDetailsResponse extends BaseDTO implements SignableDTO {
 
-    String name;
+    String latinName;
+
+    String polishName;
 
     boolean cathererRequired;
 

@@ -13,7 +13,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {CookieService} from 'ngx-cookie-service';
-import {HttpClientModule} from '@angular/common/http';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {IdentityService} from './services/identity-service';
 import {AuthService} from './services/auth-service';
 import { NavigationComponent } from './components/navigation/navigation.component';
@@ -26,7 +26,14 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { ModifyDiseaseComponent } from './components/modify-disease/modify-disease.component';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
+export function rootLoaderFactory(http: HttpClient): any {
+  return new TranslateHttpLoader(http);
+}
+
+// @ts-ignore
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,7 +60,14 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatDialogModule,
     MatButtonToggleModule,
     MatCheckboxModule,
-    MatGridListModule
+    MatGridListModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: rootLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [
     CookieService,

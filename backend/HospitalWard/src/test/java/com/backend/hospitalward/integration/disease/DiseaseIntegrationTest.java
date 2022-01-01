@@ -96,7 +96,7 @@ class DiseaseIntegrationTest extends AbstractTestContainer {
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
                 () -> assertEquals(diseaseService.getAllDiseases().size(), diseases.size()),
                 () -> assertNotNull(diseases.get(0)),
-                () -> assertEquals(diseaseService.getAllDiseases().get(0).getName(), diseases.get(0).getName())
+                () -> assertEquals(diseaseService.getAllDiseases().get(0).getLatinName(), diseases.get(0).getLatinName())
         );
     }
 
@@ -106,7 +106,7 @@ class DiseaseIntegrationTest extends AbstractTestContainer {
         HttpEntity<T> jwtToken = getJwtHttpEntity();
 
         Disease disease = diseaseService.getAllDiseases().get(0);
-        String diseaseName = disease.getName();
+        String diseaseName = disease.getLatinName();
 
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(DiseaseConstants.GET_ALL_DISEASES +
                         "/" + diseaseName),
@@ -126,7 +126,7 @@ class DiseaseIntegrationTest extends AbstractTestContainer {
     void createDisease() {
         HttpEntity<DiseaseCreateRequest> diseaseCreateRequestHttpEntity = new HttpEntity<>(
                 DiseaseCreateRequest.builder()
-                        .name("DiseaseName")
+                        .latinName("DiseaseName")
                         .cathererRequired(true)
                         .surgeryRequired(false)
                         .build(), getHttpHeaders()
@@ -148,7 +148,7 @@ class DiseaseIntegrationTest extends AbstractTestContainer {
     @Test
     void updateDisease() {
         Disease disease = diseaseService.getAllDiseases().get(0);
-        String diseaseName = disease.getName();
+        String diseaseName = disease.getLatinName();
 
         Long version = diseaseService.getDiseaseByName(diseaseName).getVersion();
 
@@ -162,7 +162,7 @@ class DiseaseIntegrationTest extends AbstractTestContainer {
 
         HttpEntity<DiseaseUpdateRequest> diseaseUpdateRequestHttpEntity = new HttpEntity<>(
                 DiseaseUpdateRequest.builder()
-                        .name("UpdatedName")
+                        .latinName("UpdatedName")
                         .version(version)
                         .build(), headers);
 
@@ -184,7 +184,7 @@ class DiseaseIntegrationTest extends AbstractTestContainer {
     void deleteDisease() {
         HttpEntity<DiseaseCreateRequest> diseaseCreateRequestHttpEntity = new HttpEntity<>(
                 DiseaseCreateRequest.builder()
-                        .name("DiseaseName2")
+                        .latinName("DiseaseName2")
                         .cathererRequired(true)
                         .surgeryRequired(false)
                         .build(), getHttpHeaders()

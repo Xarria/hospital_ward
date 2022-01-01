@@ -1,5 +1,6 @@
 export interface DiseaseGeneral {
-  name: string;
+  polishName: string;
+  latinName: string;
   cathererRequired: boolean;
   surgeryRequired: boolean;
 }

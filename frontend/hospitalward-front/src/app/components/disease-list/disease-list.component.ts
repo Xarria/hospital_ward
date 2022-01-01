@@ -6,6 +6,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {CreateDiseaseComponent} from '../create-disease/create-disease.component';
 import {ModifyDiseaseComponent} from '../modify-disease/modify-disease.component';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-disease-list',
@@ -15,17 +16,22 @@ import {ModifyDiseaseComponent} from '../modify-disease/modify-disease.component
 export class DiseaseListComponent implements OnInit {
 
   diseaseData: MatTableDataSource<DiseaseGeneral>;
-  displayedColumns: string[] = ['Name', 'Catherer required', 'Surgery required', ' '];
+  displayedColumns: string[] = ['Name', 'Latin name', 'Catherer required', 'Surgery required', ' '];
   searchKey = '';
 
   constructor(private diseaseService: DiseaseTableService,
               private snackBar: MatSnackBar,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private translate: TranslateService) {
     this.diseaseData = new MatTableDataSource<DiseaseGeneral>();
   }
 
   ngOnInit(): void {
     this.getDiseases();
+  }
+
+  isPolishLanguage(): boolean {
+    return this.translate.currentLang === 'pl';
   }
 
   getDiseases(): void {
@@ -53,20 +59,20 @@ export class DiseaseListComponent implements OnInit {
     this.diseaseService.remove(name).subscribe(
       () => {
         this.getDiseases();
-        this.snackBar.open('Pomyślnie usunięto chorobę', '', {
+        this.snackBar.open(this.translate.instant('snackbar.deleteDiseaseSuccess'), '', {
           duration: 2500,
           verticalPosition: 'top'
         });
       },
       (error => {
         if (error.status === 409) {
-          this.snackBar.open('Nie można usunąć choroby, ponieważ jest ona przypisana do pacjenta', '', {
+          this.snackBar.open(this.translate.instant('snackbar.deleteDisease409'), '', {
             duration: 2500,
             verticalPosition: 'top'
           });
         }
         else {
-          this.snackBar.open('Wystąpił błąd podczas usuwania choroby', '', {
+          this.snackBar.open(this.translate.instant('snackbar.defaultError'), '', {
             duration: 2500,
             verticalPosition: 'top'
           });

@@ -1,0 +1,46 @@
+{
+  "disease": {
+    "nameRequired" : "*Nazwa choroby",
+    "latinNameRequired": "*Nazwa łacińska",
+    "latinName": "Nazwa łacińska",
+    "name": "Nazwa choroby",
+    "catherer": "Cewnikowanie wymagane",
+    "surgery": "Zabieg wymagany"
+  },
+  "common": {
+    "create": "Utwórz",
+    "confirm": "Zatwierdź",
+    "cancel": "Anuluj",
+    "fieldRequired": "Pole wymagane",
+    "search": "Wyszukaj",
+    "modifiedBy": "Zmodyfikowane przez",
+    "modificationDate": "Data modyfikacji",
+    "createdBy": "Utworzone przez",
+    "creationDate": "Data utworzenia"
+  },
+  "login": {
+    "signIn": "Zaloguj się",
+    "login": "*Nazwa użytkownika",
+    "password": "*Hasło"
+  },
+  "navigation": {
+    "hospitalWard": "Klinika kardiologii ICZMP",
+    "createPatient": "Utwórz wpis pacjenta",
+    "login": "Zalogowano jako:",
+    "diseases": "Choroby",
+    "patients": "Pacjenci",
+    "logout": "Wyloguj",
+    "queues": "Kolejki dzienne"
+  },
+  "snackbar": {
+    "createDiseaseSuccess" : "Pomyślnie utworzono chorobę",
+    "createDisease409": "Choroba z podanym imieniem już istnieje",
+    "defaultError": "Wystąpił błąd",
+    "deleteDiseaseSuccess" : "Pomyślnie usunięto chorobę",
+    "deleteDisease409": "Choroba jest już przypisana do pacjenta",
+    "loginInvalid": "Niepoprawne dane logowania",
+    "modifyDiseaseSuccess" : "Pomyślnie zmodyfikowano chorobę",
+    "modifyDisease404": "Choroba nie istnieje",
+    "modifyDisease400": "W trakcie operacji zmodyfikowano chorobę"
+  }
+}

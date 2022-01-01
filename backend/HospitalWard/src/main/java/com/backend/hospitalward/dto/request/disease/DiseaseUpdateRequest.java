@@ -18,7 +18,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class DiseaseUpdateRequest extends BaseDTO {
 
-    String name;
+    String latinName;
 
     boolean cathererRequired;
 

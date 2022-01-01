@@ -1,19 +1,24 @@
 <div class="">
-  <form action="" [formGroup]="diseaseForm" (ngSubmit)="diseaseForm && create(nameField.value)">
+  <form action="" [formGroup]="diseaseForm" (ngSubmit)="diseaseForm && create(polishNameField.value, latinNameField.value)">
     <div class="form-controls">
       <mat-form-field>
-        <input #nameField id="name" matInput formControlName="name" placeholder="*Nazwa choroby">
-        <mat-error *ngIf="diseaseForm.controls.name.invalid && diseaseForm.controls.name.touched">Pole wymagane
+        <input #latinNameField id="latinName" matInput formControlName="latinName" placeholder="{{'disease.latinNameRequired' | translate}}">
+        <mat-error *ngIf="diseaseForm.controls.latinName.invalid && diseaseForm.controls.latinName.touched">{{'common.fieldRequired' | translate}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input #polishNameField id="name" matInput formControlName="polishName" placeholder="{{'disease.nameRequired' | translate}}">
+        <mat-error *ngIf="diseaseForm.controls.polishName.invalid && diseaseForm.controls.polishName.touched">{{'common.fieldRequired' | translate}}
         </mat-error>
       </mat-form-field>
       <mat-checkbox id="catherer" formControlName="cathererRequired" (change)="checkCathererCheckbox($event)">
-        Wymagane cewnikowanie
+        {{'disease.catherer' | translate}}
       </mat-checkbox>
       <mat-checkbox id="surgery" formControlName="surgeryRequired" (change)="checkSurgeryCheckbox($event)">
-        Wymagany zabieg
+        {{'disease.surgery' | translate}}
       </mat-checkbox>
 
-      <button mat-button class="mat-raised-button mat-primary" [disabled]="!diseaseForm.valid">Utwórz</button>
+      <button mat-button class="mat-raised-button mat-primary" [disabled]="!diseaseForm.valid">{{'common.create' | translate}}</button>
     </div>
   </form>
 </div>

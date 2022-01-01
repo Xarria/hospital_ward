@@ -7,7 +7,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 public class DiseaseGeneralResponse {
 
-    String name;
+    String latinName;
+
+    String polishName;
 
     boolean cathererRequired;
 

@@ -5,6 +5,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {DiseaseTableService} from '../../services/disease-table-service';
 import {MatDialogRef} from '@angular/material/dialog';
 import {MatCheckboxChange} from '@angular/material/checkbox';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create-disease',
@@ -16,11 +17,13 @@ export class CreateDiseaseComponent implements OnInit {
   constructor(private diseaseService: DiseaseTableService,
               private router: Router,
               private snackBar: MatSnackBar,
-              private dialogRef: MatDialogRef<CreateDiseaseComponent>) {
+              private dialogRef: MatDialogRef<CreateDiseaseComponent>,
+              private translate: TranslateService) {
   }
 
   diseaseForm = new FormGroup({
-    name: new FormControl('', Validators.required),
+    polishName: new FormControl('', Validators.required),
+    latinName: new FormControl('', Validators.required),
     cathererRequired: new FormControl(false, Validators.required),
     surgeryRequired: new FormControl(false, Validators.required)
   });
@@ -31,24 +34,24 @@ export class CreateDiseaseComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  create(name: string): void {
-    this.diseaseService.addDisease(name, this.isCathererRequired, this.isSurgeryRequired).subscribe(
+  create(polishName: string, latinName: string): void {
+    this.diseaseService.addDisease(polishName, latinName, this.isCathererRequired, this.isSurgeryRequired).subscribe(
       () => {
         this.close();
-        this.snackBar.open('Pomyślnie utworzono chorobę', '', {
+        this.snackBar.open(this.translate.instant('snackbar.createDiseaseSuccess'), '', {
           duration: 2500,
           verticalPosition: 'top'
         });
       },
       (error: any) => {
         if (error.status === 409) {
-          this.snackBar.open('Choroba o danej nazwie już istnieje', '', {
+          this.snackBar.open(this.translate.instant('snackbar.createDisease409'), '', {
             duration: 2500,
             verticalPosition: 'top'
           });
         }
         else {
-          this.snackBar.open('Wystąpił błąd podczas tworzenia choroby', '', {
+          this.snackBar.open(this.translate.instant('snackbar.defaultError'), '', {
             duration: 2500,
             verticalPosition: 'top'
           });

@@ -17,7 +17,9 @@ import javax.validation.constraints.NotNull;
 public class DiseaseCreateRequest {
 
     @NotBlank
-    String name;
+    String latinName;
+
+    String polishName;
 
     @NotNull
     boolean cathererRequired;

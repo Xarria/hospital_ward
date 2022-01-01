@@ -2,18 +2,18 @@
 
   <div class="centered-form">
     <form action="" [formGroup]="loginForm" (ngSubmit)="loginForm && login(loginField.value, passwordField.value)">
-      <div class="centered-text">Logowanie</div>
+      <div class="centered-text">{{'login.signIn' | translate}}</div>
       <div class="form-controls">
         <mat-form-field>
-          <input #loginField id="login" matInput formControlName="login" placeholder="*Login">
-          <mat-error *ngIf="loginForm.controls.login.invalid && loginForm.controls.login.touched">Pole wymagane</mat-error>
+          <input #loginField id="login" matInput formControlName="login" placeholder="{{'login.login' | translate}}">
+          <mat-error *ngIf="loginForm.controls.login.invalid && loginForm.controls.login.touched">{{'common.fieldRequired' | translate}}</mat-error>
         </mat-form-field>
         <mat-form-field>
-          <input #passwordField id="password" type="password" matInput formControlName="password" placeholder="*Password">
-          <mat-error *ngIf="loginForm.controls.password.invalid && loginForm.controls.password.touched">Pole wymagane</mat-error>
+          <input #passwordField id="password" type="password" matInput formControlName="password" placeholder="{{'login.password' | translate}}">
+          <mat-error *ngIf="loginForm.controls.password.invalid && loginForm.controls.password.touched">{{'common.fieldRequired' | translate}}</mat-error>
         </mat-form-field>
 
-        <button mat-button class="mat-raised-button mat-primary" [disabled]="!loginForm.valid" >Login</button>
+        <button mat-button class="mat-raised-button mat-primary" [disabled]="!loginForm.valid">{{'login.signIn' | translate}}</button>
       </div>
     </form>
   </div>

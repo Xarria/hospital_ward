@@ -13,5 +13,5 @@ import java.util.Optional;
 @Transactional(propagation = Propagation.MANDATORY, isolation = Isolation.READ_COMMITTED, timeout = 3)
 public interface DiseaseRepository extends JpaRepository<Disease, Long> {
 
-    Optional<Disease> findDiseaseByName(String name);
+    Optional<Disease> findDiseaseByLatinName(String name);
 }

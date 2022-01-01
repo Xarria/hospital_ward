@@ -1,16 +1,17 @@
 <mat-toolbar class="mat-primary nav">
-  <span>Oddział kardiologii dziecięcej ICZMP</span>
+  <span>{{'navigation.hospitalWard' | translate}}</span>
   <div class="fill-remaining-space"></div>
   <div class="left-nav">
-    <span class="mat-h5 nav-link" *ngIf="!identityService.isGuest()" id="login"
-          routerLink="/patients/add">Zalogowano jako: {{ identityService.getLogin() }}</span>
+      <span class="mat-h5 nav-link" *ngIf="!identityService.isGuest()" id="login"
+            routerLink="/patients/add">{{'navigation.login' | translate}} {{ identityService.getLogin() }}</span>
     <a class="mat-raised-button nav-link" *ngIf="identityService.isTreatmentDirectorOrDoctor()" id="diseasesLink"
-       routerLink="/diseases">Choroby</a>
+       routerLink="/diseases">{{'navigation.diseases' | translate}}</a>
     <a class="mat-raised-button nav-link" *ngIf="!identityService.isSecretary() && !identityService.isGuest()"
-       id="patientsLink" routerLink="/patients">Pacjenci</a>
-    <a class="mat-raised-button nav-link" *ngIf="!identityService.isGuest()" id="queuesLink" routerLink="/queues">Kolejki</a>
+       id="patientsLink" routerLink="/patients">{{'navigation.patients' | translate}}</a>
+    <a class="mat-raised-button nav-link" *ngIf="!identityService.isGuest()" id="queuesLink" routerLink="/queues">{{'navigation.queues' | translate}}</a>
     <a class="mat-raised-button nav-link" *ngIf="identityService.isSecretary()" id="addPatientLink"
-       routerLink="/patients/add">Utwórz pacjenta</a>
-    <a class="mat-raised-button mat-primary nav-link" *ngIf="!identityService.isGuest()" id="logoutLink" (click)="signOut()">Wyloguj</a>
+       routerLink="/patients/add">{{'navigation.createPatient' | translate}}</a>
+    <a class="mat-raised-button mat-primary nav-link" *ngIf="!identityService.isGuest()" id="logoutLink"
+       (click)="signOut()">{{'navigation.logout' | translate}}</a>
   </div>
 </mat-toolbar>

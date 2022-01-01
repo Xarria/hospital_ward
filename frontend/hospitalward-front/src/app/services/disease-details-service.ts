@@ -22,7 +22,8 @@ export class DiseaseDetailsService implements OnDestroy {
   private getEmptyDiseaseDetails(): DiseaseDetails {
     return {
       version: 0,
-      name: '',
+      polishName: '',
+      latinName: '',
       cathererRequired: false,
       surgeryRequired: false,
       modificationDate: new Date(),
@@ -35,7 +36,7 @@ export class DiseaseDetailsService implements OnDestroy {
   modifyDisease(name: string, catherer: boolean, surgery: boolean): Observable<any> {
     return this.http.put(this.url + '/' + name, {
       version: this.disease.version,
-      name: this.disease.name,
+      latinName: this.disease.latinName,
       cathererRequired: catherer,
       surgeryRequired: surgery
     }, {

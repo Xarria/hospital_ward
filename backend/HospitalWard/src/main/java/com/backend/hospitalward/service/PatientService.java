@@ -231,7 +231,7 @@ public class PatientService {
 
     private List<Disease> getDiseasesFromDatabase(List<String> diseases) {
         return diseases.stream()
-                .map(name -> diseaseRepository.findDiseaseByName(name).orElseThrow(() ->
+                .map(name -> diseaseRepository.findDiseaseByLatinName(name).orElseThrow(() ->
                         new NotFoundException(ErrorKey.DISEASE_NOT_FOUND)))
                 .collect(Collectors.toList());
     }

@@ -20,6 +20,7 @@ public class QueueScheduler {
     final QueueService queueService;
 
     @Scheduled(cron = "0 15 0 * * *")
+    //TODO test
     public void transferWaitingPatientsFromYesterdayQueue() {
         List<Patient> waitingPatients = queueService.getWaitingPatientsForPastQueues();
 

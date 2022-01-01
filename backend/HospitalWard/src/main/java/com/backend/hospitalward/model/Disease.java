@@ -23,8 +23,13 @@ public class Disease extends BaseEntity {
 
     @NotBlank
     @Size(max = 100)
-    @Column(name = "name", nullable = false)
-    String name;
+    @Column(name = "latin_name", nullable = false)
+    String latinName;
+
+    @NotBlank
+    @Size(max = 100)
+    @Column(name = "polish_name", nullable = false)
+    String polishName;
 
     @NotNull
     @Column(name = "catherer_required", nullable = false)

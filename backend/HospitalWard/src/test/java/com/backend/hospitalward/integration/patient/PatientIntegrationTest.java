@@ -87,8 +87,8 @@ class PatientIntegrationTest extends AbstractTestContainer {
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
                 () -> assertEquals(patient.getName(), patientDetailsResponse.getName()),
                 () -> assertEquals(patient.getDiseases().size(), patientDetailsResponse.getDiseases().size()),
-                () -> assertEquals(patient.getDiseases().get(0).getName(),
-                        patientDetailsResponse.getDiseases().get(0).getName())
+                () -> assertEquals(patient.getDiseases().get(0).getLatinName(),
+                        patientDetailsResponse.getDiseases().get(0).getLatinName())
         );
     }
 
@@ -295,7 +295,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
 
         assertAll(
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
-                () -> assertEquals("Kaszel", updatedPatient.getDiseases().get(0).getName()),
+                () -> assertEquals("Kaszel", updatedPatient.getDiseases().get(0).getLatinName()),
                 () -> assertEquals("Janina", updatedPatient.getName()),
                 () -> assertEquals(3, updatedPatient.getPositionInQueue())
         );

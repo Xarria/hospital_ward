@@ -2,24 +2,28 @@
     <mat-grid-list cols="2" rowHeight="400px">
       <mat-grid-tile>
         <div class="form-controls">
-          <mat-form-field floatLabel="always">
-            <input id="name" matInput placeholder="Nazwa choroby" [disabled]="true"
-                   value="{{diseaseService.disease.name}}">
+          <mat-form-field floatLabel="always" *ngIf="isPolishLanguage()">
+            <input id="latinName" matInput placeholder="{{'disease.latinName' | translate}}" [disabled]="true"
+                   value="{{diseaseService.disease.latinName}}">
           </mat-form-field>
           <mat-form-field floatLabel="always">
-            <input id="createdBy" matInput placeholder="Utworzone przez" [disabled]="true"
+            <input id="name" matInput placeholder="{{'disease.name' | translate}}" [disabled]="true"
+                   value="{{diseaseService.disease.polishName}}">
+          </mat-form-field>
+          <mat-form-field floatLabel="always">
+            <input id="createdBy" matInput placeholder="{{'common.createdBy' | translate}}" [disabled]="true"
                    value="{{diseaseService.disease.createdBy}}">
           </mat-form-field>
           <mat-form-field floatLabel="always">
-            <input id="creationDate" matInput placeholder="Data utworzenia" [disabled]="true"
+            <input id="creationDate" matInput placeholder="{{'common.creationDate' | translate}}" [disabled]="true"
                    value="{{diseaseService.disease.creationDate}}">
           </mat-form-field>
           <mat-form-field floatLabel="always">
-            <input id="modifiedBy" matInput placeholder="Zmodyfikowane przez" [disabled]="true"
+            <input id="modifiedBy" matInput placeholder="{{'common.modifiedBy' | translate}}" [disabled]="true"
                    value="{{diseaseService.disease.modifiedBy}}">
           </mat-form-field>
           <mat-form-field floatLabel="always">
-            <input id="modificationDate" matInput placeholder="Data modyfikacji" [disabled]="true"
+            <input id="modificationDate" matInput placeholder="{{'common.modificationDate' | translate}}" [disabled]="true"
                    value="{{diseaseService.disease.modificationDate}}">
           </mat-form-field>
         </div>
@@ -27,16 +31,16 @@
       <mat-grid-tile>
         <div class="form-controls">
           <mat-checkbox id="catherer" [(ngModel)]="diseaseService.disease.cathererRequired">
-            Wymagane cewnikowanie
+            {{'disease.catherer' | translate}}
           </mat-checkbox>
           <mat-checkbox id="surgery" [(ngModel)]="diseaseService.disease.surgeryRequired">
-            Wymagany zabieg
+            {{'disease.surgery' | translate}}
           </mat-checkbox>
           <div class="buttons">
             <button mat-button class="mat-raised-button mat-primary btn" (click)="modify()">
-              Modyfikuj
+              {{'common.confirm' | translate}}
             </button>
-            <button mat-button class="mat-raised-button btn" color="warn" (click)="close()">Anuluj</button>
+            <button mat-button class="mat-raised-button btn" color="warn" (click)="close()">{{'common.cancel' | translate}}</button>
           </div>
         </div>
       </mat-grid-tile>
