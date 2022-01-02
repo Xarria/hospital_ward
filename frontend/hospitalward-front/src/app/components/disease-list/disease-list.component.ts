@@ -16,7 +16,7 @@ import {TranslateService} from '@ngx-translate/core';
 export class DiseaseListComponent implements OnInit {
 
   diseaseData: MatTableDataSource<DiseaseGeneral>;
-  displayedColumns: string[] = ['Name', 'Latin name', 'Catherer required', 'Surgery required', ' '];
+  displayedColumns: string[] = ['Polish name', 'Latin name', 'Catherer required', 'Surgery required', ' '];
   searchKey = '';
 
   constructor(private diseaseService: DiseaseTableService,

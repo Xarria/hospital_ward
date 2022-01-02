@@ -30,14 +30,14 @@ export class LoginComponent implements OnInit {
     this.authService.auth(login, password).subscribe(
       (response: string) => {
         this.authService.setSession(response);
-        this.goToCalendar();
+        this.goToQueues();
       },
       () => this.displayError()
     );
   }
 
-  goToCalendar(): void {
-    this.router.navigate(['/diseases']);
+  goToQueues(): void {
+    this.router.navigate(['/queues']);
   }
 
   displayError(): void {

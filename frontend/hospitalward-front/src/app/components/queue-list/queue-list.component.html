@@ -1,0 +1,61 @@
+<div class="search">
+  <button mat-icon-button class="add-btn">
+    <mat-icon (click)="refresh()">refresh</mat-icon>
+  </button>
+  <mat-form-field class="search-field" floatLabel="never">
+    <input matInput [(ngModel)]="searchKey" placeholder="{{'date.search' | translate}}" autocomplete="off" (keyup)="applyFilter()">
+    <button *ngIf="searchKey" mat-button matSuffix mat-icon-button aria-label>
+      <mat-icon (click)="clearSearch()">close</mat-icon>
+    </button>
+  </mat-form-field>
+  <mat-form-field class="search-field" floatLabel="never">
+    <mat-select placeholder="{{'date.filterMonth' | translate}}" (selectionChange)="changeFilterMonth($event)" [(ngModel)]="selectedMonth">
+      <mat-option value="01">{{'date.january' | translate}}</mat-option>
+      <mat-option value="02">{{'date.february' | translate}}</mat-option>
+      <mat-option value="03">{{'date.march' | translate}}</mat-option>
+      <mat-option value="04">{{'date.april' | translate}}</mat-option>
+      <mat-option value="05">{{'date.may' | translate}}</mat-option>
+      <mat-option value="06">{{'date.june' | translate}}</mat-option>
+      <mat-option value="07">{{'date.july' | translate}}</mat-option>
+      <mat-option value="08">{{'date.august' | translate}}</mat-option>
+      <mat-option value="09">{{'date.september' | translate}}</mat-option>
+      <mat-option value="10">{{'date.october' | translate}}</mat-option>
+      <mat-option value="11">{{'date.november' | translate}}</mat-option>
+      <mat-option value="12">{{'date.december' | translate}}</mat-option>
+    </mat-select>
+    <button mat-button matSuffix *ngIf="selectedMonth" mat-icon-button (click)="clearFilter($event)">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+<mat-table class="table" [dataSource]="queueData">
+  <ng-container matColumnDef="Date">
+    <mat-header-cell *matHeaderCellDef>{{'queue.date' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.date | date:'dd-MM-yyyy' }}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="Patients waiting">
+    <mat-header-cell *matHeaderCellDef>{{'queue.patientsWaiting' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.patientsWaiting.length}}/8</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="Patients confirmed">
+    <mat-header-cell *matHeaderCellDef>{{'queue.patientsConfirmed' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.patientsConfirmed.length}}/8</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="Locked">
+    <mat-header-cell *matHeaderCellDef>{{'queue.locked' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <mat-icon *ngIf="element.locked">check_circle_outline</mat-icon>
+      <mat-icon *ngIf="!element.locked">highlight_off</mat-icon>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef=" ">
+    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <button mat-icon-button (click)="openDetails(element.date)">
+        <mat-icon>launch</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>

@@ -42,5 +42,50 @@
     "modifyDiseaseSuccess" : "Disease modified successfully",
     "modifyDisease404": "Disease does not exist",
     "modifyDisease400": "Disease was modified during modification"
+  },
+  "queue": {
+    "date": "Date",
+    "patientsWaiting": "Unoconfirmed patients count",
+    "patientsConfirmed": "Confirmed patients count",
+    "locked": "Locked/full",
+    "patients": "Patients list"
+  },
+  "date": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December",
+    "search": "Search date",
+    "filterMonth": "Pick a month"
+  },
+  "patient": {
+    "position": "No.",
+    "type": "Type",
+    "patientType": {
+      "girl": "Female",
+      "boy": "Male",
+      "intensive": "Intensive supervision",
+      "urgent": "Urgent",
+      "under6": "Under 6"
+    },
+    "fullName": "Full name",
+    "age": "Age",
+    "sex": "Sex",
+    "admissionDate": "Admission date",
+    "status": "Confirmation status",
+    "urgent": "Urgent",
+    "cathereOrSurgery": "Catherer/surgery required",
+    "female": "F",
+    "male": "M",
+    "years": "yo",
+    "months": "mo"
   }
 }

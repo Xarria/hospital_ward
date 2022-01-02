@@ -14,9 +14,13 @@
   </mat-form-field>
 </div>
 <mat-table class="table" [dataSource]="diseaseData">
-  <ng-container *ngIf="isPolishLanguage()" matColumnDef="Name">
+  <ng-container *ngIf="isPolishLanguage()" matColumnDef="Polish name">
     <mat-header-cell *matHeaderCellDef>{{'disease.name' | translate}}</mat-header-cell>
     <mat-cell *matCellDef="let element">{{element.polishName}}</mat-cell>
+  </ng-container>
+  <ng-container *ngIf="!isPolishLanguage()" matColumnDef="Polish name">
+    <mat-header-cell class="hidden-column" *matHeaderCellDef></mat-header-cell>
+    <mat-cell class="hidden-column" *matCellDef="let element"></mat-cell>
   </ng-container>
   <ng-container matColumnDef="Latin name">
     <mat-header-cell *matHeaderCellDef>{{'disease.latinName' | translate}}</mat-header-cell>

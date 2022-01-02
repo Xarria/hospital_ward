@@ -28,6 +28,11 @@ import { ModifyDiseaseComponent } from './components/modify-disease/modify-disea
 import {MatGridListModule} from '@angular/material/grid-list';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { QueueListComponent } from './components/queue-list/queue-list.component';
+import {MatSelectModule} from '@angular/material/select';
+import {CommonModule} from '@angular/common';
+import { QueueDetailsComponent } from './components/queue-details/queue-details.component';
+import {MatSortModule} from '@angular/material/sort';
 
 export function rootLoaderFactory(http: HttpClient): any {
   return new TranslateHttpLoader(http);
@@ -41,7 +46,9 @@ export function rootLoaderFactory(http: HttpClient): any {
     DiseaseListComponent,
     NavigationComponent,
     CreateDiseaseComponent,
-    ModifyDiseaseComponent
+    ModifyDiseaseComponent,
+    QueueListComponent,
+    QueueDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +74,9 @@ export function rootLoaderFactory(http: HttpClient): any {
         useFactory: rootLoaderFactory,
         deps: [HttpClient]
       }
-    })
+    }),
+    MatSelectModule,
+    MatSortModule,
   ],
   providers: [
     CookieService,

@@ -1,0 +1,99 @@
+<div class="table">
+  <button mat-icon-button class="add-btn">
+    <mat-icon (click)="refresh()">refresh</mat-icon>
+  </button>
+  <mat-grid-list cols="4" rowHeight="100px">
+    <mat-grid-tile></mat-grid-tile>
+    <mat-grid-tile>
+      <div class="form-controls">
+        <mat-form-field floatLabel="always">
+          <input id="name" matInput placeholder="{{'queue.date' | translate}}" [disabled]="true"
+                 value="{{queueService.queue.date | date:'dd-MM-yyyy' }}">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        {{'queue.locked' | translate}}:
+        <mat-icon class="icon" *ngIf="queueService.queue.locked">check_circle_outline</mat-icon>
+        <mat-icon class="icon" *ngIf="!queueService.queue.locked">highlight_off</mat-icon>
+    </mat-grid-tile>
+    <mat-grid-tile></mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="1" rowHeight="30px">
+    <mat-grid-tile><p class="mat-h3">{{'queue.patients' | translate}}</p></mat-grid-tile>
+  </mat-grid-list>
+
+<mat-table class="table-patients" [dataSource]="patientsData" matSort>
+  <ng-container matColumnDef="Position">
+    <mat-header-cell class="w-60" *matHeaderCellDef mat-sort-header>{{'patient.position' | translate}}</mat-header-cell>
+    <mat-cell class="w-60" *matCellDef="let element">{{element.positionInQueue + 1}}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="Type">
+    <mat-header-cell *matHeaderCellDef>{{'patient.type' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <p *ngIf="element.patientType === 'GIRL'">{{'patient.patientType.girl' | translate}}</p>
+      <p *ngIf="element.patientType === 'BOY'">{{'patient.patientType.boy' | translate}}</p>
+      <p *ngIf="element.patientType === 'UNDER_6'">{{'patient.patientType.under6' | translate}}</p>
+      <p *ngIf="element.patientType === 'INTENSIVE_SUPERVISION'">{{'patient.patientType.intensive' | translate}}</p>
+      <p *ngIf="element.patientType === 'URGENT'">{{'patient.patientType.urgent' | translate}}</p>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="Full name">
+    <mat-header-cell *matHeaderCellDef>{{'patient.fullName' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.name + ' ' + element.surname}}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="Age">
+    <mat-header-cell class="w-60" *matHeaderCellDef>{{'patient.age' | translate}}</mat-header-cell>
+    <mat-cell class="w-60" *matCellDef="let element">{{displayAge(element.age)}}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="Sex">
+    <mat-header-cell class="w-60" *matHeaderCellDef>{{'patient.sex' | translate}}</mat-header-cell>
+    <mat-cell class="w-60" *matCellDef="let element">
+      <p *ngIf="element.sex === 'F'">{{'patient.female' | translate}}</p>
+      <p *ngIf="element.sex === 'M'">{{'patient.male' | translate}}</p>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="Admission date">
+    <mat-header-cell *matHeaderCellDef>{{'patient.admissionDate' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.admissionDate | date:'dd-MM-yyyy' }}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="Status">
+    <mat-header-cell class="w-120" *matHeaderCellDef>{{'patient.status' | translate}}</mat-header-cell>
+    <mat-cell class="w-120" *matCellDef="let element">
+      <mat-icon *ngIf="element.status === 'WAITING'"></mat-icon>
+      <mat-icon *ngIf="element.status === 'CONFIRMED_ONCE'">done</mat-icon>
+      <mat-icon *ngIf="element.status === 'CONFIRMED_TWICE'">done_all</mat-icon>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="Urgent">
+    <mat-header-cell class="w-60" *matHeaderCellDef>{{'patient.urgent' | translate}}</mat-header-cell>
+    <mat-cell class="w-60" *matCellDef="let element">
+      <mat-icon *ngIf="element.urgent">check_circle_outline</mat-icon>
+      <mat-icon *ngIf="!element.urgent">highlight_off</mat-icon>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="Catherer or surgery">
+    <mat-header-cell class="w-120" *matHeaderCellDef>{{'patient.cathereOrSurgery' | translate}}</mat-header-cell>
+    <mat-cell class="w-120" *matCellDef="let element">
+      <mat-icon *ngIf="element.cathererRequired || element.surgeryRequired">check_circle_outline</mat-icon>
+      <mat-icon *ngIf="!element.cathererRequired && !element.surgeryRequired">highlight_off</mat-icon>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef=" ">
+    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <button mat-icon-button (click)="openDetails(element.id)">
+        <mat-icon>launch</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="deletePatient(element.id)">
+        <mat-icon>delete_outline</mat-icon>
+      </button>
+      <button mat-icon-button color="primary" (click)="confirmPatient(element.id)">
+        <mat-icon>done</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>
+</div>

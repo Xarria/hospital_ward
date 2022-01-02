@@ -56,14 +56,6 @@ public interface QueueMapper {
         return false;
     }
 
-    @Named("mapMainDoctor")
-    default String mapMainDoctor(Account medicalStaff) {
-        if (medicalStaff != null) {
-            return medicalStaff.getLogin();
-        }
-        return null;
-    }
-
     @Named("mapWaitingPatients")
     default List<PatientGeneralResponse> mapWaitingPatients(Queue queue) {
         List<Patient> waitingPatients = queue.getWaitingPatients();
@@ -93,7 +85,6 @@ public interface QueueMapper {
 
     @Mapping(target = "patientType", qualifiedByName = "mapPatientType")
     @Mapping(target = "status", qualifiedByName = "mapPatientStatus")
-    @Mapping(target = "mainDoctor", qualifiedByName = "mapMainDoctor")
     @Mapping(target = "cathererRequired", source = "patient", qualifiedByName = "mapCathererRequired")
     @Mapping(target = "surgeryRequired", source = "patient", qualifiedByName = "mapSurgeryRequired")
     PatientGeneralResponse toPatientGeneralResponse(Patient patient);

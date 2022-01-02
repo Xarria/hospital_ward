@@ -42,5 +42,50 @@
     "modifyDiseaseSuccess" : "Pomyślnie zmodyfikowano chorobę",
     "modifyDisease404": "Choroba nie istnieje",
     "modifyDisease400": "W trakcie operacji zmodyfikowano chorobę"
+  },
+  "queue": {
+    "date": "Data",
+    "patientsWaiting": "Liczba niepotwierdzonych pacjentów",
+    "patientsConfirmed": "Liczba potwierdzonych pacjentów",
+    "locked": "Kolejka pełna/zablokowana",
+    "patients": "Lista pacjentów"
+  },
+  "date": {
+    "january": "Styczeń",
+    "february": "Luty",
+    "march": "Marzec",
+    "april": "Kwiecień",
+    "may": "Maj",
+    "june": "Czerwiec",
+    "july": "Lipiec",
+    "august": "Sierpień",
+    "september": "Wrzesień",
+    "october": "Październik",
+    "november": "Listopad",
+    "december": "Grudzień",
+    "search": "Wyszukaj datę",
+    "filterMonth": "Wybierz miesiąc"
+  },
+  "patient": {
+    "position": "Nr",
+    "type": "Typ",
+    "patientType": {
+      "girl": "Kobieta",
+      "boy": "Mężczyzna",
+      "intensive": "Intensywny nadzór",
+      "urgent": "Pilny",
+      "under6": "Poniżej 6 r.ż."
+    },
+    "fullName": "Imię i nazwisko",
+    "age": "Wiek",
+    "sex": "Płeć",
+    "admissionDate": "Planowana data przyjęcia",
+    "status": "Status potwierdzenia",
+    "urgent": "Pilny",
+    "cathereOrSurgery": "Cewnikowanie/ zabieg",
+    "female": "K",
+    "male": "M",
+    "years": "lat",
+    "months": "msc."
   }
 }

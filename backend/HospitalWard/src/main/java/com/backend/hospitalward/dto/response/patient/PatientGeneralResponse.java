@@ -22,15 +22,7 @@ public class PatientGeneralResponse {
 
     String sex;
 
-    String referralNr;
-
-    @JsonDeserialize(using = LocalDateJsonDeserializer.class)
-    @JsonSerialize(using = LocalDateJsonSerializer.class)
-    LocalDate referralDate;
-
     String patientType;
-
-    String mainDoctor;
 
     String name;
 

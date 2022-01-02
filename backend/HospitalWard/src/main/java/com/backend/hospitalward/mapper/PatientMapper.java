@@ -81,7 +81,6 @@ public interface PatientMapper {
     }
     @Mapping(target = "patientType", qualifiedByName = "mapPatientType")
     @Mapping(target = "status", qualifiedByName = "mapPatientStatus")
-    @Mapping(target = "mainDoctor", qualifiedByName = "mapMainDoctor")
     @Mapping(target = "cathererRequired", source = "patient", qualifiedByName = "mapCathererRequired")
     @Mapping(target = "surgeryRequired", source = "patient", qualifiedByName = "mapSurgeryRequired")
     PatientGeneralResponse toPatientGeneralResponse(Patient patient);
