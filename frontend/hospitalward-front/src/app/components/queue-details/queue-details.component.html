@@ -62,7 +62,7 @@
     <mat-cell class="w-120" *matCellDef="let element">
       <mat-icon *ngIf="element.status === 'WAITING'"></mat-icon>
       <mat-icon *ngIf="element.status === 'CONFIRMED_ONCE'">done</mat-icon>
-      <mat-icon *ngIf="element.status === 'CONFIRMED_TWICE'">done_all</mat-icon>
+      <mat-icon class="mat-primary" *ngIf="element.status === 'CONFIRMED_TWICE'">done_all</mat-icon>
     </mat-cell>
   </ng-container>
   <ng-container matColumnDef="Urgent">

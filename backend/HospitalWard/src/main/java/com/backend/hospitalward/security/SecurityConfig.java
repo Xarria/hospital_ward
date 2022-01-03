@@ -62,13 +62,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new     UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOriginPattern("*");
-
         config.addAllowedHeader("*");
-        config.addAllowedHeader("ETag");
+        config.addAllowedHeader("Authorization");
         config.addExposedHeader("ETag");
         config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);

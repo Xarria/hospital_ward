@@ -16,7 +16,8 @@
     "modifiedBy": "Modified by",
     "modificationDate": "Modification date",
     "createdBy": "Created by",
-    "creationDate": "Creation date"
+    "creationDate": "Creation date",
+    "modify": "Modify"
   },
   "login": {
     "signIn": "Sign In",
@@ -86,6 +87,17 @@
     "female": "F",
     "male": "M",
     "years": "yo",
-    "months": "mo"
+    "months": "mo",
+    "referralNr": "Referral No.",
+    "referralDate": "Referral date",
+    "pesel": "PESEL",
+    "mainDoctor": "Main doctor",
+    "name": "Name",
+    "surname": "Surname",
+    "phoneNumber": "Phone number",
+    "covidStatus": "Covid status",
+    "diseases": "Diseases",
+    "changeDate": "Change admission date",
+    "changeUrgency": "Switch urgency"
   }
 }

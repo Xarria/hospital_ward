@@ -2,11 +2,14 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {QueueService} from '../../services/queue-service';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {MatDialog} from '@angular/material/dialog';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {TranslateService} from '@ngx-translate/core';
 import {PatientGeneral} from '../../model/patient-general';
 import {ActivatedRoute} from '@angular/router';
 import {MatSort, Sort} from '@angular/material/sort';
+import {PatientService} from '../../services/patient-service';
+import {CreateDiseaseComponent} from '../create-disease/create-disease.component';
+import {PatientDetailsComponent} from '../patient-details/patient-details.component';
 
 @Component({
   selector: 'app-queue-detials',
@@ -20,12 +23,14 @@ export class QueueDetailsComponent implements OnInit {
   patientsData: MatTableDataSource<PatientGeneral>;
   displayedColumns: string[] = ['Position', 'Type', 'Full name', 'Age', 'Sex', 'Admission date', 'Status', 'Urgent', 'Catherer or surgery', ' '];
   date = '';
+  patientsList: PatientGeneral[] = [];
 
   constructor(public queueService: QueueService,
               private route: ActivatedRoute,
               private snackBar: MatSnackBar,
               private dialog: MatDialog,
-              private translate: TranslateService) {
+              private translate: TranslateService,
+              private patientService: PatientService) {
     this.patientsData = new MatTableDataSource<PatientGeneral>();
     this.date = this.route.snapshot.paramMap.get('date') as string;
   }
@@ -43,8 +48,10 @@ export class QueueDetailsComponent implements OnInit {
     this.queueService.getQueue(this.date).subscribe(
       (response) => {
         this.queueService.readQueue(response);
-        this.patientsData = new MatTableDataSource<PatientGeneral>(
-          response.body?.patientsConfirmed.concat(response.body?.patientsWaiting));
+        this.patientsList = this.queueService.queue.patientsConfirmed.concat(this.queueService.queue.patientsWaiting);
+        this.patientsList.sort((a, b) => (a.positionInQueue > b.positionInQueue) ? 1 :
+          ((b.positionInQueue > a.positionInQueue) ? -1 : 0));
+        this.patientsData = new MatTableDataSource(this.patientsList);
       }
     );
   }
@@ -54,15 +61,78 @@ export class QueueDetailsComponent implements OnInit {
   }
 
   openDetails(id: number): void {
-
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '70%';
+    dialogConfig.data = id;
+    const dialogRef = this.dialog.open(PatientDetailsComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(() => {
+      this.refresh();
+    });
   }
 
-  deletePatient(id: number): void {
-
+  confirmPatient(id: string): void {
+    this.patientService.confirm(id).subscribe(
+      () => {
+        this.snackBar.open(this.translate.instant('snackbar.removePatientSuccess'), '', {
+          duration: 2500,
+          verticalPosition: 'top'
+        });
+        this.getQueue();
+      },
+      (error: any) => {
+        if (error.status === 409) {
+          this.snackBar.open(this.translate.instant('snackbar.removePatient409'), '', {
+            duration: 2500,
+            verticalPosition: 'top'
+          });
+        }
+        if (error.status === 404) {
+          this.snackBar.open(this.translate.instant('snackbar.removePatient404'), '', {
+            duration: 2500,
+            verticalPosition: 'top'
+          });
+        }
+        else {
+          this.snackBar.open(this.translate.instant('snackbar.defaultError'), '', {
+            duration: 2500,
+            verticalPosition: 'top'
+          });
+        }
+      }
+    );
   }
 
-  confirmPatient(id: number): void {
-
+  deletePatient(id: string): void {
+    this.patientService.remove(id).subscribe(
+      () => {
+        this.snackBar.open(this.translate.instant('snackbar.removePatientSuccess'), '', {
+          duration: 2500,
+          verticalPosition: 'top'
+        });
+        this.getQueue();
+      },
+      (error: any) => {
+        if (error.status === 409) {
+          this.snackBar.open(this.translate.instant('snackbar.removePatient409'), '', {
+            duration: 2500,
+            verticalPosition: 'top'
+          });
+        }
+        if (error.status === 404) {
+          this.snackBar.open(this.translate.instant('snackbar.removePatient404'), '', {
+            duration: 2500,
+            verticalPosition: 'top'
+          });
+        }
+        else {
+          this.snackBar.open(this.translate.instant('snackbar.defaultError'), '', {
+            duration: 2500,
+            verticalPosition: 'top'
+          });
+        }
+      }
+    );
   }
 
   displayAge(age: string): string {

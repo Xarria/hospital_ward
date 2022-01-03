@@ -33,6 +33,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {CommonModule} from '@angular/common';
 import { QueueDetailsComponent } from './components/queue-details/queue-details.component';
 import {MatSortModule} from '@angular/material/sort';
+import { PatientDetailsComponent } from './components/patient-details/patient-details.component';
 
 export function rootLoaderFactory(http: HttpClient): any {
   return new TranslateHttpLoader(http);
@@ -48,7 +49,8 @@ export function rootLoaderFactory(http: HttpClient): any {
     CreateDiseaseComponent,
     ModifyDiseaseComponent,
     QueueListComponent,
-    QueueDetailsComponent
+    QueueDetailsComponent,
+    PatientDetailsComponent
   ],
   imports: [
     BrowserModule,

@@ -4,7 +4,7 @@ import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {Queue} from '../model/queue';
-import {DiseaseDetails} from '../model/disease-details';
+import {PatientGeneral} from '../model/patient-general';
 
 @Injectable({
   providedIn: 'root'
@@ -53,5 +53,7 @@ export class QueueService {
 
   readQueue(response: HttpResponse<Queue>): void {
     this.queue = response.body as Queue;
+    this.queue.patientsWaiting = response.body?.patientsWaiting as PatientGeneral[];
+    this.queue.patientsConfirmed = response.body?.patientsConfirmed as PatientGeneral[];
   }
 }

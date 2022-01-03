@@ -1,0 +1,110 @@
+<div mat-dialog-content>
+  <mat-grid-list cols="3" rowHeight="400px">
+    <mat-grid-tile>
+      <div class="form-controls">
+        <mat-form-field floatLabel="always">
+          <input id="pesel" matInput placeholder="{{'patient.pesel' | translate}}" [disabled]="true"
+                 value="{{patientService.patient.pesel}}">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="age" matInput placeholder="{{'patient.age' | translate}}" [disabled]="true"
+                 value="{{patientService.patient.age}}">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="sex" matInput placeholder="{{'patient.sex' | translate}}" [disabled]="true"
+                 value="{{patientService.patient.sex}}">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="name" matInput placeholder="{{'patient.name' | translate}}" [disabled]="true"
+                 value="{{patientService.patient.name}}">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="surname" matInput placeholder="{{'patient.surname' | translate}}" [disabled]="true"
+                 value="{{patientService.patient.surname}}">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="phoneNumber" matInput placeholder="{{'patient.phoneNumber' | translate}}" [disabled]="true"
+                 value="{{patientService.patient.phoneNumber}}">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="form-controls">
+        <mat-form-field floatLabel="always">
+          <input id="referralNr" matInput placeholder="{{'patient.referralNr' | translate}}" [disabled]="true"
+                 value="{{patientService.patient.referralNr}}">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="referralDate" matInput placeholder="{{'patient.referralDate' | translate}}" [disabled]="true"
+                 value="{{patientService.patient.referralDate | date:'dd-MM-yyyy' }}">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="admissionDate" matInput placeholder="{{'patient.admissionDate' | translate}}" [disabled]="true"
+                 value="{{patientService.patient.admissionDate | date:'dd-MM-yyyy' }}">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="mainDoctor" matInput placeholder="{{'patient.mainDoctor' | translate}}" [disabled]="true"
+                 value="{{patientService.patient.mainDoctor}}">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="type" matInput placeholder="{{'patient.type' | translate}}" [disabled]="true"
+                 value="{{patientService.patient.patientType}}">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="covidStatus" matInput placeholder="{{'patient.covidStatus' | translate}}" [disabled]="true"
+                 value="{{patientService.patient.covidStatus}}">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="form-controls">
+      <mat-form-field floatLabel="always">
+        <input id="urgent" matInput placeholder="{{'patient.urgent' | translate}}" [disabled]="true"
+               value="{{patientService.patient.urgent}}">
+      </mat-form-field>
+      <mat-form-field floatLabel="always">
+        <input id="status" matInput placeholder="{{'patient.status' | translate}}" [disabled]="true"
+               value="{{patientService.patient.status}}">
+      </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="createdBy" matInput placeholder="{{'common.createdBy' | translate}}" [disabled]="true"
+                 value="{{patientService.patient.createdBy}}">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="creationDate" matInput placeholder="{{'common.creationDate' | translate}}" [disabled]="true"
+                 value="{{patientService.patient.creationDate | date:'dd-MM-yyyy' }}">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="modifiedBy" matInput placeholder="{{'common.modifiedBy' | translate}}" [disabled]="true"
+                 value="{{patientService.patient.modifiedBy}}">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="modificationDate" matInput placeholder="{{'common.modificationDate' | translate}}"
+                 [disabled]="true"
+                 value="{{patientService.patient.modificationDate | date:'dd-MM-yyyy' }}">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="1" rowHeight="70px">
+    <mat-grid-tile>
+      <div class="form-controls">
+      <mat-form-field>
+        <input id="diseases" matInput placeholder="{{'patient.diseases' | translate}}"
+               [disabled]="true"
+               value="{{getDiseaseList() }}">
+      </mat-form-field>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <div class="buttons">
+    <button mat-button class="mat-raised-button mat-primary btn" (click)="modify()">
+      {{'common.modify' | translate}}
+    </button>
+    <button mat-button class="mat-raised-button mat-primary btn" (click)="changeAdmissionDate()">
+      {{'patient.changeDate' | translate}}
+    </button>
+    <button mat-button class="mat-raised-button mat-primary btn" (click)="changeUrgency()">
+      {{'patient.changeUrgency' | translate}}</button>
+  </div>
+</div>

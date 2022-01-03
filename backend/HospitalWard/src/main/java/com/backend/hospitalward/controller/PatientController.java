@@ -116,7 +116,7 @@ public class PatientController {
     }
 
     @MedicAuthorities
-    @PutMapping("/confirm/{id}")
+    @GetMapping("/confirm/{id}")
     public ResponseEntity<?> confirmPatient(@PathVariable("id") long id) {
 
         patientService.confirmPatient(id);

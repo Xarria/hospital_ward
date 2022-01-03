@@ -16,7 +16,8 @@
     "modifiedBy": "Zmodyfikowane przez",
     "modificationDate": "Data modyfikacji",
     "createdBy": "Utworzone przez",
-    "creationDate": "Data utworzenia"
+    "creationDate": "Data utworzenia",
+    "modify": "Edytuj"
   },
   "login": {
     "signIn": "Zaloguj się",
@@ -74,7 +75,7 @@
       "boy": "Mężczyzna",
       "intensive": "Intensywny nadzór",
       "urgent": "Pilny",
-      "under6": "Poniżej 6 r.ż."
+      "under6": "Poniżej 6 r.ż.",
     },
     "fullName": "Imię i nazwisko",
     "age": "Wiek",
@@ -86,6 +87,17 @@
     "female": "K",
     "male": "M",
     "years": "lat",
-    "months": "msc."
+    "months": "msc.",
+    "referralNr": "Nr skierowania",
+    "referralDate": "Data skierowania",
+    "pesel": "PESEL",
+    "mainDoctor": "Lekarz prowadzący",
+    "name": "Imię",
+    "surname": "Nazwisko",
+    "phoneNumber": "Nr telefonu",
+    "covidStatus": "Status Covid",
+    "diseases": "List chorób",
+    "changeDate": "Zmień datę przyjęcia",
+    "changeUrgency": "Przełącz pilność"
   }
 }

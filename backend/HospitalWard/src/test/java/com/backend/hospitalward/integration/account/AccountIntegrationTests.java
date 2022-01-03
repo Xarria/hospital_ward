@@ -375,47 +375,6 @@ class AccountIntegrationTests {
         );
     }
 
-    @Order(11)
-    @Test
-    void updateOwnAccountOffice() {
-        HttpEntity<Credentials> credentials = new HttpEntity<>(
-                new Credentials(AccountConstants.OFFICE_LOGIN, AccountConstants.SG_PASSWORD), null);
-        ResponseEntity<String> responseAuth = restTemplate.exchange(getUrlWithPort(AccountConstants.AUTH),
-                HttpMethod.POST, credentials, String.class);
-
-        token = responseAuth.getBody();
-
-        Long version = accountService.getAccountByLogin(
-                AccountConstants.OFFICE_LOGIN).getVersion();
-
-        ResponseEntity<String> responseGet = restTemplate.exchange(getUrlWithPort(AccountConstants.GET_PROFILE),
-                HttpMethod.GET, getJwtHttpEntity(), String.class);
-
-        String etag = Objects.requireNonNull(responseGet.getHeaders().get(HttpHeaders.ETAG)).get(0);
-
-        HttpHeaders headers = getHttpHeaders();
-        headers.add(HttpHeaders.IF_MATCH, etag.substring(1, etag.length() - 1));
-
-        HttpEntity<AccountUpdateRequest> createRequestHttpEntity = new HttpEntity<>(
-                AccountUpdateRequest.builder()
-                        .login(AccountConstants.OFFICE_LOGIN)
-                        .surname(AccountConstants.UPDATE_NAME)
-                        .version(version)
-                        .build(), headers);
-
-        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(AccountConstants.UPDATE_OWN_OFFICE)
-                , HttpMethod.PUT, createRequestHttpEntity, String.class);
-
-        assertAll(
-                () -> assertNotNull(response),
-                () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
-                () -> assertEquals(AccountConstants.UPDATE_NAME, accountService.getAccountByLogin(
-                        AccountConstants.OFFICE_LOGIN).getSurname()),
-                () -> assertTrue(accountService.getAccountByLogin(AccountConstants.OFFICE_LOGIN).getModificationDate()
-                        .after(getTimestampToCompare()))
-        );
-    }
-
     @Order(12)
     @Test
     void updateOwnAccountMedic() {
