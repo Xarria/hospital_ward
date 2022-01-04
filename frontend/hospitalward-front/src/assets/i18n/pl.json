@@ -17,7 +17,8 @@
     "modificationDate": "Data modyfikacji",
     "createdBy": "Utworzone przez",
     "creationDate": "Data utworzenia",
-    "modify": "Edytuj"
+    "modify": "Edytuj",
+    "pickDate": "Wybierz datę"
   },
   "login": {
     "signIn": "Zaloguj się",
@@ -75,7 +76,7 @@
       "boy": "Mężczyzna",
       "intensive": "Intensywny nadzór",
       "urgent": "Pilny",
-      "under6": "Poniżej 6 r.ż.",
+      "under6": "Poniżej 6 r.ż."
     },
     "fullName": "Imię i nazwisko",
     "age": "Wiek",
@@ -98,6 +99,16 @@
     "covidStatus": "Status Covid",
     "diseases": "List chorób",
     "changeDate": "Zmień datę przyjęcia",
-    "changeUrgency": "Przełącz pilność"
+    "changeUrgency": "Przełącz pilność",
+    "confirmationStatus": {
+      "waiting": "Oczekujący",
+      "confirmedOnce": "Potwierdzony raz",
+      "confirmedTwice": "Potwierdzony dwukrotnie"
+    },
+    "covidStatusList": {
+      "vaccinated": "Zaszczepiony",
+      "unvaccinated": "Niezaszczepiony",
+      "afterIllness": "Po przebytej chorobie"
+    }
   }
 }

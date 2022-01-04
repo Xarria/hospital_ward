@@ -1,5 +1,5 @@
 <div mat-dialog-content>
-  <mat-grid-list cols="3" rowHeight="400px">
+  <mat-grid-list cols="3" rowHeight="380px">
     <mat-grid-tile>
       <div class="form-controls">
         <mat-form-field floatLabel="always">
@@ -8,11 +8,11 @@
         </mat-form-field>
         <mat-form-field floatLabel="always">
           <input id="age" matInput placeholder="{{'patient.age' | translate}}" [disabled]="true"
-                 value="{{patientService.patient.age}}">
+                 value="{{displayAge(patientService.patient.age)}}">
         </mat-form-field>
         <mat-form-field floatLabel="always">
           <input id="sex" matInput placeholder="{{'patient.sex' | translate}}" [disabled]="true"
-                 value="{{patientService.patient.sex}}">
+                 value="{{displaySex(patientService.patient.sex)}}">
         </mat-form-field>
         <mat-form-field floatLabel="always">
           <input id="name" matInput placeholder="{{'patient.name' | translate}}" [disabled]="true"
@@ -48,11 +48,11 @@
         </mat-form-field>
         <mat-form-field floatLabel="always">
           <input id="type" matInput placeholder="{{'patient.type' | translate}}" [disabled]="true"
-                 value="{{patientService.patient.patientType}}">
+                 value="{{displayType(patientService.patient.patientType)}}">
         </mat-form-field>
         <mat-form-field floatLabel="always">
           <input id="covidStatus" matInput placeholder="{{'patient.covidStatus' | translate}}" [disabled]="true"
-                 value="{{patientService.patient.covidStatus}}">
+                 value="{{displayCovidStatus(patientService.patient.covidStatus)}}">
         </mat-form-field>
       </div>
     </mat-grid-tile>
@@ -64,7 +64,7 @@
       </mat-form-field>
       <mat-form-field floatLabel="always">
         <input id="status" matInput placeholder="{{'patient.status' | translate}}" [disabled]="true"
-               value="{{patientService.patient.status}}">
+               value="{{displayStatus(patientService.patient.status)}}">
       </mat-form-field>
         <mat-form-field floatLabel="always">
           <input id="createdBy" matInput placeholder="{{'common.createdBy' | translate}}" [disabled]="true"
@@ -86,7 +86,7 @@
       </div>
     </mat-grid-tile>
   </mat-grid-list>
-  <mat-grid-list cols="1" rowHeight="70px">
+  <mat-grid-list cols="1" rowHeight="60px">
     <mat-grid-tile>
       <div class="form-controls">
       <mat-form-field>
@@ -101,10 +101,11 @@
     <button mat-button class="mat-raised-button mat-primary btn" (click)="modify()">
       {{'common.modify' | translate}}
     </button>
-    <button mat-button class="mat-raised-button mat-primary btn" (click)="changeAdmissionDate()">
+    <button mat-button class="mat-raised-button mat-primary btn" (click)="changeAdmissionDate(patientService.patient.id)">
       {{'patient.changeDate' | translate}}
     </button>
-    <button mat-button class="mat-raised-button mat-primary btn" (click)="changeUrgency()">
+    <button mat-button class="mat-raised-button mat-primary btn" (click)="changeUrgency(patientService.patient.urgent,
+    patientService.patient.id.toString())">
       {{'patient.changeUrgency' | translate}}</button>
   </div>
 </div>

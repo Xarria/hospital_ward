@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@RequestMapping("/queues")
 @RequiredArgsConstructor
+@RequestMapping
 public class QueueController {
 
     QueueMapper queueMapper;
@@ -30,7 +30,7 @@ public class QueueController {
     QueueService queueService;
 
     @MedicAuthorities
-    @GetMapping
+    @GetMapping("/queues")
     public ResponseEntity<List<QueueResponse>> getAllCurrentQueues() {
         return ResponseEntity.ok(queueService.getAllCurrentQueues().stream()
                 .map(queueMapper::toQueueResponse)
@@ -38,14 +38,14 @@ public class QueueController {
     }
 
     @MedicAuthorities
-    @GetMapping("/{queueDate}")
+    @GetMapping("/queues/{queueDate}")
     public ResponseEntity<QueueResponse> getQueueByDate(@PathVariable("queueDate")
                                                         @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate queueDate) {
         return ResponseEntity.ok(queueMapper.toQueueResponse(queueService.getQueueForDate(queueDate)));
     }
 
     @Authenticated
-    @GetMapping("/fullDates}")
+    @GetMapping("/fulldates")
     public ResponseEntity<List<LocalDate>> getFullAdmissionDates() {
         return ResponseEntity.ok(queueService.findFullAdmissionDates());
     }

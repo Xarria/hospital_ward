@@ -17,7 +17,8 @@
     "modificationDate": "Modification date",
     "createdBy": "Created by",
     "creationDate": "Creation date",
-    "modify": "Modify"
+    "modify": "Modify",
+    "pickDate": "Pick a date"
   },
   "login": {
     "signIn": "Sign In",
@@ -98,6 +99,16 @@
     "covidStatus": "Covid status",
     "diseases": "Diseases",
     "changeDate": "Change admission date",
-    "changeUrgency": "Switch urgency"
+    "changeUrgency": "Switch urgency",
+    "confirmationStatus": {
+      "waiting": "Waiting",
+      "confirmedOnce": "Confirmed once",
+      "confirmedTwice": "Confirmed twice"
+    },
+    "covidStatusList": {
+      "vaccinated": "Vaccinated",
+      "unvaccinated": "Unvaccinated",
+      "afterIllness": "After illness"
+    }
   }
 }

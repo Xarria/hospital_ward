@@ -14,6 +14,8 @@ import com.backend.hospitalward.security.annotation.MedicAuthorities;
 import com.backend.hospitalward.security.annotation.TreatmentDirectorAuthority;
 import com.backend.hospitalward.service.PatientService;
 import com.backend.hospitalward.util.etag.ETagValidator;
+import com.backend.hospitalward.util.serialization.LocalDateJsonDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -126,17 +129,21 @@ public class PatientController {
 
     @Authenticated
     @PutMapping("/date/{id}")
-    public ResponseEntity<?> changeAdmissionDate(@PathVariable("id") long id, @RequestBody LocalDate admissionDate,
+    public ResponseEntity<?> changeAdmissionDate(@PathVariable("id") long id, @RequestBody String admissionDateString,
                                                  @CurrentSecurityContext SecurityContext securityContext) {
-
+        //TODO lepszy sposób
+        String[] splittedValues = admissionDateString
+                .substring(admissionDateString.length() - 12, admissionDateString.length() - 2).split("-");
+        LocalDate admissionDate = LocalDate.of(Integer.parseInt(splittedValues[2]), Integer.parseInt(splittedValues[1]),
+                Integer.parseInt(splittedValues[0]));
         patientService.changePatientAdmissionDate(id, admissionDate, securityContext.getAuthentication().getName());
 
         return ResponseEntity.ok().build();
     }
 
     @TreatmentDirectorAuthority
-    @PutMapping("/urgency/{id}")
-    public ResponseEntity<?> changeUrgency(@PathVariable("id") long id, @RequestBody boolean urgent,
+    @GetMapping("/urgency/{id}/{newValue}")
+    public ResponseEntity<?> changeUrgency(@PathVariable("id") long id, @PathVariable("newValue") boolean urgent,
                                            @CurrentSecurityContext SecurityContext securityContext) {
 
         patientService.changePatientUrgency(id, urgent, securityContext.getAuthentication().getName());

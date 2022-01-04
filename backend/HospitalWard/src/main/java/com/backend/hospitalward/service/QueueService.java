@@ -361,6 +361,11 @@ public class QueueService {
             queue.setPatients(calculatePatientsPositions(queue));
     }
 
+    public void refreshQueueAfterDiseaseUpdate(Queue queue) {
+        refreshQueue(queue);
+        queueRepository.save(queue);
+    }
+
     public List<Patient> getWaitingPatientsForPastQueues() {
         List<Queue> pastQueues = queueRepository.findQueuesByDateBefore(LocalDate.now());
 

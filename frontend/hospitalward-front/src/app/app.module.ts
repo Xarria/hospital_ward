@@ -34,6 +34,9 @@ import {CommonModule} from '@angular/common';
 import { QueueDetailsComponent } from './components/queue-details/queue-details.component';
 import {MatSortModule} from '@angular/material/sort';
 import { PatientDetailsComponent } from './components/patient-details/patient-details.component';
+import { ModifyAdmissionDateComponent } from './components/modify-admission-date/modify-admission-date.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {DateAdapter, MatNativeDateModule} from '@angular/material/core';
 
 export function rootLoaderFactory(http: HttpClient): any {
   return new TranslateHttpLoader(http);
@@ -50,41 +53,46 @@ export function rootLoaderFactory(http: HttpClient): any {
     ModifyDiseaseComponent,
     QueueListComponent,
     QueueDetailsComponent,
-    PatientDetailsComponent
+    PatientDetailsComponent,
+    ModifyAdmissionDateComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatToolbarModule,
-    MatTableModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    HttpClientModule,
-    MatIconModule,
-    FormsModule,
-    MatSnackBarModule,
-    MatDialogModule,
-    MatButtonToggleModule,
-    MatCheckboxModule,
-    MatGridListModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: rootLoaderFactory,
-        deps: [HttpClient]
-      }
-    }),
-    MatSelectModule,
-    MatSortModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatToolbarModule,
+        MatTableModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        HttpClientModule,
+        MatIconModule,
+        FormsModule,
+        MatSnackBarModule,
+        MatDialogModule,
+        MatButtonToggleModule,
+        MatCheckboxModule,
+        MatGridListModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: rootLoaderFactory,
+                deps: [HttpClient]
+            }
+        }),
+        MatSelectModule,
+        MatSortModule,
+        MatDatepickerModule,
+        MatNativeDateModule
+    ],
   providers: [
     CookieService,
     IdentityService,
     AuthService,
-    CdkColumnDef
+    CdkColumnDef,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   bootstrap: [AppComponent],
   entryComponents: [CreateDiseaseComponent, ModifyDiseaseComponent]

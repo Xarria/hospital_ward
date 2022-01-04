@@ -5,9 +5,12 @@ import com.backend.hospitalward.exception.ErrorKey;
 import com.backend.hospitalward.exception.NotFoundException;
 import com.backend.hospitalward.model.Account;
 import com.backend.hospitalward.model.Disease;
+import com.backend.hospitalward.model.Patient;
+import com.backend.hospitalward.model.Queue;
 import com.backend.hospitalward.repository.AccountRepository;
 import com.backend.hospitalward.repository.BaseRepository;
 import com.backend.hospitalward.repository.DiseaseRepository;
+import com.backend.hospitalward.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.HibernateException;
@@ -24,8 +27,10 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.PersistenceException;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Component
@@ -41,6 +46,10 @@ public class DiseaseService {
     AccountRepository accountRepository;
 
     BaseRepository baseRepository;
+
+    QueueService queueService;
+
+    PatientRepository patientRepository;
 
     public List<Disease> getAllDiseases() {
         return diseaseRepository.findAll();
@@ -62,7 +71,6 @@ public class DiseaseService {
     }
 
     public void updateDisease(Disease disease, String name, String modifiedBy) {
-        //TODO refresh kolejki kiedy są pacjenci
         Disease diseaseFromDB = diseaseRepository.findDiseaseByLatinName(name).orElseThrow(() ->
                 new NotFoundException(ErrorKey.DISEASE_NOT_FOUND));
 
@@ -79,6 +87,15 @@ public class DiseaseService {
         diseaseFromDB.setModifiedBy(accModifiedBy);
 
         diseaseRepository.save(diseaseFromDB);
+
+        if (patientRepository.findAll().stream().anyMatch(p -> p.getDiseases().contains(diseaseFromDB)
+                && p.getQueue().getDate().isAfter(LocalDate.now()))) {
+            List<Queue> queuesToRefresh = patientRepository.findAll().stream()
+                    .filter(p -> p.getDiseases().contains(diseaseFromDB) && p.getQueue().getDate().isAfter(LocalDate.now()))
+                    .map(Patient::getQueue).distinct()
+                    .collect(Collectors.toList());
+            queuesToRefresh.forEach(queueService::refreshQueueAfterDiseaseUpdate);
+        }
     }
 
     public void deleteDisease(String name) {

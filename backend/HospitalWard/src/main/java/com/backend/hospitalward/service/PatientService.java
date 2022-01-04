@@ -50,6 +50,8 @@ public class PatientService {
 
     PatientStatusRepository patientStatusRepository;
 
+    BaseRepository baseRepository;
+
     QueueService queueService;
 
     public List<Patient> getAllPatients() {
@@ -115,6 +117,8 @@ public class PatientService {
                               String requestedBy) {
         Patient patientFromDB = patientRepository.findPatientById(id).orElseThrow(()
                 -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
+
+        baseRepository.detach(patientFromDB);
 
         setPatientFields(patient, diseases, mainDoctor, covidStatus, patientFromDB, requestedBy);
 
@@ -196,7 +200,8 @@ public class PatientService {
         patient.setModificationDate(Timestamp.from(Instant.now()));
         patient.setModifiedBy(accountRepository.findAccountByLogin(modifiedBy).orElseThrow(()
                 -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND)));
-
+        patient.setPatientType(patientTypeRepository.findPatientTypeByName(patient.findPatientType()).orElseThrow(()
+                -> new NotFoundException(ErrorKey.PATIENT_TYPE_NOT_FOUND)));
         patientRepository.save(patient);
 
         queueService.refreshQueue(patient.getQueue());

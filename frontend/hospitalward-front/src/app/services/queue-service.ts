@@ -56,4 +56,14 @@ export class QueueService {
     this.queue.patientsWaiting = response.body?.patientsWaiting as PatientGeneral[];
     this.queue.patientsConfirmed = response.body?.patientsConfirmed as PatientGeneral[];
   }
+
+  getFullAdmissionDates(): Observable<HttpResponse<Array<any>>> {
+    return this.http.get<Date[]>(environment.appUrl + 'fulldates', {
+      headers: {
+        Authorization: 'Bearer ' + this.cookieService.get('token')
+      },
+      observe: 'response',
+      responseType: 'json'
+    });
+  }
 }

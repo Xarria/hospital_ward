@@ -75,10 +75,34 @@ export class PatientService {
   }
 
   confirm(id: string): Observable<any> {
-    console.log(this.cookieService.get('token'));
     return this.http.get(this.url.concat('/confirm/', id), {
       headers: {
         Authorization: 'Bearer ' + this.cookieService.get('token')
+      },
+      observe: 'body',
+      responseType: 'json'
+    });
+  }
+
+  changeUrgency(id: string, newValue: boolean): Observable<any> {
+    return this.http.get(this.url + '/urgency/' + id + '/' + String(newValue), {
+      headers: {
+        Authorization: 'Bearer ' + this.cookieService.get('token'),
+        'If-Match': this.eTag
+      },
+      observe: 'body',
+      responseType: 'json'
+    });
+  }
+
+  changeAdmissionDate(id: string, newDate: string): Observable<any> {
+    return this.http.put(this.url + '/date/' + id, {
+      newDate
+    }, {
+      headers: {
+        Authorization: 'Bearer ' + this.cookieService.get('token'),
+        'If-Match': this.eTag,
+        'Content-Type': 'text/plain',
       },
       observe: 'body',
       responseType: 'json'
