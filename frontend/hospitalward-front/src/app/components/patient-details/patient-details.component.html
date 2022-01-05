@@ -60,7 +60,7 @@
       <div class="form-controls">
       <mat-form-field floatLabel="always">
         <input id="urgent" matInput placeholder="{{'patient.urgent' | translate}}" [disabled]="true"
-               value="{{patientService.patient.urgent}}">
+               value="{{displayUrgency(patientService.patient.urgent)}}">
       </mat-form-field>
       <mat-form-field floatLabel="always">
         <input id="status" matInput placeholder="{{'patient.status' | translate}}" [disabled]="true"
@@ -98,7 +98,7 @@
     </mat-grid-tile>
   </mat-grid-list>
   <div class="buttons">
-    <button mat-button class="mat-raised-button mat-primary btn" (click)="modify()">
+    <button mat-button class="mat-raised-button mat-primary btn" (click)="modify(patientService.patient.id)">
       {{'common.modify' | translate}}
     </button>
     <button mat-button class="mat-raised-button mat-primary btn" (click)="changeAdmissionDate(patientService.patient.id)">

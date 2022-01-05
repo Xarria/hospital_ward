@@ -3,7 +3,7 @@ import {DateAdapter, MAT_DATE_FORMATS} from '@angular/material/core';
 import {APP_DATE_FORMATS, AppDateAdapter} from '../../adapters/app-date-adapter';
 import {QueueService} from '../../services/queue-service';
 import {TranslateService} from '@ngx-translate/core';
-import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {PatientService} from '../../services/patient-service';
 
@@ -33,7 +33,8 @@ export class ModifyAdmissionDateComponent implements OnInit {
               private dateAdapter: DateAdapter<Date>,
               private translate: TranslateService,
               private snackBar: MatSnackBar,
-              private patientService: PatientService) {
+              private patientService: PatientService,
+              private dialogRef: MatDialogRef<ModifyAdmissionDateComponent>) {
     this.minDate.setDate(this.minDate.getDate() + 14);
     this.getFullAdmissionDates();
     this.dateAdapter.setLocale(translate.currentLang);
@@ -62,7 +63,6 @@ export class ModifyAdmissionDateComponent implements OnInit {
       date = this.pickedDate?.getDate()
         + '-0' + this.pickedDate?.getMonth() + '-' + this.pickedDate?.getFullYear();
     }
-    console.log(date);
     this.patientService.changeAdmissionDate(this.data, date)
       .subscribe(
         () => {
@@ -96,6 +96,6 @@ export class ModifyAdmissionDateComponent implements OnInit {
   }
 
   private close(): void {
-
+    this.dialogRef.close();
   }
 }

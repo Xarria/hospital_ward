@@ -37,6 +37,7 @@ import { PatientDetailsComponent } from './components/patient-details/patient-de
 import { ModifyAdmissionDateComponent } from './components/modify-admission-date/modify-admission-date.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {DateAdapter, MatNativeDateModule} from '@angular/material/core';
+import { ModifyPatientComponent } from './components/modify-patient/modify-patient.component';
 
 export function rootLoaderFactory(http: HttpClient): any {
   return new TranslateHttpLoader(http);
@@ -54,7 +55,8 @@ export function rootLoaderFactory(http: HttpClient): any {
     QueueListComponent,
     QueueDetailsComponent,
     PatientDetailsComponent,
-    ModifyAdmissionDateComponent
+    ModifyAdmissionDateComponent,
+    ModifyPatientComponent
   ],
     imports: [
         BrowserModule,

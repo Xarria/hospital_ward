@@ -123,6 +123,8 @@ public class PatientService {
         setPatientFields(patient, diseases, mainDoctor, covidStatus, patientFromDB, requestedBy);
 
         patientRepository.save(patientFromDB);
+
+        queueService.refreshQueueAfterDiseaseUpdate(patientFromDB.getQueue());
     }
 
 
@@ -204,7 +206,7 @@ public class PatientService {
                 -> new NotFoundException(ErrorKey.PATIENT_TYPE_NOT_FOUND)));
         patientRepository.save(patient);
 
-        queueService.refreshQueue(patient.getQueue());
+        queueService.refreshQueueAfterDiseaseUpdate(patient.getQueue());
     }
 
     public void deletePatient(Long id) {
@@ -267,17 +269,13 @@ public class PatientService {
         }
         if (patient.getAge() != null && !patient.getAge().isEmpty()) {
             patientFromDB.setAge(patient.getAge());
-            patientFromDB.setPatientType(patientTypeRepository.findPatientTypeByName(patient.findPatientType())
-                    .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_TYPE_NOT_FOUND)));
+
         }
         if (patient.getSex() != null && (patient.getSex().equals("M") || patient.getSex().equals("F"))) {
             patientFromDB.setSex(patient.getSex());
-            patientFromDB.setPatientType(patientTypeRepository.findPatientTypeByName(patient.findPatientType())
-                    .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_TYPE_NOT_FOUND)));
         }
         if (diseases != null && !diseases.isEmpty()) {
             patientFromDB.setDiseases(getDiseasesFromDatabase(diseases));
-            queueService.refreshQueue(patientFromDB.getQueue());
         }
         if (mainDoctor != null && !mainDoctor.isEmpty()) {
             setMainDoctor(patientFromDB, mainDoctor);
@@ -302,5 +300,7 @@ public class PatientService {
                 -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND));
         patientFromDB.setModifiedBy(modifiedBy);
         patientFromDB.setModificationDate(Timestamp.from(Instant.now()));
+        patientFromDB.setPatientType(patientTypeRepository.findPatientTypeByName(patientFromDB.findPatientType())
+                .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_TYPE_NOT_FOUND)));
     }
 }

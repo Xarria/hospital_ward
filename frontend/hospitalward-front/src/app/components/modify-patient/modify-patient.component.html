@@ -1,0 +1,83 @@
+<div mat-dialog-content>
+  <mat-grid-list cols="1" rowHeight="470px">
+    <mat-grid-tile>
+      <div class="form-controls">
+        <mat-form-field floatLabel="always">
+          <input id="pesel" matInput placeholder="{{'patient.pesel' | translate}}"
+                 [(ngModel)]="patientService.patient.pesel">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <mat-select placeholder="{{'patient.sex' | translate}}" [(ngModel)]="patientService.patient.sex">
+            <mat-option value="F">{{'patient.female' | translate}}</mat-option>
+            <mat-option value="M">{{'patient.male' | translate}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="name" matInput placeholder="{{'patient.name' | translate}}"
+                 [(ngModel)]="patientService.patient.name">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="surname" matInput placeholder="{{'patient.surname' | translate}}"
+                 [(ngModel)]="patientService.patient.surname">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="phoneNumber" matInput placeholder="{{'patient.phoneNumber' | translate}}"
+                 [(ngModel)]="patientService.patient.phoneNumber">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="mainDoctor" matInput placeholder="{{'patient.mainDoctor' | translate}}"
+                 [(ngModel)]="patientService.patient.mainDoctor">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <mat-select placeholder="{{'patient.covidStatus' | translate}}"
+                      [(ngModel)]="patientService.patient.covidStatus">
+            <mat-option value="VACCINATED">{{'patient.covidStatusList.vaccinated' | translate}}</mat-option>
+            <mat-option value="UNVACCINATED">{{'patient.covidStatusList.unvaccinated' | translate}}</mat-option>
+            <mat-option value="AFTER_ILLNESS">{{'patient.covidStatusList.afterIllness' | translate}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="2" rowHeight="60px">
+    <mat-grid-tile>
+      <div class="form-controls">
+        <mat-form-field floatLabel="always">
+          <input id="age" matInput placeholder="{{'patient.age' | translate}}"
+                 value="{{displayAge(patientService.patient.age)}}" [(ngModel)]="age">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="form-controls">
+        <mat-form-field>
+          <mat-select placeholder="{{'patient.ageUnit' | translate}}" value="{{displayAgeUnit(patientService.patient.age)}}" [(ngModel)]="ageUnit">
+            <mat-option value="Y">{{'patient.years' | translate}}</mat-option>
+            <mat-option value="M">{{'patient.months' | translate}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="1" rowHeight="70px">
+    <mat-grid-tile>
+      <div class="form-controls">
+        <mat-form-field>
+          <mat-select [compareWith]="compareDiseases" multiple *ngIf="isPolishLanguage()" [(ngModel)]="patientService.patient.diseases"
+                      placeholder="{{'patient.diseases' | translate}}">
+            <mat-option *ngFor="let disease of diseasesArray" [value]="disease">{{disease.polishName}}</mat-option>
+          </mat-select>
+          <mat-select [compareWith]="compareDiseases" multiple *ngIf="!isPolishLanguage()" [(ngModel)]="patientService.patient.diseases"
+                      placeholder="{{'patient.diseases' | translate}}">
+            <mat-option *ngFor="let disease of diseasesArray" [value]="disease">{{disease.latinName}}</mat-option>
+                      </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <div class="buttons">
+    <button mat-button class="mat-raised-button mat-primary btn" (click)="modify()">
+      {{'common.confirm' | translate}}
+    </button>
+  </div>
+</div>

@@ -4,6 +4,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig} from '@angular/material/dia
 import {TranslateService} from '@ngx-translate/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ModifyAdmissionDateComponent} from '../modify-admission-date/modify-admission-date.component';
+import {ModifyPatientComponent} from '../modify-patient/modify-patient.component';
 
 @Component({
   selector: 'app-patient-details',
@@ -42,7 +43,15 @@ export class PatientDetailsComponent implements OnInit {
     this.getPatient();
   }
 
-  modify(): void {
+  modify(id: number): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '30%';
+    dialogConfig.data = id;
+    const dialogRef = this.dialog.open(ModifyPatientComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(() => {
+      this.refresh();
+    });
 
   }
 
@@ -170,6 +179,15 @@ export class PatientDetailsComponent implements OnInit {
     }
     else {
       return this.translate.instant('patient.confirmationStatus.confirmedTwice');
+    }
+  }
+
+  displayUrgency(urgent: boolean): string {
+    if (urgent) {
+      return this.translate.instant('patient.yes');
+    }
+    else {
+      return this.translate.instant('patient.no');
     }
   }
 }

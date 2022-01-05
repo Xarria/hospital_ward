@@ -27,7 +27,6 @@ public class Account extends BaseEntity implements UserDetails {
 
     @NotBlank
     @Size(min = 3, max = 50)
-    // @Pattern(regexp = "[a-z]+[.][a-z]+[2-9]*")
     @Column(name = "login", nullable = false, length = 50)
     String login;
 

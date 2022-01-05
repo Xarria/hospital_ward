@@ -109,6 +109,7 @@
       "vaccinated": "Vaccinated",
       "unvaccinated": "Unvaccinated",
       "afterIllness": "After illness"
-    }
+    },
+    "ageUnit": "Age unit"
   }
 }

@@ -16,6 +16,8 @@ import java.util.List;
 @SuperBuilder
 public class PatientUpdateRequest extends BaseDTO implements SignableDTO {
 
+    Long id;
+
     String pesel;
 
     String age;

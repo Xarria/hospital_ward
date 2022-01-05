@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpResponse} from '@angular/common/http';
-import {DiseaseDetails} from '../model/disease-details';
 import {CookieService} from 'ngx-cookie-service';
 import {environment} from '../../environments/environment';
 import {PatientDetails} from '../model/patient-details';
 import {DiseaseGeneral} from '../model/disease-general';
+import {PatientUpdate} from '../model/patient-update';
 
 @Injectable({
   providedIn: 'root'
@@ -102,10 +102,41 @@ export class PatientService {
       headers: {
         Authorization: 'Bearer ' + this.cookieService.get('token'),
         'If-Match': this.eTag,
-        'Content-Type': 'text/plain',
+        'Content-Type': 'text/plain'
       },
       observe: 'body',
       responseType: 'json'
     });
+  }
+
+  modifyPatient(patient: PatientDetails, age: string): Observable<any> {
+    const patientUpdate = this.getPatientUpdate(patient, age);
+    console.log(patientUpdate);
+    return this.http.put(this.url + '/' + patient.id, patientUpdate,
+      {
+        observe: 'body',
+        responseType: 'json',
+        headers: {
+          Authorization: 'Bearer ' + this.cookieService.get('token'),
+          'If-Match': this.eTag
+        }
+      });
+  }
+
+  getPatientUpdate(patient: PatientDetails, newAge: string): PatientUpdate {
+    const diseaseNames = patient.diseases.map(d => d.latinName);
+    return {
+      version: patient.version,
+      id: patient.id,
+      pesel: patient.pesel,
+      diseases: diseaseNames,
+      age: newAge,
+      sex: patient.sex,
+      mainDoctor: patient.mainDoctor,
+      covidStatus: patient.covidStatus,
+      name: patient.name,
+      surname: patient.surname,
+      phoneNumber: patient.phoneNumber
+    };
   }
 }
