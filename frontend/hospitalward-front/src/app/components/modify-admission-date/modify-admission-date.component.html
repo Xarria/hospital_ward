@@ -1,6 +1,6 @@
 <div class="form-controls">
 <mat-form-field>
-  <input matInput [matDatepicker]="datePicker" [matDatepickerFilter]="myFilter" [(ngModel)]="pickedDate"
+  <input matInput [matDatepicker]="datePicker" [min]="minDate" [matDatepickerFilter]="myFilter" [(ngModel)]="pickedDate"
          placeholder="{{'common.pickDate' | translate}}">
   <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
   <mat-datepicker #datePicker></mat-datepicker>

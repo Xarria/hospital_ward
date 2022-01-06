@@ -24,9 +24,10 @@ import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ejb.Local;
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -128,14 +129,12 @@ public class PatientController {
     }
 
     @Authenticated
-    @PutMapping("/date/{id}")
-    public ResponseEntity<?> changeAdmissionDate(@PathVariable("id") long id, @RequestBody String admissionDateString,
+    @GetMapping("/date/{id}/{date}")
+    public ResponseEntity<?> changeAdmissionDate(@PathVariable("id") long id, @PathVariable("date") String admissionDateString,
                                                  @CurrentSecurityContext SecurityContext securityContext) {
-        //TODO lepszy sposób
-        String[] splittedValues = admissionDateString
-                .substring(admissionDateString.length() - 12, admissionDateString.length() - 2).split("-");
-        LocalDate admissionDate = LocalDate.of(Integer.parseInt(splittedValues[2]), Integer.parseInt(splittedValues[1]),
-                Integer.parseInt(splittedValues[0]));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate admissionDate = LocalDate.parse(admissionDateString, formatter);
         patientService.changePatientAdmissionDate(id, admissionDate, securityContext.getAuthentication().getName());
 
         return ResponseEntity.ok().build();

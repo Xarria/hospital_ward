@@ -7,10 +7,10 @@
     <a class="mat-raised-button nav-link" *ngIf="identityService.isTreatmentDirectorOrDoctor()" id="diseasesLink"
        routerLink="/diseases">{{'navigation.diseases' | translate}}</a>
     <a class="mat-raised-button nav-link" *ngIf="!identityService.isSecretary() && !identityService.isGuest()"
-       id="patientsLink" routerLink="/patients">{{'navigation.patients' | translate}}</a>
+       id="patientsLink" routerLink="/patient">{{'navigation.patients' | translate}}</a>
     <a class="mat-raised-button nav-link" *ngIf="!identityService.isGuest()" id="queuesLink" routerLink="/queues">{{'navigation.queues' | translate}}</a>
     <a class="mat-raised-button nav-link" *ngIf="identityService.isSecretary()" id="addPatientLink"
-       routerLink="/patients/add">{{'navigation.createPatient' | translate}}</a>
+       routerLink="/patient">{{'navigation.createPatient' | translate}}</a>
     <a class="mat-raised-button mat-primary nav-link" *ngIf="!identityService.isGuest()" id="logoutLink"
        (click)="signOut()">{{'navigation.logout' | translate}}</a>
   </div>

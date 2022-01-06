@@ -52,18 +52,24 @@ export class ModifyAdmissionDateComponent implements OnInit {
     );
   }
 
-  changeAdmissionDate(): void {
-    this.pickedDate?.setMonth(this.pickedDate?.getMonth() + 1);
+  getDateString(pickedDate: Date | null): string {
     let date: string;
-    if ( this.pickedDate?.getMonth() as number >= 10) {
-      date = this.pickedDate?.getDate()
-        + '-' + this.pickedDate?.getMonth() + '-' + this.pickedDate?.getFullYear();
+    const month = pickedDate?.getMonth() as number + 1;
+    if (month as number >= 10) {
+      date = pickedDate?.getDate()
+        + '-' + month + '-' + pickedDate?.getFullYear();
+    } else {
+      date = pickedDate?.getDate()
+        + '-0' + month + '-' + pickedDate?.getFullYear();
     }
-    else {
-      date = this.pickedDate?.getDate()
-        + '-0' + this.pickedDate?.getMonth() + '-' + this.pickedDate?.getFullYear();
+    if ((pickedDate?.getDate() as number) < 10) {
+      date = '0' + date;
     }
-    this.patientService.changeAdmissionDate(this.data, date)
+    return date;
+  }
+
+  changeAdmissionDate(): void {
+    this.patientService.changeAdmissionDate(this.data, this.getDateString(this.pickedDate))
       .subscribe(
         () => {
           this.close();

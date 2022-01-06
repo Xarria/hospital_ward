@@ -1,0 +1,107 @@
+<div class="table">
+  <mat-grid-list cols="2" rowHeight="400px">
+    <mat-grid-tile>
+      <div class="form-controls">
+        <mat-form-field floatLabel="always">
+          <input id="pesel" matInput placeholder="{{'patient.pesel' | translate}}"
+                 [(ngModel)]="patientService.patientCreate.pesel">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <mat-select placeholder="{{'patient.sex' | translate}}" [(ngModel)]="patientService.patientCreate.sex">
+            <mat-option value="F">{{'patient.female' | translate}}</mat-option>
+            <mat-option value="M">{{'patient.male' | translate}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="name" matInput placeholder="{{'patient.name' | translate}}"
+                 [(ngModel)]="patientService.patientCreate.name">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="surname" matInput placeholder="{{'patient.surname' | translate}}"
+                 [(ngModel)]="patientService.patientCreate.surname">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="phoneNumber" matInput placeholder="{{'patient.phoneNumber' | translate}}"
+                 [(ngModel)]="patientService.patientCreate.phoneNumber">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="mainDoctor" matInput placeholder="{{'patient.mainDoctor' | translate}}"
+                 [(ngModel)]="patientService.patientCreate.mainDoctor">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="form-controls">
+
+        <mat-form-field floatLabel="always">
+          <mat-select placeholder="{{'patient.covidStatus' | translate}}"
+                      [(ngModel)]="patientService.patientCreate.covidStatus">
+            <mat-option value="VACCINATED">{{'patient.covidStatusList.vaccinated' | translate}}</mat-option>
+            <mat-option value="UNVACCINATED">{{'patient.covidStatusList.unvaccinated' | translate}}</mat-option>
+            <mat-option value="AFTER_ILLNESS">{{'patient.covidStatusList.afterIllness' | translate}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input matInput [matDatepicker]="admissionDatePicker" [min]="minDate" [matDatepickerFilter]="myFilter"
+                 [(ngModel)]="pickedAdmissionDate"
+                 placeholder="{{'patient.admissionDate' | translate}}">
+          <mat-datepicker-toggle matSuffix [for]="admissionDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #admissionDatePicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input id="referralNr" matInput placeholder="{{'patient.referralNr' | translate}}"
+                 [(ngModel)]="patientService.patientCreate.referralNr">
+        </mat-form-field>
+        <mat-form-field floatLabel="always">
+          <input matInput [matDatepicker]="datePicker" [(ngModel)]="pickedDate"
+                 placeholder="{{'patient.referralDate' | translate}}">
+          <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+          <mat-datepicker #datePicker></mat-datepicker>
+        </mat-form-field>
+          <mat-checkbox id="urgent" [(ngModel)]="patientService.patientCreate.urgent">
+            {{'patient.urgent' | translate}}
+          </mat-checkbox>
+        <mat-grid-list cols="2" rowHeight="90px">
+          <mat-grid-tile>
+            <div class="form-controls">
+              <mat-form-field floatLabel="always">
+                <input id="age" matInput placeholder="{{'patient.age' | translate}}"
+                       value="{{displayAge(patientService.patientCreate.age)}}" [(ngModel)]="age">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+          <mat-grid-tile>
+              <mat-form-field floatLabel="always">
+                <mat-select placeholder="{{'patient.ageUnit' | translate}}"
+                            value="{{displayAgeUnit(patientService.patientCreate.age)}}" [(ngModel)]="ageUnit">
+                  <mat-option value="Y">{{'patient.years' | translate}}</mat-option>
+                  <mat-option value="M">{{'patient.months' | translate}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="1" rowHeight="70px">
+    <mat-grid-tile>
+      <div class="form-controls">
+        <mat-form-field floatLabel="always">
+          <mat-select multiple *ngIf="isPolishLanguage()" [(ngModel)]="pickedDiseases"
+                      placeholder="{{'patient.diseases' | translate}}">
+            <mat-option *ngFor="let disease of diseasesArray" [value]="disease">{{disease.polishName}}</mat-option>
+          </mat-select>
+          <mat-select  multiple *ngIf="!isPolishLanguage()" [(ngModel)]="pickedDiseases"
+                      placeholder="{{'patient.diseases' | translate}}">
+            <mat-option *ngFor="let disease of diseasesArray" [value]="disease">{{disease.latinName}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <div class="buttons">
+    <button mat-button class="mat-raised-button mat-primary btn" (click)="submit()">
+      {{'common.confirm' | translate}}
+    </button>
+  </div>
+</div>

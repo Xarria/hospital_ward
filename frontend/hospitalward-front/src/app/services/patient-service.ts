@@ -6,6 +6,7 @@ import {environment} from '../../environments/environment';
 import {PatientDetails} from '../model/patient-details';
 import {DiseaseGeneral} from '../model/disease-general';
 import {PatientUpdate} from '../model/patient-update';
+import {PatientCreate} from '../model/patient-create';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class PatientService {
   eTag = '';
   private readonly url: string = '';
   patient: PatientDetails = this.getEmptyPatientDetails();
+  patientCreate: PatientCreate = this.getEmptyPatientCreate();
 
   constructor(private http: HttpClient,
               private cookieService: CookieService) {
@@ -96,13 +98,10 @@ export class PatientService {
   }
 
   changeAdmissionDate(id: string, newDate: string): Observable<any> {
-    return this.http.put(this.url + '/date/' + id, {
-      newDate
-    }, {
+    return this.http.get(this.url + '/date/' + id + '/' + newDate, {
       headers: {
         Authorization: 'Bearer ' + this.cookieService.get('token'),
-        'If-Match': this.eTag,
-        'Content-Type': 'text/plain'
+        'If-Match': this.eTag
       },
       observe: 'body',
       responseType: 'json'
@@ -111,8 +110,31 @@ export class PatientService {
 
   modifyPatient(patient: PatientDetails, age: string): Observable<any> {
     const patientUpdate = this.getPatientUpdate(patient, age);
-    console.log(patientUpdate);
     return this.http.put(this.url + '/' + patient.id, patientUpdate,
+      {
+        observe: 'body',
+        responseType: 'json',
+        headers: {
+          Authorization: 'Bearer ' + this.cookieService.get('token'),
+          'If-Match': this.eTag
+        }
+      });
+  }
+
+  createPatient(patientCreate: PatientCreate): Observable<any> {
+    return this.http.post(this.url, patientCreate,
+      {
+        observe: 'body',
+        responseType: 'json',
+        headers: {
+          Authorization: 'Bearer ' + this.cookieService.get('token'),
+          'If-Match': this.eTag
+        }
+      });
+  }
+
+  createPatientUrgent(patientCreate: PatientCreate): Observable<any> {
+    return this.http.post(this.url + '/urgent', patientCreate,
       {
         observe: 'body',
         responseType: 'json',
@@ -137,6 +159,24 @@ export class PatientService {
       name: patient.name,
       surname: patient.surname,
       phoneNumber: patient.phoneNumber
+    };
+  }
+
+  private getEmptyPatientCreate(): PatientCreate {
+    return {
+      pesel: '',
+      diseases: [],
+      age: '',
+      sex: '',
+      referralNr: '',
+      referralDate: '',
+      mainDoctor: '',
+      covidStatus: '',
+      name: '',
+      surname: '',
+      admissionDate: '',
+      phoneNumber: '',
+      urgent: false
     };
   }
 }
