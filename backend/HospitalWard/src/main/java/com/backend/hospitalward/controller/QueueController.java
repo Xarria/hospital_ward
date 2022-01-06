@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +35,7 @@ public class QueueController {
     public ResponseEntity<List<QueueResponse>> getAllCurrentQueues() {
         return ResponseEntity.ok(queueService.getAllCurrentQueues().stream()
                 .map(queueMapper::toQueueResponse)
+                .sorted(Comparator.comparing(QueueResponse::getDate))
                 .collect(Collectors.toList()));
     }
 

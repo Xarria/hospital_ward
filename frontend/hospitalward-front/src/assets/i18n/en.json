@@ -30,7 +30,7 @@
     "createPatient": "Create a patient",
     "login": "Logged in as:",
     "diseases": "Diseases",
-    "patients": "Patients",
+    "patients": "Create a patient",
     "logout": "Log out",
     "queues": "Daily queues"
   },
@@ -110,6 +110,7 @@
       "unvaccinated": "Unvaccinated",
       "afterIllness": "After illness"
     },
-    "ageUnit": "Age unit"
+    "ageUnit": "Age unit",
+    "license": "license"
   }
 }

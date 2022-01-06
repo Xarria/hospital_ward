@@ -7,6 +7,8 @@ import {PatientDetails} from '../model/patient-details';
 import {DiseaseGeneral} from '../model/disease-general';
 import {PatientUpdate} from '../model/patient-update';
 import {PatientCreate} from '../model/patient-create';
+import {Queue} from '../model/queue';
+import {Doctor} from '../model/doctor';
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +60,16 @@ export class PatientService {
       observe: 'response',
       responseType: 'json'
     });
+  }
+
+  getDoctors(): Observable<Doctor[]>{
+      return this.http.get<Doctor[]>(environment.appUrl + 'accounts/doctors', {
+        headers: {
+          Authorization: 'Bearer ' + this.cookieService.get('token')
+        },
+        observe: 'body',
+        responseType: 'json'
+      });
   }
 
   readPatientAndEtagFromResponse(response: HttpResponse<PatientDetails>): void {
@@ -162,7 +174,7 @@ export class PatientService {
     };
   }
 
-  private getEmptyPatientCreate(): PatientCreate {
+  getEmptyPatientCreate(): PatientCreate {
     return {
       pesel: '',
       diseases: [],

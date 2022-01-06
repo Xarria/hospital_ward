@@ -8,6 +8,7 @@ import com.backend.hospitalward.dto.request.medicalStaff.MedicalStaffCreateReque
 import com.backend.hospitalward.dto.request.medicalStaff.MedicalStaffUpdateRequest;
 import com.backend.hospitalward.dto.response.account.AccountDetailsResponse;
 import com.backend.hospitalward.dto.response.account.AccountGeneralResponse;
+import com.backend.hospitalward.dto.response.medicalStaff.MedicalStaffGeneralResponse;
 import com.backend.hospitalward.exception.BadRequestException;
 import com.backend.hospitalward.exception.ConstraintViolationException;
 import com.backend.hospitalward.exception.ErrorKey;
@@ -50,6 +51,14 @@ public class AccountController {
     @GetMapping()
     public ResponseEntity<List<AccountGeneralResponse>> getAllAccounts() {
         return ResponseEntity.ok(accountService.getAllAccounts().stream()
+                .map(accountMapper::toAccountGeneralResponse)
+                .collect(Collectors.toList()));
+    }
+
+    @Authenticated
+    @GetMapping("/doctors")
+    public ResponseEntity<List<AccountGeneralResponse>> getDoctors() {
+        return ResponseEntity.ok(accountService.getDoctors().stream()
                 .map(accountMapper::toAccountGeneralResponse)
                 .collect(Collectors.toList()));
     }

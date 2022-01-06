@@ -31,9 +31,11 @@ import javax.persistence.PersistenceException;
 import javax.security.enterprise.credential.Password;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -385,4 +387,11 @@ public class AccountService {
         urlService.createConfirmUrl(accountEmployee, accountDirector);
     }
 
+    public List<Account> getDoctors() {
+        List<Account> doctors = accountRepository.findAccountsByAccessLevel_Name(AccessLevelName.DOCTOR);
+        List<Account> treatmentDirectors = accountRepository.findAccountsByAccessLevel_Name(AccessLevelName.TREATMENT_DIRECTOR);
+
+        return Stream.concat(doctors.stream(), treatmentDirectors.stream())
+                .collect(Collectors.toList());
+    }
 }

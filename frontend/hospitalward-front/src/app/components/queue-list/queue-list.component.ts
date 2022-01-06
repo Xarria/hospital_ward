@@ -1,12 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {MatDialog} from '@angular/material/dialog';
-import {TranslateService} from '@ngx-translate/core';
 import {QueueService} from '../../services/queue-service';
 import {Queue} from '../../model/queue';
 import {MatSelectChange} from '@angular/material/select';
 import {Router} from '@angular/router';
+import {MatSort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-queue-list',
@@ -14,6 +12,8 @@ import {Router} from '@angular/router';
   styleUrls: ['./queue-list.component.less']
 })
 export class QueueListComponent implements OnInit {
+
+  @ViewChild(MatSort) sort: MatSort | undefined;
 
   queueData: MatTableDataSource<Queue>;
   displayedColumns: string[] = ['Date', 'Patients waiting', 'Patients confirmed', 'Locked', ' '];

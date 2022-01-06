@@ -96,7 +96,8 @@ export function rootLoaderFactory(http: HttpClient): any {
     AuthService,
     CdkColumnDef,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSortModule
   ],
   bootstrap: [AppComponent],
   entryComponents: [CreateDiseaseComponent, ModifyDiseaseComponent]

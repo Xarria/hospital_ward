@@ -6,6 +6,9 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {DiseaseTableService} from '../../services/disease-table-service';
 import {DateAdapter} from '@angular/material/core';
 import {QueueService} from '../../services/queue-service';
+import {Router} from '@angular/router';
+import {Doctor} from '../../model/doctor';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-create-patient',
@@ -23,6 +26,24 @@ export class CreatePatientComponent implements OnInit {
   pickedDate: Date | null = null;
   pickedAdmissionDate: Date | null = null;
   pickedDiseases: DiseaseGeneral[] = [];
+  doctorsArray: Doctor[] = [];
+
+  patientForm = new FormGroup({
+    pesel: new FormControl('', Validators.required),
+    diseases: new FormControl('', Validators.required),
+    age: new FormControl('', Validators.required),
+    ageUnit: new FormControl('', Validators.required),
+    sex: new FormControl('', Validators.required),
+    referralNr: new FormControl('', Validators.required),
+    referralDate: new FormControl('', Validators.required),
+    mainDoctor: new FormControl('', Validators.required),
+    covidStatus: new FormControl('', Validators.required),
+    name: new FormControl('', Validators.required),
+    surname: new FormControl('', Validators.required),
+    phoneNumber: new FormControl('', Validators.required),
+    admissionDate: new FormControl('', Validators.required),
+    urgent: new FormControl(false)
+  });
 
   myFilter = (d: Date | null): boolean => {
     const day = (d || new Date()).getDay();
@@ -34,8 +55,10 @@ export class CreatePatientComponent implements OnInit {
               private snackBar: MatSnackBar,
               private diseaseService: DiseaseTableService,
               private dateAdapter: DateAdapter<Date>,
-              private queueService: QueueService) {
+              private queueService: QueueService,
+              private router: Router) {
     this.getDiseases();
+    this.getDoctors();
     this.minDate.setDate(this.minDate.getDate() + 14);
     this.getFullAdmissionDates();
     this.dateAdapter.setLocale(translate.currentLang);
@@ -97,6 +120,15 @@ export class CreatePatientComponent implements OnInit {
     } else {
       this.createPatient();
     }
+    this.patientService.patientCreate = this.patientService.getEmptyPatientCreate();
+  }
+
+  getDoctors(): void {
+    this.patientService.getDoctors().subscribe(
+      (doctors: Doctor[]) => {
+        this.doctorsArray = doctors;
+      }
+    );
   }
 
   createPatient(): void {
@@ -107,6 +139,7 @@ export class CreatePatientComponent implements OnInit {
             duration: 2500,
             verticalPosition: 'top'
           });
+          this.router.navigate(['/queues']);
         },
         (error: any) => {
           if (error.status === 404) {

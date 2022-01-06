@@ -30,7 +30,7 @@
     "createPatient": "Utwórz wpis pacjenta",
     "login": "Zalogowano jako:",
     "diseases": "Choroby",
-    "patients": "Pacjenci",
+    "patients": "Utwórz pacjenta",
     "logout": "Wyloguj",
     "queues": "Kolejki dzienne"
   },
@@ -110,6 +110,7 @@
       "unvaccinated": "Niezaszczepiony",
       "afterIllness": "Po przebytej chorobie"
     },
-    "ageUnit": "Jednostka"
+    "ageUnit": "Jednostka",
+    "license": "nr licencji"
   }
 }
