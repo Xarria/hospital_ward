@@ -70,6 +70,14 @@ export class DiseaseListComponent implements OnInit {
             duration: 2500,
             verticalPosition: 'top'
           });
+          return;
+        }
+        if (error.status === 404) {
+          this.snackBar.open(this.translate.instant('snackbar.diseaseNotFound'), '', {
+            duration: 2500,
+            verticalPosition: 'top'
+          });
+          return;
         }
         else {
           this.snackBar.open(this.translate.instant('snackbar.defaultError'), '', {

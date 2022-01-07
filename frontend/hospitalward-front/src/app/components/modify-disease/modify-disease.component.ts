@@ -53,16 +53,18 @@ export class ModifyDiseaseComponent implements OnInit {
         },
         (error: any) => {
           if (error.status === 404) {
-            this.snackBar.open(this.translate.instant('snackbar.modifyDisease404'), '', {
+            this.snackBar.open(this.translate.instant('snackbar.diseaseNotFound'), '', {
               duration: 2500,
               verticalPosition: 'top'
             });
+            return;
           }
           if (error.status === 400) {
             this.snackBar.open(this.translate.instant('snackbar.modifyDisease400'), '', {
               duration: 2500,
               verticalPosition: 'top'
             });
+            return;
           } else {
             this.snackBar.open(this.translate.instant('snackbar.defaultError'), '', {
               duration: 2500,

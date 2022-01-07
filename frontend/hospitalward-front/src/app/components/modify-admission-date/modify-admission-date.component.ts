@@ -73,23 +73,32 @@ export class ModifyAdmissionDateComponent implements OnInit {
       .subscribe(
         () => {
           this.close();
-          this.snackBar.open(this.translate.instant('snackbar.modifyDiseaseSuccess'), '', {
+          this.snackBar.open(this.translate.instant('snackbar.modifyAdmissionSuccess'), '', {
             duration: 2500,
             verticalPosition: 'top'
           });
         },
         (error: any) => {
-          if (error.status === 404) {
-            this.snackBar.open(this.translate.instant('snackbar.modifyDisease404'), '', {
+          if (error.error.message === 'error.patient_already_admitted') {
+            this.snackBar.open(this.translate.instant('snackbar.modifyAdmissionAlreadyAdmitted'), '', {
               duration: 2500,
               verticalPosition: 'top'
             });
+            return;
           }
-          if (error.status === 400) {
-            this.snackBar.open(this.translate.instant('snackbar.modifyDisease400'), '', {
+          if (error.error.message === 'error.patient_not_found') {
+            this.snackBar.open(this.translate.instant('snackbar.patientNotFound'), '', {
               duration: 2500,
               verticalPosition: 'top'
             });
+            return;
+          }
+          if (error.error.message === 'error.queue_for_date_is_locked_or_full') {
+            this.snackBar.open(this.translate.instant('snackbar.modifyAdmissionQueueLocked'), '', {
+              duration: 2500,
+              verticalPosition: 'top'
+            });
+            return;
           } else {
             this.snackBar.open(this.translate.instant('snackbar.defaultError'), '', {
               duration: 2500,

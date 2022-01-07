@@ -74,7 +74,7 @@ public class PatientService {
             throw new ConflictException(ErrorKey.CONTACT_INFO_REQUIRED);
         }
 
-        if (patient.getReferralDate() == null && patient.getReferralNr() == null) {
+        if (patient.getReferralDate() == null && (patient.getReferralNr() == null || patient.getReferralNr().isEmpty())) {
             throw new ConflictException(ErrorKey.REFERRAL_INFO_REQUIRED);
         }
 

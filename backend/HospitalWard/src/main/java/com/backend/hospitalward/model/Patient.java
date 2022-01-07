@@ -29,8 +29,6 @@ public class Patient extends BaseEntity {
     String pesel;
 
     @NotBlank
-//    @Size(max = 3, min = 2)
-//    @Pattern(regexp = "[1-9][0-9]*[MY]")
     @Column(name = "age", nullable = false, length = 3, table = "Personal_data")
     String age;
 
@@ -48,7 +46,6 @@ public class Patient extends BaseEntity {
     )
     List<Disease> diseases;
 
-    @Size(min = 1)
     @Column(name = "referral_nr", length = 30)
     String referralNr;
 
@@ -99,11 +96,9 @@ public class Patient extends BaseEntity {
     @JoinColumn(name = "status", referencedColumnName = "id")
     PatientStatus status;
 
-//    @Pattern(regexp = "[0-9]{9,11}")
     @Column(name = "phone_number", length = 11, table = "Personal_data")
     String phoneNumber;
 
-//    @Email
     @Column(name = "email_address", length = 50, table = "Personal_data")
     String emailAddress;
 

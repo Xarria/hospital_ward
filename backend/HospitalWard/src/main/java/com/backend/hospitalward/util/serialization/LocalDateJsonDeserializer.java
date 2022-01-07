@@ -13,6 +13,9 @@ import java.time.format.DateTimeFormatter;
 public class LocalDateJsonDeserializer extends JsonDeserializer<LocalDate> {
     @Override
     public LocalDate deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+        if (jsonParser.getText().isEmpty()) {
+            return null;
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return LocalDate.parse(jsonParser.readValueAs(String.class), formatter);
     }

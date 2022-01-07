@@ -18,7 +18,8 @@
     "createdBy": "Created by",
     "creationDate": "Creation date",
     "modify": "Modify",
-    "pickDate": "Pick a date"
+    "pickDate": "Pick a date",
+    "fieldPattern": "Invalid field value"
   },
   "login": {
     "signIn": "Sign In",
@@ -43,7 +44,21 @@
     "loginInvalid": "Invalid credentials",
     "modifyDiseaseSuccess" : "Disease modified successfully",
     "modifyDisease404": "Disease does not exist",
-    "modifyDisease400": "Disease was modified during modification"
+    "modifyDisease400": "Disease was modified during modification",
+    "patientCreateSuccess": "Patient created successfully",
+    "patientCreateReferralError": "Referral number or date is required",
+    "patientCreateQueueLocked": "Admission date is already full",
+    "modifyAdmissionAlreadyAdmitted": "Patient is already admitted",
+    "modifyAdmissionQueueLocked": "Admission date is already full",
+    "diseaseNotFound": "Disease does not exist",
+    "patientNotFound": "Patient does not exist",
+    "modifyAdmissionSuccess": "Admission date changed successfully",
+    "modifyPatientSuccess": "Patient modified successfully",
+    "urgencySuccess": "Patient's urgency changed successfully",
+    "confirmPatientSuccess": "Patient confirmed successfully",
+    "queueLocked": "Queue is already locked",
+    "confirmPatient409": "Patient already confirmed twice",
+    "removePatientSuccess": "Patient deleted successfully"
   },
   "queue": {
     "date": "Date",

@@ -18,7 +18,8 @@
     "createdBy": "Utworzone przez",
     "creationDate": "Data utworzenia",
     "modify": "Edytuj",
-    "pickDate": "Wybierz datę"
+    "pickDate": "Wybierz datę",
+    "fieldPattern": "Niepoprawna wartość"
   },
   "login": {
     "signIn": "Zaloguj się",
@@ -36,14 +37,28 @@
   },
   "snackbar": {
     "createDiseaseSuccess" : "Pomyślnie utworzono chorobę",
-    "createDisease409": "Choroba z podanym imieniem już istnieje",
+    "createDisease409": "Choroba z podaną nazwą już istnieje",
     "defaultError": "Wystąpił błąd",
     "deleteDiseaseSuccess" : "Pomyślnie usunięto chorobę",
     "deleteDisease409": "Choroba jest już przypisana do pacjenta",
     "loginInvalid": "Niepoprawne dane logowania",
     "modifyDiseaseSuccess" : "Pomyślnie zmodyfikowano chorobę",
     "modifyDisease404": "Choroba nie istnieje",
-    "modifyDisease400": "W trakcie operacji zmodyfikowano chorobę"
+    "modifyDisease400": "W trakcie operacji zmodyfikowano chorobę",
+    "patientCreateSuccess": "Pomyślnie utworzono pacjenta",
+    "patientCreateReferralError": "Nr lub data skierowania wymagane",
+    "patientCreateQueueLocked": "Kolejka na dany dzień jest już pełna",
+    "modifyAdmissionAlreadyAdmitted": "Pacjent jest już przyjęty",
+    "modifyAdmissionQueueLocked": "Kolejka na dany dzień jest już pełna",
+    "diseaseNotFound": "Choroba nie istnieje",
+    "patientNotFound": "Pacjent nie istnieje",
+    "modifyAdmissionSuccess": "Pomyślnie zmieniono datę przyjęcia",
+    "modifyPatientSuccess": "Pomyślnie zmodyfikowano pacjenta",
+    "urgencySuccess": "Pomyślnie zmieniono status pilności pacjenta",
+    "confirmPatientSuccess": "Pomyślnie zatwierdzono pacjenta",
+    "queueLocked": "Kolejka jest już zablokowana",
+    "confirmPatient409": "Pacjent jest już dwukrotnie potwierdzony",
+    "removePatientSuccess": "Pomyślnie usunięto pacjenta"
   },
   "queue": {
     "date": "Data",

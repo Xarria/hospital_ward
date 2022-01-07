@@ -74,24 +74,33 @@ export class QueueDetailsComponent implements OnInit {
   confirmPatient(id: string): void {
     this.patientService.confirm(id).subscribe(
       () => {
-        this.snackBar.open(this.translate.instant('snackbar.removePatientSuccess'), '', {
+        this.snackBar.open(this.translate.instant('snackbar.confirmPatientSuccess'), '', {
           duration: 2500,
           verticalPosition: 'top'
         });
         this.getQueue();
       },
       (error: any) => {
-        if (error.status === 409) {
-          this.snackBar.open(this.translate.instant('snackbar.removePatient409'), '', {
-            duration: 2500,
-            verticalPosition: 'top'
-          });
-        }
         if (error.status === 404) {
-          this.snackBar.open(this.translate.instant('snackbar.removePatient404'), '', {
+          this.snackBar.open(this.translate.instant('snackbar.patientNotFound'), '', {
             duration: 2500,
             verticalPosition: 'top'
           });
+          return;
+        }
+        if (error.status === 409) {
+          this.snackBar.open(this.translate.instant('snackbar.confirmPatient409'), '', {
+            duration: 2500,
+            verticalPosition: 'top'
+          });
+          return;
+        }
+        if (error.error.message === 'error.queue_locked') {
+          this.snackBar.open(this.translate.instant('snackbar.queueLocked'), '', {
+            duration: 2500,
+            verticalPosition: 'top'
+          });
+          return;
         }
         else {
           this.snackBar.open(this.translate.instant('snackbar.defaultError'), '', {
@@ -114,16 +123,18 @@ export class QueueDetailsComponent implements OnInit {
       },
       (error: any) => {
         if (error.status === 409) {
-          this.snackBar.open(this.translate.instant('snackbar.removePatient409'), '', {
+          this.snackBar.open(this.translate.instant('snackbar.confirmPatient409'), '', {
             duration: 2500,
             verticalPosition: 'top'
           });
+          return;
         }
         if (error.status === 404) {
-          this.snackBar.open(this.translate.instant('snackbar.removePatient404'), '', {
+          this.snackBar.open(this.translate.instant('snackbar.patientNotFound'), '', {
             duration: 2500,
             verticalPosition: 'top'
           });
+          return;
         }
         else {
           this.snackBar.open(this.translate.instant('snackbar.defaultError'), '', {

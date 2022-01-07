@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.ejb.Local;
 import javax.validation.Valid;
+import javax.ws.rs.ForbiddenException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -64,7 +65,7 @@ public class PatientController {
     public ResponseEntity<?> createPatient(@RequestBody @Valid PatientCreateRequest patientCreateRequest,
                                            @CurrentSecurityContext SecurityContext securityContext) {
         if (patientCreateRequest.isUrgent()) {
-            throw new BadRequestException(ErrorKey.NO_PERMISSION_TO_CREATE_URGENT_PATIENT);
+            throw new ForbiddenException(ErrorKey.NO_PERMISSION_TO_CREATE_URGENT_PATIENT);
         }
 
         patientService.createPatient(patientMapper.toPatient(patientCreateRequest),

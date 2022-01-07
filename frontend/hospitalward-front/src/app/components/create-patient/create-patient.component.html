@@ -5,24 +5,40 @@
         <mat-form-field floatLabel="always">
           <input formControlName="pesel" id="pesel" matInput placeholder="{{'patient.pesel' | translate}}"
                  [(ngModel)]="patientService.patientCreate.pesel">
+          <mat-error *ngIf="patientForm.controls.pesel.hasError('required') && patientForm.controls.pesel.touched">{{'common.fieldRequired' | translate}}
+          </mat-error>
+          <mat-error *ngIf="patientForm.controls.pesel.hasError('pattern') && patientForm.controls.pesel.touched">{{'common.fieldPattern' | translate}}
+          </mat-error>
         </mat-form-field>
         <mat-form-field floatLabel="always">
           <mat-select formControlName="sex" placeholder="{{'patient.sex' | translate}}" [(ngModel)]="patientService.patientCreate.sex">
             <mat-option value="F">{{'patient.female' | translate}}</mat-option>
             <mat-option value="M">{{'patient.male' | translate}}</mat-option>
           </mat-select>
+          <mat-error *ngIf="patientForm.controls.sex.hasError('required') && patientForm.controls.sex.touched">{{'common.fieldRequired' | translate}}
+          </mat-error>
+          <mat-error *ngIf="patientForm.controls.sex.hasError('pattern') && patientForm.controls.sex.touched">{{'common.fieldPattern' | translate}}
+          </mat-error>
         </mat-form-field>
         <mat-form-field floatLabel="always">
           <input formControlName="name" id="name" matInput placeholder="{{'patient.name' | translate}}"
                  [(ngModel)]="patientService.patientCreate.name">
+          <mat-error *ngIf="patientForm.controls.name.invalid && patientForm.controls.name.touched">{{'common.fieldRequired' | translate}}
+          </mat-error>
         </mat-form-field>
         <mat-form-field floatLabel="always">
           <input formControlName="surname" id="surname" matInput placeholder="{{'patient.surname' | translate}}"
                  [(ngModel)]="patientService.patientCreate.surname">
+          <mat-error *ngIf="patientForm.controls.surname.invalid && patientForm.controls.surname.touched">{{'common.fieldRequired' | translate}}
+          </mat-error>
         </mat-form-field>
         <mat-form-field floatLabel="always">
           <input formControlName="phoneNumber" id="phoneNumber" matInput placeholder="{{'patient.phoneNumber' | translate}}"
                  [(ngModel)]="patientService.patientCreate.phoneNumber">
+          <mat-error *ngIf="patientForm.controls.phoneNumber.hasError('required') && patientForm.controls.phoneNumber.touched">{{'common.fieldRequired' | translate}}
+          </mat-error>
+          <mat-error *ngIf="patientForm.controls.phoneNumber.hasError('pattern') && patientForm.controls.phoneNumber.touched">{{'common.fieldPattern' | translate}}
+          </mat-error>
         </mat-form-field>
         <mat-form-field floatLabel="always">
           <mat-select formControlName="mainDoctor" [(ngModel)]="patientService.patientCreate.mainDoctor"
@@ -30,6 +46,8 @@
             <mat-option *ngFor="let doctor of doctorsArray" [value]="doctor.login">{{doctor.name}} {{doctor.surname}},
               {{'patient.license' | translate}}: {{doctor.licenseNr}}</mat-option>
           </mat-select>
+          <mat-error *ngIf="patientForm.controls.mainDoctor.invalid && patientForm.controls.mainDoctor.touched">{{'common.fieldRequired' | translate}}
+          </mat-error>
         </mat-form-field>
       </div>
     </mat-grid-tile>
@@ -42,6 +60,8 @@
             <mat-option value="UNVACCINATED">{{'patient.covidStatusList.unvaccinated' | translate}}</mat-option>
             <mat-option value="AFTER_ILLNESS">{{'patient.covidStatusList.afterIllness' | translate}}</mat-option>
           </mat-select>
+          <mat-error *ngIf="patientForm.controls.covidStatus.invalid && patientForm.controls.covidStatus.touched">{{'common.fieldRequired' | translate}}
+          </mat-error>
         </mat-form-field>
         <mat-form-field floatLabel="always">
           <input formControlName="admissionDate" matInput [matDatepicker]="admissionDatePicker" [min]="minDate" [matDatepickerFilter]="myFilter"
@@ -49,16 +69,22 @@
                  placeholder="{{'patient.admissionDate' | translate}}">
           <mat-datepicker-toggle matSuffix [for]="admissionDatePicker"></mat-datepicker-toggle>
           <mat-datepicker #admissionDatePicker></mat-datepicker>
+          <mat-error *ngIf="patientForm.controls.admissionDate.invalid && patientForm.controls.admissionDate.touched">{{'common.fieldRequired' | translate}}
+          </mat-error>
         </mat-form-field>
         <mat-form-field floatLabel="always">
           <input formControlName="referralNr" id="referralNr" matInput placeholder="{{'patient.referralNr' | translate}}"
                  [(ngModel)]="patientService.patientCreate.referralNr">
+          <mat-error *ngIf="patientForm.controls.referralNr.invalid && patientForm.controls.referralNr.touched">{{'common.fieldRequired' | translate}}
+          </mat-error>
         </mat-form-field>
         <mat-form-field floatLabel="always">
           <input formControlName="referralDate" matInput [matDatepicker]="datePicker" [(ngModel)]="pickedDate"
                  placeholder="{{'patient.referralDate' | translate}}">
           <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
           <mat-datepicker #datePicker></mat-datepicker>
+            <mat-error *ngIf="patientForm.controls.referralDate.invalid && patientForm.controls.referralDate.touched">{{'common.fieldRequired' | translate}}
+            </mat-error>
         </mat-form-field>
           <mat-checkbox formControlName="urgent" id="urgent" [(ngModel)]="patientService.patientCreate.urgent">
             {{'patient.urgent' | translate}}
@@ -69,6 +95,10 @@
               <mat-form-field floatLabel="always">
                 <input formControlName="age" id="age" matInput placeholder="{{'patient.age' | translate}}"
                        value="{{displayAge(patientService.patientCreate.age)}}" [(ngModel)]="age">
+                <mat-error *ngIf="patientForm.controls.age.hasError('required') && patientForm.controls.age.touched">{{'common.fieldRequired' | translate}}
+                </mat-error>
+                <mat-error *ngIf="patientForm.controls.age.hasError('pattern') && patientForm.controls.age.touched">{{'common.fieldPattern' | translate}}
+                </mat-error>
               </mat-form-field>
             </div>
           </mat-grid-tile>
@@ -79,6 +109,10 @@
                   <mat-option value="Y">{{'patient.years' | translate}}</mat-option>
                   <mat-option value="M">{{'patient.months' | translate}}</mat-option>
                 </mat-select>
+                <mat-error *ngIf="patientForm.controls.ageUnit.hasError('required') && patientForm.controls.ageUnit.touched">{{'common.fieldRequired' | translate}}
+                </mat-error>
+                <mat-error *ngIf="patientForm.controls.ageUnit.hasError('pattern') && patientForm.controls.ageUnit.touched">{{'common.fieldPattern' | translate}}
+                </mat-error>
               </mat-form-field>
           </mat-grid-tile>
         </mat-grid-list>
@@ -96,7 +130,9 @@
           <mat-select formControlName="diseases" multiple *ngIf="!isPolishLanguage()" [(ngModel)]="pickedDiseases"
                       placeholder="{{'patient.diseases' | translate}}">
             <mat-option *ngFor="let disease of diseasesArray" [value]="disease">{{disease.latinName}}</mat-option>
-          </mat-select>
+          </mat-select><mat-error *ngIf="patientForm.controls.diseases.invalid && patientForm.controls.diseases.touched">{{'common.fieldRequired' | translate}}
+        </mat-error>
+
         </mat-form-field>
       </div>
     </mat-grid-tile>

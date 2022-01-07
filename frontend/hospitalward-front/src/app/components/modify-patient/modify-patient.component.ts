@@ -67,25 +67,26 @@ export class ModifyPatientComponent implements OnInit {
     this.patientService.modifyPatient(this.patientService.patient, this.age + this.ageUnit)
       .subscribe(
         () => {
-          this.snackBar.open(this.translate.instant('snackbar.urgencySuccess'), '', {
+          this.snackBar.open(this.translate.instant('snackbar.modifyPatientSuccess'), '', {
             duration: 2500,
             verticalPosition: 'top'
           });
           this.dialogRef.close();
         },
         (error: any) => {
-          if (error.status === 404) {
-            this.snackBar.open(this.translate.instant('snackbar.patient404'), '', {
+          if (error.status === 'error.patient_not_found') {
+            this.snackBar.open(this.translate.instant('snackbar.patientNotFound'), '', {
               duration: 2500,
               verticalPosition: 'top'
             });
           }
-          if (error.status === 400) {
-            this.snackBar.open(this.translate.instant('snackbar.urgency400'), '', {
-              duration: 2500,
-              verticalPosition: 'top'
-            });
-          } else {
+          if (error.error.message === 'error.disease_not_found') {
+              this.snackBar.open(this.translate.instant('snackbar.diseaseNotFound'), '', {
+                duration: 2500,
+                verticalPosition: 'top'
+              });
+              return;
+            } else {
             this.snackBar.open(this.translate.instant('snackbar.defaultError'), '', {
               duration: 2500,
               verticalPosition: 'top'

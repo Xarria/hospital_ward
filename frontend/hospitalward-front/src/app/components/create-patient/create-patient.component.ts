@@ -8,7 +8,7 @@ import {DateAdapter} from '@angular/material/core';
 import {QueueService} from '../../services/queue-service';
 import {Router} from '@angular/router';
 import {Doctor} from '../../model/doctor';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-create-patient',
@@ -28,19 +28,19 @@ export class CreatePatientComponent implements OnInit {
   pickedDiseases: DiseaseGeneral[] = [];
   doctorsArray: Doctor[] = [];
 
-  patientForm = new FormGroup({
-    pesel: new FormControl('', Validators.required),
+  patientForm = this.formBuilder.group({
+    pesel: new FormControl('', [Validators.required, Validators.pattern('[0-9]{11}')]),
     diseases: new FormControl('', Validators.required),
-    age: new FormControl('', Validators.required),
-    ageUnit: new FormControl('', Validators.required),
-    sex: new FormControl('', Validators.required),
-    referralNr: new FormControl('', Validators.required),
-    referralDate: new FormControl('', Validators.required),
+    age: new FormControl('', [Validators.required, Validators.pattern('[0-9]*')]),
+    ageUnit: new FormControl('', [Validators.required, Validators.pattern('[M,Y]')]),
+    sex: new FormControl('', [Validators.required, Validators.pattern('[F,M]')]),
+    referralNr: new FormControl(''),
+    referralDate: new FormControl(''),
     mainDoctor: new FormControl('', Validators.required),
     covidStatus: new FormControl('', Validators.required),
     name: new FormControl('', Validators.required),
     surname: new FormControl('', Validators.required),
-    phoneNumber: new FormControl('', Validators.required),
+    phoneNumber: new FormControl('', [Validators.required, Validators.pattern('[0-9]*')]),
     admissionDate: new FormControl('', Validators.required),
     urgent: new FormControl(false)
   });
@@ -56,7 +56,8 @@ export class CreatePatientComponent implements OnInit {
               private diseaseService: DiseaseTableService,
               private dateAdapter: DateAdapter<Date>,
               private queueService: QueueService,
-              private router: Router) {
+              private router: Router,
+              private formBuilder: FormBuilder) {
     this.getDiseases();
     this.getDoctors();
     this.minDate.setDate(this.minDate.getDate() + 14);
@@ -120,7 +121,6 @@ export class CreatePatientComponent implements OnInit {
     } else {
       this.createPatient();
     }
-    this.patientService.patientCreate = this.patientService.getEmptyPatientCreate();
   }
 
   getDoctors(): void {
@@ -135,24 +135,34 @@ export class CreatePatientComponent implements OnInit {
     this.patientService.createPatient(this.patientService.patientCreate)
       .subscribe(
         () => {
-          this.snackBar.open(this.translate.instant('snackbar.urgencySuccess'), '', {
+          this.snackBar.open(this.translate.instant('snackbar.patientCreateSuccess'), '', {
             duration: 2500,
             verticalPosition: 'top'
           });
           this.router.navigate(['/queues']);
+          this.patientService.patientCreate = this.patientService.getEmptyPatientCreate();
         },
         (error: any) => {
-          if (error.status === 404) {
-            this.snackBar.open(this.translate.instant('snackbar.patient404'), '', {
+          if (error.error.message === 'error.referral_number_or_date_required') {
+            this.snackBar.open(this.translate.instant('snackbar.patientCreateReferralError'), '', {
               duration: 2500,
               verticalPosition: 'top'
             });
+            return;
           }
-          if (error.status === 400) {
-            this.snackBar.open(this.translate.instant('snackbar.urgency400'), '', {
+          if (error.error.message === 'error.error.disease_not_found') {
+            this.snackBar.open(this.translate.instant('snackbar.diseaseNotFound'), '', {
               duration: 2500,
               verticalPosition: 'top'
             });
+            return;
+          }
+          if (error.error.message === 'error.queue_for_date_is_locked_or_full') {
+            this.snackBar.open(this.translate.instant('snackbar.patientCreateQueueLocked'), '', {
+              duration: 2500,
+              verticalPosition: 'top'
+            });
+            return;
           } else {
             this.snackBar.open(this.translate.instant('snackbar.defaultError'), '', {
               duration: 2500,
@@ -171,6 +181,8 @@ export class CreatePatientComponent implements OnInit {
             duration: 2500,
             verticalPosition: 'top'
           });
+          this.router.navigate(['/queues']);
+          this.patientService.patientCreate = this.patientService.getEmptyPatientCreate();
         },
         (error: any) => {
           if (error.status === 404) {

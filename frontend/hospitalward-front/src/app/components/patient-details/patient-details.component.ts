@@ -78,13 +78,13 @@ export class PatientDetailsComponent implements OnInit {
         },
         (error: any) => {
           if (error.status === 404) {
-            this.snackBar.open(this.translate.instant('snackbar.patient404'), '', {
+            this.snackBar.open(this.translate.instant('snackbar.patientNotFound'), '', {
               duration: 2500,
               verticalPosition: 'top'
             });
           }
           if (error.status === 400) {
-            this.snackBar.open(this.translate.instant('snackbar.urgency400'), '', {
+            this.snackBar.open(this.translate.instant('snackbar.modifyAdmissionAlreadyAdmitted'), '', {
               duration: 2500,
               verticalPosition: 'top'
             });
