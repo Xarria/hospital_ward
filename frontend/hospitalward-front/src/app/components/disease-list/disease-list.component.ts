@@ -7,6 +7,7 @@ import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {CreateDiseaseComponent} from '../create-disease/create-disease.component';
 import {ModifyDiseaseComponent} from '../modify-disease/modify-disease.component';
 import {TranslateService} from '@ngx-translate/core';
+import {IdentityService} from '../../services/identity-service';
 
 @Component({
   selector: 'app-disease-list',
@@ -22,7 +23,8 @@ export class DiseaseListComponent implements OnInit {
   constructor(private diseaseService: DiseaseTableService,
               private snackBar: MatSnackBar,
               private dialog: MatDialog,
-              private translate: TranslateService) {
+              private translate: TranslateService,
+              public identityService: IdentityService) {
     this.diseaseData = new MatTableDataSource<DiseaseGeneral>();
   }
 

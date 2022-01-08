@@ -5,6 +5,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ModifyAdmissionDateComponent} from '../modify-admission-date/modify-admission-date.component';
 import {ModifyPatientComponent} from '../modify-patient/modify-patient.component';
+import {IdentityService} from '../../services/identity-service';
 
 @Component({
   selector: 'app-patient-details',
@@ -19,7 +20,8 @@ export class PatientDetailsComponent implements OnInit {
               public patientService: PatientService,
               private translate: TranslateService,
               private snackBar: MatSnackBar,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              public identityService: IdentityService) {
     this.patientId = this.data;
     this.getPatient();
   }

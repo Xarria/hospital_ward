@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContext;
@@ -131,11 +132,10 @@ public class PatientController {
 
     @Authenticated
     @GetMapping("/date/{id}/{date}")
-    public ResponseEntity<?> changeAdmissionDate(@PathVariable("id") long id, @PathVariable("date") String admissionDateString,
+    public ResponseEntity<?> changeAdmissionDate(@PathVariable("id") long id, @PathVariable("date")
+                                                @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate admissionDate,
                                                  @CurrentSecurityContext SecurityContext securityContext) {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        LocalDate admissionDate = LocalDate.parse(admissionDateString, formatter);
         patientService.changePatientAdmissionDate(id, admissionDate, securityContext.getAuthentication().getName());
 
         return ResponseEntity.ok().build();

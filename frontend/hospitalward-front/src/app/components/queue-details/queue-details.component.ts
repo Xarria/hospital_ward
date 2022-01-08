@@ -8,8 +8,8 @@ import {PatientGeneral} from '../../model/patient-general';
 import {ActivatedRoute} from '@angular/router';
 import {MatSort, Sort} from '@angular/material/sort';
 import {PatientService} from '../../services/patient-service';
-import {CreateDiseaseComponent} from '../create-disease/create-disease.component';
 import {PatientDetailsComponent} from '../patient-details/patient-details.component';
+import {IdentityService} from '../../services/identity-service';
 
 @Component({
   selector: 'app-queue-detials',
@@ -30,7 +30,8 @@ export class QueueDetailsComponent implements OnInit {
               private snackBar: MatSnackBar,
               private dialog: MatDialog,
               private translate: TranslateService,
-              private patientService: PatientService) {
+              private patientService: PatientService,
+              public identityService: IdentityService) {
     this.patientsData = new MatTableDataSource<PatientGeneral>();
     this.date = this.route.snapshot.paramMap.get('date') as string;
   }

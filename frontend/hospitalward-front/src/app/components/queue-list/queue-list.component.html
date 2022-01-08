@@ -31,7 +31,7 @@
 <mat-table class="table" [dataSource]="queueData">
   <ng-container matColumnDef="Date">
     <mat-header-cell *matHeaderCellDef>{{'queue.date' | translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let element">{{element.date | date:'dd-MM-yyyy' }}</mat-cell>
+    <mat-cell *matCellDef="let element">{{element.date}}</mat-cell>
   </ng-container>
   <ng-container matColumnDef="Patients waiting">
     <mat-header-cell *matHeaderCellDef>{{'queue.patientsWaiting' | translate}}</mat-header-cell>

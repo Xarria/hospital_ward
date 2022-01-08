@@ -86,7 +86,7 @@
             <mat-error *ngIf="patientForm.controls.referralDate.invalid && patientForm.controls.referralDate.touched">{{'common.fieldRequired' | translate}}
             </mat-error>
         </mat-form-field>
-          <mat-checkbox formControlName="urgent" id="urgent" [(ngModel)]="patientService.patientCreate.urgent">
+          <mat-checkbox *ngIf="!identityService.isSecretary()" formControlName="urgent" id="urgent" [(ngModel)]="patientService.patientCreate.urgent">
             {{'patient.urgent' | translate}}
           </mat-checkbox>
         <mat-grid-list cols="2" rowHeight="90px">

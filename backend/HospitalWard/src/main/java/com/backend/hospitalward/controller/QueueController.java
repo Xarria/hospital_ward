@@ -30,7 +30,7 @@ public class QueueController {
 
     QueueService queueService;
 
-    @MedicAuthorities
+    @Authenticated
     @GetMapping("/queues")
     public ResponseEntity<List<QueueResponse>> getAllCurrentQueues() {
         return ResponseEntity.ok(queueService.getAllCurrentQueues().stream()
@@ -39,10 +39,10 @@ public class QueueController {
                 .collect(Collectors.toList()));
     }
 
-    @MedicAuthorities
+    @Authenticated
     @GetMapping("/queues/{queueDate}")
     public ResponseEntity<QueueResponse> getQueueByDate(@PathVariable("queueDate")
-                                                        @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate queueDate) {
+                                                        @DateTimeFormat(pattern = "dd-MM-yyyy") LocalDate queueDate) {
         return ResponseEntity.ok(queueMapper.toQueueResponse(queueService.getQueueForDate(queueDate)));
     }
 

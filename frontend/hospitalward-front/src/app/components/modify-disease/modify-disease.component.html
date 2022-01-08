@@ -16,7 +16,7 @@
           </mat-form-field>
           <mat-form-field floatLabel="always">
             <input id="creationDate" matInput placeholder="{{'common.creationDate' | translate}}" [disabled]="true"
-                   value="{{diseaseService.disease.creationDate | date:'dd-MM-yyyy' }}">
+                   value="{{diseaseService.disease.creationDate | date: 'dd-MM-yyyy'}}">
           </mat-form-field>
           <mat-form-field floatLabel="always">
             <input id="modifiedBy" matInput placeholder="{{'common.modifiedBy' | translate}}" [disabled]="true"
@@ -24,7 +24,7 @@
           </mat-form-field>
           <mat-form-field floatLabel="always">
             <input id="modificationDate" matInput placeholder="{{'common.modificationDate' | translate}}" [disabled]="true"
-                   value="{{diseaseService.disease.modificationDate | date:'dd-MM-yyyy' }}">
+                   value="{{diseaseService.disease.modificationDate | date: 'dd-MM-yyyy'}}">
           </mat-form-field>
         </div>
       </mat-grid-tile>

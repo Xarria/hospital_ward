@@ -8,7 +8,7 @@
       <div class="form-controls">
         <mat-form-field floatLabel="always">
           <input id="name" matInput placeholder="{{'queue.date' | translate}}" [disabled]="true"
-                 value="{{queueService.queue.date | date:'dd-MM-yyyy' }}">
+                 value="{{queueService.queue.date}}">
         </mat-form-field>
       </div>
     </mat-grid-tile>
@@ -55,7 +55,7 @@
   </ng-container>
   <ng-container matColumnDef="Admission date">
     <mat-header-cell *matHeaderCellDef>{{'patient.admissionDate' | translate}}</mat-header-cell>
-    <mat-cell *matCellDef="let element">{{element.admissionDate | date:'dd-MM-yyyy' }}</mat-cell>
+    <mat-cell *matCellDef="let element">{{element.admissionDate}}</mat-cell>
   </ng-container>
   <ng-container matColumnDef="Status">
     <mat-header-cell class="w-120" *matHeaderCellDef>{{'patient.status' | translate}}</mat-header-cell>
@@ -85,10 +85,11 @@
       <button mat-icon-button (click)="openDetails(element.id)">
         <mat-icon>launch</mat-icon>
       </button>
-      <button mat-icon-button color="warn" (click)="deletePatient(element.id)">
+      <button mat-icon-button color="warn" *ngIf="identityService.isTreatmentDirector()" (click)="deletePatient(element.id)">
         <mat-icon>delete_outline</mat-icon>
       </button>
-      <button mat-icon-button color="primary" (click)="confirmPatient(element.id)">
+      <button mat-icon-button color="primary" *ngIf="identityService.isTreatmentDirectorOrDoctor() ||
+      identityService.isHeadNurse()" (click)="confirmPatient(element.id)">
         <mat-icon>done</mat-icon>
       </button>
     </mat-cell>

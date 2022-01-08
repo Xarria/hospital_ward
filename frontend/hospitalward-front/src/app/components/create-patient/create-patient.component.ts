@@ -9,6 +9,7 @@ import {QueueService} from '../../services/queue-service';
 import {Router} from '@angular/router';
 import {Doctor} from '../../model/doctor';
 import {FormBuilder, FormControl, Validators} from '@angular/forms';
+import {IdentityService} from '../../services/identity-service';
 
 @Component({
   selector: 'app-create-patient',
@@ -57,7 +58,8 @@ export class CreatePatientComponent implements OnInit {
               private dateAdapter: DateAdapter<Date>,
               private queueService: QueueService,
               private router: Router,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              public identityService: IdentityService) {
     this.getDiseases();
     this.getDoctors();
     this.minDate.setDate(this.minDate.getDate() + 14);
@@ -177,7 +179,7 @@ export class CreatePatientComponent implements OnInit {
     this.patientService.createPatientUrgent(this.patientService.patientCreate)
       .subscribe(
         () => {
-          this.snackBar.open(this.translate.instant('snackbar.urgencySuccess'), '', {
+          this.snackBar.open(this.translate.instant('snackbar.patientCreateSuccess'), '', {
             duration: 2500,
             verticalPosition: 'top'
           });
@@ -185,17 +187,19 @@ export class CreatePatientComponent implements OnInit {
           this.patientService.patientCreate = this.patientService.getEmptyPatientCreate();
         },
         (error: any) => {
-          if (error.status === 404) {
-            this.snackBar.open(this.translate.instant('snackbar.patient404'), '', {
+          if (error.error.message === 'error.error.disease_not_found') {
+            this.snackBar.open(this.translate.instant('snackbar.diseaseNotFound'), '', {
               duration: 2500,
               verticalPosition: 'top'
             });
+            return;
           }
-          if (error.status === 400) {
-            this.snackBar.open(this.translate.instant('snackbar.urgency400'), '', {
+          if (error.error.message === 'error.referral_number_or_date_required') {
+            this.snackBar.open(this.translate.instant('snackbar.patientCreateReferralError'), '', {
               duration: 2500,
               verticalPosition: 'top'
             });
+            return;
           } else {
             this.snackBar.open(this.translate.instant('snackbar.defaultError'), '', {
               duration: 2500,
