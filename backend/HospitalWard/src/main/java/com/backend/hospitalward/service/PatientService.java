@@ -124,7 +124,7 @@ public class PatientService {
 
         patientRepository.save(patientFromDB);
 
-        queueService.refreshQueueAfterDiseaseUpdate(patientFromDB.getQueue());
+        queueService.refreshQueueAfterUpdate(patientFromDB.getQueue());
     }
 
 
@@ -206,7 +206,7 @@ public class PatientService {
                 -> new NotFoundException(ErrorKey.PATIENT_TYPE_NOT_FOUND)));
         patientRepository.save(patient);
 
-        queueService.refreshQueueAfterDiseaseUpdate(patient.getQueue());
+        queueService.refreshQueueAfterUpdate(patient.getQueue());
     }
 
     public void deletePatient(Long id) {

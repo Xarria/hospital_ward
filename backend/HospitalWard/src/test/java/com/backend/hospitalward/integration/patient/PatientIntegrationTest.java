@@ -103,7 +103,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
                         .surname("Kowalska")
                         .age("4Y")
                         .covidStatus("VACCINATED")
-                        .diseases(List.of("Katar"))
+                        .diseases(List.of("Z"))
                         .admissionDate(LocalDate.of(2022, 5, 4))
                         .mainDoctor("jan.kowalski")
                         .pesel("45565555555")
@@ -144,7 +144,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
                         .surname("Nowak")
                         .age("7Y")
                         .covidStatus("VACCINATED")
-                        .diseases(List.of("Katar"))
+                        .diseases(List.of("Y"))
                         .phoneNumber("123456780")
                         .admissionDate(LocalDate.of(2022, 3, 17))
                         .mainDoctor("jan.kowalski")
@@ -192,7 +192,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
                         .age("7Y")
                         .covidStatus("VACCINATED")
                         .phoneNumber("123456556")
-                        .diseases(List.of("Katar"))
+                        .diseases(List.of("Y"))
                         .admissionDate(LocalDate.of(2022, 3, 15))
                         .mainDoctor("jan.kowalski")
                         .pesel("45565555555")
@@ -285,7 +285,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
                 PatientUpdateRequest.builder()
                         .name("Janina")
                         .version(version)
-                        .diseases(List.of("Kaszel")).build(), headers
+                        .diseases(List.of("Z")).build(), headers
         );
 
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/22"),
@@ -295,7 +295,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
 
         assertAll(
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
-                () -> assertEquals("Kaszel", updatedPatient.getDiseases().get(0).getLatinName()),
+                () -> assertEquals("Z", updatedPatient.getDiseases().get(0).getLatinName()),
                 () -> assertEquals("Janina", updatedPatient.getName()),
                 () -> assertEquals(3, updatedPatient.getPositionInQueue())
         );
@@ -314,7 +314,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
         );
 
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/confirm/22"),
-                HttpMethod.PUT, getJwtHttpEntity(), String.class);
+                HttpMethod.GET, getJwtHttpEntity(), String.class);
 
         Patient confirmedPatient = patientService.getPatientById(22L);
 
@@ -341,7 +341,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
         );
 
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/confirm/21"),
-                HttpMethod.PUT, getJwtHttpEntity(), String.class);
+                HttpMethod.GET, getJwtHttpEntity(), String.class);
 
         Patient confirmedPatient = patientService.getPatientById(21L);
 
@@ -372,7 +372,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
         );
 
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/confirm/18"),
-                HttpMethod.PUT, getJwtHttpEntity(), String.class);
+                HttpMethod.GET, getJwtHttpEntity(), String.class);
 
         Patient confirmedPatient = patientService.getPatientById(18L);
         Queue expectedNewQueueAfter = queueService.getQueueForDate(LocalDate.of(2022, 3, 17));
@@ -410,7 +410,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
         );
 
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/confirm/9"),
-                HttpMethod.PUT, getJwtHttpEntity(), String.class);
+                HttpMethod.GET, getJwtHttpEntity(), String.class);
 
         Patient confirmedPatient = patientService.getPatientById(9L);
         Queue expectedNewQueueAfter = queueService.getQueueForDate(LocalDate.of(2022, 3, 17));
@@ -443,11 +443,8 @@ class PatientIntegrationTest extends AbstractTestContainer {
                         LocalDate.of(2022, 3, 15)).getWaitingPatients().size())
         );
 
-        HttpEntity<LocalDate> localDateHttpEntity = new HttpEntity<>(LocalDate.of(2022, 3, 15),
-                getHttpHeaders());
-
-        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/date/11"),
-                HttpMethod.PUT, localDateHttpEntity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/date/11/15-03-2022"),
+                HttpMethod.GET, getJwtHttpEntity(), String.class);
 
         Patient newDatePatient = patientService.getPatientById(11L);
         Queue expectedNewQueue = queueService.getQueueForDate(LocalDate.of(2022, 3, 15));
@@ -475,11 +472,8 @@ class PatientIntegrationTest extends AbstractTestContainer {
                 () -> assertTrue(patientBefore.getQueue().isLocked())
         );
 
-        HttpEntity<LocalDate> localDateHttpEntity = new HttpEntity<>(LocalDate.of(2022, 3, 17),
-                getHttpHeaders());
-
-        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/date/1"),
-                HttpMethod.PUT, localDateHttpEntity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/date/1/17-03-2022"),
+                HttpMethod.GET, getJwtHttpEntity(), String.class);
 
         Patient newDatePatient = patientService.getPatientById(1L);
         Queue expectedNewQueue = queueService.getQueueForDate(LocalDate.of(2022, 3, 17));
@@ -507,11 +501,8 @@ class PatientIntegrationTest extends AbstractTestContainer {
                 () -> assertEquals("CONFIRMED_TWICE", patientBefore.getStatus().getName())
         );
 
-        HttpEntity<LocalDate> localDateHttpEntity = new HttpEntity<>(LocalDate.of(2022, 3, 24),
-                getHttpHeaders());
-
-        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/date/2"),
-                HttpMethod.PUT, localDateHttpEntity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/date/2/24-03-2022"),
+                HttpMethod.GET, getJwtHttpEntity(), String.class);
 
         Patient newDatePatient = patientService.getPatientById(2L);
         Queue expectedNewQueue = queueService.getQueueForDate(LocalDate.of(2022, 3, 24));
@@ -537,10 +528,8 @@ class PatientIntegrationTest extends AbstractTestContainer {
                 () -> assertEquals(9, patientBefore.getPositionInQueue())
         );
 
-        HttpEntity<Boolean> httpEntity= new HttpEntity<>(true, getHttpHeaders());
-
-        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/urgency/22"),
-                HttpMethod.PUT, httpEntity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/urgency/22/true"),
+                HttpMethod.GET, getJwtHttpEntity(), String.class);
 
         Patient urgentPatient = patientService.getPatientById(22L);
 
@@ -561,10 +550,8 @@ class PatientIntegrationTest extends AbstractTestContainer {
                 () -> assertEquals(2, patientBefore.getPositionInQueue())
         );
 
-        HttpEntity<Boolean> httpEntity= new HttpEntity<>(false, getHttpHeaders());
-
-        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/urgency/1"),
-                HttpMethod.PUT, httpEntity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/urgency/1/false"),
+                HttpMethod.GET, getJwtHttpEntity(), String.class);
 
         Patient urgentPatient = patientService.getPatientById(1L);
 

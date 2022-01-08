@@ -361,7 +361,7 @@ public class QueueService {
             queue.setPatients(calculatePatientsPositions(queue));
     }
 
-    public void refreshQueueAfterDiseaseUpdate(Queue queue) {
+    public void refreshQueueAfterUpdate(Queue queue) {
         refreshQueue(queue);
         queueRepository.save(queue);
     }

@@ -41,6 +41,8 @@ class PatientUnitTest {
     PatientStatusRepository patientStatusRepository;
     @Mock
     QueueService queueService;
+    @Mock
+    BaseRepository baseRepository;
 
     @InjectMocks
     PatientService patientService;
@@ -250,12 +252,13 @@ class PatientUnitTest {
         when(accountRepository.findAccountByLogin("requestedBy")).thenReturn(Optional.of(Account.builder().build()));
         when(diseaseRepository.findDiseaseByLatinName(any())).thenReturn(Optional.of(Disease.builder().build()));
         when(patientTypeRepository.findPatientTypeByName(any())).thenReturn(Optional.of(new PatientType()));
+        doNothing().when(baseRepository).detach(any());
 
         patientService.updatePatient(1L, Patient.builder().sex("M").urgent(true).build(), List.of("disease"), null,
                 "VACCINATED", "requestedBy");
 
         verify(patientRepository).save(patientOther);
-        verify(queueService).refreshQueue(patientOther.getQueue());
+        verify(queueService).refreshQueueAfterUpdate(patientOther.getQueue());
 
         assertEquals("M", patientOther.getSex());
         assertFalse(patientOther.isUrgent());
@@ -267,6 +270,8 @@ class PatientUnitTest {
         when(patientRepository.findPatientById(anyLong())).thenReturn(Optional.of(patientOther));
         when(covidStatusRepository.findCovidStatusByStatus(any())).thenReturn(Optional.of(csVaccinated));
         when(accountRepository.findAccountByLogin("requestedBy")).thenReturn(Optional.of(Account.builder().build()));
+        when(patientTypeRepository.findPatientTypeByName(any())).thenReturn(Optional.of(pt));
+        doNothing().when(baseRepository).detach(any());
 
         patientService.updatePatient(1L, Patient.builder().sex("INVALID").urgent(true).build(), null, null,
                 "VACCINATED", "requestedBy");
@@ -436,11 +441,12 @@ class PatientUnitTest {
         patientOther.setStatus(psWaiting);
         when(patientRepository.findPatientById(anyLong())).thenReturn(Optional.of(patientOther));
         when(accountRepository.findAccountByLogin(any())).thenReturn(Optional.of(doctor));
+        when(patientTypeRepository.findPatientTypeByName(any())).thenReturn(Optional.of(pt));
 
         patientService.changePatientUrgency(1L, true, "modifiedBy");
 
         verify(patientRepository).save(patientOther);
-        verify(queueService).refreshQueue(any());
+        verify(queueService).refreshQueueAfterUpdate(any());
 
         assertTrue(patientOther.isUrgent());
     }

@@ -188,42 +188,6 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
 
     @Order(5)
     @Test
-    void shouldReturn409WhenUpdateDiseaseNameNotUnique() {
-        Disease disease = diseaseService.getAllDiseases().get(0);
-        Disease disease2 = diseaseService.getAllDiseases().get(1);
-        String diseaseName = disease.getLatinName();
-
-        long version = diseaseService.getDiseaseByName(diseaseName).getVersion();
-
-        ResponseEntity<String> responseGet = restTemplate.exchange(getUrlWithPort(DiseaseConstants.GET_ALL_DISEASES +
-                "/" + diseaseName), HttpMethod.GET, getJwtHttpEntity(), String.class);
-
-        String etag = Objects.requireNonNull(responseGet.getHeaders().get(HttpHeaders.ETAG)).get(0);
-
-        HttpHeaders headers = getHttpHeaders();
-        headers.add(HttpHeaders.IF_MATCH, etag.substring(1, etag.length() - 1));
-
-        HttpEntity<DiseaseUpdateRequest> diseaseUpdateRequestHttpEntity = new HttpEntity<>(
-                DiseaseUpdateRequest.builder()
-                        .latinName(disease2.getLatinName())
-                        .version(version)
-                        .build(), headers);
-
-        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(DiseaseConstants.GET_ALL_DISEASES
-                        + "/" + diseaseName),
-                HttpMethod.PUT, diseaseUpdateRequestHttpEntity, String.class);
-
-        ExceptionResponse exceptionResponse = gson.fromJson(response.getBody(), ExceptionResponse.class);
-
-        assertAll(
-                () -> assertNotNull(response),
-                () -> assertEquals(HttpStatus.CONFLICT, response.getStatusCode()),
-                () -> assertTrue(exceptionResponse.getMessage().contains("disease.name"))
-        );
-    }
-
-    @Order(6)
-    @Test
     void shouldReturn404WhenDeleteDiseaseNotFound() {
 
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort(DiseaseConstants.GET_ALL_DISEASES
@@ -239,7 +203,7 @@ class DiseaseIntegrationExceptionTest extends AbstractTestContainer {
         );
     }
 
-    @Order(7)
+    @Order(6)
     @Test
     void deleteDisease() {
         Disease disease = diseaseService.getAllDiseases().get(2);

@@ -127,6 +127,7 @@ class DiseaseIntegrationTest extends AbstractTestContainer {
         HttpEntity<DiseaseCreateRequest> diseaseCreateRequestHttpEntity = new HttpEntity<>(
                 DiseaseCreateRequest.builder()
                         .latinName("DiseaseName")
+                        .polishName("PolishName")
                         .cathererRequired(true)
                         .surgeryRequired(false)
                         .build(), getHttpHeaders()
@@ -162,7 +163,8 @@ class DiseaseIntegrationTest extends AbstractTestContainer {
 
         HttpEntity<DiseaseUpdateRequest> diseaseUpdateRequestHttpEntity = new HttpEntity<>(
                 DiseaseUpdateRequest.builder()
-                        .latinName("UpdatedName")
+                        .latinName(diseaseName)
+                        .cathererRequired(false)
                         .version(version)
                         .build(), headers);
 
@@ -173,8 +175,8 @@ class DiseaseIntegrationTest extends AbstractTestContainer {
         assertAll(
                 () -> assertNotNull(response),
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
-                () -> assertNotNull(diseaseService.getDiseaseByName("UpdatedName")),
-                () -> assertTrue(diseaseService.getDiseaseByName("UpdatedName").getModificationDate()
+                () -> assertNotNull(diseaseService.getDiseaseByName(diseaseName)),
+                () -> assertTrue(diseaseService.getDiseaseByName(diseaseName).getModificationDate()
                         .after(getTimestampToCompare()))
         );
     }
@@ -185,6 +187,7 @@ class DiseaseIntegrationTest extends AbstractTestContainer {
         HttpEntity<DiseaseCreateRequest> diseaseCreateRequestHttpEntity = new HttpEntity<>(
                 DiseaseCreateRequest.builder()
                         .latinName("DiseaseName2")
+                        .polishName("PolishName2")
                         .cathererRequired(true)
                         .surgeryRequired(false)
                         .build(), getHttpHeaders()

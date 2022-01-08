@@ -94,7 +94,7 @@ public class DiseaseService {
                     .filter(p -> p.getDiseases().contains(diseaseFromDB) && p.getQueue().getDate().isAfter(LocalDate.now()))
                     .map(Patient::getQueue).distinct()
                     .collect(Collectors.toList());
-            queuesToRefresh.forEach(queueService::refreshQueueAfterDiseaseUpdate);
+            queuesToRefresh.forEach(queueService::refreshQueueAfterUpdate);
         }
     }
 

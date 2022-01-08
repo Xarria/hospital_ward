@@ -237,7 +237,7 @@ class PatientIntegrationExceptionTest {
                         .surname("Nowak")
                         .age("7Y")
                         .covidStatus("VACCINATED")
-                        .diseases(List.of("Katar"))
+                        .diseases(List.of("Y"))
                         .admissionDate(LocalDate.of(2022, 3, 17))
                         .mainDoctor("jan.kowalski")
                         .pesel("45565555555")
@@ -247,14 +247,14 @@ class PatientIntegrationExceptionTest {
                         .urgent(true).build(), getHttpHeaders()
         );
 
-        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients"),
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/urgent"),
                 HttpMethod.POST, patientCreateRequestHttpEntity, String.class);
 
         ExceptionResponse exceptionResponse = gson.fromJson(response.getBody(), ExceptionResponse.class);
 
         assertAll(
                 () -> assertNotNull(response),
-                () -> assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode()),
+                () -> assertEquals(HttpStatus.CONFLICT, response.getStatusCode()),
                 () -> assertEquals(ErrorKey.NO_PERMISSION_TO_CREATE_URGENT_PATIENT, exceptionResponse.getMessage()),
                 () -> assertThrows(NotFoundException.class,
                         () -> patientService.getPatientById(lastPatientId + 1)),
@@ -275,7 +275,7 @@ class PatientIntegrationExceptionTest {
                         .surname("Nowak")
                         .age("7Y")
                         .covidStatus("VACCINATED")
-                        .diseases(List.of("Katar"))
+                        .diseases(List.of("Y"))
                         .admissionDate(LocalDate.of(2022, 3, 15))
                         .mainDoctor("jan.kowalski")
                         .pesel("45565555555")
@@ -314,7 +314,7 @@ class PatientIntegrationExceptionTest {
                         .surname("Nowak")
                         .age("7Y")
                         .covidStatus("VACCINATED")
-                        .diseases(List.of("Katar"))
+                        .diseases(List.of("Y"))
                         .admissionDate(LocalDate.of(2022, 3, 15))
                         .mainDoctor("jan.kowalski")
                         .pesel("45565555555")
@@ -352,7 +352,7 @@ class PatientIntegrationExceptionTest {
                         .surname("Nowak")
                         .age("7Y")
                         .covidStatus("VACCINATED")
-                        .diseases(List.of("Katar"))
+                        .diseases(List.of("Y"))
                         .admissionDate(LocalDate.of(2022, 3, 15))
                         .mainDoctor("jan.kowalski")
                         .pesel("45565555555")
@@ -381,7 +381,7 @@ class PatientIntegrationExceptionTest {
     @Test
     void shouldThrowExceptionWhenConfirmPatientAlreadyConfirmedTwice() {
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/confirm/1"),
-                HttpMethod.PUT, getJwtHttpEntity(), String.class);
+                HttpMethod.GET, getJwtHttpEntity(), String.class);
 
         ExceptionResponse exceptionResponse = gson.fromJson(response.getBody(), ExceptionResponse.class);
 
@@ -398,7 +398,7 @@ class PatientIntegrationExceptionTest {
         patientService.changePatientUrgency(9L, false, "sylwester.garda");
 
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/confirm/9"),
-                HttpMethod.PUT, getJwtHttpEntity(), String.class);
+                HttpMethod.GET, getJwtHttpEntity(), String.class);
 
         patientService.changePatientUrgency(9L, true, "sylwester.garda");
 
@@ -417,11 +417,8 @@ class PatientIntegrationExceptionTest {
 
         LocalDate oldDate = patientService.getPatientById(11L).getAdmissionDate();
 
-        HttpEntity<LocalDate> localDateHttpEntity = new HttpEntity<>(LocalDate.of(2022, 5, 7),
-                getHttpHeaders());
-
-        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/date/11"),
-                HttpMethod.PUT, localDateHttpEntity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/date/11/07-05-2022"),
+                HttpMethod.GET, getJwtHttpEntity(), String.class);
 
 
         ExceptionResponse exceptionResponse = gson.fromJson(response.getBody(), ExceptionResponse.class);
@@ -440,11 +437,8 @@ class PatientIntegrationExceptionTest {
 
         LocalDate oldDate = patientService.getPatientById(23L).getAdmissionDate();
 
-        HttpEntity<LocalDate> localDateHttpEntity = new HttpEntity<>(LocalDate.of(2022, 5, 3),
-                getHttpHeaders());
-
-        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/date/23"),
-                HttpMethod.PUT, localDateHttpEntity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/date/23/03-05-2022"),
+                HttpMethod.GET, getJwtHttpEntity(), String.class);
 
 
         ExceptionResponse exceptionResponse = gson.fromJson(response.getBody(), ExceptionResponse.class);
@@ -463,11 +457,8 @@ class PatientIntegrationExceptionTest {
 
         LocalDate oldDate = patientService.getPatientById(22L).getAdmissionDate();
 
-        HttpEntity<LocalDate> localDateHttpEntity = new HttpEntity<>(LocalDate.of(2022, 3, 15),
-                getHttpHeaders());
-
-        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/date/22"),
-                HttpMethod.PUT, localDateHttpEntity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/date/22/15-03-2022"),
+                HttpMethod.GET, getJwtHttpEntity(), String.class);
 
 
         ExceptionResponse exceptionResponse = gson.fromJson(response.getBody(), ExceptionResponse.class);
@@ -486,10 +477,8 @@ class PatientIntegrationExceptionTest {
     void shouldThrowExceptionWhenChangeUrgencyPatientAdmitted() {
         boolean oldUrgency = patientService.getPatientById(23L).isUrgent();
 
-        HttpEntity<Boolean> httpEntity= new HttpEntity<>(!oldUrgency, getHttpHeaders());
-
-        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/urgency/23"),
-                HttpMethod.PUT, httpEntity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/urgency/23/" + !oldUrgency),
+                HttpMethod.GET, getJwtHttpEntity(), String.class);
 
 
         ExceptionResponse exceptionResponse = gson.fromJson(response.getBody(), ExceptionResponse.class);
