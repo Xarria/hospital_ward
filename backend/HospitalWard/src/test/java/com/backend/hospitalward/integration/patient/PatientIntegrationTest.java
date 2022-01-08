@@ -14,8 +14,6 @@ import com.backend.hospitalward.service.PatientService;
 import com.backend.hospitalward.service.QueueService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import liquibase.pro.packaged.T;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -25,8 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -47,7 +43,6 @@ class PatientIntegrationTest extends AbstractTestContainer {
     TestRestTemplate restTemplate;
     String token;
     ObjectMapper objectMapper;
-    Gson gson;
 
     @BeforeEach
     public void authenticate() {
@@ -63,7 +58,6 @@ class PatientIntegrationTest extends AbstractTestContainer {
     @BeforeAll
     public void setUpJsonMapper() {
         objectMapper = new ObjectMapper();
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
     }
 
     @NotNull
@@ -79,21 +73,15 @@ class PatientIntegrationTest extends AbstractTestContainer {
         return new HttpEntity<>(null, getHttpHeaders());
     }
 
-    @BeforeAll
-    public void setUpGson() {
-        GsonBuilder builder = new GsonBuilder();
-        builder.setDateFormat("yyyy-MM-dd");
-        gson = builder.create();
-    }
 
     @Order(1)
     @Test
-    void getPatientById() {
+    void getPatientById() throws JsonProcessingException {
         Patient patient = patientService.getPatientById(20L);
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/20")
                 , HttpMethod.GET, getJwtHttpEntity(), String.class);
 
-        PatientDetailsResponse patientDetailsResponse = gson.fromJson(response.getBody(), PatientDetailsResponse.class);
+        PatientDetailsResponse patientDetailsResponse = objectMapper.readValue(response.getBody(), PatientDetailsResponse.class);
 
         assertAll(
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
