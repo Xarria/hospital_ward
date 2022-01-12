@@ -45,6 +45,7 @@
     "modifyDiseaseSuccess" : "Disease modified successfully",
     "modifyDisease404": "Disease does not exist",
     "modifyDisease400": "Disease was modified during modification",
+    "patientModify400": "W trakcie operacji zmodyfikowano pacjenta",
     "patientCreateSuccess": "Patient created successfully",
     "patientCreateReferralError": "Referral number or date is required",
     "patientCreateQueueLocked": "Admission date is already full",

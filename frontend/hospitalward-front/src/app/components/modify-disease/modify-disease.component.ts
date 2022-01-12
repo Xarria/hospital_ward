@@ -32,7 +32,13 @@ export class ModifyDiseaseComponent implements OnInit {
     this.diseaseService.getDisease(this.latinName).subscribe(
       (response) => {
         this.diseaseService.readDiseaseAndEtagFromResponse(response);
-      }
+      }, (() => {
+        this.dialogRef.close();
+        this.snackBar.open(this.translate.instant('snackbar.diseaseNotFound'), '', {
+          duration: 2500,
+          verticalPosition: 'top'
+        });
+      })
     );
   }
 
@@ -57,6 +63,7 @@ export class ModifyDiseaseComponent implements OnInit {
               duration: 2500,
               verticalPosition: 'top'
             });
+            this.dialogRef.close();
             return;
           }
           if (error.status === 400) {
@@ -64,14 +71,15 @@ export class ModifyDiseaseComponent implements OnInit {
               duration: 2500,
               verticalPosition: 'top'
             });
+            this.getDisease();
             return;
           } else {
             this.snackBar.open(this.translate.instant('snackbar.defaultError'), '', {
               duration: 2500,
               verticalPosition: 'top'
             });
+            this.dialogRef.close();
           }
-          this.getDisease();
         }
       );
   }

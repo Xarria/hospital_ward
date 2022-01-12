@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {PatientService} from '../../services/patient-service';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
 import {TranslateService} from '@ngx-translate/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {ModifyAdmissionDateComponent} from '../modify-admission-date/modify-admission-date.component';
@@ -21,7 +21,8 @@ export class PatientDetailsComponent implements OnInit {
               private translate: TranslateService,
               private snackBar: MatSnackBar,
               private dialog: MatDialog,
-              public identityService: IdentityService) {
+              public identityService: IdentityService,
+              public dialogRef: MatDialogRef<PatientDetailsComponent>) {
     this.patientId = this.data;
     this.getPatient();
   }
@@ -33,7 +34,13 @@ export class PatientDetailsComponent implements OnInit {
     this.patientService.getPatient(this.patientId).subscribe(
       (response) => {
         this.patientService.readPatientAndEtagFromResponse(response);
-      }
+      }, (() => {
+        this.dialogRef.close();
+        this.snackBar.open(this.translate.instant('snackbar.patientNotFound'), '', {
+          duration: 2500,
+          verticalPosition: 'top'
+        });
+      })
     );
   }
 

@@ -264,6 +264,8 @@ public class PatientService {
 
     private void setPatientFields(Patient patient, List<String> diseases, String mainDoctor, String covidStatus,
                                   Patient patientFromDB, String requestedBy) {
+
+        patientFromDB.setVersion(patient.getVersion());
         if (patient.getPesel() != null && !patient.getPesel().isEmpty()) {
             patientFromDB.setPesel(patient.getPesel());
         }

@@ -45,6 +45,7 @@
     "modifyDiseaseSuccess" : "Pomyślnie zmodyfikowano chorobę",
     "modifyDisease404": "Choroba nie istnieje",
     "modifyDisease400": "W trakcie operacji zmodyfikowano chorobę",
+    "patientModify400": "W trakcie operacji zmodyfikowano pacjenta",
     "patientCreateSuccess": "Pomyślnie utworzono pacjenta",
     "patientCreateReferralError": "Nr lub data skierowania wymagane",
     "patientCreateQueueLocked": "Kolejka na dany dzień jest już pełna",

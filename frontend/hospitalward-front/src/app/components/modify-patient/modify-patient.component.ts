@@ -79,20 +79,31 @@ export class ModifyPatientComponent implements OnInit {
               duration: 2500,
               verticalPosition: 'top'
             });
+            this.dialogRef.close();
+            return;
+          }
+          if (error.status === 400) {
+            this.snackBar.open(this.translate.instant('snackbar.patientModify400'), '', {
+              duration: 2500,
+              verticalPosition: 'top'
+            });
+            this.dialogRef.close();
+            return;
           }
           if (error.error.message === 'error.disease_not_found') {
-              this.snackBar.open(this.translate.instant('snackbar.diseaseNotFound'), '', {
-                duration: 2500,
-                verticalPosition: 'top'
-              });
-              return;
-            } else {
+            this.snackBar.open(this.translate.instant('snackbar.diseaseNotFound'), '', {
+              duration: 2500,
+              verticalPosition: 'top'
+            });
+            this.dialogRef.close();
+            return;
+          } else {
             this.snackBar.open(this.translate.instant('snackbar.defaultError'), '', {
               duration: 2500,
               verticalPosition: 'top'
             });
+            this.dialogRef.close();
           }
-          this.getPatient();
         }
       );
   }
