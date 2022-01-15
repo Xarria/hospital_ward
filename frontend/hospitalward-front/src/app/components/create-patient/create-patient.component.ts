@@ -48,6 +48,9 @@ export class CreatePatientComponent implements OnInit {
 
   myFilter = (d: Date | null): boolean => {
     const day = (d || new Date()).getDay();
+    if (this.patientService.patientCreate.urgent) {
+      return day !== 0 && day !== 6 && day !== 5;
+    }
     return day !== 0 && day !== 6 && day !== 5 && !this.fullDates.includes(d?.getTime() as number);
   }
 

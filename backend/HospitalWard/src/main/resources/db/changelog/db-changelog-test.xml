@@ -12,6 +12,7 @@
     <include file="/create/createQueueTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createPatientStatusTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createPatientTable.xml" relativeToChangelogFile="true"/>
+    <include file="/create/createPatientPositionTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createMedicalStaffTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createSpecializationTable.xml" relativeToChangelogFile="true"/>
     <include file="/create/createMedicalStaffSpecializationTable.xml" relativeToChangelogFile="true"/>
@@ -28,6 +29,7 @@
     <include file="/load/loadMedicalStaffTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadQueueTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadPatientTable.xml" relativeToChangelogFile="true"/>
+    <include file="/load/loadPatientPositionTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadPersonalDataTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadSpecializationTable.xml" relativeToChangelogFile="true"/>
     <include file="/load/loadMedicalStaffSpecializationTable.xml" relativeToChangelogFile="true"/>

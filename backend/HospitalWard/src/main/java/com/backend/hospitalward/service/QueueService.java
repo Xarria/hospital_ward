@@ -145,30 +145,26 @@ public class QueueService {
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
 
         Patient lowestPriorityPatient = queue.getConfirmedPatients().stream()
+                .filter(p -> p.getId() != urgentPatient.getId())
                 .max(Comparator.comparing(Patient::getPositionInQueue))
                 .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
 
         List<Patient> queuePatients = new LinkedList<>(queue.getPatients());
         queuePatients.remove(lowestPriorityPatient);
-        queuePatients.add(urgentPatient);
         queue.setPatients(queuePatients);
-
-        urgentPatient.setPositionInQueue(lowestPriorityPatient.getPositionInQueue());
-        urgentPatient.setQueue(queue);
-        urgentPatient.setStatus(patientStatusRepository.findPatientStatusByName(PatientStatusName.CONFIRMED_TWICE.name())
-                .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_STATUS_NOT_FOUND)));
 
         lowestPriorityPatient.setStatus(patientStatusRepository.findPatientStatusByName(PatientStatusName.WAITING.name())
                 .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_STATUS_NOT_FOUND)));
 
         transferPatientToNextUnlockedQueue(lowestPriorityPatient, date);
 
+        refreshQueue(queue);
         queueRepository.save(queue);
     }
 
     public void transferPatientToNextUnlockedQueue(Patient patient, LocalDate previousDate) {
-        List<Queue> unlockedQueues = queueRepository.findQueuesByLockedFalseAndDateAfter(LocalDate.now());
-        List<Queue> lockedQueues = queueRepository.findQueuesByLockedTrueAndDateAfter(LocalDate.now());
+        List<Queue> unlockedQueues = queueRepository.findQueuesByLockedFalseAndDateAfter(previousDate);
+        List<Queue> lockedQueues = queueRepository.findQueuesByLockedTrueAndDateAfter(previousDate);
         List<LocalDate> lockedQueuesDates = lockedQueues.stream()
                 .map(Queue::getDate)
                 .collect(Collectors.toList());
@@ -215,8 +211,8 @@ public class QueueService {
     }
 
     public void transferPatientsForNextUnlockedDateAndClearOldQueues(LocalDate previousDate, List<Patient> patients) {
-        List<Queue> unlockedQueues = queueRepository.findQueuesByLockedFalseAndDateAfter(LocalDate.now());
-        List<Queue> lockedQueues = queueRepository.findQueuesByLockedTrueAndDateAfter(LocalDate.now());
+        List<Queue> unlockedQueues = queueRepository.findQueuesByLockedFalseAndDateAfter(previousDate);
+        List<Queue> lockedQueues = queueRepository.findQueuesByLockedTrueAndDateAfter(previousDate);
         List<LocalDate> lockedQueuesDates = lockedQueues.stream()
                 .map(Queue::getDate)
                 .collect(Collectors.toList());

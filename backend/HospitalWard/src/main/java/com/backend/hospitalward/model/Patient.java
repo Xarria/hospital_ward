@@ -20,7 +20,10 @@ import java.util.List;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@SecondaryTable(name = "Personal_data")
+@SecondaryTables({
+        @SecondaryTable(name="Personal_data"),
+        @SecondaryTable(name="Patient_position")
+})
 public class Patient extends BaseEntity {
 
     @NotBlank
@@ -55,10 +58,10 @@ public class Patient extends BaseEntity {
     //queue
 
     @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name="queue")
+    @JoinColumn(name = "queue", nullable = false, table = "Patient_position")
     Queue queue;
 
-    @Column(name = "position")
+    @Column(name = "position", table = "Patient_position")
     Integer positionInQueue;
 
     //

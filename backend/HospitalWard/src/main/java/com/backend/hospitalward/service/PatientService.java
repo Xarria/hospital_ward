@@ -151,10 +151,9 @@ public class PatientService {
             }
 
             patient.setAdmissionDate(queueDate);
+            queueService.changeQueueLockStatusIfNecessary(queueDate);
         }
         patientRepository.save(patient);
-
-        queueService.changeQueueLockStatusIfNecessary(queueDate);
     }
 
     public void changePatientAdmissionDate(Long id, LocalDate date, String modifiedBy) {
