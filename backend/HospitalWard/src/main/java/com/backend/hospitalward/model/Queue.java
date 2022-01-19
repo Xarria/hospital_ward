@@ -23,12 +23,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Queue {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private long id;
+public class Queue extends BaseEntity {
 
     @Future
     @NotNull

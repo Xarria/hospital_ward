@@ -10,6 +10,9 @@
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true"/>
             </column>
+            <column name="version" type="BIGINT" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
             <column name="date" type="date">
                 <constraints nullable="true"/>
             </column>

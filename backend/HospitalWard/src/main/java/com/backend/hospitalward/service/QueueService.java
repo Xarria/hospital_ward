@@ -7,6 +7,7 @@ import com.backend.hospitalward.exception.NotFoundException;
 import com.backend.hospitalward.model.Patient;
 import com.backend.hospitalward.model.Queue;
 import com.backend.hospitalward.model.common.PatientStatusName;
+import com.backend.hospitalward.repository.BaseRepository;
 import com.backend.hospitalward.repository.PatientRepository;
 import com.backend.hospitalward.repository.PatientStatusRepository;
 import com.backend.hospitalward.repository.QueueRepository;
@@ -41,6 +42,8 @@ public class QueueService {
     QueueRepository queueRepository;
 
     PatientStatusRepository patientStatusRepository;
+
+    BaseRepository baseRepository;
 
 
     public List<Queue> getAllCurrentQueues() {
@@ -113,7 +116,7 @@ public class QueueService {
         patientRepository.save(patient);
 
         refreshQueue(queue);
-
+        baseRepository.detach(queue);
         queueRepository.save(queue);
     }
 
@@ -137,6 +140,8 @@ public class QueueService {
         refreshQueue(newQueue);
 
         changeQueueLockStatusIfNecessary(oldQueue.getDate());
+        baseRepository.detach(oldQueue);
+        baseRepository.detach(newQueue);
         queueRepository.save(newQueue);
     }
 
@@ -159,6 +164,7 @@ public class QueueService {
         transferPatientToNextUnlockedQueue(lowestPriorityPatient, date);
 
         refreshQueue(queue);
+        baseRepository.detach(queue);
         queueRepository.save(queue);
     }
 
@@ -182,6 +188,7 @@ public class QueueService {
                 newQueue.setPatients(List.of(patient));
             }
             refreshQueue(newQueue);
+            baseRepository.detach(newQueue);
             queueRepository.save(newQueue);
             return;
         }
@@ -199,6 +206,7 @@ public class QueueService {
                 createQueueForDateIfNotExists(date);
                 Queue createdQueue = queueRepository.findQueueByDate(date).orElseThrow(()
                         -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
+                baseRepository.detach(createdQueue);
                 patient.setQueue(createdQueue);
                 createdQueue.setPatients(List.of(patient));
                 refreshQueue(createdQueue);
@@ -250,7 +258,9 @@ public class QueueService {
 
         refreshQueue(newQueue);
 
+        baseRepository.detach(newQueue);
         queueRepository.save(newQueue);
+        oldQueues.forEach(baseRepository::detach);
         oldQueues.forEach(queueRepository::save);
 
     }
@@ -293,12 +303,13 @@ public class QueueService {
         else {
             queue.setLocked(false);
         }
+        baseRepository.detach(queue);
         queueRepository.save(queue);
     }
 
     private void transferPatientsFromLockedQueue(Queue lockedQueue) {
-        List<Queue> unlockedQueues = queueRepository.findQueuesByLockedFalseAndDateAfter(LocalDate.now());
-        List<Queue> lockedQueues = queueRepository.findQueuesByLockedTrueAndDateAfter(LocalDate.now());
+        List<Queue> unlockedQueues = queueRepository.findQueuesByLockedFalseAndDateAfter(lockedQueue.getDate());
+        List<Queue> lockedQueues = queueRepository.findQueuesByLockedTrueAndDateAfter(lockedQueue.getDate());
         List<LocalDate> lockedQueuesDates = lockedQueues.stream()
                 .map(Queue::getDate)
                 .collect(Collectors.toList());
@@ -328,6 +339,7 @@ public class QueueService {
         lockedQueuePatients.removeAll(lockedQueue.getWaitingPatients());
         lockedQueue.setPatients(lockedQueuePatients);
         refreshQueue(newQueue);
+        baseRepository.detach(newQueue);
         queueRepository.save(newQueue);
     }
 
@@ -341,7 +353,7 @@ public class QueueService {
         queue.setPatients(patients);
 
         refreshQueue(queue);
-
+        baseRepository.detach(queue);
         queueRepository.save(queue);
     }
 
@@ -359,6 +371,7 @@ public class QueueService {
 
     public void refreshQueueAfterUpdate(Queue queue) {
         refreshQueue(queue);
+        baseRepository.detach(queue);
         queueRepository.save(queue);
     }
 
@@ -422,6 +435,7 @@ public class QueueService {
                     -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
 
             patient.setPositionInQueue(i);
+            baseRepository.detach(patient);
             patientRepository.save(patient);
         }
     }

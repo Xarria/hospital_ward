@@ -149,10 +149,12 @@ public class PatientService {
                     throw new ConflictException(ErrorKey.QUEUE_LOCKED);
                 }
             }
-
+            patient = patientRepository.findPatientById(id).orElseThrow(()
+                    -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
             patient.setAdmissionDate(queueDate);
             queueService.changeQueueLockStatusIfNecessary(queueDate);
         }
+        baseRepository.detach(patient);
         patientRepository.save(patient);
     }
 
@@ -183,8 +185,12 @@ public class PatientService {
 
         queueService.switchPatientQueue(patient, date);
 
+        patient = patientRepository.findPatientById(id).orElseThrow(()
+                -> new NotFoundException(ErrorKey.PATIENT_NOT_FOUND));
+
         patient.setAdmissionDate(date);
 
+        baseRepository.detach(patient);
         patientRepository.save(patient);
     }
 
@@ -203,6 +209,7 @@ public class PatientService {
                 -> new NotFoundException(ErrorKey.ACCOUNT_NOT_FOUND)));
         patient.setPatientType(patientTypeRepository.findPatientTypeByName(patient.findPatientType()).orElseThrow(()
                 -> new NotFoundException(ErrorKey.PATIENT_TYPE_NOT_FOUND)));
+        baseRepository.detach(patient);
         patientRepository.save(patient);
 
         queueService.refreshQueueAfterUpdate(patient.getQueue());
