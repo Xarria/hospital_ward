@@ -116,7 +116,6 @@ public class QueueService {
         patientRepository.save(patient);
 
         refreshQueue(queue);
-        baseRepository.detach(queue);
         queueRepository.save(queue);
     }
 
@@ -140,8 +139,6 @@ public class QueueService {
         refreshQueue(newQueue);
 
         changeQueueLockStatusIfNecessary(oldQueue.getDate());
-        baseRepository.detach(oldQueue);
-        baseRepository.detach(newQueue);
         queueRepository.save(newQueue);
     }
 
@@ -164,7 +161,6 @@ public class QueueService {
         transferPatientToNextUnlockedQueue(lowestPriorityPatient, date);
 
         refreshQueue(queue);
-        baseRepository.detach(queue);
         queueRepository.save(queue);
     }
 
@@ -179,6 +175,7 @@ public class QueueService {
             Queue newQueue = unlockedQueues.stream()
                     .min(Comparator.comparing(Queue::getDate))
                     .get();
+            baseRepository.pessimisticLock(newQueue);
             patient.setQueue(newQueue);
             if (newQueue.getPatients() != null && !newQueue.getPatients().isEmpty()) {
                 List<Patient> newQueuePatients = new LinkedList<>(newQueue.getPatients());
@@ -188,7 +185,6 @@ public class QueueService {
                 newQueue.setPatients(List.of(patient));
             }
             refreshQueue(newQueue);
-            baseRepository.detach(newQueue);
             queueRepository.save(newQueue);
             return;
         }
@@ -206,7 +202,6 @@ public class QueueService {
                 createQueueForDateIfNotExists(date);
                 Queue createdQueue = queueRepository.findQueueByDate(date).orElseThrow(()
                         -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
-                baseRepository.detach(createdQueue);
                 patient.setQueue(createdQueue);
                 createdQueue.setPatients(List.of(patient));
                 refreshQueue(createdQueue);
@@ -216,53 +211,6 @@ public class QueueService {
                 date = date.plusDays(1);
             }
         }
-    }
-
-    public void transferPatientsForNextUnlockedDateAndClearOldQueues(LocalDate previousDate, List<Patient> patients) {
-        List<Queue> unlockedQueues = queueRepository.findQueuesByLockedFalseAndDateAfter(previousDate);
-        List<Queue> lockedQueues = queueRepository.findQueuesByLockedTrueAndDateAfter(previousDate);
-        List<LocalDate> lockedQueuesDates = lockedQueues.stream()
-                .map(Queue::getDate)
-                .collect(Collectors.toList());
-
-        if (unlockedQueues.size() > 1) {
-            unlockedQueues = unlockedQueues.stream()
-                    .sorted(Comparator.comparing(Queue::getDate))
-                    .collect(Collectors.toList());
-        }
-
-        Queue newQueue = findNewQueue(previousDate, unlockedQueues, lockedQueuesDates);
-
-        List<Queue> oldQueues = patients.stream().map(Patient::getQueue).distinct().collect(Collectors.toList());
-
-        patients.forEach(patient -> patient.setQueue(newQueue));
-        patients.forEach(patient -> patient.setStatus(patientStatusRepository
-                .findPatientStatusByName(PatientStatusName.WAITING.name())
-                .orElseThrow(() -> new NotFoundException(ErrorKey.PATIENT_STATUS_NOT_FOUND))));
-
-        for (Queue oldQueue: oldQueues) {
-            List<Patient> oldQueuePatients = new LinkedList<>(oldQueue.getPatients());
-            oldQueuePatients.removeAll(patients);
-            oldQueue.setPatients(oldQueuePatients);
-        }
-
-        oldQueues.forEach(queue -> queue.setLocked(true));
-
-        if (newQueue.getPatients() != null && !newQueue.getPatients().isEmpty()) {
-            List<Patient> newQueuePatients = new LinkedList<>(newQueue.getPatients());
-            newQueuePatients.addAll(patients);
-            newQueue.setPatients(newQueuePatients);
-        } else {
-            newQueue.setPatients(patients);
-        }
-
-        refreshQueue(newQueue);
-
-        baseRepository.detach(newQueue);
-        queueRepository.save(newQueue);
-        oldQueues.forEach(baseRepository::detach);
-        oldQueues.forEach(queueRepository::save);
-
     }
 
     private Queue findNewQueue(LocalDate previousDate, List<Queue> unlockedQueues, List<LocalDate> lockedQueuesDates) {
@@ -294,6 +242,7 @@ public class QueueService {
     public void changeQueueLockStatusIfNecessary(LocalDate date) {
         Queue queue = queueRepository.findQueueByDate(date).orElseThrow(()
                 -> new NotFoundException(ErrorKey.QUEUE_NOT_FOUND));
+
         if (queue.getConfirmedPatients().size() >= 8) {
             queue.setLocked(true);
             if (queue.getWaitingPatients() != null && !queue.getWaitingPatients().isEmpty()) {
@@ -303,7 +252,6 @@ public class QueueService {
         else {
             queue.setLocked(false);
         }
-        baseRepository.detach(queue);
         queueRepository.save(queue);
     }
 
@@ -339,7 +287,6 @@ public class QueueService {
         lockedQueuePatients.removeAll(lockedQueue.getWaitingPatients());
         lockedQueue.setPatients(lockedQueuePatients);
         refreshQueue(newQueue);
-        baseRepository.detach(newQueue);
         queueRepository.save(newQueue);
     }
 
@@ -353,7 +300,6 @@ public class QueueService {
         queue.setPatients(patients);
 
         refreshQueue(queue);
-        baseRepository.detach(queue);
         queueRepository.save(queue);
     }
 
@@ -370,8 +316,8 @@ public class QueueService {
     }
 
     public void refreshQueueAfterUpdate(Queue queue) {
+        baseRepository.pessimisticLock(queue);
         refreshQueue(queue);
-        baseRepository.detach(queue);
         queueRepository.save(queue);
     }
 
@@ -398,7 +344,12 @@ public class QueueService {
 
         List<Patient> sortedUrgentPatients = patients.stream()
                 .filter(Patient::isUrgent)
-                .sorted(Comparator.comparing(Patient::getAdmissionDate))
+                .sorted((p1, p2) -> {
+                    if (p1.getAdmissionDate().compareTo(p2.getAdmissionDate()) == 0) {
+                        return p1.getCreationDate().compareTo(p2.getCreationDate());
+                    } else {
+                        return p1.getAdmissionDate().compareTo(p2.getAdmissionDate());
+                    } })
                 .collect(Collectors.toCollection(LinkedList::new));
 
         patients.removeAll(sortedUrgentPatients);
@@ -406,13 +357,23 @@ public class QueueService {
         List<Patient> sortedCathererOrSurgeryPatients = patients.stream()
                 .filter(patient -> patient.getDiseases().stream()
                         .anyMatch(disease -> disease.isCathererRequired() || disease.isSurgeryRequired()))
-                .sorted(Comparator.comparing(Patient::getAdmissionDate))
+                .sorted((p1, p2) -> {
+                    if (p1.getAdmissionDate().compareTo(p2.getAdmissionDate()) == 0) {
+                        return p1.getCreationDate().compareTo(p2.getCreationDate());
+                    } else {
+                        return p1.getAdmissionDate().compareTo(p2.getAdmissionDate());
+                    } })
                 .collect(Collectors.toCollection(LinkedList::new));
 
         patients.removeAll(sortedCathererOrSurgeryPatients);
 
         List<Patient> otherPatients = patients.stream()
-                .sorted(Comparator.comparing(Patient::getAdmissionDate))
+                .sorted((p1, p2) -> {
+                    if (p1.getAdmissionDate().compareTo(p2.getAdmissionDate()) == 0) {
+                        return p1.getCreationDate().compareTo(p2.getCreationDate());
+                    } else {
+                        return p1.getAdmissionDate().compareTo(p2.getAdmissionDate());
+                    } })
                 .collect(Collectors.toCollection(LinkedList::new));
 
         List<Patient> allSortedPatients = new LinkedList<>();
