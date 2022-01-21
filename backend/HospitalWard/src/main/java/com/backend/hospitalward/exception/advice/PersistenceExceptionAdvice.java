@@ -6,6 +6,7 @@ import org.hibernate.exception.JDBCConnectionException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,6 +25,12 @@ public class PersistenceExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
     public ExceptionResponse optimisticLockException(Exception e) {
+        return ExceptionResponse.singleException(e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(PessimisticLockingFailureException.class)
+    public ExceptionResponse pessimisticLockException(Exception e) {
         return ExceptionResponse.singleException(e.getMessage());
     }
 
