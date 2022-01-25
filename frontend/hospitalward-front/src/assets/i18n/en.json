@@ -87,6 +87,8 @@
   "patient": {
     "position": "No.",
     "type": "Type",
+    "yes": "Yes",
+    "no": "No",
     "patientType": {
       "girl": "Female",
       "boy": "Male",

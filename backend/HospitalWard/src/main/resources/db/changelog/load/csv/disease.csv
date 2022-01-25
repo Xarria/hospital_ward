@@ -1,11 +1,11 @@
 ﻿id,polish_name,latin_name,catherer_required,surgery_required
-1,Grypa,X,TRUE,FALSE
-2,Katar,Y,TRUE,TRUE
-3,Kaszel,Z,FALSE,FALSE
-4,Nudności,A,FALSE,FALSE
-5,Arytmia serca,B,TRUE,FALSE
-6,Nadciśnienie,C,TRUE,FALSE
-7,Zapalenie płuc,D,FALSE,FALSE
-8,Niewydolność nerek,E,TRUE,TRUE
-9,Hemofilia,F,FALSE,FALSE
-10,Migotanie przedsionków,G,TRUE,TRUE
+1,Przetrwały przewód tętniczy (Botalla),Patent ductus arteriosus,TRUE,FALSE
+2,Całkowity blok serca,Dissociatio atrioventricularis,FALSE,TRUE
+3,Ubytek przegrody przedsionkowej,Ostium secundum,TRUE,FALSE
+4,Ubytek przegrody międzykomorowej, Defectus septi interventricularis,FALSE,TRUE
+5,Zespół niedorozwoju lewego serca,HLHS,TRUE,TRUE
+6,Zaburzenia rytmu serca,Fibrillatio atriorum,FALSE,FALSE
+7,Omdlenia,Deficiens,FALSE,FALSE
+8,Zespół Fallota,Tetralogia Fallot,TRUE,TRUE
+9,Koarktacja aorty,Coarctatio aortae,TRUE,TRUE
+10,Kawasaki,Kawasaki,FALSE,FALSE

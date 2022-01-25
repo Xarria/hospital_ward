@@ -16,6 +16,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
-@Retryable(value = {PersistenceException.class, HibernateException.class, JDBCException.class},
+@Retryable(value = {PersistenceException.class, HibernateException.class, JDBCException.class, PessimisticLockingFailureException.class},
         exclude = ConstraintViolationException.class, backoff = @Backoff(delay = 1000))
 @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, timeout = 3)
 public class QueueService {
