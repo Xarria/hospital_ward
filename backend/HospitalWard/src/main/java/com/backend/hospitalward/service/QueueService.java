@@ -345,12 +345,7 @@ public class QueueService {
 
         List<Patient> sortedUrgentPatients = patients.stream()
                 .filter(Patient::isUrgent)
-                .sorted((p1, p2) -> {
-                    if (p1.getAdmissionDate().compareTo(p2.getAdmissionDate()) == 0) {
-                        return p1.getCreationDate().compareTo(p2.getCreationDate());
-                    } else {
-                        return p1.getAdmissionDate().compareTo(p2.getAdmissionDate());
-                    } })
+                .sorted(this::compareDates)
                 .collect(Collectors.toCollection(LinkedList::new));
 
         patients.removeAll(sortedUrgentPatients);
@@ -358,23 +353,13 @@ public class QueueService {
         List<Patient> sortedCathererOrSurgeryPatients = patients.stream()
                 .filter(patient -> patient.getDiseases().stream()
                         .anyMatch(disease -> disease.isCathererRequired() || disease.isSurgeryRequired()))
-                .sorted((p1, p2) -> {
-                    if (p1.getAdmissionDate().compareTo(p2.getAdmissionDate()) == 0) {
-                        return p1.getCreationDate().compareTo(p2.getCreationDate());
-                    } else {
-                        return p1.getAdmissionDate().compareTo(p2.getAdmissionDate());
-                    } })
+                .sorted(this::compareDates)
                 .collect(Collectors.toCollection(LinkedList::new));
 
         patients.removeAll(sortedCathererOrSurgeryPatients);
 
         List<Patient> otherPatients = patients.stream()
-                .sorted((p1, p2) -> {
-                    if (p1.getAdmissionDate().compareTo(p2.getAdmissionDate()) == 0) {
-                        return p1.getCreationDate().compareTo(p2.getCreationDate());
-                    } else {
-                        return p1.getAdmissionDate().compareTo(p2.getAdmissionDate());
-                    } })
+                .sorted(this::compareDates)
                 .collect(Collectors.toCollection(LinkedList::new));
 
         List<Patient> allSortedPatients = new LinkedList<>();
@@ -387,6 +372,14 @@ public class QueueService {
 
         return allSortedPatients;
 
+    }
+
+    private int compareDates(Patient p1, Patient p2) {
+        if (p1.getAdmissionDate().compareTo(p2.getAdmissionDate()) == 0) {
+            return p1.getCreationDate().compareTo(p2.getCreationDate());
+        } else {
+            return p1.getAdmissionDate().compareTo(p2.getAdmissionDate());
+        }
     }
 
     private void rewritePatientsPositions(List<Patient> allSortedPatients) {
