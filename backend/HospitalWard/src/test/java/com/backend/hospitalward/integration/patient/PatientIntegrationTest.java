@@ -103,7 +103,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
                         .surname("Kowalska")
                         .age("4Y")
                         .covidStatus("VACCINATED")
-                        .diseases(List.of("Z"))
+                        .diseases(List.of("Ostium secundum"))
                         .admissionDate(LocalDate.of(2022, 5, 4))
                         .mainDoctor("jan.kowalski")
                         .pesel("45565555555")
@@ -144,7 +144,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
                         .surname("Nowak")
                         .age("7Y")
                         .covidStatus("VACCINATED")
-                        .diseases(List.of("Y"))
+                        .diseases(List.of("Dissociatio atrioventricularis"))
                         .phoneNumber("123456780")
                         .admissionDate(LocalDate.of(2022, 3, 17))
                         .mainDoctor("jan.kowalski")
@@ -163,7 +163,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
                 () -> assertEquals("GIRL", newPatient.getPatientType().getName()),
                 () -> assertEquals("VACCINATED", newPatient.getCovidStatus().getStatus()),
-                () -> assertEquals(3, newPatient.getPositionInQueue()),
+                () -> assertEquals(4, newPatient.getPositionInQueue()),
                 () -> assertEquals(currentQueuesCount, queueService.getAllCurrentQueues().size()),
                 () -> assertTrue(queueService.getQueueForDate(newPatient.getAdmissionDate()).getPatients()
                         .contains(newPatient)),
@@ -192,7 +192,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
                         .age("7Y")
                         .covidStatus("VACCINATED")
                         .phoneNumber("123456556")
-                        .diseases(List.of("Y"))
+                        .diseases(List.of("Dissociatio atrioventricularis"))
                         .admissionDate(LocalDate.of(2022, 3, 15))
                         .mainDoctor("jan.kowalski")
                         .pesel("45565555555")
@@ -279,13 +279,13 @@ class PatientIntegrationTest extends AbstractTestContainer {
         Patient patient = patientService.getPatientById(22L);
 
         assertEquals("Paulina", patient.getName());
-        assertEquals(1, patient.getPositionInQueue());
+        assertEquals(5, patient.getPositionInQueue());
 
         HttpEntity<PatientUpdateRequest> patientUpdateRequestHttpEntity = new HttpEntity<>(
                 PatientUpdateRequest.builder()
                         .name("Janina")
                         .version(version)
-                        .diseases(List.of("Z")).build(), headers
+                        .diseases(List.of("Ostium secundum")).build(), headers
         );
 
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/22"),
@@ -295,9 +295,9 @@ class PatientIntegrationTest extends AbstractTestContainer {
 
         assertAll(
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
-                () -> assertEquals("Z", updatedPatient.getDiseases().get(0).getLatinName()),
+                () -> assertEquals("Ostium secundum", updatedPatient.getDiseases().get(0).getLatinName()),
                 () -> assertEquals("Janina", updatedPatient.getName()),
-                () -> assertEquals(3, updatedPatient.getPositionInQueue())
+                () -> assertEquals(4, updatedPatient.getPositionInQueue())
         );
     }
 
@@ -310,7 +310,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
 
         assertAll(
                 () -> assertEquals("WAITING", patientBefore.getStatus().getName()),
-                () -> assertEquals(3, patientBefore.getPositionInQueue())
+                () -> assertEquals(4, patientBefore.getPositionInQueue())
         );
 
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/confirm/22"),
@@ -321,7 +321,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
         assertAll(
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
                 () -> assertEquals("CONFIRMED_ONCE", confirmedPatient.getStatus().getName()),
-                () -> assertEquals(3, confirmedPatient.getPositionInQueue()),
+                () -> assertEquals(4, confirmedPatient.getPositionInQueue()),
                 () -> assertEquals(admissionDate, confirmedPatient.getAdmissionDate()),
                 () -> assertEquals(patientQueue.getDate(), confirmedPatient.getQueue().getDate()),
                 () -> assertFalse(confirmedPatient.getQueue().isLocked()),
@@ -337,7 +337,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
 
         assertAll(
                 () -> assertEquals("CONFIRMED_ONCE", patientBefore.getStatus().getName()),
-                () -> assertEquals(1, patientBefore.getPositionInQueue())
+                () -> assertEquals(3, patientBefore.getPositionInQueue())
         );
 
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/confirm/21"),
@@ -348,7 +348,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
         assertAll(
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
                 () -> assertEquals("CONFIRMED_TWICE", confirmedPatient.getStatus().getName()),
-                () -> assertEquals(1, confirmedPatient.getPositionInQueue()),
+                () -> assertEquals(3, confirmedPatient.getPositionInQueue()),
                 () -> assertEquals(confirmedPatient.getQueue().getDate(), confirmedPatient.getAdmissionDate()),
                 () -> assertEquals(patientQueue.getDate(), confirmedPatient.getQueue().getDate()),
                 () -> assertFalse(confirmedPatient.getQueue().isLocked()),
@@ -388,7 +388,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
                 () -> assertTrue(confirmedPatient.getQueue().getWaitingPatients().isEmpty()),
                 () -> assertEquals(expectedQueueSizeWaiting + 1, expectedNewQueueAfter.getWaitingPatients().size()),
                 () -> assertEquals(10L, expectedNewQueueAfter.getWaitingPatients().get(0).getId()),
-                () -> assertEquals(1, patientService.getPatientById(10L).getPositionInQueue()),
+                () -> assertEquals(6, patientService.getPatientById(10L).getPositionInQueue()),
                 () -> assertEquals("WAITING", patientService.getPatientById(10L).getStatus().getName()),
                 () -> assertEquals(expectedNewQueue.getDate(), patientService.getPatientById(10L).getQueue().getDate())
         );
@@ -418,7 +418,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
         assertAll(
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
                 () -> assertEquals("CONFIRMED_TWICE", confirmedPatient.getStatus().getName()),
-                () -> assertEquals(9, confirmedPatient.getPositionInQueue()),
+                () -> assertEquals(2, confirmedPatient.getPositionInQueue()),
                 () -> assertEquals(confirmedPatient.getQueue().getDate(), confirmedPatient.getAdmissionDate()),
                 () -> assertEquals(patientQueue.getDate(), confirmedPatient.getQueue().getDate()),
                 () -> assertTrue(confirmedPatient.getQueue().isLocked()),
@@ -426,7 +426,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
                 () -> assertEquals(0, confirmedPatient.getQueue().getWaitingPatients().size()),
                 () -> assertFalse(confirmedPatient.getQueue().getPatients().contains(patientService.getPatientById(lowestPriorityPatientId))),
                 () -> assertTrue(expectedNewQueueAfter.getWaitingPatients().contains(patientService.getPatientById(lowestPriorityPatientId))),
-                () -> assertEquals(5, patientService.getPatientById(lowestPriorityPatientId).getPositionInQueue())
+                () -> assertEquals(8, patientService.getPatientById(lowestPriorityPatientId).getPositionInQueue())
         );
     }
 
@@ -525,7 +525,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
 
         assertAll(
                 () -> assertFalse(patientBefore.isUrgent()),
-                () -> assertEquals(9, patientBefore.getPositionInQueue())
+                () -> assertEquals(5, patientBefore.getPositionInQueue())
         );
 
         ResponseEntity<String> response = restTemplate.exchange(getUrlWithPort("/patients/urgency/22/true"),
@@ -558,7 +558,7 @@ class PatientIntegrationTest extends AbstractTestContainer {
         assertAll(
                 () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
                 () -> assertFalse(urgentPatient.isUrgent()),
-                () -> assertEquals(4, urgentPatient.getPositionInQueue())
+                () -> assertEquals(5, urgentPatient.getPositionInQueue())
         );
     }
 

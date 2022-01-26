@@ -40,7 +40,7 @@ export class ModifyAdmissionDateComponent implements OnInit {
               private dialogRef: MatDialogRef<ModifyAdmissionDateComponent>) {
     this.minDate.setDate(this.minDate.getDate() + 14);
     this.getFullAdmissionDates();
-    this.dateAdapter.setLocale(translate.currentLang);
+    this.dateAdapter.setLocale('pl');
   }
 
   ngOnInit(): void {
